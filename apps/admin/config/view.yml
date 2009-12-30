@@ -14,5 +14,5 @@ default:
 
   javascripts:    [jquery.js, jquery-ui.js, admin.js]
 
-  has_layout:     on
+  has_layout:     true
   layout:         layout

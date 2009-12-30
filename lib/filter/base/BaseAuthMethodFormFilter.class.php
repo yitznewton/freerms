@@ -1,21 +1,19 @@
 <?php
 
-require_once(sfConfig::get('sf_lib_dir').'/filter/base/BaseFormFilterPropel.class.php');
-
 /**
  * AuthMethod filter form base class.
  *
  * @package    freerms
  * @subpackage filter
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseAuthMethodFormFilter extends BaseFormFilterPropel
+abstract class BaseAuthMethodFormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
-      'label'            => new sfWidgetFormFilterInput(),
+      'label'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'is_valid_onsite'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'is_valid_offsite' => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
     ));

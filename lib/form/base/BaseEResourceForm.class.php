@@ -3,23 +3,25 @@
 /**
  * EResource form base class.
  *
+ * @method EResource getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseEResourceForm extends BaseFormPropel
+abstract class BaseEResourceForm extends BaseFormPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'id'                               => new sfWidgetFormInputHidden(),
-      'alt_id'                           => new sfWidgetFormInput(),
-      'subscription_number'              => new sfWidgetFormInput(),
-      'title'                            => new sfWidgetFormInput(),
-      'sort_title'                       => new sfWidgetFormInput(),
-      'alt_title'                        => new sfWidgetFormInput(),
-      'language'                         => new sfWidgetFormInput(),
+      'alt_id'                           => new sfWidgetFormInputText(),
+      'subscription_number'              => new sfWidgetFormInputText(),
+      'title'                            => new sfWidgetFormInputText(),
+      'sort_title'                       => new sfWidgetFormInputText(),
+      'alt_title'                        => new sfWidgetFormInputText(),
+      'language'                         => new sfWidgetFormInputText(),
       'description'                      => new sfWidgetFormTextarea(),
       'public_note'                      => new sfWidgetFormTextarea(),
       'suppression'                      => new sfWidgetFormInputCheckbox(),
@@ -30,7 +32,7 @@ class BaseEResourceForm extends BaseFormPropel
       'created_at'                       => new sfWidgetFormDateTime(),
       'updated_at'                       => new sfWidgetFormDateTime(),
       'deleted_at'                       => new sfWidgetFormDateTime(),
-      'e_resource_db_subject_assoc_list' => new sfWidgetFormPropelChoiceMany(array('model' => 'DbSubject')),
+      'e_resource_db_subject_assoc_list' => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'DbSubject')),
     ));
 
     $this->setValidators(array(
@@ -51,7 +53,7 @@ class BaseEResourceForm extends BaseFormPropel
       'created_at'                       => new sfValidatorDateTime(),
       'updated_at'                       => new sfValidatorDateTime(),
       'deleted_at'                       => new sfValidatorDateTime(array('required' => false)),
-      'e_resource_db_subject_assoc_list' => new sfValidatorPropelChoiceMany(array('model' => 'DbSubject', 'required' => false)),
+      'e_resource_db_subject_assoc_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'DbSubject', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -108,7 +110,7 @@ class BaseEResourceForm extends BaseFormPropel
       return;
     }
 
-    if (is_null($con))
+    if (null === $con)
     {
       $con = $this->getConnection();
     }

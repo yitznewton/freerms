@@ -1,28 +1,26 @@
 <?php
 
-require_once(sfConfig::get('sf_lib_dir').'/filter/base/BaseFormFilterPropel.class.php');
-
 /**
  * UsageAttempt filter form base class.
  *
  * @package    freerms
  * @subpackage filter
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseUsageAttemptFormFilter extends BaseFormFilterPropel
+abstract class BaseUsageAttemptFormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'er_id'                => new sfWidgetFormPropelChoice(array('model' => 'EResource', 'add_empty' => true)),
       'lib_id'               => new sfWidgetFormPropelChoice(array('model' => 'Library', 'add_empty' => true)),
-      'phpsessid'            => new sfWidgetFormFilterInput(),
+      'phpsessid'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'ip'                   => new sfWidgetFormFilterInput(),
       'date'                 => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'auth_successful'      => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'additional_user_data' => new sfWidgetFormFilterInput(),
-      'note'                 => new sfWidgetFormFilterInput(),
+      'note'                 => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(

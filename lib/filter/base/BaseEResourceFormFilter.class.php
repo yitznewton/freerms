@@ -1,26 +1,24 @@
 <?php
 
-require_once(sfConfig::get('sf_lib_dir').'/filter/base/BaseFormFilterPropel.class.php');
-
 /**
  * EResource filter form base class.
  *
  * @package    freerms
  * @subpackage filter
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseEResourceFormFilter extends BaseFormFilterPropel
+abstract class BaseEResourceFormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'alt_id'                           => new sfWidgetFormFilterInput(),
       'subscription_number'              => new sfWidgetFormFilterInput(),
-      'title'                            => new sfWidgetFormFilterInput(),
-      'sort_title'                       => new sfWidgetFormFilterInput(),
+      'title'                            => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'sort_title'                       => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'alt_title'                        => new sfWidgetFormFilterInput(),
-      'language'                         => new sfWidgetFormFilterInput(),
+      'language'                         => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'description'                      => new sfWidgetFormFilterInput(),
       'public_note'                      => new sfWidgetFormFilterInput(),
       'suppression'                      => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
@@ -30,7 +28,7 @@ class BaseEResourceFormFilter extends BaseFormFilterPropel
       'admin_info_id'                    => new sfWidgetFormPropelChoice(array('model' => 'AdminInfo', 'add_empty' => true)),
       'created_at'                       => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'updated_at'                       => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
-      'deleted_at'                       => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => true)),
+      'deleted_at'                       => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate())),
       'e_resource_db_subject_assoc_list' => new sfWidgetFormPropelChoice(array('model' => 'DbSubject', 'add_empty' => true)),
     ));
 

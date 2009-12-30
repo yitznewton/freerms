@@ -1,22 +1,20 @@
 <?php
 
-require_once(sfConfig::get('sf_lib_dir').'/filter/base/BaseFormFilterPropel.class.php');
-
 /**
  * IpRange filter form base class.
  *
  * @package    freerms
  * @subpackage filter
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseIpRangeFormFilter extends BaseFormFilterPropel
+abstract class BaseIpRangeFormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'lib_id'           => new sfWidgetFormPropelChoice(array('model' => 'Library', 'add_empty' => true)),
-      'start_ip'         => new sfWidgetFormFilterInput(),
+      'start_ip'         => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'end_ip'           => new sfWidgetFormFilterInput(),
       'active_indicator' => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'proxy_indicator'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),

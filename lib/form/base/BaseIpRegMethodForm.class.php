@@ -3,18 +3,20 @@
 /**
  * IpRegMethod form base class.
  *
+ * @method IpRegMethod getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseIpRegMethodForm extends BaseFormPropel
+abstract class BaseIpRegMethodForm extends BaseFormPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'id'    => new sfWidgetFormInputHidden(),
-      'label' => new sfWidgetFormInput(),
+      'label' => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(

@@ -3,12 +3,14 @@
 /**
  * AdminInfo form base class.
  *
+ * @method AdminInfo getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseAdminInfoForm extends BaseFormPropel
+abstract class BaseAdminInfoForm extends BaseFormPropel
 {
   public function setup()
   {
@@ -25,20 +27,20 @@ class BaseAdminInfoForm extends BaseFormPropel
       'marc_record_note'                 => new sfWidgetFormTextarea(),
       'ss_360_search_available'          => new sfWidgetFormInputCheckbox(),
       'usage_stats_available'            => new sfWidgetFormInputCheckbox(),
-      'usage_stats_standards_compliance' => new sfWidgetFormInput(),
+      'usage_stats_standards_compliance' => new sfWidgetFormInputText(),
       'usage_stats_delivery_id'          => new sfWidgetFormPropelChoice(array('model' => 'InfoExchangeMethod', 'add_empty' => true)),
       'usage_stats_format_id'            => new sfWidgetFormPropelChoice(array('model' => 'UsageStatsFormat', 'add_empty' => true)),
       'usage_stats_freq_id'              => new sfWidgetFormPropelChoice(array('model' => 'UsageStatsFreq', 'add_empty' => true)),
-      'usage_stats_uri'                  => new sfWidgetFormInput(),
-      'usage_stats_username'             => new sfWidgetFormInput(),
-      'usage_stats_password'             => new sfWidgetFormInput(),
+      'usage_stats_uri'                  => new sfWidgetFormInputText(),
+      'usage_stats_username'             => new sfWidgetFormInputText(),
+      'usage_stats_password'             => new sfWidgetFormInputText(),
       'usage_stats_note'                 => new sfWidgetFormTextarea(),
       'software_requirements'            => new sfWidgetFormTextarea(),
-      'system_status_uri'                => new sfWidgetFormInput(),
+      'system_status_uri'                => new sfWidgetFormInputText(),
       'product_advisory_note'            => new sfWidgetFormTextarea(),
       'training_info'                    => new sfWidgetFormTextarea(),
-      'admin_doc_uri'                    => new sfWidgetFormInput(),
-      'user_doc_uri'                     => new sfWidgetFormInput(),
+      'admin_doc_uri'                    => new sfWidgetFormInputText(),
+      'user_doc_uri'                     => new sfWidgetFormInputText(),
       'note'                             => new sfWidgetFormTextarea(),
       'deleted_at'                       => new sfWidgetFormDateTime(),
     ));

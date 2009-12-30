@@ -3,12 +3,14 @@
 /**
  * UsageAttempt form base class.
  *
+ * @method UsageAttempt getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseUsageAttemptForm extends BaseFormPropel
+abstract class BaseUsageAttemptForm extends BaseFormPropel
 {
   public function setup()
   {
@@ -16,12 +18,12 @@ class BaseUsageAttemptForm extends BaseFormPropel
       'id'                   => new sfWidgetFormInputHidden(),
       'er_id'                => new sfWidgetFormPropelChoice(array('model' => 'EResource', 'add_empty' => false)),
       'lib_id'               => new sfWidgetFormPropelChoice(array('model' => 'Library', 'add_empty' => true)),
-      'phpsessid'            => new sfWidgetFormInput(),
-      'ip'                   => new sfWidgetFormInput(),
+      'phpsessid'            => new sfWidgetFormInputText(),
+      'ip'                   => new sfWidgetFormInputText(),
       'date'                 => new sfWidgetFormDateTime(),
       'auth_successful'      => new sfWidgetFormInputCheckbox(),
-      'additional_user_data' => new sfWidgetFormInput(),
-      'note'                 => new sfWidgetFormInput(),
+      'additional_user_data' => new sfWidgetFormInputText(),
+      'note'                 => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(

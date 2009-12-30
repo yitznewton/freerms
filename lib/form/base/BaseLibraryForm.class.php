@@ -3,28 +3,30 @@
 /**
  * Library form base class.
  *
+ * @method Library getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseLibraryForm extends BaseFormPropel
+abstract class BaseLibraryForm extends BaseFormPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'id'                 => new sfWidgetFormInputHidden(),
-      'name'               => new sfWidgetFormInput(),
-      'code'               => new sfWidgetFormInput(),
-      'alt_name'           => new sfWidgetFormInput(),
+      'name'               => new sfWidgetFormInputText(),
+      'code'               => new sfWidgetFormInputText(),
+      'alt_name'           => new sfWidgetFormInputText(),
       'address'            => new sfWidgetFormTextarea(),
-      'ezproxy_host'       => new sfWidgetFormInput(),
-      'ezproxy_key'        => new sfWidgetFormInput(),
-      'cost_center_no'     => new sfWidgetFormInput(),
-      'fte'                => new sfWidgetFormInput(),
+      'ezproxy_host'       => new sfWidgetFormInputText(),
+      'ezproxy_key'        => new sfWidgetFormInputText(),
+      'cost_center_no'     => new sfWidgetFormInputText(),
+      'fte'                => new sfWidgetFormInputText(),
       'note'               => new sfWidgetFormTextarea(),
       'updated_at'         => new sfWidgetFormDateTime(),
-      'acq_lib_assoc_list' => new sfWidgetFormPropelChoiceMany(array('model' => 'Acquisition')),
+      'acq_lib_assoc_list' => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'Acquisition')),
     ));
 
     $this->setValidators(array(
@@ -35,11 +37,11 @@ class BaseLibraryForm extends BaseFormPropel
       'address'            => new sfValidatorString(array('required' => false)),
       'ezproxy_host'       => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'ezproxy_key'        => new sfValidatorString(array('max_length' => 50, 'required' => false)),
-      'cost_center_no'     => new sfValidatorInteger(array('required' => false)),
-      'fte'                => new sfValidatorInteger(array('required' => false)),
+      'cost_center_no'     => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647, 'required' => false)),
+      'fte'                => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647, 'required' => false)),
       'note'               => new sfValidatorString(array('required' => false)),
       'updated_at'         => new sfValidatorDateTime(),
-      'acq_lib_assoc_list' => new sfValidatorPropelChoiceMany(array('model' => 'Acquisition', 'required' => false)),
+      'acq_lib_assoc_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'Acquisition', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -96,7 +98,7 @@ class BaseLibraryForm extends BaseFormPropel
       return;
     }
 
-    if (is_null($con))
+    if (null === $con)
     {
       $con = $this->getConnection();
     }

@@ -1,16 +1,14 @@
 <?php
 
-require_once(sfConfig::get('sf_lib_dir').'/filter/base/BaseFormFilterPropel.class.php');
-
 /**
  * AccessInfo filter form base class.
  *
  * @package    freerms
  * @subpackage filter
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseAccessInfoFormFilter extends BaseFormFilterPropel
+abstract class BaseAccessInfoFormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {
@@ -26,7 +24,7 @@ class BaseAccessInfoFormFilter extends BaseFormFilterPropel
       'ezproxy_cfg_entry'      => new sfWidgetFormFilterInput(),
       'referral_note'          => new sfWidgetFormFilterInput(),
       'note'                   => new sfWidgetFormFilterInput(),
-      'deleted_at'             => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => true)),
+      'deleted_at'             => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate())),
     ));
 
     $this->setValidators(array(

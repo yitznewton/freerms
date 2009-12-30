@@ -3,23 +3,25 @@
 /**
  * IpRange form base class.
  *
+ * @method IpRange getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseIpRangeForm extends BaseFormPropel
+abstract class BaseIpRangeForm extends BaseFormPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'id'               => new sfWidgetFormInputHidden(),
       'lib_id'           => new sfWidgetFormPropelChoice(array('model' => 'Library', 'add_empty' => false)),
-      'start_ip'         => new sfWidgetFormInput(),
-      'end_ip'           => new sfWidgetFormInput(),
+      'start_ip'         => new sfWidgetFormInputText(),
+      'end_ip'           => new sfWidgetFormInputText(),
       'active_indicator' => new sfWidgetFormInputCheckbox(),
       'proxy_indicator'  => new sfWidgetFormInputCheckbox(),
-      'note'             => new sfWidgetFormInput(),
+      'note'             => new sfWidgetFormInputText(),
       'updated_at'       => new sfWidgetFormDateTime(),
     ));
 

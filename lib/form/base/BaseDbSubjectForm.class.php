@@ -3,27 +3,29 @@
 /**
  * DbSubject form base class.
  *
+ * @method DbSubject getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseDbSubjectForm extends BaseFormPropel
+abstract class BaseDbSubjectForm extends BaseFormPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'id'                               => new sfWidgetFormInputHidden(),
-      'label'                            => new sfWidgetFormInput(),
-      'slug'                             => new sfWidgetFormInput(),
-      'e_resource_db_subject_assoc_list' => new sfWidgetFormPropelChoiceMany(array('model' => 'EResource')),
+      'label'                            => new sfWidgetFormInputText(),
+      'slug'                             => new sfWidgetFormInputText(),
+      'e_resource_db_subject_assoc_list' => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'EResource')),
     ));
 
     $this->setValidators(array(
       'id'                               => new sfValidatorPropelChoice(array('model' => 'DbSubject', 'column' => 'id', 'required' => false)),
       'label'                            => new sfValidatorString(array('max_length' => 100)),
       'slug'                             => new sfValidatorString(array('max_length' => 100, 'required' => false)),
-      'e_resource_db_subject_assoc_list' => new sfValidatorPropelChoiceMany(array('model' => 'EResource', 'required' => false)),
+      'e_resource_db_subject_assoc_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'EResource', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('db_subject[%s]');
@@ -76,7 +78,7 @@ class BaseDbSubjectForm extends BaseFormPropel
       return;
     }
 
-    if (is_null($con))
+    if (null === $con)
     {
       $con = $this->getConnection();
     }

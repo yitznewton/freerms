@@ -3,25 +3,27 @@
 /**
  * AccessInfo form base class.
  *
+ * @method AccessInfo getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseAccessInfoForm extends BaseFormPropel
+abstract class BaseAccessInfoForm extends BaseFormPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'id'                     => new sfWidgetFormInputHidden(),
-      'onsite_access_uri'      => new sfWidgetFormInput(),
-      'offsite_access_uri'     => new sfWidgetFormInput(),
+      'onsite_access_uri'      => new sfWidgetFormInputText(),
+      'offsite_access_uri'     => new sfWidgetFormInputText(),
       'onsite_auth_method_id'  => new sfWidgetFormPropelChoice(array('model' => 'AuthMethod', 'add_empty' => true)),
       'offsite_auth_method_id' => new sfWidgetFormPropelChoice(array('model' => 'AuthMethod', 'add_empty' => true)),
-      'access_username'        => new sfWidgetFormInput(),
-      'access_password'        => new sfWidgetFormInput(),
+      'access_username'        => new sfWidgetFormInputText(),
+      'access_password'        => new sfWidgetFormInputText(),
       'access_password_note'   => new sfWidgetFormTextarea(),
-      'concurrent_users'       => new sfWidgetFormInput(),
+      'concurrent_users'       => new sfWidgetFormInputText(),
       'ezproxy_cfg_entry'      => new sfWidgetFormTextarea(),
       'referral_note'          => new sfWidgetFormTextarea(),
       'note'                   => new sfWidgetFormTextarea(),
@@ -37,7 +39,7 @@ class BaseAccessInfoForm extends BaseFormPropel
       'access_username'        => new sfValidatorString(array('max_length' => 25, 'required' => false)),
       'access_password'        => new sfValidatorString(array('max_length' => 25, 'required' => false)),
       'access_password_note'   => new sfValidatorString(array('required' => false)),
-      'concurrent_users'       => new sfValidatorInteger(array('required' => false)),
+      'concurrent_users'       => new sfValidatorInteger(array('min' => -2147483648, 'max' => 2147483647, 'required' => false)),
       'ezproxy_cfg_entry'      => new sfValidatorString(array('required' => false)),
       'referral_note'          => new sfValidatorString(array('required' => false)),
       'note'                   => new sfValidatorString(array('required' => false)),

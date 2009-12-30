@@ -3,25 +3,27 @@
 /**
  * Acquisition form base class.
  *
+ * @method Acquisition getObject() Returns the current form's model object
+ *
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
+ * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
-class BaseAcquisitionForm extends BaseFormPropel
+abstract class BaseAcquisitionForm extends BaseFormPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
       'id'                 => new sfWidgetFormInputHidden(),
       'note'               => new sfWidgetFormTextarea(),
-      'acq_lib_assoc_list' => new sfWidgetFormPropelChoiceMany(array('model' => 'Library')),
+      'acq_lib_assoc_list' => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'Library')),
     ));
 
     $this->setValidators(array(
       'id'                 => new sfValidatorPropelChoice(array('model' => 'Acquisition', 'column' => 'id', 'required' => false)),
       'note'               => new sfValidatorString(array('required' => false)),
-      'acq_lib_assoc_list' => new sfValidatorPropelChoiceMany(array('model' => 'Library', 'required' => false)),
+      'acq_lib_assoc_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'Library', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('acquisition[%s]');
@@ -74,7 +76,7 @@ class BaseAcquisitionForm extends BaseFormPropel
       return;
     }
 
-    if (is_null($con))
+    if (null === $con)
     {
       $con = $this->getConnection();
     }
