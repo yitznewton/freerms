@@ -11,3 +11,4 @@ config/propel.ini
 
 data/fixtures/*.yml
 
+web/sfPropelPlugin
