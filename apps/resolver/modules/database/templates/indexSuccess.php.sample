@@ -1,0 +1,54 @@
+<?php use_helper('PagerNavigation') ?>
+
+<h1>Available Databases</h1>
+
+<script type="text/javascript">
+  function get_selected_value()
+    {
+      var selected_value = document.getElementById("dbsubject").value;
+      var url = '?subject=';
+
+      window.location.href = url + selected_value;
+    }
+</script>
+
+<select id="dbsubject" onchange="get_selected_value()" >
+  <option value="">All subjects</option>
+
+  <?php foreach ($db_subject_list as $subject): ?>
+    <option value="<?php echo $subject->getSlug() ?>"
+      <?php if ($selected_subject == $subject->getSlug()): ?>
+      selected="selected"
+      <?php endif; ?>
+      >
+      <?php echo $subject->getLabel() ?>
+    </option>
+  <?php endforeach; ?>
+
+</select>
+
+<div class="pager"><?php echo pager_navigation($pager, 'database/index?subject='.$selected_subject.'&page=', 10) ?></div>
+
+<ul>
+
+  <?php foreach ($pager->getResults() as $er): ?>
+
+  <li>
+    <?php echo link_to($er->getTitle(), 'database/access?id='.$er->getId()) ?> -
+	<?php echo $er->getDescription() ?>
+
+	<?php if ($er->getPublicNote()): ?>
+	  <div class="product-note"><?php echo $er->getPublicNote() ?></div>
+	<?php endif; ?>
+
+	<?php if ($er->getProductUnavailable()): ?>
+	  <div class="product-unavailable"><?php echo $er->getProductUnavailable() ?></div>
+	<?php endif; ?>
+  </li>
+  <?php endforeach; ?>
+
+</ul>
+
+<div class="pager"><?php echo pager_navigation($pager, 'database/index?subject='.$selected_subject.'&page=', 10) ?></div>
+
+

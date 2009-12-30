@@ -1,0 +1,13 @@
+all:
+  institution-name: Wassamatta University Libraries
+  local-erms-name:  WU-ERM
+  admin-email:      admin@example.com
+  support-email:    help@example.com
+  
+  user-api:
+    url-mask:           http://users.example.com/api?username=%s&password=%s
+    credential-prefix:  freerms
+  
+  access:
+    onsite-auth-default: IP
+    offsite-auth-default: Referer URL

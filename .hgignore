@@ -1,0 +1,10 @@
+syntax: glob
+
+cache/*
+log/*
+
+# ignore live config files; control .sample config files
+config/app.yml
+config/databases.yml
+config/ProjectConfiguration.class.php
+config/propel.ini

@@ -1,0 +1,1018 @@
+propel:
+  _attributes:   { noXsd: false, defaultIdMethod: native, package: lib.model }
+
+  access_infos: 
+    _attributes: 
+      phpName: AccessInfo
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    onsite_access_uri:
+      type: VARCHAR
+      size: 255
+    offsite_access_uri:
+      type: VARCHAR
+      size: 255
+    onsite_auth_method_id: 
+      type: INTEGER
+      foreignTable: auth_methods
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    offsite_auth_method_id: 
+      type: INTEGER
+      foreignTable: auth_methods
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    access_username: 
+      type: VARCHAR
+      size: 25
+    access_password: 
+      type: VARCHAR
+      size: 25
+    access_password_note: 
+      type: LONGVARCHAR
+    concurrent_users: 
+      type: INTEGER
+#    ip_address_reg_method_id: 
+#      type: INTEGER
+#      foreignTable: ip_reg_methods
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    ip_address_reg_date: 
+#      type: DATE
+#    ip_address_note: 
+#      type: LONGVARCHAR
+#    proxy_decision: 
+#      type: BOOLEAN
+#    proxy_reg_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+    ezproxy_cfg_entry: 
+      type: LONGVARCHAR
+    referral_note:
+      type: LONGVARCHAR
+    note: 
+      type: LONGVARCHAR
+    deleted_at: 
+      type: TIMESTAMP
+  acq_lib_assoc: 
+    _attributes:
+      phpName: AcqLibAssoc
+    lib_id: 
+      type: INTEGER
+      required: true
+      primaryKey: true
+      foreignTable: libraries
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    acq_id: 
+      type: INTEGER
+      required: true
+      primaryKey: true
+      foreignTable: acquisitions
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+#    po_number: 
+#      type: INTEGER
+#    cost_share: 
+#      type: DECIMAL
+#      size: 9
+#      scale: 2
+#    cost_share_percent: 
+#      type: DECIMAL
+#      size: 5
+#      scale: 2
+#    billing_status_id: 
+#      type: INTEGER
+#      foreignTable: billing_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+  acquisitions: 
+    _attributes: 
+      phpName: Acquisition
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+#    label: 
+#      type: VARCHAR
+#      size: 100
+#      required: true
+#    purchase_renewal_date: 
+#      type: DATE
+#    purchase_renewal_tickler: 
+#      type: INTEGER
+#      required: true
+#      default: 0
+#    renewal_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    termination_date: 
+#      type: DATE
+#    termination_reason: 
+#      type: LONGVARCHAR
+#    account_number:
+#      type: INTEGER
+#    price: 
+#      type: DECIMAL
+#      size: 9
+#      scale: 2
+#    price_cap: 
+#      type: DECIMAL
+#      size: 4
+#      scale: 2
+#    price_budget_increase: 
+#      type: DECIMAL
+#      size: 4
+#      scale: 2
+    note: 
+      type: LONGVARCHAR
+#    vendor_org_id: 
+#      type: INTEGER
+#      foreignTable: organizations
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    negotiator_org_id: 
+#      type: INTEGER
+#      foreignTable: organizations
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    updated_at: 
+#      type: TIMESTAMP
+#      required: true
+  admin_infos: 
+    _attributes: 
+      phpName: AdminInfo
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    ui_config_available: 
+      type: BOOLEAN
+    subscriber_branding_available: 
+      type: BOOLEAN
+    subscriber_branding_note: 
+      type: LONGVARCHAR
+    personalized_features_available: 
+      type: BOOLEAN
+    inbound_linking_available: 
+      type: BOOLEAN
+    open_url_compliance_available: 
+      type: BOOLEAN
+    linking_note: 
+      type: LONGVARCHAR
+    marc_records_available: 
+      type: BOOLEAN
+    marc_record_note: 
+      type: LONGVARCHAR
+    ss_360_search_available: 
+      type: BOOLEAN
+    usage_stats_available: 
+      type: BOOLEAN
+    usage_stats_standards_compliance: 
+      type: VARCHAR
+      size: 50
+    usage_stats_delivery_id: 
+      type: INTEGER
+      foreignTable: info_exchange_methods
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    usage_stats_format_id: 
+      type: INTEGER
+      foreignTable: usage_stats_formats
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    usage_stats_freq_id: 
+      type: INTEGER
+      foreignTable: usage_stats_freqs
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    usage_stats_uri: 
+      type: VARCHAR
+      size: 255
+    usage_stats_username: 
+      type: VARCHAR
+      size: 25
+    usage_stats_password: 
+      type: VARCHAR
+      size: 25
+    usage_stats_note: 
+      type: LONGVARCHAR
+    software_requirements: 
+      type: LONGVARCHAR
+    system_status_uri: 
+      type: VARCHAR
+      size: 255
+    product_advisory_note: 
+      type: LONGVARCHAR
+    training_info: 
+      type: LONGVARCHAR
+    admin_doc_uri: 
+      type: VARCHAR
+      size: 255
+    user_doc_uri: 
+      type: VARCHAR
+      size: 255
+    note: 
+      type: LONGVARCHAR
+    deleted_at: 
+      type: TIMESTAMP
+#  admin_logins: 
+#    _attributes: 
+#      phpName: AdminLogin
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label:
+#      type: VARCHAR
+#      size: 50
+#    admin_info_id: 
+#      type: INTEGER
+#      required: true
+#      foreignTable: admin_infos
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    uri:
+#      type: VARCHAR
+#      size: 255
+#      required: true
+#    username: 
+#      type: VARCHAR
+#      size: 25
+#    password: 
+#      type: VARCHAR
+#      size: 25
+#    note: 
+#      type: LONGVARCHAR
+#  alt_access_uris: 
+#    _attributes: 
+#      phpName: AltAccessUri
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label:
+#      type: VARCHAR
+#      size: 50
+#    access_info_id: 
+#      type: INTEGER
+#      required: true
+#      foreignTable: access_infos
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    uri: 
+#      type: VARCHAR
+#      size: 255
+#      required: true
+  auth_methods: 
+    _attributes: 
+      phpName: AuthMethod
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label: 
+      type: VARCHAR
+      size: 50
+      required: true
+    is_valid_onsite:
+      type: BOOLEAN
+      required: true
+      default: 1
+    is_valid_offsite:
+      type: BOOLEAN
+      required: true
+      default: 1
+#  billing_statuses: 
+#    _attributes: 
+#      phpName: BillingStatus
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label: 
+#      type: VARCHAR
+#      size: 25
+#      required: true
+#  contact_phone_types: 
+#    _attributes: 
+#      phpName: ContactPhoneType
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label: 
+#      type: VARCHAR
+#      size: 25
+#      required: true
+#  contact_phones: 
+#    _attributes: 
+#      phpName: ContactPhone
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    contact_id: 
+#      type: INTEGER
+#      required: true
+#      foreignTable: contacts
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    phone_number: 
+#      type: VARCHAR
+#      size: 40
+#      required: true
+#    phone_type_id: 
+#      type: INTEGER
+#      required: true
+#      foreignTable: contact_phone_types
+#      foreignReference: id
+#      onDelete: RESTRICT
+#      onUpdate: CASCADE
+#  contacts: 
+#    _attributes: 
+#      phpName: Contact
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    last_name: 
+#      type: VARCHAR
+#      size: 50
+#    first_name: 
+#      type: VARCHAR
+#      size: 50
+#    title: 
+#      type: VARCHAR
+#      size: 50
+#    role:
+#      type: VARCHAR
+#      size: 255
+#    address: 
+#      type: LONGVARCHAR
+#    email: 
+#      type: VARCHAR
+#      size: 100
+#    fax: 
+#      type: VARCHAR
+#      size: 40
+#    note: 
+#      type: LONGVARCHAR
+#    org_id: 
+#      type: INTEGER
+#      foreignTable: organizations
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    updated_at: 
+#      type: TIMESTAMP
+#      required: true
+#  er_containers: 
+#    _attributes: 
+#      phpName: ERContainer
+#    parent_er_id: 
+#      type: INTEGER
+#      required: true
+#      primaryKey: true
+#      foreignTable: eresources
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    child_er_id: 
+#      type: INTEGER
+#      required: true
+#      primaryKey: true
+#      foreignTable: eresources
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#  er_other_ids: 
+#    _attributes: 
+#      phpName: EROtherID
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    er_id: 
+#      type: INTEGER
+#      required: true
+#      foreignTable: eresources
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    other_id_no: 
+#      type: VARCHAR
+#      size: 25
+#      required: true
+#    other_id_source: 
+#      type: VARCHAR
+#      size: 100
+#      required: true
+#  er_types: 
+#    _attributes: 
+#      phpName: ERType
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label: 
+#      type: VARCHAR
+#      size: 25
+#      required: true
+#  er_type_assoc:
+#    _attributes:
+#      phpName: ERTypeAssoc
+#    er_id:
+#      type: INTEGER
+#      required: true
+#      primaryKey: true
+#      foreignTable: eresources
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    er_type_id:
+#      type: INTEGER
+#      required: true
+#      primaryKey: true
+#      foreignTable: er_types
+#      foreignReference: id
+#      onDelete: RESTRICT
+#      onUpdate: CASCADE
+#  er_statuses: 
+#    _attributes: 
+#      phpName: ERStatus
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label: 
+#      type: VARCHAR
+#      size: 25
+#      required: true
+  eresources: 
+    _attributes: 
+      phpName: EResource
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+#    is_interface:
+#      type: BOOLEAN
+#      required: true
+#      default: 1
+#    eissn: 
+#      type: VARCHAR
+#      size: 8
+#    eisbn: 
+#      type: VARCHAR
+#      size: 13
+#    sersol_title: 
+#      type: VARCHAR
+#      size: 255
+#    sersol_db_code:
+#      type: VARCHAR
+#      size: 3
+    alt_id:
+      type: VARCHAR
+      size: 3
+      index: unique
+    subscription_number: 
+      type: VARCHAR
+      size: 50
+    title: 
+      type: VARCHAR
+      size: 255
+      required: true
+    sort_title: 
+      type: VARCHAR
+      size: 255
+      required: true
+    alt_title: 
+      type: VARCHAR
+      size: 255
+#    package_type: 
+#      type: BOOLEAN
+    language: 
+      type: VARCHAR
+      size: 25
+      required: true
+      default: eng
+    description: 
+      type: LONGVARCHAR
+    public_note: 
+      type: LONGVARCHAR
+#    eholdings: 
+#      type: LONGVARCHAR
+#    embargo_period: 
+#      type: INTEGER
+#      required: true
+#      default: 0
+#    status_id: 
+#      type: INTEGER
+#      foreignTable: er_statuses
+#      foreignReference: id
+#      onDelete: RESTRICT
+#      onUpdate: CASCADE
+    suppression: 
+      type: BOOLEAN
+      required: true
+      default: 0
+    product_unavailable: 
+      type: BOOLEAN
+      required: true
+      default: 0
+#    rt_custom_field_value_id: 
+#      type: INTEGER
+    acq_id: 
+      type: INTEGER
+      foreignTable: acquisitions
+      foreignReference: id
+#      onDelete: SET NULL
+      onDelete: RESTRICT
+      onUpdate: CASCADE
+    access_info_id: 
+      type: INTEGER
+      foreignTable: access_infos
+      foreignReference: id
+      onDelete: RESTRICT
+      onUpdate: CASCADE
+    admin_info_id: 
+      type: INTEGER
+      foreignTable: admin_infos
+      foreignReference: id
+      onDelete: RESTRICT
+      onUpdate: CASCADE
+#    process_id: 
+#      type: INTEGER
+#      foreignTable: processes
+#      foreignReference: id
+#      onDelete: RESTRICT
+#      onUpdate: CASCADE
+    created_at: 
+      type: TIMESTAMP
+      required: true
+    updated_at: 
+      type: TIMESTAMP
+      required: true
+    deleted_at: 
+      type: TIMESTAMP
+  eresource_db_subject_assoc: 
+    _attributes: 
+      phpName: EResourceDbSubjectAssoc
+    er_id: 
+      type: INTEGER
+      required: true
+      primaryKey: true
+      foreignTable: eresources
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    db_subject_id: 
+      type: INTEGER
+      required: true
+      primaryKey: true
+      foreignTable: db_subjects
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+  db_subjects:
+    _attributes:
+      phpName: DbSubject
+    id:
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label:
+      type: VARCHAR
+      size: 100
+      required: true
+    slug:
+      type: VARCHAR
+      size: 100     
+  general_statuses: 
+    _attributes: 
+      phpName: GeneralStatus
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label: 
+      type: VARCHAR
+      size: 25
+      required: true
+  info_exchange_methods: 
+    _attributes: 
+      phpName: InfoExchangeMethod
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label: 
+      type: VARCHAR
+      size: 25
+      required: true
+  ip_reg_methods:
+    _attributes: 
+      phpName: IpRegMethod
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label: 
+      type: VARCHAR
+      size: 25
+      required: true
+  ip_ranges: 
+    _attributes: 
+      phpName: IpRange
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    lib_id: 
+      type: INTEGER
+      required: true
+      foreignTable: libraries
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    start_ip: 
+      type: VARCHAR
+      size: 15
+      required: true
+    end_ip: 
+      type: VARCHAR
+      size: 15
+    active_indicator: 
+      type: BOOLEAN
+      required: true
+      default: 1
+    proxy_indicator: 
+      type: BOOLEAN
+      required: true
+      default: 0
+    note: 
+      type: VARCHAR
+      size: 255
+    updated_at: 
+      type: TIMESTAMP
+      required: true
+  libraries: 
+    _attributes: 
+      phpName: Library
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    name: 
+      type: VARCHAR
+      size: 100
+      required: true
+    code:
+      type: VARCHAR
+      size: 10
+      required: true
+      index: unique
+    alt_name: 
+      type: VARCHAR
+      size: 255
+    address: 
+      type: LONGVARCHAR
+    ezproxy_host: 
+      type: VARCHAR
+      size: 50
+    ezproxy_key: 
+      type: VARCHAR
+      size: 50
+    cost_center_no: 
+      type: INTEGER
+    fte: 
+      type: INTEGER
+    note: 
+      type: LONGVARCHAR
+    updated_at: 
+      type: TIMESTAMP
+      required: true
+#  org_types: 
+#    _attributes: 
+#      phpName: OrgType
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label: 
+#      type: VARCHAR
+#      size: 25
+#      required: true
+#  organizations: 
+#    _attributes: 
+#      phpName: Organization
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    name: 
+#      type: VARCHAR
+#      size: 100
+#      required: true
+#    org_type_id: 
+#      type: INTEGER
+#      foreignTable: org_types
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    alt_name: 
+#      type: VARCHAR
+#      size: 100
+#    account_number: 
+#      type: VARCHAR
+#      size: 40
+#    address: 
+#      type: LONGVARCHAR
+#    phone: 
+#      type: VARCHAR
+#      size: 40
+#    fax: 
+#      type: VARCHAR
+#      size: 40
+#    notice_address_licensor: 
+#      type: LONGVARCHAR
+#    note: 
+#      type: LONGVARCHAR
+#    updated_at: 
+#      type: TIMESTAMP
+#      required: true
+#  processes: 
+#    _attributes: 
+#      phpName: Process
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    preselection_cost_info: 
+#      type: LONGVARCHAR
+#    preselection_note: 
+#      type: LONGVARCHAR
+#    order_request_date: 
+#      type: DATE
+#    order_request_note: 
+#      type: LONGVARCHAR
+#    authentication_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    access_confirmation: 
+#      type: BOOLEAN
+#      required: true
+#      default: 0
+#    access_tested_date: 
+#      type: DATE
+#    inbound_linking_activation_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    ss_360_core_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    open_url_activation_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    ss_360_link_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    linking_note: 
+#      type: LONGVARCHAR
+#    ss_360_search_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    ss_360_search_note: 
+#      type: LONGVARCHAR
+#    interface_customization_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    publicity_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    instructional_tools_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    usage_stats_setup_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    in_process_note: 
+#      type: LONGVARCHAR
+#    renewal_review_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    renewal_expected_date: 
+#      type: DATE
+#    evaluation_history: 
+#      type: LONGVARCHAR
+#    termination_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    termination_status_note: 
+#      type: LONGVARCHAR
+#    subscriber_branding_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    updated_at: 
+#      type: TIMESTAMP
+#      required: true
+#    access_first_confirmed_at: 
+#      type: TIMESTAMP
+#  trials: 
+#    _attributes: 
+#      phpName: Trial
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    er_id: 
+#      type: INTEGER
+#      required: true
+#      foreignTable: eresources
+#      foreignReference: id
+#      onDelete: CASCADE
+#      onUpdate: CASCADE
+#    trial_uri: 
+#      type: VARCHAR
+#      size: 255
+#    trial_username: 
+#      type: VARCHAR
+#      size: 25
+#    trial_password: 
+#      type: VARCHAR
+#      size: 25
+#    authentication_status_id: 
+#      type: INTEGER
+#      foreignTable: general_statuses
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
+#    access_confirmation: 
+#      type: BOOLEAN
+#      required: true
+#      default: 0
+#    access_tested_date: 
+#      type: DATE
+#    trial_start_date: 
+#      type: DATE
+#    trial_expire_date: 
+#      type: DATE
+#    trial_available_to_public: 
+#      type: BOOLEAN
+#      required: true
+#      default: 0
+#    trial_note: 
+#      type: LONGVARCHAR
+#    updated_at: 
+#      type: TIMESTAMP
+  usage_attempts: 
+    _attributes: 
+      phpName: UsageAttempt
+    id: 
+      type: BIGINT
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    er_id: 
+      type: INTEGER
+      required: true
+      foreignTable: eresources
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    lib_id: 
+      type: INTEGER
+      foreignTable: libraries
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    phpsessid: 
+      type: VARCHAR
+      size: 32
+      required: true
+    ip:
+      type: VARCHAR
+      size: 15
+    date:
+      type: TIMESTAMP
+      required: true
+    auth_successful:
+      type: BOOLEAN
+      required: true
+    additional_user_data:
+      type: VARCHAR
+      size: 255
+    note:
+      type: VARCHAR
+      size: 255
+      required: true
+  usage_stats_formats: 
+    _attributes: 
+      phpName: UsageStatsFormat
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label: 
+      type: VARCHAR
+      size: 10
+      required: true
+  usage_stats_freqs: 
+    _attributes: 
+      phpName: UsageStatsFreq
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label: 
+      type: VARCHAR
+      size: 25
+      required: true

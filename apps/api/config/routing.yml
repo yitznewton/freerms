@@ -1,0 +1,20 @@
+#database_list_by_library:
+#  url:   /database/list/library/:lib_code
+#  param: { module: database, action: index }
+#
+#database_list_by_subject:
+#  url:   /database/list/subject/:subject
+#  param: { module: database, action: index }
+#
+#database_list_all:
+#  url:   /database/list
+#  param: { module: database, action: index }
+
+database_list:
+  url:   /database/list/*
+  param: { module: database, action: index }
+
+database_retrieve:
+  url:   /database/retrieve/:id
+  param: { module: database, action: show }
+

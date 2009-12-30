@@ -1,0 +1,18 @@
+default:
+  http_metas:
+    content-type: text/html
+
+  metas:
+    description:  Electronic Resource Management System
+    title:        FreERMS for <?php echo sfConfig::get('app_institution-name') ?>
+
+  stylesheets:
+    - ui.core.css
+    - ui.tabs.css
+    - ui.theme.css
+    - admin.css
+
+  javascripts:    [jquery.js, jquery-ui.js, admin.js]
+
+  has_layout:     on
+  layout:         layout

@@ -1,0 +1,13 @@
+default:
+  http_metas:
+    content-type: text/html
+
+  metas:
+    description:  Electronic Resource Management System
+    title:        <?php echo sfConfig::get('app_local-erms-name') ?>
+
+  stylesheets:    []
+  javascripts:    []
+
+  has_layout:     on
+  layout:         layout
