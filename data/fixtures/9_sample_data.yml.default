@@ -5,13 +5,21 @@
 
 AccessInfo:
   ASC_acc:
-    PrimaryAccessUri: http://www.example.com/ebsco
+    OnsiteAccessUri: http://www.example.com/ebsco
+    OffsiteAccessUri: http://www.example.com/ebsco
     onsite_auth_method_id: Ip
     offsite_auth_method_id: RefererUrl
   BHB_acc:
-    PrimaryAccessUri: http://www.example.com/bib-hebrew-book
+    OnsiteAccessUri: http://www.example.com/bib-hebrew-book
+    OffsiteAccessUri: http://www.example.com/bib-hebrew-book
     onsite_auth_method_id: IpScript
     offsite_auth_method_id: RefererUrl
+
+AdminInfo:
+  ASC_adm:
+    Note: placeholder
+  BHB_adm:
+    Note: placeholder
 
 Acquisition:
   ASC_acq:
@@ -38,14 +46,14 @@ EResource:
 Library:
   TCNY:
     Name: Touro College New York
-    LdapOu: TCNY
+    Code: TCNY
     Address: |
       33 West 23rd Street
       New York, NY 10010
     EzproxyHost: lb-proxy8
   TCS:
     Name: Touro College South
-    LdapOu: TCS
+    Code: TCS
     Address: |
       1703 Washington Avenue
       Miami Beach, FL 33139

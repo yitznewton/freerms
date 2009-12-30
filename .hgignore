@@ -8,3 +8,6 @@ config/app.yml
 config/databases.yml
 config/ProjectConfiguration.class.php
 config/propel.ini
+
+data/fixtures/*.yml
+
