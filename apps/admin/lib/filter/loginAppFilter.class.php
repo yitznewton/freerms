@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * If user logged in within a different app, log out and force new login
+ */
 class loginAppFilter extends sfFilter
 {
   public function execute($filterChain)

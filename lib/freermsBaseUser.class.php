@@ -1,28 +1,38 @@
 <?php
 
-class freermsBaseUser extends sfBasicSecurityUser
+abstract class freermsBaseUser extends sfBasicSecurityUser
 {
+  protected $onsiteLibraryId;
+  protected $username;
+
+  abstract public function getLibraryIds();
+
   public function getUsername()
   {
-    return $this->getAttribute('username');
+    return $this->username;
   }
-  
-  public function setUsername($username)
+
+  public function setUsername( $username )
   {
-    return $this->setAttribute('username', $username);
+    if ( is_string( $username ) || $username === '' ) {
+      return $this->username = $username;
+    }
+    else {
+      $msg = 'Argument must be a non-empty string';
+      throw new InvalidArgumentException( $msg );
+    }
   }
-  
+
   public function getOnsiteLibraryId()
   {
-    if ($this->getAttribute('onsiteLibraryId') !== null) {
+    if (isset( $this->onsiteLibraryId )) {
       return $this->getAttribute('onsiteLibraryId');
     }
     
     $user_ip = $_SERVER['REMOTE_ADDR'];
     
     if ($user_ip == sfConfig::get('app_offsite-testing-ip')) {
-      $this->setAttribute('onsiteLibraryId', false);
-      return false;
+      return $this->onsiteLibraryId = false;
     }
     
     $ip_ranges = IpRangePeer::doSelect(new Criteria());
@@ -32,8 +42,7 @@ class freermsBaseUser extends sfBasicSecurityUser
         
         if ($user_ip == $range->getStartIp()) {
           // match
-          $this->setAttribute('onsiteLibraryId', $range->getLibId());
-          return $range->getLibId();
+          return $this->onsiteLibraryId = $range->getLibId();
         } else {
           continue;
         }
@@ -45,14 +54,12 @@ class freermsBaseUser extends sfBasicSecurityUser
         $user_ip, $range->getStartIp(), $range->getEndIp()
       )) {
         // match
-        $library = $range->getLibId();
-        $this->setAttribute('onsiteLibraryId', $library);
-        return $library;
+        $library_id = $range->getLibId();
+        return $this->onsiteLibraryId = $library_id;
       }
     }
     
     // no matches
-    $this->setAttribute('onsiteLibraryId', false);
-    return false;
+    return $this->onsiteLibraryId = false;
   }
 }

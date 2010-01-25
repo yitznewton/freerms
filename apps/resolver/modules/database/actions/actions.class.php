@@ -64,24 +64,23 @@ class databaseActions extends sfActions
 
     $ers = EResourcePeer::doSelectJoinAccessInfo($c);
     $this->forward404Unless($ers);
-    $er = $ers[0];
-    $er_id = $er->getId();
+    $this->er = $ers[0];
+    $er_id = $this->er->getId();
     
-    $access = $er->getAccessInfo();
+    $access = $this->er->getAccessInfo();
     
     $user_affiliation = $this->getUser()->getUserLibraryIds();
     
     if (!$access) {
-      $er->recordUsageAttempt($user_affiliation[0], false,
+      $this->er->recordUsageAttempt($user_affiliation[0], false,
         'no access information');
       $this->forward404();
     }
     
     // if not available to this user
-    if (! array_intersect($user_affiliation, $er->getLibraryIds()) ) {
-      $er->recordUsageAttempt($user_affiliation[0], false,
+    if (! array_intersect($user_affiliation, $this->er->getLibraryIds()) ) {
+      $this->er->recordUsageAttempt($user_affiliation[0], false,
         'not available to user');
-      $this->er = $er;
       $this->setTemplate('unauthorized');
       return;
     }
@@ -96,9 +95,8 @@ class databaseActions extends sfActions
     }
     
 
-    if ($er->getProductUnavailable()) {
-      $er->recordUsageAttempt($user_affiliation[0], false, 'unavailable');
-      $this->er = $er;
+    if ($this->er->getProductUnavailable()) {
+      $this->er->recordUsageAttempt($user_affiliation[0], false, 'unavailable');
       $this->setTemplate('unavailable');
 
       return;
@@ -107,7 +105,7 @@ class databaseActions extends sfActions
 
     // cleared to refer
     
-    $er->recordUsageAttempt($user_affiliation[0], true);
+    $this->er->recordUsageAttempt($user_affiliation[0], true);
     
     switch ($auth->getLabel())
     {

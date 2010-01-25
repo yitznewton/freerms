@@ -3,7 +3,7 @@ e_resource:
   options:
     model:               EResource
     module:              database
-    prefix_path:         database
+    prefix_path:         /database
     column:              id
     with_wildcard_routes: true
 
@@ -24,7 +24,7 @@ default_export:
   param: { action: export }
 
 default_index:
-  url:   /:module/
+  url:   /:module
   param: { action: index }
 
 default_new:
@@ -46,4 +46,3 @@ default_delete:
 default_edit:
   url:   /:module/:id/*
   param: { action: edit }
-
