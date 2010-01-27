@@ -1,6 +1,6 @@
 <h2>Welcome! Please log in to administer FreERMS:</h2>
 
-<form action="<?php echo url_for(user/login) ?>" method="post">
+<form action="<?php echo url_for('user/login') ?>" method="post">
   <table>
     <tbody>
       <?php echo $form->renderGlobalErrors() ?>
