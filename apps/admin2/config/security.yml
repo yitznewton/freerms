@@ -3,3 +3,6 @@
 
 default:
   is_secure: true
+
+user:
+  is_secure: false

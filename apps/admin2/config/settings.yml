@@ -33,3 +33,8 @@ all:
 
     # Enable the database manager
     use_database:           true
+
+  .actions:
+    login_module:           user      # To be called when a non-authenticated user
+    login_action:           login     # Tries to access a secure page
+

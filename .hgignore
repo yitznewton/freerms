@@ -2,6 +2,7 @@ syntax: glob
 
 cache/*
 log/*
+plugins/*
 
 # ignore live config files; control .sample config files
 config/app.yml
