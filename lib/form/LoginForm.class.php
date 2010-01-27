@@ -21,8 +21,6 @@ class LoginForm extends BaseFormPropel
     $this->widgetSchema->setNameFormat('user[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema( $this->validatorSchema );
-
-    BaseFormPropel::setup();
   }
 
   public function getModelName()
@@ -32,11 +30,14 @@ class LoginForm extends BaseFormPropel
 
   protected function doPostValidate( sfValidatorBase $validator, array $values )
   {
-    $c = new Criteria();
-    $c->add( FreermsPropelUserPeer::USERNAME, $values['username'] );
-    $c->add( FreermsPropelUserPeer::PASSWORD, sha1( $values['password'] ) );
-
-    $user = FreermsPropelUserPeer::doSelectOne( $c );
-    var_dump($user);exit;
+    $user = sfContext::getInstance()->getUser();
+    $user->setUsername( $values['username'] );
+    
+    if ( $user->checkPassword( $values['password'] ) ) {
+      return $values;
+    }
+    else {
+      throw new sfValidatorError( 'no way' );
+    }
   }
 }
