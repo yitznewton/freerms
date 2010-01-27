@@ -1,6 +1,6 @@
 <?php
 
-class LoginForm extends BaseFormPropel
+class LoginForm extends sfForm
 {
   public function setup()
   {
@@ -21,16 +21,20 @@ class LoginForm extends BaseFormPropel
     $this->widgetSchema->setNameFormat('user[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema( $this->validatorSchema );
-  }
 
-  public function getModelName()
-  {
-    return 'User';
+    $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
+    $decorator->setRowFormat(
+      "<div class=\"login-form\">\n  %error%%label%"
+      ."\n  %field%%help%\n%hidden_fields%</div>\n"
+    );
+    $this->widgetSchema->addFormFormatter('div', $decorator);
+    $this->widgetSchema->setFormFormatterName('div');
   }
 
   protected function doPostValidate( sfValidatorBase $validator, array $values )
   {
     $user = sfContext::getInstance()->getUser();
+    var_dump($user);exit;
     $user->setUsername( $values['username'] );
     
     if ( $user->checkPassword( $values['password'] ) ) {
@@ -40,4 +44,6 @@ class LoginForm extends BaseFormPropel
       throw new sfValidatorError( 'no way' );
     }
   }
+
+
 }
