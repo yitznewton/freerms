@@ -13,11 +13,17 @@ class userActions extends sfActions
       $form->bind( $request->getParameter( $form->getName() ) );
 
       if ( $form->isValid() ) {
-
+        // TODO set user to authenticated and redirect to desired page
+      }
+      else {
+        // form not valid - redisplay
+        $this->form = $form;
       }
     }
-
-    $this->form = new LoginForm();
+    else {
+      // not a POST or PUT - display blank form
+      $this->form = new LoginForm();
+    }
   }
 
 }

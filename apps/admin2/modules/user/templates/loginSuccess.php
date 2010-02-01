@@ -1,15 +1,7 @@
 <h2>Welcome! Please log in to administer FreERMS:</h2>
 
-<form action="<?php echo url_for('user/login') ?>" method="post">
-  <table>
-    <tbody>
-      <?php echo $form->renderGlobalErrors() ?>
+<form method="POST" action="<?php echo url_for( 'user/login' ) ?>">
 
-      <?php echo $form['username']->renderRow() ?>
-      <?php echo $form['password']->renderRow() ?>
-    </tbody>
-  </table>
-
-  <input type="submit" value="Submit"  />
+<?php echo $form->render() ?>
 
 </form>

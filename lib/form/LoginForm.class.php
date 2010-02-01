@@ -2,6 +2,9 @@
 
 class LoginForm extends sfForm
 {
+  protected $module;
+  protected $action;
+
   public function setup()
   {
     $this->setWidgets( array(
@@ -10,8 +13,9 @@ class LoginForm extends sfForm
     ) );
 
     $this->setValidators( array(
-      'username' => new sfValidatorString(),
-      'password' => new sfValidatorString(),
+      // FIXME set correct values
+      'username' => new sfValidatorString( array('min_length' => 6, 'required' => true ) ),
+      'password' => new sfValidatorString( array('min_length' => 6, 'required' => true ) ),
     ) );
 
     $this->validatorSchema->setPostValidator(
@@ -31,19 +35,26 @@ class LoginForm extends sfForm
     $this->widgetSchema->setFormFormatterName('div');
   }
 
-  protected function doPostValidate( sfValidatorBase $validator, array $values )
+  public function doPostValidate( sfValidatorBase $validator, array $values )
   {
+    if (
+      empty( $values['username'] )
+      || empty( $values['password'] )
+    ) {
+      return;
+    }
+
     $user = sfContext::getInstance()->getUser();
-    var_dump($user);exit;
     $user->setUsername( $values['username'] );
     
     if ( $user->checkPassword( $values['password'] ) ) {
       return $values;
     }
     else {
-      throw new sfValidatorError( 'no way' );
+      $msg = 'Your username and password did not match any accounts '
+             . 'in our database; please try again.';
+      
+      throw new sfValidatorError( $validator, $msg );
     }
   }
-
-
 }
