@@ -13,17 +13,31 @@ class userActions extends sfActions
       $form->bind( $request->getParameter( $form->getName() ) );
 
       if ( $form->isValid() ) {
-        // TODO set user to authenticated and redirect to desired page
+       
+        $this->getUser()->setAuthenticated(true);
+
+        $referer = $this->getUser()->getReferer();
+
+        $this->redirect($referer);
       }
       else {
-        // form not valid - redisplay
         $this->form = $form;
       }
     }
+
     else {
-      // not a POST or PUT - display blank form
       $this->form = new LoginForm();
-    }
+      // if we have been forwarded, then the referer is the current URL
+      // if not, this is the referer of the current request
+      $this->getUser()->setReferer($this->getContext()->getActionStack()->getSize() > 1 ? $request->getUri() : $request->getReferer());
+    }    
+  }
+
+  public function executeLogout(sfWebRequest $request)
+  {
+    $this->getUser()->getAttributeHolder()->clear();
+    $this->getUser()->setAuthenticated(false);
+    $this->redirect('@homepage');
   }
 
 }

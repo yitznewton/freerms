@@ -83,4 +83,18 @@ class freermsPropelUser extends freermsBaseUser
 
     return $this->credentials = $credentials;
   }
+
+  public function getReferer($default)
+  {
+    $referer = $this->getAttribute('referer', $default);
+    $this->getAttributeHolder()->remove('referer');
+
+    return $referer ? $referer : $default;
+  }
+
+  public function setReferer($referer)
+  {
+    $this->setAttribute('referer', $referer);
+  }
+
 }

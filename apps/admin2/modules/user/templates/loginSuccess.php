@@ -4,4 +4,6 @@
 
 <?php echo $form->render() ?>
 
+<input type="submit" />
+
 </form>
