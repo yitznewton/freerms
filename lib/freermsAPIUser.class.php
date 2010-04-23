@@ -1,6 +1,6 @@
 <?php
 
-class freermsAPIUser extends freermsBaseUser implements freermsUserInterface
+class freermsAPIUser extends freermsBaseUser 
 {
   public function checkPassword($password)
   {
@@ -76,7 +76,7 @@ class freermsAPIUser extends freermsBaseUser implements freermsUserInterface
     return $this->listCredentials();
   }
 
-  public function getUserLibraryIds()
+  public function getLibraryIds()
   {
     return $this->getAttribute('userLibraryIds');
   }

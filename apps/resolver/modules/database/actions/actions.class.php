@@ -17,7 +17,7 @@ class databaseActions extends sfActions
 
   public function executeIndex(sfWebRequest $request)
   {
-    $user_affiliation = $this->getUser()->getUserLibraryIds();
+    $user_affiliation = $this->getUser()->getLibraryIds();
     $subject = $request->getParameter('subject');    
                
     $c = new Criteria();

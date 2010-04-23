@@ -6,6 +6,7 @@ abstract class freermsBaseUser extends sfBasicSecurityUser
   protected $username;
 
   abstract public function getLibraryIds();
+  abstract public function checkPassword($password);
 
   public function getUsername()
   {
