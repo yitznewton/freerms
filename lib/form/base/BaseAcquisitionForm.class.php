@@ -8,7 +8,6 @@
  * @package    freerms
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
 abstract class BaseAcquisitionForm extends BaseFormPropel
 {
@@ -17,12 +16,14 @@ abstract class BaseAcquisitionForm extends BaseFormPropel
     $this->setWidgets(array(
       'id'                 => new sfWidgetFormInputHidden(),
       'note'               => new sfWidgetFormTextarea(),
+      'vendor_org_id'      => new sfWidgetFormPropelChoice(array('model' => 'Organization', 'add_empty' => true)),
       'acq_lib_assoc_list' => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'Library')),
     ));
 
     $this->setValidators(array(
       'id'                 => new sfValidatorPropelChoice(array('model' => 'Acquisition', 'column' => 'id', 'required' => false)),
       'note'               => new sfValidatorString(array('required' => false)),
+      'vendor_org_id'      => new sfValidatorPropelChoice(array('model' => 'Organization', 'column' => 'id', 'required' => false)),
       'acq_lib_assoc_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'Library', 'required' => false)),
     ));
 

@@ -6,7 +6,6 @@
  * @package    freerms
  * @subpackage filter
  * @author     Your name here
- * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 24051 2009-11-16 21:08:08Z Kris.Wallsmith $
  */
 abstract class BaseAcquisitionFormFilter extends BaseFormFilterPropel
 {
@@ -14,11 +13,13 @@ abstract class BaseAcquisitionFormFilter extends BaseFormFilterPropel
   {
     $this->setWidgets(array(
       'note'               => new sfWidgetFormFilterInput(),
+      'vendor_org_id'      => new sfWidgetFormPropelChoice(array('model' => 'Organization', 'add_empty' => true)),
       'acq_lib_assoc_list' => new sfWidgetFormPropelChoice(array('model' => 'Library', 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
       'note'               => new sfValidatorPass(array('required' => false)),
+      'vendor_org_id'      => new sfValidatorPropelChoice(array('required' => false, 'model' => 'Organization', 'column' => 'id')),
       'acq_lib_assoc_list' => new sfValidatorPropelChoice(array('model' => 'Library', 'required' => false)),
     ));
 
@@ -64,6 +65,7 @@ abstract class BaseAcquisitionFormFilter extends BaseFormFilterPropel
     return array(
       'id'                 => 'Number',
       'note'               => 'Text',
+      'vendor_org_id'      => 'ForeignKey',
       'acq_lib_assoc_list' => 'ManyKey',
     );
   }

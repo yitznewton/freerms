@@ -2,6 +2,9 @@
 
 class LoginForm extends sfForm
 {
+  protected $module;
+  protected $action;
+
   public function setup()
   {
     $this->setWidgets( array(

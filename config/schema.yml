@@ -142,12 +142,12 @@ propel:
 #      scale: 2
     note: 
       type: LONGVARCHAR
-#    vendor_org_id: 
-#      type: INTEGER
-#      foreignTable: organizations
-#      foreignReference: id
-#      onDelete: CASCADE
-#      onUpdate: CASCADE
+    vendor_org_id: 
+      type: INTEGER
+      foreignTable: organizations
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
 #    negotiator_org_id: 
 #      type: INTEGER
 #      foreignTable: organizations
@@ -735,57 +735,55 @@ propel:
     updated_at: 
       type: TIMESTAMP
       required: true
-#  org_types: 
-#    _attributes: 
-#      phpName: OrgType
-#    id: 
-#      type: INTEGER
-#      required: true
-#      autoIncrement: true
-#      primaryKey: true
-#    label: 
-#      type: VARCHAR
-#      size: 25
-#      required: true
-#  organizations: 
-#    _attributes: 
-#      phpName: Organization
-#    id: 
-#      type: INTEGER
-#      required: true
-#      autoIncrement: true
-#      primaryKey: true
-#    name: 
-#      type: VARCHAR
-#      size: 100
-#      required: true
-#    org_type_id: 
-#      type: INTEGER
-#      foreignTable: org_types
-#      foreignReference: id
-#      onDelete: SET NULL
-#      onUpdate: CASCADE
-#    alt_name: 
-#      type: VARCHAR
-#      size: 100
-#    account_number: 
-#      type: VARCHAR
-#      size: 40
-#    address: 
-#      type: LONGVARCHAR
-#    phone: 
-#      type: VARCHAR
-#      size: 40
-#    fax: 
-#      type: VARCHAR
-#      size: 40
-#    notice_address_licensor: 
-#      type: LONGVARCHAR
-#    note: 
-#      type: LONGVARCHAR
-#    updated_at: 
-#      type: TIMESTAMP
-#      required: true
+  org_types: 
+    _attributes: 
+      phpName: OrgType
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    label: 
+      type: VARCHAR
+      size: 50
+      required: true
+  organizations: 
+    _attributes: 
+      phpName: Organization
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    name: 
+      type: VARCHAR
+      required: true
+    alt_name: 
+      type: VARCHAR
+    org_type_id: 
+      type: INTEGER
+      foreignTable: org_types
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    account_number: 
+      type: VARCHAR
+      size: 40
+    address: 
+      type: LONGVARCHAR
+    phone: 
+      type: VARCHAR
+      size: 40
+    fax: 
+      type: VARCHAR
+      size: 40
+    notice_address_licensor: 
+      type: LONGVARCHAR
+    note: 
+      type: LONGVARCHAR
+    updated_at: 
+      type: TIMESTAMP
+      required: true
 #  processes: 
 #    _attributes: 
 #      phpName: Process

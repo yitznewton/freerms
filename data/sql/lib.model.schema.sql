@@ -76,7 +76,14 @@ CREATE TABLE `acquisitions`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`note` TEXT,
-	PRIMARY KEY (`id`)
+	`vendor_org_id` INTEGER,
+	PRIMARY KEY (`id`),
+	INDEX `acquisitions_FI_1` (`vendor_org_id`),
+	CONSTRAINT `acquisitions_FK_1`
+		FOREIGN KEY (`vendor_org_id`)
+		REFERENCES `organizations` (`id`)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -331,6 +338,49 @@ CREATE TABLE `libraries`
 	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `libraries_U_1` (`code`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- org_types
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `org_types`;
+
+
+CREATE TABLE `org_types`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`label` VARCHAR(50)  NOT NULL,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- organizations
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `organizations`;
+
+
+CREATE TABLE `organizations`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255)  NOT NULL,
+	`alt_name` VARCHAR(255),
+	`org_type_id` INTEGER,
+	`account_number` VARCHAR(40),
+	`address` TEXT,
+	`phone` VARCHAR(40),
+	`fax` VARCHAR(40),
+	`notice_address_licensor` TEXT,
+	`note` TEXT,
+	`updated_at` DATETIME  NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `organizations_FI_1` (`org_type_id`),
+	CONSTRAINT `organizations_FK_1`
+		FOREIGN KEY (`org_type_id`)
+		REFERENCES `org_types` (`id`)
+		ON UPDATE CASCADE
+		ON DELETE SET NULL
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
