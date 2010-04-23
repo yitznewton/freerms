@@ -69,7 +69,7 @@ class databaseActions extends sfActions
     
     $access = $this->er->getAccessInfo();
     
-    $user_affiliation = $this->getUser()->getUserLibraryIds();
+    $user_affiliation = $this->getUser()->getLibraryIds();
     
     if (!$access) {
       $this->er->recordUsageAttempt($user_affiliation[0], false,
@@ -205,7 +205,7 @@ class databaseActions extends sfActions
       $this->redirect( $url );
     }
 
-    $user_affiliation = $this->getUser()->getUserLibraryIds();
+    $user_affiliation = $this->getUser()->getLibraryIds();
     $user_libraries = LibraryPeer::retrieveByPKs($user_affiliation);
     $this->forward404Unless($user_libraries);
 

@@ -52,7 +52,7 @@ class userActions extends sfActions
       }
       
       if (! $this->errors ) {
-        $this->getUser()->setAttribute('username', $username);
+        $this->getUser()->setUsername( $username );
         $pass_check = $this->getUser()->checkPassword($password);
         
         if ($pass_check instanceOf Exception) {

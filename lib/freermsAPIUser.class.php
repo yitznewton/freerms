@@ -73,16 +73,11 @@ class freermsAPIUser extends freermsBaseUser
       }
     }
 
-    return $this->listCredentials();
+    return $this->getCredentials();
   }
 
   public function getLibraryIds()
   {
     return $this->getAttribute('userLibraryIds');
-  }
-  
-  public function getCredentials()
-  {
-    return $this->listCredentials();
   }
 }
