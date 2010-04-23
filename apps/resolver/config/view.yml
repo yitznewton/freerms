@@ -7,7 +7,7 @@ default:
     title:        <?php echo sfConfig::get('app_local-erms-name') ?>
 
   stylesheets:    []
-  javascripts:    []
+  javascripts:    [resolver.js]
 
   has_layout:     true
   layout:         layout

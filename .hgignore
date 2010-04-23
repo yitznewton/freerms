@@ -2,7 +2,9 @@ syntax: glob
 
 cache/*
 log/*
-plugins/*
+plugins/freermsPropelUserPlugin/lib/model
+plugins/freermsPropelUserPlugin/*
+plugins/.*
 
 # ignore live config files; control .sample config files
 config/app.yml

@@ -134,11 +134,14 @@ class databaseActions extends sfActions
 
       case 'ebrarySSO':
         $library = LibraryPeer::retrieveByPK($user_affiliation[0]);
+
         $ebrary_uri = 'http://' . $library->getEZProxyHost()
                     . '/ebrary/touro/unauthorized';
+
         $proxy_uri = freermsEZproxy::getEZproxyTicketUrl(
           $library, $ebrary_uri, $this->getUser()->getAttribute('username')
         );
+
         $this->redirect($proxy_uri);
         break;
         
@@ -192,20 +195,25 @@ class databaseActions extends sfActions
 
   public function executeDirectUrl(sfWebRequest $request)
   {
+    $raw_url = $request->getUri();
+    $url     = substr($raw_url, strrpos($raw_url, '/url/')+5);
+    // commented out to fix RT #1266
+    // $url = urldecode( $url );
+
+    // FIXME: remove host dependency
+    if ( strpos( $url, 'erms.tourolib.org' ) ) {
+      $this->redirect( $url );
+    }
+
     $user_affiliation = $this->getUser()->getUserLibraryIds();
     $user_libraries = LibraryPeer::retrieveByPKs($user_affiliation);
     $this->forward404Unless($user_libraries);
 
-    $raw_url = $request->getUri();
-    $url = substr($raw_url, strrpos($raw_url, '/url/')+5);
-    $url = urldecode( $url );
 
     // FIXME: remove once we have our ebrary MARC records fixed
-    /*
     if (strpos( $url, 'ebrary' ) !== false) {
       $this->redirect( $url );
     }
-    */
 
     if ($this->getUser()->getOnsiteLibraryId()) {
       $this->redirect( $url );
