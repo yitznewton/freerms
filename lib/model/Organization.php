@@ -19,5 +19,8 @@ require 'lib/model/om/BaseOrganization.php';
  * @package    lib.model
  */
 class Organization extends BaseOrganization {
-
+  public function __toString()
+  {
+    return $this->getName();
+  }
 } // Organization

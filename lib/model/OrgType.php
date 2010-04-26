@@ -19,5 +19,8 @@ require 'lib/model/om/BaseOrgType.php';
  * @package    lib.model
  */
 class OrgType extends BaseOrgType {
-
+  public function __toString()
+  {
+    return $this->getLabel();
+  }
 } // OrgType
