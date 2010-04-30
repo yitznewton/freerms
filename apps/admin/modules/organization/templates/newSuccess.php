@@ -6,4 +6,5 @@
 
 <?php include_partial('form', array(
   'form' => $form,
+  'eresources_vendor' => null,
   )) ?>

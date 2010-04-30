@@ -26,6 +26,7 @@ class organizationActions extends sfActions
   public function executeNew(sfWebRequest $request)
   {
     $this->form = new OrganizationForm();
+    $this->eresources = null;
   }
 
   public function executeCreate(sfWebRequest $request)
@@ -43,6 +44,8 @@ class organizationActions extends sfActions
   {
     $this->forward404Unless($organization = OrganizationPeer::retrieveByPk($request->getParameter('id')), sprintf('Object library does not exist (%s).', $request->getParameter('id')));
     $this->form = new OrganizationForm($organization);
+
+    $this->eresources_vendor = EResourcePeer::retrieveByVendorOrgId($request->getParameter('id'));
   }
 
   public function executeUpdate(sfWebRequest $request)

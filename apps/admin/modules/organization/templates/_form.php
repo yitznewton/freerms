@@ -56,6 +56,16 @@
     </div>   
     
     <div id="database-vendor">
+      <?php if ($eresources_vendor): ?>
+      <?php echo "<ul class=\"database-list\">\n" ?>
+        <?php foreach ($eresources_vendor as $eresource): ?>
+        <?php $id = $eresource->getId() ?>
+        <?php echo "<li>" ?>
+        <?php echo link_to($eresource->getTitle(), 'database/edit?id='. $id) ?>
+        <?php echo '</li>' ?>
+        <?php endforeach; ?>
+      <?php echo "</ul>\n" ?>
+      <?php endif; ?>
     </div>
     
     <!--
