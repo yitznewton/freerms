@@ -21,6 +21,8 @@ class AcquisitionForm extends BaseAcquisitionForm
     $url = sfContext::getInstance()->getController()->
       genUrl('library/edit?id=');
     
+    $this->widgetSchema['vendor_org_id']->setLabel('Vendor');
+
     $this->widgetSchema['acq_lib_assoc_list']
       = new freermsWidgetFormSelectCheckboxLink(array(
       'choices' => $libs,
