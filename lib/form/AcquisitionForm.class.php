@@ -19,10 +19,8 @@ class AcquisitionForm extends BaseAcquisitionForm
         
     $libs = LibraryPeer::retrieveKeyedArray();
     $url = sfContext::getInstance()->getController()->
-      genUrl('library/edit?id=');
+      genUrl('library/edit?id=');    
     
-    $this->widgetSchema['vendor_org_id']->setLabel('Vendor');
-
     $this->widgetSchema['acq_lib_assoc_list']
       = new freermsWidgetFormSelectCheckboxLink(array(
       'choices' => $libs,
@@ -30,7 +28,40 @@ class AcquisitionForm extends BaseAcquisitionForm
       'linkText' => 'Edit'
     ));
     
-    $this->widgetSchema->setLabel('acq_lib_assoc_list', ' '); 
+    $this->widgetSchema->setLabel('acq_lib_assoc_list', ' ');
+
+    $vendor_org_id = $this->getObject()->getVendorOrgId();
+
+    // add an empty element to choices
+    $orgs = OrganizationPeer::retrieveKeyedArray();
+    $orgs = array('' => '') + $orgs;
+    
+    $add_url = sfContext::getInstance()->getController()->
+      genUrl('organization/new');    
+    $edit_url = sfContext::getInstance()->getController()->
+      genUrl('organization/edit?id='.$vendor_org_id);
+
+    if ($vendor_org_id){
+      $this->widgetSchema['vendor_org_id']
+        = new freermsWidgetFormChoiceLink(array(
+        'choices' => $orgs,
+        'link_urls' => array('Edit' => $edit_url, 'Add new' => $add_url)
+      ));
+    }
+    else {
+      $this->widgetSchema['vendor_org_id']
+        = new freermsWidgetFormChoiceLink(array(
+        'choices' => $orgs,
+        'link_urls' => array('Add new' => $add_url)
+      ));
+    }
+    
+    $this->widgetSchema['vendor_org_id']->setLabel('Vendor');
+
+    $this->validatorSchema['vendor_org_id'] = new sfValidatorChoice(array(
+      'choices' => array_keys($orgs),
+      'required' => false
+    ));
 
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema); 
     $decorator->setRowFormat(
@@ -39,6 +70,5 @@ class AcquisitionForm extends BaseAcquisitionForm
     );
     $this->widgetSchema->addFormFormatter('div', $decorator); 
     $this->widgetSchema->setFormFormatterName('div');
-
   }
 }
