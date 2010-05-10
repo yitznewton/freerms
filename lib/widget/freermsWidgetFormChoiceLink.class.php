@@ -55,40 +55,4 @@ class freermsWidgetFormChoiceLink extends sfWidgetFormChoice
     return $this->getRenderer()->render($name, $value, $attributes, $errors)
       . "\n" . $this->renderLink($this->getOption('link_urls'));
   }
-
-  /**
-   * Gets the stylesheet paths associated with the widget.
-   *
-   * @return array An array of stylesheet paths
-   */
-  public function getStylesheets()
-  {
-    return $this->getRenderer()->getStylesheets();
-  }
-
-  /**
-   * Gets the JavaScript paths associated with the widget.
-   *
-   * @return array An array of JavaScript paths
-   */
-  public function getJavaScripts()
-  {
-    return $this->getRenderer()->getJavaScripts();
-  }
-
-  public function getRenderer()
-  {
-    if ($this->getOption('renderer'))
-    {
-      return $this->getOption('renderer');
-    }
-
-    if (!$class = $this->getOption('renderer_class'))
-    {
-      $type = !$this->getOption('expanded') ? '' : ($this->getOption('multiple') ? 'checkbox' : 'radio');
-      $class = sprintf('sfWidgetFormSelect%s', ucfirst($type));
-    }
-
-    return new $class(array_merge(array('choices' => new sfCallable(array($this, 'getChoices'))), $this->options['renderer_options']), $this->getAttributes());
-  }
 }
