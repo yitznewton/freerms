@@ -10,34 +10,29 @@ class freermsWidgetFormChoiceLink extends sfWidgetFormChoice
     $this->addOption('target');
   }
 
-  public function setIdFormat($format)
-  {
-    $this->options['renderer_options']['id_format'] = $format;
-  }
-
   protected function renderLink($link_urls)
   {
-    $a_html = '';
+    $html_bits = array();
     
     foreach ($link_urls as $linkText => $url){
       
-      if ($url){
-        if ( !is_string($url) || strlen($url) < 1 ) {
-          throw new Exception('URL must be a non-empty string');
-        }
+      if ( ! $url || ! is_string( $url ) ){
+        $msg = 'Each URL must be a non-empty string';
+        throw new InvalidArgumentException( $msg );
       }
+
       $a_attributes = array('href' => $url, 'class' => 'input-link');
 
       if ($this->getOption('target')) {
         $a_attributes['target'] = $this->getOption('target');
       }
 
-      $a_html = $a_html. $this->renderContentTag(
-        'a', $linkText, $a_attributes
-      );  
+      $html_bits[] = $this->renderContentTag( 'a', $linkText, $a_attributes );
     }
+
+    $html = implode( ' | ', $html_bits );
     
-    return $a_html;
+    return $this->renderContentTag( 'span', $html, array( 'class' => 'input-links' ) );
   }
 
   public function render($name, $value = null, $attributes = array(), $errors = array())

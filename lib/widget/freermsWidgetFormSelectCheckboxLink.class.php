@@ -41,17 +41,21 @@ class freermsWidgetFormSelectCheckboxLink extends sfWidgetFormSelectCheckbox
         $baseAttributes['checked'] = 'checked';
       }
       
-      $span = $this->renderContentTag('span',
+      $input_span = $this->renderContentTag('span',
         $this->renderTag('input', array_merge($baseAttributes, $attributes))
         ."\n".$this->renderContentTag('label', $option, array('for' => $id))
       );
+
+      $a = $this->renderContentTag(
+             'a',
+             $this->getOption('linkText'),
+             array( 'href' => $this->getOption('url') . $key,
+                    'class' => 'input-link')
+           ) . "\n";
       
       $elements[] = array(
-        'span' => $span."\n",
-        'link' => $this->renderContentTag('a',
-                    $this->getOption('linkText'), array(
-                    'href' => $this->getOption('url').$key,
-                    'class' => 'input-link'))."\n",                  
+        'span' => $input_span."\n",
+        'link' => $a,
       );
     }
 
@@ -61,11 +65,16 @@ class freermsWidgetFormSelectCheckboxLink extends sfWidgetFormSelectCheckbox
   public function formatter($widget, $elements)
   {
     $rows = array();
+
     foreach ($elements as $element)
     {
+      $link_span = $this->renderContentTag(
+        'span', $element['link'], array('class'=>'input-links')
+      );
+
       $rows[] = $this->renderContentTag(
         'li',
-        $element['span'].' '.$element['link']
+        $element['span'].' '.$link_span
       )."\n";
     }
 

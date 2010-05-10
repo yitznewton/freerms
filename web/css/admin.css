@@ -52,9 +52,12 @@ li.ui-tabs-nav-item a{
   width: 15em;
 }
 
+.form-row .input-links{
+  margin-left: 0.5em;
+}
+
 .form-row a.input-link{
   font-size: 0.8em;
-  margin-left: 0.5em;
   color: blue;
 }
 

@@ -31,11 +31,11 @@ class freermsWidgetFormInputLink extends sfWidgetFormInput
       $a_attributes['target'] = $this->getOption('target');
     }
     
-    $a_html = $this->renderContentTag(
+    $html = $this->renderContentTag(
       'a', $this->getOption('linkText'), $a_attributes
     );
 
-    return $a_html;
+    return $this->renderContentTag( 'span', $html, array( 'class' => 'input-links' ) );
   }  
    
   public function render(
