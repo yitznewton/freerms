@@ -34,10 +34,10 @@ AuthMethod:
 
 IpNotificationMethod:
   Web:
-    Label: web admin
+    Name: web admin
   Webform:
-    Label: web form
+    Name: web form
   Email:
-    Label: email
+    Name: email
   Phone:
-    Label: phone
+    Name: phone
