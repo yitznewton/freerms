@@ -360,45 +360,45 @@ propel:
 #      foreignReference: id
 #      onDelete: RESTRICT
 #      onUpdate: CASCADE
-#  contacts: 
-#    _attributes: 
-#      phpName: Contact
-#    id: 
-#      type: INTEGER
-#      required: true
-#      autoIncrement: true
-#      primaryKey: true
-#    last_name: 
-#      type: VARCHAR
-#      size: 50
-#    first_name: 
-#      type: VARCHAR
-#      size: 50
-#    title: 
-#      type: VARCHAR
-#      size: 50
-#    role:
-#      type: VARCHAR
-#      size: 255
-#    address: 
-#      type: LONGVARCHAR
-#    email: 
-#      type: VARCHAR
-#      size: 100
-#    fax: 
-#      type: VARCHAR
-#      size: 40
-#    note: 
-#      type: LONGVARCHAR
-#    org_id: 
-#      type: INTEGER
-#      foreignTable: organizations
-#      foreignReference: id
-#      onDelete: SET NULL
-#      onUpdate: CASCADE
-#    updated_at: 
-#      type: TIMESTAMP
-#      required: true
+  contacts: 
+    _attributes: 
+      phpName: Contact
+    id: 
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    last_name: 
+      type: VARCHAR
+      size: 50
+    first_name: 
+      type: VARCHAR
+      size: 50
+    title: 
+      type: VARCHAR
+      size: 50
+    role:
+      type: VARCHAR
+      size: 255
+    address: 
+      type: LONGVARCHAR
+    email: 
+      type: VARCHAR
+      size: 100
+    fax: 
+      type: VARCHAR
+      size: 40
+    note: 
+      type: LONGVARCHAR
+    org_id: 
+      type: INTEGER
+      foreignTable: organizations
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    updated_at: 
+      type: TIMESTAMP
+      required: true
 #  er_containers: 
 #    _attributes: 
 #      phpName: ERContainer
@@ -779,10 +779,43 @@ propel:
       size: 40
     notice_address_licensor: 
       type: LONGVARCHAR
+    ip_notification_method_id:
+      type: INTEGER
+      foreignTable: ip_notification_methods
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    ip_notification_uri:
+      type: VARCHAR
+    ip_notification_username:
+      type: VARCHAR
+      size: 50
+    ip_notification_password:
+      type: VARCHAR
+      size: 50
+    ip_notification_contact_id:
+      type: INTEGER
+      foreignTable: contacts
+      foreignReference: id
+      onDelete: SET NULL
+      onUpdate: CASCADE
+    ip_notification_force_manual:
+      type: BOOLEAN
     note: 
       type: LONGVARCHAR
     updated_at: 
       type: TIMESTAMP
+      required: true
+  ip_notification_methods:
+    _attributes:
+      phpName: IpNotificationMethod
+    id:
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    name:
+      type: VARCHAR
       required: true
 #  processes: 
 #    _attributes: 

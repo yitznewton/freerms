@@ -31,3 +31,13 @@ AuthMethod:
     Label: Unavailable
     IsValidOnsite: false
     IsValidOffsite: true
+
+IpNotificationMethod:
+  Web:
+    Label: web admin
+  Webform:
+    Label: web form
+  Email:
+    Label: email
+  Phone:
+    Label: phone
