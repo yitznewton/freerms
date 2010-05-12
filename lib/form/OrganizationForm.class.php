@@ -19,7 +19,16 @@ class OrganizationForm extends BaseOrganizationForm
     $this->widgetSchema['ip_reg_uri']->setLabel('IP registration URI');
     $this->widgetSchema['ip_reg_username']->setLabel('IP registration username');
     $this->widgetSchema['ip_reg_password']->setLabel('IP registration password');
-    $this->widgetSchema['ip_reg_contact_id']->setLabel('IP registration contact');
+
+    $contact_criteria = new Criteria();
+    $contact_criteria->add( ContactPeer::ORG_ID, $this->getObject()->getId() );
+
+    $this->widgetSchema['ip_reg_contact_id'] = new sfWidgetFormPropelChoice( array(
+      'model'     => 'Contact',
+      'add_empty' => true,
+      'criteria'  => $contact_criteria,
+      'label'     => 'IP registration contact',
+    ) );
 
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
     $this->widgetSchema->addFormFormatter('div', $decorator);
