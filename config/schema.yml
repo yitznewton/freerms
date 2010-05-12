@@ -37,16 +37,8 @@ propel:
       type: LONGVARCHAR
     concurrent_users: 
       type: INTEGER
-#    ip_address_reg_method_id: 
-#      type: INTEGER
-#      foreignTable: ip_reg_methods
-#      foreignReference: id
-#      onDelete: SET NULL
-#      onUpdate: CASCADE
 #    ip_address_reg_date: 
 #      type: DATE
-#    ip_address_note: 
-#      type: LONGVARCHAR
 #    proxy_decision: 
 #      type: BOOLEAN
 #    proxy_reg_status_id: 
@@ -653,11 +645,7 @@ propel:
   ip_reg_methods:
     _attributes: 
       phpName: IpRegMethod
-    id: 
-      type: INTEGER
-      required: true
-      autoIncrement: true
-      primaryKey: true
+    id: ~
     label: 
       type: VARCHAR
       size: 25
@@ -779,43 +767,32 @@ propel:
       size: 40
     notice_address_licensor: 
       type: LONGVARCHAR
-    ip_notification_method_id:
+    ip_reg_method_id:
       type: INTEGER
-      foreignTable: ip_notification_methods
+      foreignTable: ip_reg_methods
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
-    ip_notification_uri:
+    ip_reg_uri:
       type: VARCHAR
-    ip_notification_username:
-      type: VARCHAR
-      size: 50
-    ip_notification_password:
+    ip_reg_username:
       type: VARCHAR
       size: 50
-    ip_notification_contact_id:
+    ip_reg_password:
+      type: VARCHAR
+      size: 50
+    ip_reg_contact_id:
       type: INTEGER
       foreignTable: contacts
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
-    ip_notification_force_manual:
+    ip_reg_force_manual:
       type: BOOLEAN
     note: 
       type: LONGVARCHAR
     updated_at: 
       type: TIMESTAMP
-      required: true
-  ip_notification_methods:
-    _attributes:
-      phpName: IpNotificationMethod
-    id:
-      type: INTEGER
-      required: true
-      autoIncrement: true
-      primaryKey: true
-    name:
-      type: VARCHAR
       required: true
 #  processes: 
 #    _attributes: 

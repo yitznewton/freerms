@@ -14,12 +14,12 @@ class OrganizationForm extends BaseOrganizationForm
     unset( $this['updated_at'] );
 
     $this->widgetSchema['alt_name']->setLabel('Alternate name');
-    $this->widgetSchema['ip_notification_method_id']->setLabel('IP notification method');
-    $this->widgetSchema['ip_notification_force_manual']->setLabel('Manual IP notification');
-    $this->widgetSchema['ip_notification_uri']->setLabel('IP notification URI');
-    $this->widgetSchema['ip_notification_username']->setLabel('IP notification username');
-    $this->widgetSchema['ip_notification_password']->setLabel('IP notification password');
-    $this->widgetSchema['ip_notification_contact_id']->setLabel('IP notification contact');
+    $this->widgetSchema['ip_reg_method_id']->setLabel('IP registration method');
+    $this->widgetSchema['ip_reg_force_manual']->setLabel('Always do manual IP registration');
+    $this->widgetSchema['ip_reg_uri']->setLabel('IP registration URI');
+    $this->widgetSchema['ip_reg_username']->setLabel('IP registration username');
+    $this->widgetSchema['ip_reg_password']->setLabel('IP registration password');
+    $this->widgetSchema['ip_reg_contact_id']->setLabel('IP registration contact');
 
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
     $this->widgetSchema->addFormFormatter('div', $decorator);

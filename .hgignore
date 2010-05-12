@@ -1,5 +1,6 @@
 syntax: glob
 
+*.orig
 cache/*
 log/*
 plugins/freermsPropelUserPlugin/lib/model

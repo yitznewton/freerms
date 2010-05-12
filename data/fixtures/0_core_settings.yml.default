@@ -32,12 +32,12 @@ AuthMethod:
     IsValidOnsite: false
     IsValidOffsite: true
 
-IpNotificationMethod:
+IpRegMethod:
   Web:
-    Name: web admin
+    Label: web admin
   Webform:
-    Name: web form
+    Label: web form
   Email:
-    Name: email
+    Label: email
   Phone:
-    Name: phone
+    Label: phone

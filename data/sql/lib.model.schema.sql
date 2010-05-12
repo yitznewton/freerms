@@ -386,41 +386,27 @@ CREATE TABLE `organizations`
 	`phone` VARCHAR(40),
 	`fax` VARCHAR(40),
 	`notice_address_licensor` TEXT,
-	`ip_notification_method_id` INTEGER,
-	`ip_notification_uri` VARCHAR(255),
-	`ip_notification_username` VARCHAR(50),
-	`ip_notification_password` VARCHAR(50),
-	`ip_notification_contact_id` INTEGER,
-	`ip_notification_force_manual` TINYINT,
+	`ip_reg_method_id` INTEGER,
+	`ip_reg_uri` VARCHAR(255),
+	`ip_reg_username` VARCHAR(50),
+	`ip_reg_password` VARCHAR(50),
+	`ip_reg_contact_id` INTEGER,
+	`ip_reg_force_manual` TINYINT,
 	`note` TEXT,
 	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `organizations_FI_1` (`ip_notification_method_id`),
+	INDEX `organizations_FI_1` (`ip_reg_method_id`),
 	CONSTRAINT `organizations_FK_1`
-		FOREIGN KEY (`ip_notification_method_id`)
-		REFERENCES `ip_notification_methods` (`id`)
+		FOREIGN KEY (`ip_reg_method_id`)
+		REFERENCES `ip_reg_methods` (`id`)
 		ON UPDATE CASCADE
 		ON DELETE SET NULL,
-	INDEX `organizations_FI_2` (`ip_notification_contact_id`),
+	INDEX `organizations_FI_2` (`ip_reg_contact_id`),
 	CONSTRAINT `organizations_FK_2`
-		FOREIGN KEY (`ip_notification_contact_id`)
+		FOREIGN KEY (`ip_reg_contact_id`)
 		REFERENCES `contacts` (`id`)
 		ON UPDATE CASCADE
 		ON DELETE SET NULL
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- ip_notification_methods
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `ip_notification_methods`;
-
-
-CREATE TABLE `ip_notification_methods`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255)  NOT NULL,
-	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
