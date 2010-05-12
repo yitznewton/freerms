@@ -24,10 +24,10 @@ class OrganizationForm extends BaseOrganizationForm
     $contact_criteria->add( ContactPeer::ORG_ID, $this->getObject()->getId() );
 
     $this->widgetSchema['ip_reg_contact_id'] = new sfWidgetFormPropelChoice( array(
+      'label'     => 'IP registration contact',
       'model'     => 'Contact',
       'add_empty' => true,
       'criteria'  => $contact_criteria,
-      'label'     => 'IP registration contact',
     ) );
 
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
