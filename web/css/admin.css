@@ -200,3 +200,10 @@ form#login-form label{
   margin: 0.5em 0 1em;
   font-size: 0.9em;
 }
+
+#organization-form fieldset{
+  clear: both;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}

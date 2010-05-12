@@ -735,18 +735,18 @@ propel:
     updated_at: 
       type: TIMESTAMP
       required: true
-  org_types: 
-    _attributes: 
-      phpName: OrgType
-    id: 
-      type: INTEGER
-      required: true
-      autoIncrement: true
-      primaryKey: true
-    label: 
-      type: VARCHAR
-      size: 50
-      required: true
+#  org_types:
+#    _attributes:
+#      phpName: OrgType
+#    id: 
+#      type: INTEGER
+#      required: true
+#      autoIncrement: true
+#      primaryKey: true
+#    label:
+#      type: VARCHAR
+#      size: 50
+#      required: true
   organizations: 
     _attributes: 
       phpName: Organization
@@ -760,12 +760,12 @@ propel:
       required: true
     alt_name: 
       type: VARCHAR
-    org_type_id: 
-      type: INTEGER
-      foreignTable: org_types
-      foreignReference: id
-      onDelete: SET NULL
-      onUpdate: CASCADE
+#    org_type_id:
+#      type: INTEGER
+#      foreignTable: org_types
+#      foreignReference: id
+#      onDelete: SET NULL
+#      onUpdate: CASCADE
     account_number: 
       type: VARCHAR
       size: 40

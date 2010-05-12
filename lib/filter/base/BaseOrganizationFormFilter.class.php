@@ -14,7 +14,6 @@ abstract class BaseOrganizationFormFilter extends BaseFormFilterPropel
     $this->setWidgets(array(
       'name'                         => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'alt_name'                     => new sfWidgetFormFilterInput(),
-      'org_type_id'                  => new sfWidgetFormPropelChoice(array('model' => 'OrgType', 'add_empty' => true)),
       'account_number'               => new sfWidgetFormFilterInput(),
       'address'                      => new sfWidgetFormFilterInput(),
       'phone'                        => new sfWidgetFormFilterInput(),
@@ -33,7 +32,6 @@ abstract class BaseOrganizationFormFilter extends BaseFormFilterPropel
     $this->setValidators(array(
       'name'                         => new sfValidatorPass(array('required' => false)),
       'alt_name'                     => new sfValidatorPass(array('required' => false)),
-      'org_type_id'                  => new sfValidatorPropelChoice(array('required' => false, 'model' => 'OrgType', 'column' => 'id')),
       'account_number'               => new sfValidatorPass(array('required' => false)),
       'address'                      => new sfValidatorPass(array('required' => false)),
       'phone'                        => new sfValidatorPass(array('required' => false)),
@@ -67,7 +65,6 @@ abstract class BaseOrganizationFormFilter extends BaseFormFilterPropel
       'id'                           => 'Number',
       'name'                         => 'Text',
       'alt_name'                     => 'Text',
-      'org_type_id'                  => 'ForeignKey',
       'account_number'               => 'Text',
       'address'                      => 'Text',
       'phone'                        => 'Text',

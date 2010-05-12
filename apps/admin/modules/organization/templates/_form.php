@@ -1,23 +1,10 @@
 <?php include_stylesheets_for_form($form) ?>
 <?php include_javascripts_for_form($form) ?>
 
-<script type="text/javascript"> 
-  jQuery(document).ready(function(){
-    jQuery("#tab-container > ul").tabs();    
-  });
-  
-  tab_names = new Array();
-  tab_names[0] = 'general';
-  tab_names[1] = 'ip-ranges';
-  tab_names[2] = 'databases';
-  
-  function set_tab_state() {
-    active_tab = jQuery('#tab-container > ul').data('selected.tabs');
-    document.getElementById('tab-state').value = tab_names[active_tab];
-  }
+<script type="text/javascript">
 </script>  
 
-<form action="<?php echo url_for('organization/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?> onsubmit="set_tab_state();">
+<form id="organization-form" action="<?php echo url_for('organization/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?> onsubmit="set_tab_state();">
 <?php if (!$form->getObject()->isNew()): ?>
 <input type="hidden" name="sf_method" value="PUT" />
 <?php endif; ?>
@@ -32,25 +19,30 @@
     <ul>
       <li class="ui-tabs-nav-item"><a href="#general"><span>General</span></a></li>    
       <li class="ui-tabs-nav-item"><a href="#database-vendor"><span>Databases as vendor</span></a></li>
-      <!-- <li class="ui-tabs-nav-item"><a href="#database-negotiator"><span>Databases as negotiator</span></a></li> -->
     </ul>
          
     <div id="general">
       <table>  
         <tbody>
-          <?php echo $form->render() ?>
-          <?php /*
-          <?php echo $form->renderGlobalErrors() ?>    
-          <?php echo $form['name']->renderRow() ?>  
-          <?php echo $form['alt_name']->renderRow() ?>      
-          <?php echo $form['code']->renderRow() ?>      
-          <?php echo $form['address']->renderRow() ?>    
-          <?php echo $form['ezproxy_host']->renderRow() ?>     
-          <?php echo $form['cost_center_no']->renderRow() ?>     
-          <?php echo $form['fte']->renderRow() ?>  
+          <?php //echo $form->render() ?>
+          <?php echo $form['name']->renderRow() ?>
+          <?php echo $form['alt_name']->renderRow() ?>
+          <?php echo $form['account_number']->renderRow() ?>
+          <?php echo $form['address']->renderRow() ?>
+          <?php echo $form['phone']->renderRow() ?>
+          <?php echo $form['fax']->renderRow() ?>
+          <?php echo $form['notice_address_licensor']->renderRow() ?>
+          <?php echo $form['ip_notification_method_id']->renderRow() ?>
+          <?php echo $form['ip_notification_force_manual']->renderRow() ?>
+        <fieldset class="organization-ip-notification" id="organization-ip-notification-web">
+          <?php echo $form['ip_notification_uri']->renderRow() ?>
+          <?php echo $form['ip_notification_username']->renderRow() ?>
+          <?php echo $form['ip_notification_password']->renderRow() ?>
+        </fieldset>
+        <fieldset class="organization-ip-notification" id="organization-ip-notification-contact">
+          <?php echo $form['ip_notification_contact_id']->renderRow() ?>
+        </fieldset>
           <?php echo $form['note']->renderRow() ?>
-           *
-           */ ?>
         </tbody>
       </table>
     </div>   
@@ -59,19 +51,11 @@
       <?php if ($eresources_vendor): ?>
       <?php echo "<ul class=\"database-list\">\n" ?>
         <?php foreach ($eresources_vendor as $eresource): ?>
-        <?php $id = $eresource->getId() ?>
-        <?php echo "<li>" ?>
-        <?php echo link_to($eresource->getTitle(), 'database/edit?id='. $id) ?>
-        <?php echo '</li>' ?>
+          <li><?php echo link_to($eresource->getTitle(), 'database/edit?id='. $eresource->getId()) ?></li>
         <?php endforeach; ?>
       <?php echo "</ul>\n" ?>
       <?php endif; ?>
     </div>
-    
-    <!--
-    <div id="database-negotiator">
-    </div>
-    -->
   </div>
   
   <input type="hidden" id="tab-state" name="tab-state" value="general" />

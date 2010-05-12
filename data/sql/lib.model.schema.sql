@@ -370,20 +370,6 @@ CREATE TABLE `libraries`
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- org_types
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `org_types`;
-
-
-CREATE TABLE `org_types`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`label` VARCHAR(50)  NOT NULL,
-	PRIMARY KEY (`id`)
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
 #-- organizations
 #-----------------------------------------------------------------------------
 
@@ -395,7 +381,6 @@ CREATE TABLE `organizations`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255)  NOT NULL,
 	`alt_name` VARCHAR(255),
-	`org_type_id` INTEGER,
 	`account_number` VARCHAR(40),
 	`address` TEXT,
 	`phone` VARCHAR(40),
@@ -410,20 +395,14 @@ CREATE TABLE `organizations`
 	`note` TEXT,
 	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `organizations_FI_1` (`org_type_id`),
+	INDEX `organizations_FI_1` (`ip_notification_method_id`),
 	CONSTRAINT `organizations_FK_1`
-		FOREIGN KEY (`org_type_id`)
-		REFERENCES `org_types` (`id`)
-		ON UPDATE CASCADE
-		ON DELETE SET NULL,
-	INDEX `organizations_FI_2` (`ip_notification_method_id`),
-	CONSTRAINT `organizations_FK_2`
 		FOREIGN KEY (`ip_notification_method_id`)
 		REFERENCES `ip_notification_methods` (`id`)
 		ON UPDATE CASCADE
 		ON DELETE SET NULL,
-	INDEX `organizations_FI_3` (`ip_notification_contact_id`),
-	CONSTRAINT `organizations_FK_3`
+	INDEX `organizations_FI_2` (`ip_notification_contact_id`),
+	CONSTRAINT `organizations_FK_2`
 		FOREIGN KEY (`ip_notification_contact_id`)
 		REFERENCES `contacts` (`id`)
 		ON UPDATE CASCADE
