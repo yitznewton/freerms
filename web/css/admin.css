@@ -207,3 +207,9 @@ form#login-form label{
   margin: 0;
   padding: 0;
 }
+
+.contact-list{
+  margin: 0;
+  padding: 0;
+  font-size: 0.9em;
+}
