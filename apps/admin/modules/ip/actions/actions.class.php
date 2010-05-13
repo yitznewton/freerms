@@ -81,6 +81,11 @@ class ipActions extends sfActions
     $this->redirect('library/edit?id='.$lib_id.'#ip-ranges');
   }
 
+  public function executeRegistration(sfWebRequest $request)
+  {
+    $this->auto_email = IpRangePeer::retrieveUnregisteredAutoEmail();
+  }
+
   protected function processForm(sfWebRequest $request, sfForm $form)
   {
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));

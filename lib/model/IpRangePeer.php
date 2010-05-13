@@ -10,7 +10,28 @@ class IpRangePeer extends BaseIpRangePeer
     $c->addAscendingOrderByColumn(IpRangePeer::START_IP);    
 
     return IpRangePeer::doSelect($c);
-  }  
+  }
+
+  public static function retrieveUnregisteredAutoEmail()
+  {
+    $c = new Criteria();
+
+    $c->setDistinct();
+    $c->addJoin( IpRangePeer::ID, IpRegEventPeer::IP_RANGE_ID );
+    $c->addJoin( IpRangePeer::LIB_ID, LibraryPeer::ID );
+    $c->addJoin( LibraryPeer::ID, AcqLibAssocPeer::LIB_ID );
+    $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
+    $c->addJoin( AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID );
+    $c->addJoin( OrganizationPeer::IP_REG_METHOD_ID, IpRegMethodPeer::ID );
+    $c->addJoin( OrganizationPeer::ID, ContactPeer::ORG_ID );
+    $c->add( EResourcePeer::SUPPRESSION, false );
+    $c->add( OrganizationPeer::IP_REG_FORCE_MANUAL, false );
+    $c->add( IpRegMethodPeer::LABEL, 'email' );
+    $c->add( ContactPeer::EMAIL, null, Criteria::ISNOTNULL );
+
+    return IpRangePeer::doSelect( $c );
+  }
 
   public static function isInRange($testIP, $startIP, $endIP) 
   {

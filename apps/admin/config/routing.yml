@@ -19,6 +19,10 @@ logout:
   url:   /logout
   param: { module: user, action: logout }
 
+ip_registration:
+  url:   /ip/registration
+  param: { module: ip, action: registration }
+
 default_export:
   url:   /:module/export/*
   param: { action: export }

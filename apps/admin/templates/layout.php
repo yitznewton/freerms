@@ -77,7 +77,8 @@
   	</div>		
   	
     <div id="content">		  
-      <?php echo $sf_content ?>	      
+      <?php include_component( 'ip', 'unregistered' ) ?>
+      <?php echo $sf_content ?>
     </div>
     
   </div>

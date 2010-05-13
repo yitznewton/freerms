@@ -43,13 +43,11 @@ class IpRange extends BaseIpRange
 
   protected function doIpRegNew( IpRange $old_this )
   {
-    $old_this->setId( $this->getId() );
     $ip_reg_event = new IpRegEvent();
     $ip_reg_event->initialize( $old_this );
 
     $ip_reg_event->setNewStartIp( $this->getStartIp() );
     $ip_reg_event->setNewEndIp( $this->getStartIp() );
-
     $ip_reg_event->save();
   }
 
