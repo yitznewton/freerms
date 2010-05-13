@@ -60,7 +60,6 @@ class databaseActions extends sfActions
     $er_id
       ? $c->add(EResourcePeer::ID, $er_id)
       : $c->add(EResourcePeer::ALT_ID, $alt_id, Criteria::LIKE);
-    $c->add(EResourcePeer::DELETED_AT, null, Criteria::ISNULL);
 
     $ers = EResourcePeer::doSelectJoinAccessInfo($c);
     $this->forward404Unless($ers);

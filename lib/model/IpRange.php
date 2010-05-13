@@ -55,7 +55,7 @@ class IpRange extends BaseIpRange
 
   protected function doIpRegModified( IpRange $old_this )
   {
-    $ip_reg_event = IpRegEventPeer::retrieveByPK( $this->getId() );
+    $ip_reg_event = $this->getIpRegEvent();
 
     if ( $ip_reg_event ) {
       $ip_reg_event->setNewStartIp( $this->getStartIp() );
@@ -74,7 +74,7 @@ class IpRange extends BaseIpRange
 
   protected function doIpRegDeleted( IpRange $old_this )
   {
-    $ip_reg_event = IpRegEventPeer::retrieveByPK( $this->getId() );
+    $ip_reg_event = $this->getIpRegEvent();
 
     if ( $ip_reg_event && ! $ip_reg_event->getOldStartIp() ) {
       // deleting a newly-added IpRange
