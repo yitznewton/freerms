@@ -19,6 +19,7 @@ abstract class BaseIpRangeFormFilter extends BaseFormFilterPropel
       'proxy_indicator'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'note'             => new sfWidgetFormFilterInput(),
       'updated_at'       => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
+      'deleted_at'       => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate())),
     ));
 
     $this->setValidators(array(
@@ -29,6 +30,7 @@ abstract class BaseIpRangeFormFilter extends BaseFormFilterPropel
       'proxy_indicator'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'note'             => new sfValidatorPass(array('required' => false)),
       'updated_at'       => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
+      'deleted_at'       => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
     ));
 
     $this->widgetSchema->setNameFormat('ip_range_filters[%s]');
@@ -54,6 +56,7 @@ abstract class BaseIpRangeFormFilter extends BaseFormFilterPropel
       'proxy_indicator'  => 'Boolean',
       'note'             => 'Text',
       'updated_at'       => 'Date',
+      'deleted_at'       => 'Date',
     );
   }
 }

@@ -11,32 +11,26 @@ class EResource extends BaseEResource
   {
     $cur_time = time();
     
-		if ($this->isDeleted()) {
-			throw new PropelException("This object has already been deleted.");
-		}
-
-    $access = $this->getAccessInfo();
-    $admin = $this->getAdminInfo();
+    $access      = $this->getAccessInfo();
+    $admin       = $this->getAdminInfo();
     $acquisition = $this->getAcquisition();
 
-    $this->setAcqId(null);
-    $this->setDeletedAt($cur_time);
-    $this->save();
+    $this->setAcqId( null );
+    $this->setDeletedAt( $cur_time );
+    $this->save( $con );
     
     if ($access) {
-      $access->setDeletedAt($cur_time);
-      $access->save();
+      $access->delete();
+      $access->setDeletedAt( $cur_time );
+      $access->save( $con );
     }
     
     if ($admin) {
-      $admin->setDeletedAt($cur_time);
-      $admin->save();
+      $admin->delete();
+      $admin->setDeletedAt( $cur_time );
+      $admin->save( $con );
     }
     
-    if ($acquisition) {
-      $acquisition->delete();
-    }
-      
     return true;
   }
   
@@ -122,5 +116,14 @@ class EResource extends BaseEResource
       
       $usage->save();
     }
+  }
+  
+  public function isDeleted()
+  {
+    if ( $this->getDeletedAt() ) {
+      return true;
+    }
+
+    return parent::isDeleted();
   }
 }

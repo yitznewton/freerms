@@ -686,6 +686,34 @@ propel:
     updated_at: 
       type: TIMESTAMP
       required: true
+    deleted_at:
+      type: TIMESTAMP
+  ip_reg_events:
+    _attributes:
+      phpName: IpRegEvent
+    ip_range_id:
+      type: INTEGER
+      required: true
+      primaryKey: true
+      foreignTable: ip_ranges
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    old_start_ip:
+      type: VARCHAR
+      size: 15
+    old_end_ip:
+      type: VARCHAR
+      size: 15
+    new_start_ip:
+      type: VARCHAR
+      size: 15
+    new_end_ip:
+      type: VARCHAR
+      size: 15
+    updated_at:
+      type: TIMESTAMP
+      required: true
   libraries: 
     _attributes: 
       phpName: Library

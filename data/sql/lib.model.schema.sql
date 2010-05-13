@@ -336,11 +336,35 @@ CREATE TABLE `ip_ranges`
 	`proxy_indicator` TINYINT default 0 NOT NULL,
 	`note` VARCHAR(255),
 	`updated_at` DATETIME  NOT NULL,
+	`deleted_at` DATETIME,
 	PRIMARY KEY (`id`),
 	INDEX `ip_ranges_FI_1` (`lib_id`),
 	CONSTRAINT `ip_ranges_FK_1`
 		FOREIGN KEY (`lib_id`)
 		REFERENCES `libraries` (`id`)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ip_reg_events
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ip_reg_events`;
+
+
+CREATE TABLE `ip_reg_events`
+(
+	`ip_range_id` INTEGER  NOT NULL,
+	`old_start_ip` VARCHAR(15),
+	`old_end_ip` VARCHAR(15),
+	`new_start_ip` VARCHAR(15),
+	`new_end_ip` VARCHAR(15),
+	`updated_at` DATETIME  NOT NULL,
+	PRIMARY KEY (`ip_range_id`),
+	CONSTRAINT `ip_reg_events_FK_1`
+		FOREIGN KEY (`ip_range_id`)
+		REFERENCES `ip_ranges` (`id`)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 )Type=InnoDB;

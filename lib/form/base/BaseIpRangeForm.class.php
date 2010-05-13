@@ -22,6 +22,7 @@ abstract class BaseIpRangeForm extends BaseFormPropel
       'proxy_indicator'  => new sfWidgetFormInputCheckbox(),
       'note'             => new sfWidgetFormInputText(),
       'updated_at'       => new sfWidgetFormDateTime(),
+      'deleted_at'       => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -33,6 +34,7 @@ abstract class BaseIpRangeForm extends BaseFormPropel
       'proxy_indicator'  => new sfValidatorBoolean(),
       'note'             => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'updated_at'       => new sfValidatorDateTime(),
+      'deleted_at'       => new sfValidatorDateTime(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('ip_range[%s]');

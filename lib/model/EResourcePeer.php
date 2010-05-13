@@ -36,7 +36,14 @@ class EResourcePeer extends BaseEResourcePeer
  
   public static function doCount(Criteria $criteria, $distinct = false, PropelPDO $con = null)
   {
-	$criteria->add(EResourcePeer::DELETED_AT, null, Criteria::ISNULL);
+	  $criteria->add(EResourcePeer::DELETED_AT, null, Criteria::ISNULL);
     return parent::doCount($criteria, $con);
   }
+
+	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
+	{
+		$criteria->add( self::DELETED_AT, null, Criteria::ISNULL );
+
+    return parent::doSelectStmt( $criteria, $con );
+	}
 }
