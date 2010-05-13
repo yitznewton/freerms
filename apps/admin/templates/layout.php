@@ -55,6 +55,15 @@
         <li class="menu-link-current">Organizations</li>
         <?php endif; ?>
 
+         <?php if ($this->getActionName() != 'index'
+          || $this->getModuleName() != 'contact'): ?>
+        <li class="menu-link">
+          <a href="<?php echo url_for('contact/index') ?>">Contacts</a>
+        </li>
+        <?php else: ?>
+        <li class="menu-link-current">Contacts</li>
+        <?php endif; ?>
+
         <?php if ($this->getActionName() != 'index'
           || $this->getModuleName() != 'subject'): ?>
         <li class="menu-link">

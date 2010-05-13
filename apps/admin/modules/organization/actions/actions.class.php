@@ -46,6 +46,9 @@ class organizationActions extends sfActions
     $this->form = new OrganizationForm($organization);
 
     $this->eresources_vendor = EResourcePeer::retrieveByVendorOrgId($request->getParameter('id'));
+
+    $this->contacts = ContactPeer::retrieveByOrgId($request->getParameter('id'));
+
   }
 
   public function executeUpdate(sfWebRequest $request)

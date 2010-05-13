@@ -32,6 +32,7 @@
     <ul>
       <li class="ui-tabs-nav-item"><a href="#general"><span>General</span></a></li>    
       <li class="ui-tabs-nav-item"><a href="#database-vendor"><span>Databases as vendor</span></a></li>
+      <li class="ui-tabs-nav-item"><a href="#contact"><span>Contacts</span></a></li>
       <!-- <li class="ui-tabs-nav-item"><a href="#database-negotiator"><span>Databases as negotiator</span></a></li> -->
     </ul>
          
@@ -66,6 +67,10 @@
         <?php endforeach; ?>
       <?php echo "</ul>\n" ?>
       <?php endif; ?>
+    </div>
+
+    <div id="contact">
+      
     </div>
     
     <!--

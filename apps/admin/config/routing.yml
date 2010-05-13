@@ -1,3 +1,12 @@
+contact:
+  class: sfPropelRouteCollection
+  options:
+    model:                Contact
+    module:               contact
+    prefix_path:          /contact
+    column:               id
+    with_wildcard_routes: true
+
 e_resource:
   class: sfPropelRouteCollection
   options:
