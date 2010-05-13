@@ -117,13 +117,4 @@ class EResource extends BaseEResource
       $usage->save();
     }
   }
-  
-  public function isDeleted()
-  {
-    if ( $this->getDeletedAt() ) {
-      return true;
-    }
-
-    return parent::isDeleted();
-  }
 }
