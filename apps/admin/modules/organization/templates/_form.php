@@ -87,6 +87,7 @@
         <?php endforeach ?>
       <?php endif ?>
     </div>
+    
     <!--
     <div id="database-negotiator">
     </div>

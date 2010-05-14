@@ -1,23 +1,25 @@
 <?php
 
 /**
- * AcqLibAssoc filter form base class.
+ * IpNotificationMethod filter form base class.
  *
  * @package    freerms
  * @subpackage filter
  * @author     Your name here
  */
-abstract class BaseAcqLibAssocFormFilter extends BaseFormFilterPropel
+abstract class BaseIpNotificationMethodFormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {
     $this->setWidgets(array(
+      'name' => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
+      'name' => new sfValidatorPass(array('required' => false)),
     ));
 
-    $this->widgetSchema->setNameFormat('acq_lib_assoc_filters[%s]');
+    $this->widgetSchema->setNameFormat('ip_notification_method_filters[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
 
@@ -26,14 +28,14 @@ abstract class BaseAcqLibAssocFormFilter extends BaseFormFilterPropel
 
   public function getModelName()
   {
-    return 'AcqLibAssoc';
+    return 'IpNotificationMethod';
   }
 
   public function getFields()
   {
     return array(
-      'lib_id' => 'ForeignKey',
-      'acq_id' => 'ForeignKey',
+      'id'   => 'Number',
+      'name' => 'Text',
     );
   }
 }
