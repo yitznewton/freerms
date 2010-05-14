@@ -83,7 +83,18 @@ class ipActions extends sfActions
 
   public function executeRegistration(sfWebRequest $request)
   {
-    $this->auto_email = IpRangePeer::retrieveUnregisteredAutoEmail();
+    $this->auto_email = IpRegEventPeer::retrieveAutoEmail();
+    
+    $this->manual_email = IpRegEventPeer::retrieveManualEmailArray();
+
+    $this->phone = false;
+    $this->web_contact = false;
+    $this->web_admin = false;
+  }
+
+  public function executeAutoregister(sfWebRequest $request)
+  {
+    
   }
 
   protected function processForm(sfWebRequest $request, sfForm $form)

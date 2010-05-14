@@ -19,6 +19,27 @@ require 'lib/model/om/BaseIpRegEvent.php';
  * @package    lib.model
  */
 class IpRegEvent extends BaseIpRegEvent {
+  public function __toString()
+  {
+    if ( ! $this->getOldStartIp() ) {
+      return 'New: ' . $this->getIpRange() . ' (' . $this->getIpRange()->getLibrary()->getName() . ')';
+    }
+    
+    $old = new IpRange();
+    $old->setStartIp( $this->getOldStartIp() );
+    $old->setEndIp( $this->getOldEndIp() );
+
+    if ( ! $this->getNewStartIp() ) {
+      return 'Deleted: ' . $old;
+    }
+    
+    $old = new IpRange();
+    $old->setStartIp( $this->getOldStartIp() );
+    $old->setEndIp( $this->getOldEndIp() );
+    
+    return "Modified: $old becomes " . $this->getIpRange() . ' (' . $this->getIpRange()->getLibrary() . ')';
+  }
+
   public function initialize( IpRange $ip_range )
   {
     $this->setIpRangeId( $ip_range->getId() );

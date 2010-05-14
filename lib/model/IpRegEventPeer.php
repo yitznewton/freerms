@@ -19,5 +19,69 @@ require 'lib/model/om/BaseIpRegEventPeer.php';
  * @package    lib.model
  */
 class IpRegEventPeer extends BaseIpRegEventPeer {
+  public static function retrieveAutoEmail()
+  {
+    $c = new Criteria();
+
+    $c->setDistinct();
+    $c->addJoin( IpRangePeer::ID, IpRegEventPeer::IP_RANGE_ID );
+    $c->addJoin( IpRangePeer::LIB_ID, LibraryPeer::ID );
+    $c->addJoin( LibraryPeer::ID, AcqLibAssocPeer::LIB_ID );
+    $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
+    $c->addJoin( AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID );
+    $c->addJoin( OrganizationPeer::IP_REG_METHOD_ID, IpRegMethodPeer::ID );
+    $c->addJoin( OrganizationPeer::ID, ContactPeer::ORG_ID );
+    $c->add( EResourcePeer::SUPPRESSION, false );
+    $c->add( OrganizationPeer::IP_REG_FORCE_MANUAL, false );
+    $c->add( IpRegMethodPeer::LABEL, 'email' );
+    $c->add( ContactPeer::EMAIL, null, Criteria::ISNOTNULL );
+    $c->addAscendingOrderByColumn( LibraryPeer::NAME );
+    $c->addAscendingOrderByColumn( IpRangePeer::START_IP );
+
+    return IpRegEventPeer::doSelect( $c );
+  }
+
+  public static function retrieveManualEmailArray()
+  {
+    $c = new Criteria();
+
+    $c->setDistinct();
+    $c->addJoin( IpRangePeer::ID, IpRegEventPeer::IP_RANGE_ID );
+    $c->addJoin( IpRangePeer::LIB_ID, LibraryPeer::ID );
+    $c->addJoin( LibraryPeer::ID, AcqLibAssocPeer::LIB_ID );
+    $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
+    $c->addJoin( AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID );
+    $c->addJoin( OrganizationPeer::IP_REG_METHOD_ID, IpRegMethodPeer::ID );
+    $c->addJoin( OrganizationPeer::ID, ContactPeer::ORG_ID );
+    $c->add( EResourcePeer::SUPPRESSION, false );
+    $c->add( OrganizationPeer::IP_REG_FORCE_MANUAL, false );
+    $c->add( IpRegMethodPeer::LABEL, 'email' );
+
+    $c1 = clone $c;
+    $c1->add( ContactPeer::EMAIL, null, Criteria::ISNOTNULL );
+    $c1->addAscendingOrderByColumn( ContactPeer::LAST_NAME );
+    $c1->addAscendingOrderByColumn( ContactPeer::FIRST_NAME );
+
+    $contacts = ContactPeer::doSelect( $c1 );
+    $c1->clear();
+
+    $ret = array();
+
+    foreach ( $contacts as $contact ) {
+      $c1 = clone $c;
+      $c1->add( ContactPeer::ID, $contact->getId() );
+      $c1->addAscendingOrderByColumn( IpRegEventPeer::OLD_START_IP );
+      $c1->addAscendingOrderByColumn( IpRegEventPeer::NEW_START_IP );
+      $ip_reg_events = IpRegEventPeer::doSelect( $c1 );
+
+      $c1->clear();
+
+      $ret[] = array( 'contact' => $contact, 'ip_reg_events' => $ip_reg_events );
+    }
+
+    return $ret;
+  }
 
 } // IpRegEventPeer

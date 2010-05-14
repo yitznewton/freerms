@@ -23,6 +23,10 @@ ip_registration:
   url:   /ip/registration
   param: { module: ip, action: registration }
 
+ip_autoregister:
+  url:   /ip/autoregister
+  param: { module: ip, action: autoregister }
+
 default_export:
   url:   /:module/export/*
   param: { action: export }
