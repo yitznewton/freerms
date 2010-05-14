@@ -15,7 +15,7 @@ function update_ip_reg_fields()
       break;
 
     case 'web admin':
-    case 'web form':
+    case 'web contact form':
       $('fieldset.organization-ip-notification').hide();
       $('#organization-ip-notification-web').show();
       break;

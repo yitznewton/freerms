@@ -11,14 +11,9 @@
   tab_names[0] = 'general';
   tab_names[1] = 'ip-ranges';
   tab_names[2] = 'databases';
-
-  function set_tab_state() {
-    active_tab = jQuery('#tab-container > ul').data('selected.tabs');
-    document.getElementById('tab-state').value = tab_names[active_tab];
-  }
 </script>
 
-<form action="<?php echo url_for('organization/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?> onsubmit="set_tab_state();">
+<form action="<?php echo url_for('organization/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?> onsubmit="set_tab_state();" id="organization-form">
 <?php if (!$form->getObject()->isNew()): ?>
 <input type="hidden" name="sf_method" value="PUT" />
 <?php endif; ?>
@@ -40,19 +35,26 @@
     <div id="general">
       <table>
         <tbody>
-          <?php echo $form->render() ?>
-          <?php /*
           <?php echo $form->renderGlobalErrors() ?>
           <?php echo $form['name']->renderRow() ?>
           <?php echo $form['alt_name']->renderRow() ?>
-          <?php echo $form['code']->renderRow() ?>
+          <?php echo $form['account_number']->renderRow() ?>
           <?php echo $form['address']->renderRow() ?>
-          <?php echo $form['ezproxy_host']->renderRow() ?>
-          <?php echo $form['cost_center_no']->renderRow() ?>
-          <?php echo $form['fte']->renderRow() ?>
+          <?php echo $form['phone']->renderRow() ?>
+          <?php echo $form['fax']->renderRow() ?>
+          <?php echo $form['notice_address_licensor']->renderRow() ?>
+          <?php echo $form['ip_reg_method_id']->renderRow() ?>
+          <fieldset class="organization-ip-notification" id="organization-ip-notification-web">
+            <?php echo $form['ip_reg_uri']->renderRow() ?>
+            <?php echo $form['ip_reg_username']->renderRow() ?>
+            <?php echo $form['ip_reg_password']->renderRow() ?>
+          </fieldset>
+          <fieldset class="organization-ip-notification" id="organization-ip-notification-contact">
+            <?php echo $form['ip_reg_contact_id']->renderRow() ?>
+            <?php echo $form['ip_reg_force_manual']->renderRow() ?>
+          </fieldset>
+
           <?php echo $form['note']->renderRow() ?>
-           *
-           */ ?>
         </tbody>
       </table>
     </div>
