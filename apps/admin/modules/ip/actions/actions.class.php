@@ -81,6 +81,22 @@ class ipActions extends sfActions
     $this->redirect('library/edit?id='.$lib_id.'#ip-ranges');
   }
 
+  public function executeRegistration(sfWebRequest $request)
+  {
+    $this->auto_email = IpRegEventPeer::retrieveAutoEmail();
+    
+    $this->manual_email = IpRegEventPeer::retrieveManualEmailArray();
+
+    $this->phone = false;
+    $this->web_contact = false;
+    $this->web_admin = false;
+  }
+
+  public function executeAutoregister(sfWebRequest $request)
+  {
+    
+  }
+
   protected function processForm(sfWebRequest $request, sfForm $form)
   {
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));

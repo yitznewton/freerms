@@ -10,9 +10,9 @@ class IpRangePeer extends BaseIpRangePeer
     $c->addAscendingOrderByColumn(IpRangePeer::START_IP);    
 
     return IpRangePeer::doSelect($c);
-  }  
+  }
 
-  public static function isInRange($testIP, $startIP, $endIP) 
+  public static function isInRange($testIP, $startIP, $endIP)
   {
     if (! $testIP = @ip2long($testIP)) {
       throw new Exception('Test IP not valid');

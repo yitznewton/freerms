@@ -2,6 +2,11 @@
 
 class IpRange extends BaseIpRange
 {
+  public function __toString()
+  {
+    return $this->getStartIp() . '&mdash;' . $this->getEndIp();
+  }
+
   public function save(PropelPDO $con = null) 
   {
     $start = $this->getStartIp();
@@ -43,13 +48,11 @@ class IpRange extends BaseIpRange
 
   protected function doIpRegNew( IpRange $old_this )
   {
-    $old_this->setId( $this->getId() );
     $ip_reg_event = new IpRegEvent();
     $ip_reg_event->initialize( $old_this );
 
     $ip_reg_event->setNewStartIp( $this->getStartIp() );
-    $ip_reg_event->setNewEndIp( $this->getStartIp() );
-
+    $ip_reg_event->setNewEndIp( $this->getEndIp() );
     $ip_reg_event->save();
   }
 

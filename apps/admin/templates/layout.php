@@ -15,35 +15,35 @@
       <div id="logo-localization">
         for <?php echo sfConfig::get('app_institution-name') ?>
       </div>
-    </div>
+    </div>    
     <div id="nav">
-      <ul class="nav-links">
-
+      <ul class="nav-links">	  
+        
         <?php if ($this->getActionName() != 'index'
           || $this->getModuleName() != 'database'): ?>
         <li class="menu-link">
           <a href="<?php echo url_for('database/index') ?>">Databases</a>
-        </li>
+        </li>  
         <?php else: ?>
-        <li class="menu-link-current">Databases</li>
+        <li class="menu-link-current">Databases</li>  
         <?php endif; ?>
-
+        
         <?php if ($this->getActionName() != 'index'
           || $this->getModuleName() != 'library'): ?>
         <li class="menu-link">
           <a href="<?php echo url_for('library/index') ?>">Libraries</a>
-        </li>
+        </li>  
         <?php else: ?>
-        <li class="menu-link-current">Libraries</li>
+        <li class="menu-link-current">Libraries</li>  
         <?php endif; ?>
-
+        
         <?php if ($this->getActionName() != 'index'
           || $this->getModuleName() != 'ip'): ?>
         <li class="menu-link">
           <a href="<?php echo url_for('ip/index') ?>">IP Ranges</a>
-        </li>
+        </li>  
         <?php else: ?>
-        <li class="menu-link-current">IP Ranges</li>
+        <li class="menu-link-current">IP Ranges</li>  
         <?php endif; ?>
 
         <?php if ($this->getActionName() != 'index'
@@ -55,40 +55,32 @@
         <li class="menu-link-current">Organizations</li>
         <?php endif; ?>
 
-         <?php if ($this->getActionName() != 'index'
-          || $this->getModuleName() != 'contact'): ?>
-        <li class="menu-link">
-          <a href="<?php echo url_for('contact/index') ?>">Contacts</a>
-        </li>
-        <?php else: ?>
-        <li class="menu-link-current">Contacts</li>
-        <?php endif; ?>
-
         <?php if ($this->getActionName() != 'index'
           || $this->getModuleName() != 'subject'): ?>
         <li class="menu-link">
           <a href="<?php echo url_for('subject/index') ?>">Subjects</a>
-        </li>
+        </li>  
         <?php else: ?>
-        <li class="menu-link-current">Subjects</li>
+        <li class="menu-link-current">Subjects</li>  
         <?php endif; ?>
 
-      </ul>
-
+      </ul> 
+      
       <?php if ($sf_user->isAuthenticated()): ?>
-      <ul class="nav-links">
+      <ul class="nav-links">	  
         <li class="menu-link">
           <a href="<?php echo url_for('user/logout') ?>">Logout</a>
-        </li>
-      </ul>
+        </li>  
+      </ul> 
       <?php endif; ?>
-
-  	</div>
-
-    <div id="content">
+      
+  	</div>		
+  	
+    <div id="content">		  
+      <?php include_component( 'ip', 'unregistered' ) ?>
       <?php echo $sf_content ?>
     </div>
-
+    
   </div>
 
   <div id="footer">
