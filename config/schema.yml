@@ -377,7 +377,10 @@ propel:
     email: 
       type: VARCHAR
       size: 100
-    fax: 
+    phone:
+      type: VARCHAR
+      size: 40
+    fax:
       type: VARCHAR
       size: 40
     note: 

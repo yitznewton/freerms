@@ -26,7 +26,7 @@
   <?php foreach ( $manual_email as $contact_array ): ?>
     <li>
       <div>
-        <div><?php echo $contact_array['contact']->getFirstName() ?> <?php echo $contact_array['contact']->getLastName() ?></div>
+        <div><?php echo link_to( $contact_array['contact']->getFirstName() . ' ' . $contact_array['contact']->getLastName(), 'contact/edit?id=' . $contact_array['contact']->getId() ) ?></div>
         <div><?php echo mail_to( $contact_array['contact']->getEmail() ) ?></div>
       </div>
       <ul>
@@ -41,9 +41,22 @@
 
 <?php if ( $phone ): ?>
   <h2>Phone registration</h2>
-  <?php foreach ( $phone as $contact ): ?>
 
+  <ul>
+  <?php foreach ( $phone as $contact_array ): ?>
+    <li>
+      <div>
+        <div><?php echo link_to( $contact_array['contact']->getFirstName() . ' ' . $contact_array['contact']->getLastName(), 'contact/edit?id=' . $contact_array['contact']->getId() ) ?></div>
+        <div><?php echo $contact_array['contact']->getPhone() ?></div>
+      </div>
+      <ul>
+        <?php foreach ( $contact_array['ip_reg_events'] as $ip_reg_event ): ?>
+        <li><?php echo $ip_reg_event ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </li>
   <?php endforeach; ?>
+  </ul>
 <?php endif; ?>
 
 <?php if ( $web_contact ): ?>

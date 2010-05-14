@@ -1,9 +1,6 @@
 <?php
 
-require 'lib/model/om/BaseContactPeer.php';
-
 class ContactPeer extends BaseContactPeer {
-
   public static function retrieveByOrgId($id, Criteria $c = null)
   {
     if (!$c) {
@@ -17,4 +14,3 @@ class ContactPeer extends BaseContactPeer {
     return ContactPeer::doSelect($c);
   }
 }
-

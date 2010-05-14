@@ -176,6 +176,7 @@ CREATE TABLE `contacts`
 	`role` VARCHAR(255),
 	`address` TEXT,
 	`email` VARCHAR(100),
+	`phone` VARCHAR(40),
 	`fax` VARCHAR(40),
 	`note` TEXT,
 	`org_id` INTEGER,
