@@ -73,19 +73,33 @@
 
     <div id="contacts">
       <?php if ($contacts): ?>
-        <?php foreach ($contacts as $contact):?>
-        <h5>
-          <?php echo link_to($contact, 'contact/edit?id='.$contact->getId()) ?>
-        </h5>
-        <div class="contact-list">
-          <?php echo $contact->getRole() ?>
-          <?php echo '-' ?>
-          <a href="mailto:<?php echo $contact->getEmail()?>" >
-            <?php echo $contact->getEmail()?>
-          </a>
-        </div>
-        <?php endforeach ?>
-      <?php endif ?>
+      <table id="ip-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>               
+          </tr>
+        </thead>
+
+        <tbody>
+          <?php foreach ($contacts as $contact): ?>
+          <tr>
+            <td><?php echo link_to($contact, 'contact/edit?id='.$contact->getId()) ?></td>
+            <td><?php echo $contact->getRole() ?></td>
+            <td><a href="mailto:<?php echo $contact->getEmail() ?>">
+              <?php echo $contact->getEmail() ?></a>
+            </td>
+            <td><?php echo link_to('delete', 'contact/delete?id='.$contact->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?')) ?></td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+      <?php endif; ?>
+
+      <?php if (! $form->getObject()->isNew() ): ?>
+      <div><?php echo link_to('Add', 'contact/new?organization='.$form->getObject()->getId()) ?></div>
+      <?php endif; ?>       
     </div>
     
     <!--
