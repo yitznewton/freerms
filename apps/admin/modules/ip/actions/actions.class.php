@@ -86,8 +86,7 @@ class ipActions extends sfActions
     $this->auto_email   = IpRegEventPeer::retrieveAutoEmail();
     $this->manual_email = IpRegEventPeer::retrieveManualEmailArray();
     $this->phone        = IpRegEventPeer::retrievePhoneArray();
-
-    $this->web_contact = false;
+    $this->web_contact  = IpRegEventPeer::retrieveWebContactFormArray();
     $this->web_admin = false;
   }
 

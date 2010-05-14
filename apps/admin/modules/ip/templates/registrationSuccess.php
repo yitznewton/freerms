@@ -60,10 +60,23 @@
 <?php endif; ?>
 
 <?php if ( $web_contact ): ?>
-  <h2>Web contact form</h2>
-  <?php foreach ( $web_contact as $organization ): ?>
+  <h2>Web contact form registration</h2>
 
+  <ul>
+  <?php foreach ( $web_contact as $organization_array ): ?>
+    <li>
+      <div>
+        <div><?php echo link_to( $organization_array['organization']->getName(), 'contact/edit?id=' . $organization_array['organization']->getId() ) ?></div>
+        <div><?php echo $organization_array['organization']->getIpRegUri() ?></div>
+      </div>
+      <ul>
+        <?php foreach ( $organization_array['ip_reg_events'] as $ip_reg_event ): ?>
+        <li><?php echo $ip_reg_event ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </li>
   <?php endforeach; ?>
+  </ul>
 <?php endif; ?>
 
 <?php if ( $web_admin ): ?>
