@@ -17,6 +17,10 @@ class contactActions extends sfActions
   public function executeNew(sfWebRequest $request)
   {
     $this->form = new ContactForm();
+
+    if ( $org_id = $request->getParameter('organization') ) {
+      $this->form->setDefault('org_id', $request->getParameter('organization'));
+    }
   }
 
   public function executeCreate(sfWebRequest $request)
