@@ -1,0 +1,1 @@
+<?php echo link_to($ip_range->getStartIp(), 'ip/edit?id='.$ip_range->getId()) ?>  

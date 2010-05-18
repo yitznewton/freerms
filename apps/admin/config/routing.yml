@@ -1,3 +1,57 @@
+db_subject_subject:
+  class: sfPropelRouteCollection
+  options:
+    model:                DbSubject
+    module:               subject
+    prefix_path:          /subject
+    column:               id
+    with_wildcard_routes: true
+
+db_subject:
+  class: sfPropelRouteCollection
+  options:
+    model:                DbSubject
+    module:               dbsubject
+    prefix_path:          /dbsubject
+    column:               id
+    with_wildcard_routes: true
+
+organization:
+  class: sfPropelRouteCollection
+  options:
+    model:                Organization
+    module:               organization
+    prefix_path:          /organization
+    column:               id
+    with_wildcard_routes: true
+
+ip_range_ip:
+  class: sfPropelRouteCollection
+  options:
+    model:                IpRange
+    module:               ip
+    prefix_path:          /ip
+    column:               id
+    with_wildcard_routes: true
+
+ip_range:
+  class: sfPropelRouteCollection
+  options:
+    model:                IpRange
+    module:               ipRange
+    prefix_path:          /ipRange
+    column:               id
+    with_wildcard_routes: true
+
+library:
+  class: sfPropelRouteCollection
+  options:
+    model:                Library
+    module:               library
+    prefix_path:          /library
+    column:               id
+    with_wildcard_routes: true
+
 contact:
   class: sfPropelRouteCollection
   options:

@@ -1,0 +1,1 @@
+<?php echo link_to($organization->getName(), 'organization/edit?id='.$organization->getId()) ?>  

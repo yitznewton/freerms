@@ -1,0 +1,1 @@
+<?php echo link_to($db_subject->getLabel(), 'subject/edit?id='.$db_subject->getId()) ?>  

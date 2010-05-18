@@ -1,0 +1,1 @@
+<?php echo link_to($ip_range->getLibrary(), 'library/edit?id='.$ip_range->getLibId()) ?>  
