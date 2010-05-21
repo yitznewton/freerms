@@ -207,3 +207,13 @@ form#login-form label{
   margin: 0;
   padding: 0;
 }
+
+#sf_admin_container
+{
+  border: 1px solid #B2C7D7;
+}
+
+html
+{
+  background-color: #FFFFFF;
+}
