@@ -1,0 +1,25 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           DbSubject
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false   
+    route_prefix:          db_subject_subject
+    with_propel_route:     1
+   
+    config:
+      actions: ~
+      fields:
+        title_link: { label: Name }
+      list:
+        title: ''
+        display: [_title_link]
+        batch_actions: {}
+        object_actions: {}
+        sort: label
+
+      filter:
+        class: false
+      edit:    ~
+      new:     ~

@@ -1,0 +1,27 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           Library
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              
+    plural:                
+    route_prefix:          library
+    with_propel_route:     1   
+
+    config:
+      actions: ~
+      fields:
+        title_link: { label: Name }
+      list:
+        title: ''
+        display: [_title_link]
+        batch_actions: {}
+        object_actions: {}
+        sort: name
+        
+      filter:
+        class: false
+      edit:    ~
+      new:     ~

@@ -1,0 +1,1 @@
+<?php echo link_to($library->getName(), 'library/edit?id='.$library->getId()) ?>  

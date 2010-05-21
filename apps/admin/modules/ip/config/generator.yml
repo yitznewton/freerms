@@ -1,0 +1,32 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           IpRange
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false    
+    route_prefix:          ip_range_ip
+    with_propel_route:     1
+   
+    config:
+      actions: ~
+      fields:
+        start_ip: { label: Starting IP }
+        end_ip: { label: Ending IP }
+        note: { label: Note }
+        active_indicator: { label: Active }
+        proxy_indicator: {label: Proxy }
+        lib_id: { label: Library }
+
+      list:
+        title: ''
+        display: [_start_ip, _end_ip, note, active_indicator, proxy_indicator, _lib_id]
+        batch_actions: {}
+        object_actions: {}
+        sort: start_ip
+        max_per_page: 30
+
+      filter:
+        class: false
+      edit:    ~
+      new:     ~
