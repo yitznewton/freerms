@@ -83,11 +83,24 @@ class ipActions extends sfActions
 
   public function executeRegistration(sfWebRequest $request)
   {
-    $this->auto_email   = IpRegEventPeer::retrieveAutoEmail();
-    $this->manual_email = IpRegEventPeer::retrieveManualEmailArray();
-    $this->phone        = IpRegEventPeer::retrievePhoneArray();
-    $this->web_contact  = IpRegEventPeer::retrieveWebContactFormArray();
-    $this->web_admin = false;
+    $c = new Criteria();
+    $c->addAscendingOrderByColumn( 'old_start_ip' );
+    $c->addAscendingOrderByColumn( 'new_start_ip' );
+
+    $this->auto_email   = AutoEmailIpRegEventPeer::doSelect( $c );
+
+    $manual_email_contacts = ManualEmailIpRegContactPeer::doSelect( new Criteria() );
+
+    $this->manual_email_array = array();
+
+    foreach ( $manual_email_contacts as $contact ) {
+      $ip_reg_events = ManualEmailIpRegEventPeer::retrieveByContactId( $contact->getId(), $c );
+      $this->manual_email_array[] = array( 'contact' => $contact, 'ip_reg_events' => $ip_reg_events );
+    }
+
+    $this->phone       = false;//IpRegEventPeer::retrievePhoneArray();
+    $this->web_contact = false;//IpRegEventPeer::retrieveWebContactFormArray();
+    $this->web_admin   = false;
   }
 
   public function executeAutoregister(sfWebRequest $request)
