@@ -1,6 +1,7 @@
 generator:
   class: sfPropelGenerator
   param:
+    css:                   propel_admin.css
     model_class:           EResource
     theme:                 admin
     non_verbose_templates: true

@@ -43,6 +43,7 @@ class databaseActions extends sfActions
         'uri'         => 'https://erms.tourolib.org/database/'. $er->getId(),
         'public_note' => $er->getPublicNote(),
         'unavailable' => $er->getProductUnavailable(),
+        'suppression' => $er->getSuppression(),
       );
     }
     $json_result = json_encode( $results );

@@ -19,11 +19,11 @@
 
 <?php endif; ?>
 
-<?php if ( $manual_email_array ): ?>
+<?php if ( $manual_email ): ?>
   <h2>Manual email registration</h2>
 
   <ul>
-  <?php foreach ( $manual_email_array as $contact_array ): ?>
+  <?php foreach ( $manual_email as $contact_array ): ?>
     <li>
       <div>
         <div><?php echo link_to( $contact_array['contact']->getFirstName() . ' ' . $contact_array['contact']->getLastName(), 'contact/edit?id=' . $contact_array['contact']->getId() ) ?></div>
