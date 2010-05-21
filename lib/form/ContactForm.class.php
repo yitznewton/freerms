@@ -12,8 +12,9 @@ class ContactForm extends BaseContactForm
   public function configure()
   {
     unset(
-      $this->widgetSchema['updated_at'],
-      $this->validatorSchema['updated_at']
+      $this['updated_at'],
+      $this['auto_email_ip_reg_event_list'],
+      $this['manual_email_ip_reg_event_list']
     );
 
     $this->widgetSchema['org_id']->setLabel('Organization');

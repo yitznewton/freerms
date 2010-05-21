@@ -562,3 +562,7 @@ yitzchas@syslib-ubuntu:/www/websites/freerms$ cat /usr/local/lib/symfony-1.4/lib
 #sf_admin_content{
   font-size: 0.9em;
 }
+
+ul.sf_admin_actions{
+  padding: 0;
+}

@@ -164,4 +164,43 @@ class IpRegEventPeer extends BaseIpRegEventPeer {
     return $ret;
   }
 
+  public static function retrieveWebAdminArray()
+  {
+    $c = new Criteria();
+
+    $c->setDistinct();
+    $c->addJoin( IpRangePeer::ID, IpRegEventPeer::IP_RANGE_ID );
+    $c->addJoin( IpRangePeer::LIB_ID, LibraryPeer::ID );
+    $c->addJoin( LibraryPeer::ID, AcqLibAssocPeer::LIB_ID );
+    $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
+    $c->addJoin( AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID );
+    $c->addJoin( OrganizationPeer::IP_REG_METHOD_ID, IpRegMethodPeer::ID );
+    $c->add( EResourcePeer::SUPPRESSION, false );
+    $c->add( IpRegMethodPeer::LABEL, 'web admin' );
+
+    $c1 = clone $c;
+    $c1->add( OrganizationPeer::IP_REG_URI, null, Criteria::ISNOTNULL );
+    $c1->add( OrganizationPeer::IP_REG_USERNAME, null, Criteria::ISNOTNULL );
+    $c1->addAscendingOrderByColumn( OrganizationPeer::NAME );
+
+    $organizations = OrganizationPeer::doSelect( $c1 );
+    $c1->clear();
+
+    $ret = array();
+
+    foreach ( $organizations as $organization ) {
+      $c1 = clone $c;
+      $c1->add( OrganizationPeer::ID, $organization->getId() );
+      $c1->addAscendingOrderByColumn( IpRegEventPeer::OLD_START_IP );
+      $c1->addAscendingOrderByColumn( IpRegEventPeer::NEW_START_IP );
+      $ip_reg_events = IpRegEventPeer::doSelect( $c1 );
+
+      $c1->clear();
+
+      $ret[] = array( 'organization' => $organization, 'ip_reg_events' => $ip_reg_events );
+    }
+
+    return $ret;
+  }
 } // IpRegEventPeer

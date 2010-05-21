@@ -66,8 +66,8 @@
   <?php foreach ( $web_contact as $organization_array ): ?>
     <li>
       <div>
-        <div><?php echo link_to( $organization_array['organization']->getName(), 'contact/edit?id=' . $organization_array['organization']->getId() ) ?></div>
-        <div><?php echo $organization_array['organization']->getIpRegUri() ?></div>
+        <div><?php echo link_to( $organization_array['organization']->getName(), 'organization/edit?id=' . $organization_array['organization']->getId() ) ?></div>
+        <div><?php echo link_to( $organization_array['organization']->getIpRegUri(), $organization_array['organization']->getIpRegUri() ) ?></div>
       </div>
       <ul>
         <?php foreach ( $organization_array['ip_reg_events'] as $ip_reg_event ): ?>
@@ -81,9 +81,26 @@
 
 <?php if ( $web_admin ): ?>
   <h2>Web admin form</h2>
-  <?php foreach ( $web_admin as $organization ): ?>
 
+  <ul>
+  <?php foreach ( $web_admin as $organization_array ): ?>
+    <li>
+      <div>
+        <div><?php echo link_to( $organization_array['organization']->getName(), 'organization/edit?id=' . $organization_array['organization']->getId() ) ?></div>
+        <div><?php echo link_to( $organization_array['organization']->getIpRegUri(), $organization_array['organization']->getIpRegUri() ) ?></div>
+        <div>Username: <?php echo $organization_array['organization']->getIpRegUsername() ?></div>
+        <?php if ( $organization_array['organization']->getIpRegPassword() ): ?>
+          <div>Password: <?php echo $organization_array['organization']->getIpRegPassword() ?></div>
+        <?php endif; ?>
+      </div>
+      <ul>
+        <?php foreach ( $organization_array['ip_reg_events'] as $ip_reg_event ): ?>
+        <li><?php echo $ip_reg_event ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </li>
   <?php endforeach; ?>
+  </ul>
 <?php endif; ?>
 
 
