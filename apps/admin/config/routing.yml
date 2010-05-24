@@ -28,38 +28,14 @@ logout:
   url:   /logout
   param: { module: user, action: logout }
 
-ip_registration:
-  url:   /ip/registration
-  param: { module: ip, action: registration }
-
-ip_autoregister:
-  url:   /ip/autoregister
-  param: { module: ip, action: autoregister }
-
-default_export:
-  url:   /:module/export/*
-  param: { action: export }
-
 default_index:
   url:   /:module
   param: { action: index }
-
-default_new:
-  url:   /:module/new/*
-  param: { action: new }
-
-default_create:
-  url:   /:module/create/*
-  param: { action: create }
 
 default_update:
   url:   /:module/update/:id/*
   param: { action: update }
 
-default_delete:
-  url:   /:module/delete/:id/*
-  param: { action: delete }
-
-default_edit:
-  url:   /:module/:id/*
-  param: { action: edit }
+default:
+  url:   /:module/:action/*
+  param: ~

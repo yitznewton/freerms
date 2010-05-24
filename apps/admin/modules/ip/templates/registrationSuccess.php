@@ -16,11 +16,11 @@
 <?php endif; ?>
 
 <?php if ( isset( $organizations['auto email'] ) ): ?>
-<h3>Automatic registration</h3>
+<h3>Automatic email registration</h3>
 <p>There are IP ranges eligible for automatic registration to selected
   vendors via email.</p>
 
-<p><?php echo link_to( 'Click here to auto-update.', 'ipregevent/autoregister', array( 'confirm' => 'This will send email to vendors.' ) ) ?></p>
+<p><?php echo link_to( 'Click here to auto-register', 'ipregevent/autoregister', array( 'confirm' => 'This will send email to vendors.' ) ) ?></p>
 
 <?php endif; ?>
 

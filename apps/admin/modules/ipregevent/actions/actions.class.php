@@ -19,4 +19,9 @@ class ipregeventActions extends sfActions
 
     $this->redirect( 'ip/registration' );
   }
+
+  public function executeAutoregister(sfWebRequest $request)
+  {
+    throw new Exception('write me');
+  }
 }
