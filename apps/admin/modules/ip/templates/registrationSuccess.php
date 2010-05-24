@@ -4,13 +4,16 @@
   <li>Registration</li>
 </ul>
 
+<?php if ( $ip_reg_events ): ?>
 <h2>Summary</h2>
 <ul>
   <?php foreach ( $ip_reg_events as $ip_reg_event ): ?>
-  <!--<li><?php echo $ip_reg_event ?> <?php //echo link_to( 'Mark done', 'ipregevent/markDone?id=' . $ip_reg_event->getIpRangeId(), array( 'confirm' => 'This cannot be reversed.' ) ) ?></li>-->
-  <li><?php echo $ip_reg_event ?> <?php echo link_to( 'Mark done', '@homepage', array( 'confirm' => 'This cannot be reversed.' ) ) ?></li>
+  <li><?php echo $ip_reg_event ?> <?php echo link_to( 'Remove', 'ipregevent/delete?id=' . $ip_reg_event->getIpRangeId(), array( 'confirm' => 'This cannot be reversed.' ) ) ?></li>
   <?php endforeach; ?>
 </ul>
+<?php else: ?>
+<p>There are no unprocessed IP registration events.</p>
+<?php endif; ?>
 
 <?php if ( isset( $organizations['auto email'] ) ): ?>
 <h3>Automatic registration</h3>
