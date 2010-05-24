@@ -279,11 +279,6 @@ h1,h2,h3,h4,h5,h6,strong{font-weight:bold;}abbr,acronym{border-bottom:1px dotted
   border: 1px solid #f22;
 }
 
-#sf_admin_container .sf_admin_list .sf_admin_boolean
-{
-  text-align: center;
-}
-
 #sf_admin_container a
 {
   color: #464646;
@@ -552,6 +547,10 @@ h1,h2,h3,h4,h5,h6,strong{font-weight:bold;}abbr,acronym{border-bottom:1px dotted
 #sf_admin_container .sf_admin_list .sf_admin_boolean
 {
   text-align: center;
+}
+
+.sf_admin_list table{
+  width: 630px;
 }
 
 #sf_admin_bar{
