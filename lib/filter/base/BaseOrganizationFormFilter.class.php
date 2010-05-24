@@ -24,7 +24,6 @@ abstract class BaseOrganizationFormFilter extends BaseFormFilterPropel
       'ip_reg_username'         => new sfWidgetFormFilterInput(),
       'ip_reg_password'         => new sfWidgetFormFilterInput(),
       'ip_reg_contact_id'       => new sfWidgetFormPropelChoice(array('model' => 'Contact', 'add_empty' => true)),
-      'ip_reg_force_manual'     => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'note'                    => new sfWidgetFormFilterInput(),
       'updated_at'              => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
     ));
@@ -42,7 +41,6 @@ abstract class BaseOrganizationFormFilter extends BaseFormFilterPropel
       'ip_reg_username'         => new sfValidatorPass(array('required' => false)),
       'ip_reg_password'         => new sfValidatorPass(array('required' => false)),
       'ip_reg_contact_id'       => new sfValidatorPropelChoice(array('required' => false, 'model' => 'Contact', 'column' => 'id')),
-      'ip_reg_force_manual'     => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'note'                    => new sfValidatorPass(array('required' => false)),
       'updated_at'              => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
     ));
@@ -75,7 +73,6 @@ abstract class BaseOrganizationFormFilter extends BaseFormFilterPropel
       'ip_reg_username'         => 'Text',
       'ip_reg_password'         => 'Text',
       'ip_reg_contact_id'       => 'ForeignKey',
-      'ip_reg_force_manual'     => 'Boolean',
       'note'                    => 'Text',
       'updated_at'              => 'Date',
     );

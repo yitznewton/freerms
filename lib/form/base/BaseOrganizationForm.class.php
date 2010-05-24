@@ -27,7 +27,6 @@ abstract class BaseOrganizationForm extends BaseFormPropel
       'ip_reg_username'         => new sfWidgetFormInputText(),
       'ip_reg_password'         => new sfWidgetFormInputText(),
       'ip_reg_contact_id'       => new sfWidgetFormPropelChoice(array('model' => 'Contact', 'add_empty' => true)),
-      'ip_reg_force_manual'     => new sfWidgetFormInputCheckbox(),
       'note'                    => new sfWidgetFormTextarea(),
       'updated_at'              => new sfWidgetFormDateTime(),
     ));
@@ -46,10 +45,13 @@ abstract class BaseOrganizationForm extends BaseFormPropel
       'ip_reg_username'         => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'ip_reg_password'         => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'ip_reg_contact_id'       => new sfValidatorPropelChoice(array('model' => 'Contact', 'column' => 'id', 'required' => false)),
-      'ip_reg_force_manual'     => new sfValidatorBoolean(array('required' => false)),
       'note'                    => new sfValidatorString(array('required' => false)),
       'updated_at'              => new sfValidatorDateTime(),
     ));
+
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorPropelUnique(array('model' => 'Organization', 'column' => array('name')))
+    );
 
     $this->widgetSchema->setNameFormat('organization[%s]');
 

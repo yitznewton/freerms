@@ -33,11 +33,13 @@ AuthMethod:
     IsValidOffsite: true
 
 IpRegMethod:
-  Web:
+  WebAdmin:
     Label: web admin
-  Webform:
-    Label: web form
-  Email:
-    Label: email
+  WebContactForm:
+    Label: web contact form
+  AutoEmail:
+    Label: auto email
+  ManualEmail:
+    Label: manual email
   Phone:
     Label: phone

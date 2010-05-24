@@ -416,10 +416,10 @@ CREATE TABLE `organizations`
 	`ip_reg_username` VARCHAR(50),
 	`ip_reg_password` VARCHAR(50),
 	`ip_reg_contact_id` INTEGER,
-	`ip_reg_force_manual` TINYINT,
 	`note` TEXT,
 	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
+	UNIQUE KEY `organizations_U_1` (`name`),
 	INDEX `organizations_FI_1` (`ip_reg_method_id`),
 	CONSTRAINT `organizations_FK_1`
 		FOREIGN KEY (`ip_reg_method_id`)

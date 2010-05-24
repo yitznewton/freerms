@@ -17,4 +17,15 @@ class OrganizationPeer extends BaseOrganizationPeer
    
     return $array;
   }
+
+  public static function retrieveHavingIpRegEvents()
+  {
+    $c = new Criteria();
+    $c->addJoin( IpRegEventPeer::IP_RANGE_ID, IpRangePeer::ID );
+    $c->addJoin( IpRangePeer::LIB_ID, AcqLibAssocPeer::LIB_ID );
+    $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->addJoin( AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID );
+
+    return OrganizationPeer::doSelect( $c );
+  }
 }

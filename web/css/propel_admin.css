@@ -284,7 +284,6 @@ h1,h2,h3,h4,h5,h6,strong{font-weight:bold;}abbr,acronym{border-bottom:1px dotted
   text-align: center;
 }
 
-yitzchas@syslib-ubuntu:/www/websites/freerms$ cat /usr/local/lib/symfony-1.4/lib/plugins/sfPropelPlugin/web/css/default.css
 #sf_admin_container a
 {
   color: #464646;

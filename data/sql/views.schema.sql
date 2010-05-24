@@ -65,5 +65,6 @@ CREATE VIEW manual_email_ip_reg_events as (
   JOIN organizations o ON a.vendor_org_id = o.id
   JOIN contacts c on c.org_id = o.id
   WHERE EXISTS ( SELECT * FROM manual_email_ip_reg_contacts m WHERE c.id = m.id )
+  OR
 )
 ;

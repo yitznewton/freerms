@@ -4,33 +4,35 @@
   <li>Registration</li>
 </ul>
 
-<?php if ( $auto_email ): ?>
-<h2>Automatic registration</h2>
-<p>There are IP ranges eligible for automatic registration to selected
-  vendors via email.</p>
-
+<h2>Summary</h2>
 <ul>
-  <?php foreach ( $auto_email as $ip_reg_event ): ?>
-    <li><?php echo $ip_reg_event ?></li>
+  <?php foreach ( $ip_reg_events as $ip_reg_event ): ?>
+  <!--<li><?php echo $ip_reg_event ?> <?php //echo link_to( 'Mark done', 'ipregevent/markDone?id=' . $ip_reg_event->getIpRangeId(), array( 'confirm' => 'This cannot be reversed.' ) ) ?></li>-->
+  <li><?php echo $ip_reg_event ?> <?php echo link_to( 'Mark done', '@homepage', array( 'confirm' => 'This cannot be reversed.' ) ) ?></li>
   <?php endforeach; ?>
 </ul>
 
-<p><?php echo link_to( 'Click here to auto-update.', 'ip/autoregister', array( 'confirm' => 'This will send email to vendors.' ) ) ?></p>
+<?php if ( isset( $organizations['auto email'] ) ): ?>
+<h3>Automatic registration</h3>
+<p>There are IP ranges eligible for automatic registration to selected
+  vendors via email.</p>
+
+<p><?php echo link_to( 'Click here to auto-update.', 'ipregevent/autoregister', array( 'confirm' => 'This will send email to vendors.' ) ) ?></p>
 
 <?php endif; ?>
 
-<?php if ( $manual_email ): ?>
-  <h2>Manual email registration</h2>
+<?php if ( isset( $organizations['manual email'] ) ): ?>
+  <h3>Manual email registration</h3>
 
   <ul>
-  <?php foreach ( $manual_email as $contact_array ): ?>
+  <?php foreach ( $organizations['manual email'] as $org_array ): ?>
     <li>
       <div>
-        <div><?php echo link_to( $contact_array['contact']->getFirstName() . ' ' . $contact_array['contact']->getLastName(), 'contact/edit?id=' . $contact_array['contact']->getId() ) ?></div>
-        <div><?php echo mail_to( $contact_array['contact']->getEmail() ) ?></div>
+        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
+        <div><?php echo mail_to( $org_array['contact']->getEmail() ) ?></div>
       </div>
       <ul>
-        <?php foreach ( $contact_array['ip_reg_events'] as $ip_reg_event ): ?>
+        <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
         <li><?php echo $ip_reg_event ?></li>
         <?php endforeach; ?>
       </ul>
@@ -39,18 +41,20 @@
   </ul>
 <?php endif; ?>
 
-<?php if ( $phone ): ?>
-  <h2>Phone registration</h2>
+<?php if ( isset( $organizations['phone'] ) ): ?>
+  <h3>Phone registration</h3>
 
   <ul>
-  <?php foreach ( $phone as $contact_array ): ?>
+  <?php foreach ( $organizations['phone'] as $org_array ): ?>
     <li>
       <div>
-        <div><?php echo link_to( $contact_array['contact']->getFirstName() . ' ' . $contact_array['contact']->getLastName(), 'contact/edit?id=' . $contact_array['contact']->getId() ) ?></div>
-        <div><?php echo $contact_array['contact']->getPhone() ?></div>
+        <?php if ( $org_array['contact'] ): ?>
+        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $contact_array['contact']->getId() ) ?></div>
+        <?php endif; ?>
+        <div><?php echo $org_array['contact']->getPhone() ? $org_array['contact']->getPhone() : $org_array['organization']->getPhone() ?></div>
       </div>
       <ul>
-        <?php foreach ( $contact_array['ip_reg_events'] as $ip_reg_event ): ?>
+        <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
         <li><?php echo $ip_reg_event ?></li>
         <?php endforeach; ?>
       </ul>
@@ -59,36 +63,38 @@
   </ul>
 <?php endif; ?>
 
-<?php if ( $web_contact ): ?>
-  <h2>Web contact form registration</h2>
+<?php if ( isset( $organizations['web contact form'] ) ): ?>
+  <h3>Web contact form registration</h3>
 
   <ul>
-  <?php foreach ( $web_contact as $organization_array ): ?>
+  <?php foreach ( $organizations['web contact form'] as $org_array ): ?>
+    <li>
+      <div>
+        <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
+        <div><?php echo link_to( $org_array['organization']->getIpRegUri(), $org_array['organization']->getIpRegUri() ) ?></div>
+      </div>
+      <ul>
+        <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
+        <li><?php echo $ip_reg_event ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </li>
+  <?php endforeach; ?>
+  </ul>
+<?php endif; ?>
+
+<?php if ( isset( $organizations['web admin'] ) ): ?>
+  <h3>Web admin form</h3>
+
+  <ul>
+  <?php foreach ( $organizations['web admin'] as $organization_array ): ?>
     <li>
       <div>
         <div><?php echo link_to( $organization_array['organization']->getName(), 'organization/edit?id=' . $organization_array['organization']->getId() ) ?></div>
         <div><?php echo link_to( $organization_array['organization']->getIpRegUri(), $organization_array['organization']->getIpRegUri() ) ?></div>
-      </div>
-      <ul>
-        <?php foreach ( $organization_array['ip_reg_events'] as $ip_reg_event ): ?>
-        <li><?php echo $ip_reg_event ?></li>
-        <?php endforeach; ?>
-      </ul>
-    </li>
-  <?php endforeach; ?>
-  </ul>
-<?php endif; ?>
-
-<?php if ( $web_admin ): ?>
-  <h2>Web admin form</h2>
-
-  <ul>
-  <?php foreach ( $web_admin as $organization_array ): ?>
-    <li>
-      <div>
-        <div><?php echo link_to( $organization_array['organization']->getName(), 'organization/edit?id=' . $organization_array['organization']->getId() ) ?></div>
-        <div><?php echo link_to( $organization_array['organization']->getIpRegUri(), $organization_array['organization']->getIpRegUri() ) ?></div>
-        <div>Username: <?php echo $organization_array['organization']->getIpRegUsername() ?></div>
+        <?php if ( $organization_array['organization']->getIpRegUsername() ): ?>
+          <div>Username: <?php echo $organization_array['organization']->getIpRegUsername() ?></div>
+        <?php endif; ?>
         <?php if ( $organization_array['organization']->getIpRegPassword() ): ?>
           <div>Password: <?php echo $organization_array['organization']->getIpRegPassword() ?></div>
         <?php endif; ?>
@@ -103,4 +109,30 @@
   </ul>
 <?php endif; ?>
 
+<?php if ( isset( $organizations['other'] ) ): ?>
+  <h3>Other</h3>
 
+  <ul>
+  <?php foreach ( $organizations['other'] as $organization_array ): ?>
+    <li>
+      <div>
+        <div><?php echo link_to( $organization_array['organization']->getName(), 'organization/edit?id=' . $organization_array['organization']->getId() ) ?></div>
+        <?php if ( $organization_array['organization']->getIpRegUri() ): ?>
+          <div><?php echo link_to( $organization_array['organization']->getIpRegUri(), $organization_array['organization']->getIpRegUri() ) ?></div>
+        <?php endif; ?>
+        <?php if ( $organization_array['organization']->getIpRegUsername() ): ?>
+          <div>Username: <?php echo $organization_array['organization']->getIpRegUsername() ?></div>
+        <?php endif; ?>
+        <?php if ( $organization_array['organization']->getIpRegPassword() ): ?>
+          <div>Password: <?php echo $organization_array['organization']->getIpRegPassword() ?></div>
+        <?php endif; ?>
+      </div>
+      <ul>
+        <?php foreach ( $organization_array['ip_reg_events'] as $ip_reg_event ): ?>
+        <li><?php echo $ip_reg_event ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </li>
+  <?php endforeach; ?>
+  </ul>
+<?php endif; ?>

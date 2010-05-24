@@ -19,8 +19,27 @@ require 'lib/model/om/BaseOrganization.php';
  * @package    lib.model
  */
 class Organization extends BaseOrganization {
+  protected $ip_reg_events;
+
   public function __toString()
   {
     return $this->getName();
+  }
+
+  public function getIpRegEvents()
+  {
+    if ( isset( $this->ip_reg_events ) ) {
+      return $this->ip_reg_events;
+    }
+
+    $c = new Criteria();
+    $c->addJoin( IpRegEventPeer::IP_RANGE_ID, IpRangePeer::ID );
+    $c->addJoin( IpRangePeer::LIB_ID, AcqLibAssocPeer::LIB_ID );
+    $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->add( AcquisitionPeer::VENDOR_ORG_ID, $this->getId() );
+    $c->addAscendingOrderByColumn( IpRegEventPeer::OLD_START_IP );
+    $c->addAscendingOrderByColumn( IpRegEventPeer::NEW_START_IP );
+
+    return $this->ip_reg_events = IpRegEventPeer::doSelectJoinIpRange( $c );
   }
 } // Organization

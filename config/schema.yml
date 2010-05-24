@@ -877,6 +877,7 @@ propel:
     name: 
       type: VARCHAR
       required: true
+      index: unique
     alt_name: 
       type: VARCHAR
 #    org_type_id:
@@ -918,8 +919,6 @@ propel:
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
-    ip_reg_force_manual:
-      type: BOOLEAN
     note: 
       type: LONGVARCHAR
     updated_at: 

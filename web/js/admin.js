@@ -20,7 +20,8 @@ function update_ip_reg_fields()
       $('#organization-ip-notification-web').show();
       break;
 
-    case 'email':
+    case 'auto email':
+    case 'manual email':
     case 'phone':
       $('fieldset.organization-ip-notification').hide();
       $('#organization-ip-notification-contact').show();

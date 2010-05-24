@@ -83,11 +83,75 @@ class ipActions extends sfActions
 
   public function executeRegistration(sfWebRequest $request)
   {
-    $this->auto_email   = IpRegEventPeer::retrieveAutoEmail();
-    $this->manual_email = IpRegEventPeer::retrieveManualEmailArray();
-    $this->phone        = IpRegEventPeer::retrievePhoneArray();
-    $this->web_contact  = IpRegEventPeer::retrieveWebContactFormArray();
-    $this->web_admin    = IpRegEventPeer::retrieveWebAdminArray();
+    $organization_array = array();
+
+    $organizations = OrganizationPeer::retrieveHavingIpRegEvents();
+    $this->ip_reg_events = IpRegEventPeer::retrieveAll();
+
+    foreach ( $organizations as $organization ) {
+      $contact       = $organization->getContact();
+      
+      $current                  = array();
+      $current['organization']  = $organization;
+      $current['contact']       = $contact;
+      $current['ip_reg_events'] = $organization->getIpRegEvents();
+
+      switch ( $organization->getIpRegMethod()->getLabel() ) {
+        case 'auto email':
+          if ( $contact && $contact->getEmail() ) {
+            $organization_array['auto email'][ $organization->getName() ] = $current;
+          }
+          else {
+            $organization_array['other'][ $organization->getName() ] = $current;
+          }
+
+          break;
+
+        case 'manual email':
+          if ( $contact && $contact->getEmail() ) {
+            $organization_array['manual email'][ $organization->getName() ] = $current;
+          }
+          else {
+            $organization_array['other'][ $organization->getName() ] = $current;
+          }
+
+          break;
+
+        case 'phone':
+          if ( $contact && ( $contact->getPhone() || $organization->getPhone() ) ) {
+            $organization_array['phone'][ $organization->getName() ] = $current;
+          }
+          else {
+            $organization_array['other'][ $organization->getName() ] = $current;
+          }
+
+          break;
+
+        case 'web contact form':
+          if ( $organization->getIpRegUri() ) {
+            $organization_array['web contact form'][ $organization->getName() ] = $current;
+          }
+          else {
+            $organization_array['other'][ $organization->getName() ] = $current;
+          }
+          break;
+
+        case 'web admin':
+          if ( $organization->getIpRegUri() ) {
+            $organization_array['web admin'][ $organization->getName() ] = $current;
+          }
+          else {
+            $organization_array['other'][ $organization->getName() ] = $current;
+          }
+          break;
+
+        default:
+          $organization_array['other'][ $organization->getName() ] = $current;
+          break;
+      }
+    }
+
+    $this->organizations = $organization_array;
   }
 
   public function executeAutoregister(sfWebRequest $request)

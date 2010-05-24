@@ -51,7 +51,6 @@
           </fieldset>
           <fieldset class="organization-ip-notification" id="organization-ip-notification-contact">
             <?php echo $form['ip_reg_contact_id']->renderRow() ?>
-            <?php echo $form['ip_reg_force_manual']->renderRow() ?>
           </fieldset>
 
           <?php echo $form['note']->renderRow() ?>

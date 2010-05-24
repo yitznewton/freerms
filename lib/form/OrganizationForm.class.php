@@ -15,7 +15,6 @@ class OrganizationForm extends BaseOrganizationForm
 
     $this->widgetSchema['alt_name']->setLabel('Alternate name');
     $this->widgetSchema['ip_reg_method_id']->setLabel('IP registration method');
-    $this->widgetSchema['ip_reg_force_manual']->setLabel('Always do manual IP registration');
     $this->widgetSchema['ip_reg_uri']->setLabel('IP registration URI');
     $this->widgetSchema['ip_reg_username']->setLabel('IP registration username');
     $this->widgetSchema['ip_reg_password']->setLabel('IP registration password');
