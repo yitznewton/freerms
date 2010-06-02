@@ -9,27 +9,20 @@ function update_ip_reg_fields()
                  .find('option:selected').text();
 
   switch ( selected ) {
-    case '':
-      // hide all
-      $('fieldset.organization-ip-notification').hide();
-      break;
-
     case 'web admin':
     case 'web contact form':
-      $('fieldset.organization-ip-notification').hide();
-      $('#organization-ip-notification-web').show();
+      $('#organization-ip-notification-contact').hide();
       break;
 
     case 'auto email':
     case 'manual email':
     case 'phone':
-      $('fieldset.organization-ip-notification').hide();
       $('#organization-ip-notification-contact').show();
       break;
 
     default:
       // show all
-      $('fieldset.organization-ip-notification').show();
+      $('#organization-ip-notification-contact').show();
   }
 }
 

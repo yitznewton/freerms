@@ -15,9 +15,9 @@ class OrganizationForm extends BaseOrganizationForm
 
     $this->widgetSchema['alt_name']->setLabel('Alternate name');
     $this->widgetSchema['ip_reg_method_id']->setLabel('IP registration method');
-    $this->widgetSchema['ip_reg_uri']->setLabel('IP registration URI');
-    $this->widgetSchema['ip_reg_username']->setLabel('IP registration username');
-    $this->widgetSchema['ip_reg_password']->setLabel('IP registration password');
+    $this->widgetSchema['web_admin_uri']->setLabel('Web admin URI');
+    $this->widgetSchema['web_admin_username']->setLabel('Web admin username');
+    $this->widgetSchema['web_admin_password']->setLabel('Web admin password');
 
     $contact_criteria = new Criteria();
     $contact_criteria->add( ContactPeer::ORG_ID, $this->getObject()->getId() );

@@ -128,7 +128,7 @@ class ipActions extends sfActions
           break;
 
         case 'web contact form':
-          if ( $organization->getIpRegUri() ) {
+          if ( $organization->getWebAdminUri() ) {
             $organization_array['web contact form'][ $organization->getName() ] = $current;
           }
           else {
@@ -137,7 +137,7 @@ class ipActions extends sfActions
           break;
 
         case 'web admin':
-          if ( $organization->getIpRegUri() ) {
+          if ( $organization->getWebAdminUri() ) {
             $organization_array['web admin'][ $organization->getName() ] = $current;
           }
           else {

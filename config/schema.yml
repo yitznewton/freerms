@@ -899,20 +899,22 @@ propel:
       size: 40
     notice_address_licensor: 
       type: LONGVARCHAR
+    web_admin_uri:
+      type: VARCHAR
+    web_admin_username:
+      type: VARCHAR
+      size: 50
+    web_admin_password:
+      type: VARCHAR
+      size: 50
+    web_contact_form_uri:
+      type: VARCHAR
     ip_reg_method_id:
       type: INTEGER
       foreignTable: ip_reg_methods
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
-    ip_reg_uri:
-      type: VARCHAR
-    ip_reg_username:
-      type: VARCHAR
-      size: 50
-    ip_reg_password:
-      type: VARCHAR
-      size: 50
     ip_reg_contact_id:
       type: INTEGER
       foreignTable: contacts

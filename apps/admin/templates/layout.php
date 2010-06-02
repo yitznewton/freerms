@@ -49,10 +49,10 @@
         <?php if ($this->getActionName() != 'index'
           || $this->getModuleName() != 'organization'): ?>
         <li class="menu-link">
-          <a href="<?php echo url_for('organization/index') ?>">Organizations</a>
+          <a href="<?php echo url_for('organization/index') ?>">Vendors</a>
         </li>
         <?php else: ?>
-        <li class="menu-link-current">Organizations</li>
+        <li class="menu-link-current">Vendors</li>
         <?php endif; ?>
 
         <?php if ($this->getActionName() != 'index'

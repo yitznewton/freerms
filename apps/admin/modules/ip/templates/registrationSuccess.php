@@ -19,7 +19,6 @@
 <h3>Automatic email registration</h3>
 <p>There are IP ranges eligible for automatic registration to selected
   vendors via email.</p>
-
 <p><?php echo link_to( 'Click here to auto-register', 'ipregevent/autoregister', array( 'confirm' => 'This will send email to vendors.' ) ) ?></p>
 
 <?php endif; ?>
@@ -31,6 +30,7 @@
   <?php foreach ( $organizations['manual email'] as $org_array ): ?>
     <li>
       <div>
+        <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
         <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
         <div><?php echo mail_to( $org_array['contact']->getEmail() ) ?></div>
       </div>
@@ -50,9 +50,10 @@
   <ul>
   <?php foreach ( $organizations['phone'] as $org_array ): ?>
     <li>
+      <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
       <div>
         <?php if ( $org_array['contact'] ): ?>
-        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $contact_array['contact']->getId() ) ?></div>
+        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
         <?php endif; ?>
         <div><?php echo $org_array['contact']->getPhone() ? $org_array['contact']->getPhone() : $org_array['organization']->getPhone() ?></div>
       </div>
@@ -74,7 +75,7 @@
     <li>
       <div>
         <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
-        <div><?php echo link_to( $org_array['organization']->getIpRegUri(), $org_array['organization']->getIpRegUri() ) ?></div>
+        <div><?php echo link_to( $org_array['organization']->getWebAdminUri(), $org_array['organization']->getWebAdminUri() ) ?></div>
       </div>
       <ul>
         <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
@@ -94,12 +95,12 @@
     <li>
       <div>
         <div><?php echo link_to( $organization_array['organization']->getName(), 'organization/edit?id=' . $organization_array['organization']->getId() ) ?></div>
-        <div><?php echo link_to( $organization_array['organization']->getIpRegUri(), $organization_array['organization']->getIpRegUri() ) ?></div>
-        <?php if ( $organization_array['organization']->getIpRegUsername() ): ?>
-          <div>Username: <?php echo $organization_array['organization']->getIpRegUsername() ?></div>
+        <div><?php echo link_to( $organization_array['organization']->getWebAdminUri(), $organization_array['organization']->getWebAdminUri() ) ?></div>
+        <?php if ( $organization_array['organization']->getWebAdminUsername() ): ?>
+          <div>Username: <?php echo $organization_array['organization']->getWebAdminUsername() ?></div>
         <?php endif; ?>
-        <?php if ( $organization_array['organization']->getIpRegPassword() ): ?>
-          <div>Password: <?php echo $organization_array['organization']->getIpRegPassword() ?></div>
+        <?php if ( $organization_array['organization']->getWebAdminPassword() ): ?>
+          <div>Password: <?php echo $organization_array['organization']->getWebAdminPassword() ?></div>
         <?php endif; ?>
       </div>
       <ul>
@@ -120,14 +121,14 @@
     <li>
       <div>
         <div><?php echo link_to( $organization_array['organization']->getName(), 'organization/edit?id=' . $organization_array['organization']->getId() ) ?></div>
-        <?php if ( $organization_array['organization']->getIpRegUri() ): ?>
-          <div><?php echo link_to( $organization_array['organization']->getIpRegUri(), $organization_array['organization']->getIpRegUri() ) ?></div>
+        <?php if ( $organization_array['organization']->getWebAdminUri() ): ?>
+          <div><?php echo link_to( $organization_array['organization']->getWebAdminUri(), $organization_array['organization']->getWebAdminUri() ) ?></div>
         <?php endif; ?>
-        <?php if ( $organization_array['organization']->getIpRegUsername() ): ?>
-          <div>Username: <?php echo $organization_array['organization']->getIpRegUsername() ?></div>
+        <?php if ( $organization_array['organization']->getWebAdminUsername() ): ?>
+          <div>Username: <?php echo $organization_array['organization']->getWebAdminUsername() ?></div>
         <?php endif; ?>
-        <?php if ( $organization_array['organization']->getIpRegPassword() ): ?>
-          <div>Password: <?php echo $organization_array['organization']->getIpRegPassword() ?></div>
+        <?php if ( $organization_array['organization']->getWebAdminPassword() ): ?>
+          <div>Password: <?php echo $organization_array['organization']->getWebAdminPassword() ?></div>
         <?php endif; ?>
       </div>
       <ul>

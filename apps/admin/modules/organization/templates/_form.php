@@ -43,12 +43,10 @@
           <?php echo $form['phone']->renderRow() ?>
           <?php echo $form['fax']->renderRow() ?>
           <?php echo $form['notice_address_licensor']->renderRow() ?>
+          <?php echo $form['web_admin_uri']->renderRow() ?>
+          <?php echo $form['web_admin_username']->renderRow() ?>
+          <?php echo $form['web_admin_password']->renderRow() ?>
           <?php echo $form['ip_reg_method_id']->renderRow() ?>
-          <fieldset class="organization-ip-notification" id="organization-ip-notification-web">
-            <?php echo $form['ip_reg_uri']->renderRow() ?>
-            <?php echo $form['ip_reg_username']->renderRow() ?>
-            <?php echo $form['ip_reg_password']->renderRow() ?>
-          </fieldset>
           <fieldset class="organization-ip-notification" id="organization-ip-notification-contact">
             <?php echo $form['ip_reg_contact_id']->renderRow() ?>
           </fieldset>
