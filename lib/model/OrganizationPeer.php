@@ -25,6 +25,8 @@ class OrganizationPeer extends BaseOrganizationPeer
     $c->addJoin( IpRangePeer::LIB_ID, AcqLibAssocPeer::LIB_ID );
     $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
     $c->addJoin( AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID );
+    $c->addJoin( OrganizationPeer::IP_REG_METHOD_ID, IpRegMethodPeer::ID );
+    $c->add( IpRegMethodPeer::LABEL, 'none', Criteria::NOT_EQUAL );
 
     return OrganizationPeer::doSelect( $c );
   }
