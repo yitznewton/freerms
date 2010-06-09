@@ -175,8 +175,6 @@ CREATE TABLE `contacts`
 	`title` VARCHAR(50),
 	`role` VARCHAR(255),
 	`address` TEXT,
-	`email` VARCHAR(100),
-	`phone` VARCHAR(40),
 	`fax` VARCHAR(40),
 	`note` TEXT,
 	`org_id` INTEGER,
@@ -188,6 +186,48 @@ CREATE TABLE `contacts`
 		REFERENCES `organizations` (`id`)
 		ON UPDATE CASCADE
 		ON DELETE SET NULL
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- contact_emails
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `contact_emails`;
+
+
+CREATE TABLE `contact_emails`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`contact_id` INTEGER  NOT NULL,
+	`address` VARCHAR(100)  NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `contact_emails_FI_1` (`contact_id`),
+	CONSTRAINT `contact_emails_FK_1`
+		FOREIGN KEY (`contact_id`)
+		REFERENCES `contacts` (`id`)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- contact_phones
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `contact_phones`;
+
+
+CREATE TABLE `contact_phones`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`contact_id` INTEGER  NOT NULL,
+	`number` VARCHAR(40)  NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `contact_phones_FI_1` (`contact_id`),
+	CONSTRAINT `contact_phones_FK_1`
+		FOREIGN KEY (`contact_id`)
+		REFERENCES `contacts` (`id`)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------

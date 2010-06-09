@@ -23,4 +23,28 @@ class Contact extends BaseContact {
   {
     return $this->getLastName() . ', ' . $this->getFirstName();
   }
+
+  public function getFirstContactEmail()
+  {
+    $emails = $this->getContactEmails();
+
+    if ( $emails ) {
+      return $emails[0];
+    }
+    else {
+      return false;
+    }
+  }
+
+  public function getFirstContactPhone()
+  {
+    $phones = $this->getContactPhones();
+
+    if ( $phones ) {
+      return $phones[0];
+    }
+    else {
+      return false;
+    }
+  }
 } // Contact

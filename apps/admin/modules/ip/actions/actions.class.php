@@ -98,7 +98,7 @@ class ipActions extends sfActions
 
       switch ( $organization->getIpRegMethod()->getLabel() ) {
         case 'auto email':
-          if ( $contact && $contact->getEmail() ) {
+          if ( $contact && $contact->getFirstContactEmail() ) {
             $organization_array['auto email'][ $organization->getName() ] = $current;
           }
           else {
@@ -108,7 +108,7 @@ class ipActions extends sfActions
           break;
 
         case 'manual email':
-          if ( $contact && $contact->getEmail() ) {
+          if ( $contact && $contact->getFirstContactEmail() ) {
             $organization_array['manual email'][ $organization->getName() ] = $current;
           }
           else {
@@ -118,7 +118,7 @@ class ipActions extends sfActions
           break;
 
         case 'phone':
-          if ( $contact && ( $contact->getPhone() || $organization->getPhone() ) ) {
+          if ( $contact && ( $contact->getFirstContactPhone() || $organization->getPhone() ) ) {
             $organization_array['phone'][ $organization->getName() ] = $current;
           }
           else {
