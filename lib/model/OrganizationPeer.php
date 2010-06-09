@@ -28,4 +28,15 @@ class OrganizationPeer extends BaseOrganizationPeer
 
     return OrganizationPeer::doSelect( $c );
   }
+
+  public static function retrieveByEResource($id, Criteria $c = null)
+  {
+    $c = new Criteria();
+    $c->add(EResourcePeer::ADMIN_INFO_ID, $id);
+    $c->addJoin(EResourcePeer::ADMIN_INFO_ID, AdminInfoPeer::ID);   
+    $c->addJoin(EResourcePeer::ACQ_ID, AcquisitionPeer::ID);   
+    $c->addJoin(AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID);
+
+    return OrganizationPeer::doSelectOne( $c );
+  }
 }

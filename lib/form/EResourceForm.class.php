@@ -16,6 +16,7 @@ class EResourceForm extends BaseEResourceForm
       $this['sort_title'],
       $this['access_info_id'],
       $this['acq_id'],
+      $this['admin_info_id'],
       $this['created_at'],
       $this['updated_at'],
       $this['deleted_at']

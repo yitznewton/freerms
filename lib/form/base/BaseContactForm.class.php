@@ -31,7 +31,7 @@ abstract class BaseContactForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'                             => new sfValidatorPropelChoice(array('model' => 'Contact', 'column' => 'id', 'required' => false)),
+      'id'                             => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'last_name'                      => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'first_name'                     => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'title'                          => new sfValidatorString(array('max_length' => 50, 'required' => false)),

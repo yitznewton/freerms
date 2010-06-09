@@ -26,7 +26,7 @@ abstract class BaseUsageAttemptForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'                   => new sfValidatorPropelChoice(array('model' => 'UsageAttempt', 'column' => 'id', 'required' => false)),
+      'id'                   => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'er_id'                => new sfValidatorPropelChoice(array('model' => 'EResource', 'column' => 'id')),
       'lib_id'               => new sfValidatorPropelChoice(array('model' => 'Library', 'column' => 'id', 'required' => false)),
       'phpsessid'            => new sfValidatorString(array('max_length' => 32)),
