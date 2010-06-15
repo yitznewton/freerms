@@ -29,7 +29,7 @@ abstract class BaseOrganizationPeer {
 	const TM_CLASS = 'OrganizationTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 16;
+	const NUM_COLUMNS = 19;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -76,6 +76,15 @@ abstract class BaseOrganizationPeer {
 	/** the column name for the IP_REG_CONTACT_ID field */
 	const IP_REG_CONTACT_ID = 'organizations.IP_REG_CONTACT_ID';
 
+	/** the column name for the USAGE_STATS_URI field */
+	const USAGE_STATS_URI = 'organizations.USAGE_STATS_URI';
+
+	/** the column name for the USAGE_STATS_USERNAME field */
+	const USAGE_STATS_USERNAME = 'organizations.USAGE_STATS_USERNAME';
+
+	/** the column name for the USAGE_STATS_PASSWORD field */
+	const USAGE_STATS_PASSWORD = 'organizations.USAGE_STATS_PASSWORD';
+
 	/** the column name for the NOTE field */
 	const NOTE = 'organizations.NOTE';
 
@@ -105,11 +114,11 @@ abstract class BaseOrganizationPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AltName', 'AccountNumber', 'Address', 'Phone', 'Fax', 'NoticeAddressLicensor', 'WebAdminUri', 'WebAdminUsername', 'WebAdminPassword', 'WebContactFormUri', 'IpRegMethodId', 'IpRegContactId', 'Note', 'UpdatedAt', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'altName', 'accountNumber', 'address', 'phone', 'fax', 'noticeAddressLicensor', 'webAdminUri', 'webAdminUsername', 'webAdminPassword', 'webContactFormUri', 'ipRegMethodId', 'ipRegContactId', 'note', 'updatedAt', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ALT_NAME, self::ACCOUNT_NUMBER, self::ADDRESS, self::PHONE, self::FAX, self::NOTICE_ADDRESS_LICENSOR, self::WEB_ADMIN_URI, self::WEB_ADMIN_USERNAME, self::WEB_ADMIN_PASSWORD, self::WEB_CONTACT_FORM_URI, self::IP_REG_METHOD_ID, self::IP_REG_CONTACT_ID, self::NOTE, self::UPDATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'alt_name', 'account_number', 'address', 'phone', 'fax', 'notice_address_licensor', 'web_admin_uri', 'web_admin_username', 'web_admin_password', 'web_contact_form_uri', 'ip_reg_method_id', 'ip_reg_contact_id', 'note', 'updated_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AltName', 'AccountNumber', 'Address', 'Phone', 'Fax', 'NoticeAddressLicensor', 'WebAdminUri', 'WebAdminUsername', 'WebAdminPassword', 'WebContactFormUri', 'IpRegMethodId', 'IpRegContactId', 'UsageStatsUri', 'UsageStatsUsername', 'UsageStatsPassword', 'Note', 'UpdatedAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'altName', 'accountNumber', 'address', 'phone', 'fax', 'noticeAddressLicensor', 'webAdminUri', 'webAdminUsername', 'webAdminPassword', 'webContactFormUri', 'ipRegMethodId', 'ipRegContactId', 'usageStatsUri', 'usageStatsUsername', 'usageStatsPassword', 'note', 'updatedAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ALT_NAME, self::ACCOUNT_NUMBER, self::ADDRESS, self::PHONE, self::FAX, self::NOTICE_ADDRESS_LICENSOR, self::WEB_ADMIN_URI, self::WEB_ADMIN_USERNAME, self::WEB_ADMIN_PASSWORD, self::WEB_CONTACT_FORM_URI, self::IP_REG_METHOD_ID, self::IP_REG_CONTACT_ID, self::USAGE_STATS_URI, self::USAGE_STATS_USERNAME, self::USAGE_STATS_PASSWORD, self::NOTE, self::UPDATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'alt_name', 'account_number', 'address', 'phone', 'fax', 'notice_address_licensor', 'web_admin_uri', 'web_admin_username', 'web_admin_password', 'web_contact_form_uri', 'ip_reg_method_id', 'ip_reg_contact_id', 'usage_stats_uri', 'usage_stats_username', 'usage_stats_password', 'note', 'updated_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
 	);
 
 	/**
@@ -119,11 +128,11 @@ abstract class BaseOrganizationPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AltName' => 2, 'AccountNumber' => 3, 'Address' => 4, 'Phone' => 5, 'Fax' => 6, 'NoticeAddressLicensor' => 7, 'WebAdminUri' => 8, 'WebAdminUsername' => 9, 'WebAdminPassword' => 10, 'WebContactFormUri' => 11, 'IpRegMethodId' => 12, 'IpRegContactId' => 13, 'Note' => 14, 'UpdatedAt' => 15, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'altName' => 2, 'accountNumber' => 3, 'address' => 4, 'phone' => 5, 'fax' => 6, 'noticeAddressLicensor' => 7, 'webAdminUri' => 8, 'webAdminUsername' => 9, 'webAdminPassword' => 10, 'webContactFormUri' => 11, 'ipRegMethodId' => 12, 'ipRegContactId' => 13, 'note' => 14, 'updatedAt' => 15, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ALT_NAME => 2, self::ACCOUNT_NUMBER => 3, self::ADDRESS => 4, self::PHONE => 5, self::FAX => 6, self::NOTICE_ADDRESS_LICENSOR => 7, self::WEB_ADMIN_URI => 8, self::WEB_ADMIN_USERNAME => 9, self::WEB_ADMIN_PASSWORD => 10, self::WEB_CONTACT_FORM_URI => 11, self::IP_REG_METHOD_ID => 12, self::IP_REG_CONTACT_ID => 13, self::NOTE => 14, self::UPDATED_AT => 15, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'alt_name' => 2, 'account_number' => 3, 'address' => 4, 'phone' => 5, 'fax' => 6, 'notice_address_licensor' => 7, 'web_admin_uri' => 8, 'web_admin_username' => 9, 'web_admin_password' => 10, 'web_contact_form_uri' => 11, 'ip_reg_method_id' => 12, 'ip_reg_contact_id' => 13, 'note' => 14, 'updated_at' => 15, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AltName' => 2, 'AccountNumber' => 3, 'Address' => 4, 'Phone' => 5, 'Fax' => 6, 'NoticeAddressLicensor' => 7, 'WebAdminUri' => 8, 'WebAdminUsername' => 9, 'WebAdminPassword' => 10, 'WebContactFormUri' => 11, 'IpRegMethodId' => 12, 'IpRegContactId' => 13, 'UsageStatsUri' => 14, 'UsageStatsUsername' => 15, 'UsageStatsPassword' => 16, 'Note' => 17, 'UpdatedAt' => 18, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'altName' => 2, 'accountNumber' => 3, 'address' => 4, 'phone' => 5, 'fax' => 6, 'noticeAddressLicensor' => 7, 'webAdminUri' => 8, 'webAdminUsername' => 9, 'webAdminPassword' => 10, 'webContactFormUri' => 11, 'ipRegMethodId' => 12, 'ipRegContactId' => 13, 'usageStatsUri' => 14, 'usageStatsUsername' => 15, 'usageStatsPassword' => 16, 'note' => 17, 'updatedAt' => 18, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ALT_NAME => 2, self::ACCOUNT_NUMBER => 3, self::ADDRESS => 4, self::PHONE => 5, self::FAX => 6, self::NOTICE_ADDRESS_LICENSOR => 7, self::WEB_ADMIN_URI => 8, self::WEB_ADMIN_USERNAME => 9, self::WEB_ADMIN_PASSWORD => 10, self::WEB_CONTACT_FORM_URI => 11, self::IP_REG_METHOD_ID => 12, self::IP_REG_CONTACT_ID => 13, self::USAGE_STATS_URI => 14, self::USAGE_STATS_USERNAME => 15, self::USAGE_STATS_PASSWORD => 16, self::NOTE => 17, self::UPDATED_AT => 18, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'alt_name' => 2, 'account_number' => 3, 'address' => 4, 'phone' => 5, 'fax' => 6, 'notice_address_licensor' => 7, 'web_admin_uri' => 8, 'web_admin_username' => 9, 'web_admin_password' => 10, 'web_contact_form_uri' => 11, 'ip_reg_method_id' => 12, 'ip_reg_contact_id' => 13, 'usage_stats_uri' => 14, 'usage_stats_username' => 15, 'usage_stats_password' => 16, 'note' => 17, 'updated_at' => 18, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
 	);
 
 	/**
@@ -207,6 +216,9 @@ abstract class BaseOrganizationPeer {
 		$criteria->addSelectColumn(OrganizationPeer::WEB_CONTACT_FORM_URI);
 		$criteria->addSelectColumn(OrganizationPeer::IP_REG_METHOD_ID);
 		$criteria->addSelectColumn(OrganizationPeer::IP_REG_CONTACT_ID);
+		$criteria->addSelectColumn(OrganizationPeer::USAGE_STATS_URI);
+		$criteria->addSelectColumn(OrganizationPeer::USAGE_STATS_USERNAME);
+		$criteria->addSelectColumn(OrganizationPeer::USAGE_STATS_PASSWORD);
 		$criteria->addSelectColumn(OrganizationPeer::NOTE);
 		$criteria->addSelectColumn(OrganizationPeer::UPDATED_AT);
 	}

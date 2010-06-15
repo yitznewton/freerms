@@ -51,6 +51,9 @@
             <?php echo $form['ip_reg_contact_id']->renderRow() ?>
           </fieldset>
 
+          <?php echo $form['usage_stats_uri']->renderRow() ?>
+          <?php echo $form['usage_stats_username']->renderRow() ?>
+          <?php echo $form['usage_stats_password']->renderRow() ?>
           <?php echo $form['note']->renderRow() ?>
         </tbody>
       </table>

@@ -927,6 +927,15 @@ propel:
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
+    usage_stats_uri:
+      type: VARCHAR
+      size: 255
+    usage_stats_username:
+      type: VARCHAR
+      size: 25
+    usage_stats_password:
+      type: VARCHAR
+      size: 25
     note: 
       type: LONGVARCHAR
     updated_at: 

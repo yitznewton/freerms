@@ -107,6 +107,24 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 	protected $ip_reg_contact_id;
 
 	/**
+	 * The value for the usage_stats_uri field.
+	 * @var        string
+	 */
+	protected $usage_stats_uri;
+
+	/**
+	 * The value for the usage_stats_username field.
+	 * @var        string
+	 */
+	protected $usage_stats_username;
+
+	/**
+	 * The value for the usage_stats_password field.
+	 * @var        string
+	 */
+	protected $usage_stats_password;
+
+	/**
 	 * The value for the note field.
 	 * @var        string
 	 */
@@ -304,6 +322,36 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 	public function getIpRegContactId()
 	{
 		return $this->ip_reg_contact_id;
+	}
+
+	/**
+	 * Get the [usage_stats_uri] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getUsageStatsUri()
+	{
+		return $this->usage_stats_uri;
+	}
+
+	/**
+	 * Get the [usage_stats_username] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getUsageStatsUsername()
+	{
+		return $this->usage_stats_username;
+	}
+
+	/**
+	 * Get the [usage_stats_password] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getUsageStatsPassword()
+	{
+		return $this->usage_stats_password;
 	}
 
 	/**
@@ -643,6 +691,66 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 	} // setIpRegContactId()
 
 	/**
+	 * Set the value of [usage_stats_uri] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Organization The current object (for fluent API support)
+	 */
+	public function setUsageStatsUri($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->usage_stats_uri !== $v) {
+			$this->usage_stats_uri = $v;
+			$this->modifiedColumns[] = OrganizationPeer::USAGE_STATS_URI;
+		}
+
+		return $this;
+	} // setUsageStatsUri()
+
+	/**
+	 * Set the value of [usage_stats_username] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Organization The current object (for fluent API support)
+	 */
+	public function setUsageStatsUsername($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->usage_stats_username !== $v) {
+			$this->usage_stats_username = $v;
+			$this->modifiedColumns[] = OrganizationPeer::USAGE_STATS_USERNAME;
+		}
+
+		return $this;
+	} // setUsageStatsUsername()
+
+	/**
+	 * Set the value of [usage_stats_password] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Organization The current object (for fluent API support)
+	 */
+	public function setUsageStatsPassword($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->usage_stats_password !== $v) {
+			$this->usage_stats_password = $v;
+			$this->modifiedColumns[] = OrganizationPeer::USAGE_STATS_PASSWORD;
+		}
+
+		return $this;
+	} // setUsageStatsPassword()
+
+	/**
 	 * Set the value of [note] column.
 	 * 
 	 * @param      string $v new value
@@ -757,8 +865,11 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 			$this->web_contact_form_uri = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
 			$this->ip_reg_method_id = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
 			$this->ip_reg_contact_id = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
-			$this->note = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-			$this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->usage_stats_uri = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->usage_stats_username = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->usage_stats_password = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+			$this->note = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+			$this->updated_at = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -768,7 +879,7 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 16; // 16 = OrganizationPeer::NUM_COLUMNS - OrganizationPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 19; // 19 = OrganizationPeer::NUM_COLUMNS - OrganizationPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Organization object", $e);
@@ -1232,9 +1343,18 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 				return $this->getIpRegContactId();
 				break;
 			case 14:
-				return $this->getNote();
+				return $this->getUsageStatsUri();
 				break;
 			case 15:
+				return $this->getUsageStatsUsername();
+				break;
+			case 16:
+				return $this->getUsageStatsPassword();
+				break;
+			case 17:
+				return $this->getNote();
+				break;
+			case 18:
 				return $this->getUpdatedAt();
 				break;
 			default:
@@ -1272,8 +1392,11 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 			$keys[11] => $this->getWebContactFormUri(),
 			$keys[12] => $this->getIpRegMethodId(),
 			$keys[13] => $this->getIpRegContactId(),
-			$keys[14] => $this->getNote(),
-			$keys[15] => $this->getUpdatedAt(),
+			$keys[14] => $this->getUsageStatsUri(),
+			$keys[15] => $this->getUsageStatsUsername(),
+			$keys[16] => $this->getUsageStatsPassword(),
+			$keys[17] => $this->getNote(),
+			$keys[18] => $this->getUpdatedAt(),
 		);
 		return $result;
 	}
@@ -1348,9 +1471,18 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 				$this->setIpRegContactId($value);
 				break;
 			case 14:
-				$this->setNote($value);
+				$this->setUsageStatsUri($value);
 				break;
 			case 15:
+				$this->setUsageStatsUsername($value);
+				break;
+			case 16:
+				$this->setUsageStatsPassword($value);
+				break;
+			case 17:
+				$this->setNote($value);
+				break;
+			case 18:
 				$this->setUpdatedAt($value);
 				break;
 		} // switch()
@@ -1391,8 +1523,11 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[11], $arr)) $this->setWebContactFormUri($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setIpRegMethodId($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setIpRegContactId($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setNote($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
+		if (array_key_exists($keys[14], $arr)) $this->setUsageStatsUri($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setUsageStatsUsername($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setUsageStatsPassword($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setNote($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setUpdatedAt($arr[$keys[18]]);
 	}
 
 	/**
@@ -1418,6 +1553,9 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(OrganizationPeer::WEB_CONTACT_FORM_URI)) $criteria->add(OrganizationPeer::WEB_CONTACT_FORM_URI, $this->web_contact_form_uri);
 		if ($this->isColumnModified(OrganizationPeer::IP_REG_METHOD_ID)) $criteria->add(OrganizationPeer::IP_REG_METHOD_ID, $this->ip_reg_method_id);
 		if ($this->isColumnModified(OrganizationPeer::IP_REG_CONTACT_ID)) $criteria->add(OrganizationPeer::IP_REG_CONTACT_ID, $this->ip_reg_contact_id);
+		if ($this->isColumnModified(OrganizationPeer::USAGE_STATS_URI)) $criteria->add(OrganizationPeer::USAGE_STATS_URI, $this->usage_stats_uri);
+		if ($this->isColumnModified(OrganizationPeer::USAGE_STATS_USERNAME)) $criteria->add(OrganizationPeer::USAGE_STATS_USERNAME, $this->usage_stats_username);
+		if ($this->isColumnModified(OrganizationPeer::USAGE_STATS_PASSWORD)) $criteria->add(OrganizationPeer::USAGE_STATS_PASSWORD, $this->usage_stats_password);
 		if ($this->isColumnModified(OrganizationPeer::NOTE)) $criteria->add(OrganizationPeer::NOTE, $this->note);
 		if ($this->isColumnModified(OrganizationPeer::UPDATED_AT)) $criteria->add(OrganizationPeer::UPDATED_AT, $this->updated_at);
 
@@ -1499,6 +1637,12 @@ abstract class BaseOrganization extends BaseObject  implements Persistent {
 		$copyObj->setIpRegMethodId($this->ip_reg_method_id);
 
 		$copyObj->setIpRegContactId($this->ip_reg_contact_id);
+
+		$copyObj->setUsageStatsUri($this->usage_stats_uri);
+
+		$copyObj->setUsageStatsUsername($this->usage_stats_username);
+
+		$copyObj->setUsageStatsPassword($this->usage_stats_password);
 
 		$copyObj->setNote($this->note);
 

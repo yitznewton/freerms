@@ -54,6 +54,9 @@ class OrganizationTableMap extends TableMap {
 		$this->addColumn('WEB_CONTACT_FORM_URI', 'WebContactFormUri', 'VARCHAR', false, 255, null);
 		$this->addForeignKey('IP_REG_METHOD_ID', 'IpRegMethodId', 'INTEGER', 'ip_reg_methods', 'ID', false, null, null);
 		$this->addForeignKey('IP_REG_CONTACT_ID', 'IpRegContactId', 'INTEGER', 'contacts', 'ID', false, null, null);
+		$this->addColumn('USAGE_STATS_URI', 'UsageStatsUri', 'VARCHAR', false, 255, null);
+		$this->addColumn('USAGE_STATS_USERNAME', 'UsageStatsUsername', 'VARCHAR', false, 25, null);
+		$this->addColumn('USAGE_STATS_PASSWORD', 'UsageStatsPassword', 'VARCHAR', false, 25, null);
 		$this->addColumn('NOTE', 'Note', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', true, null, null);
 		// validators
