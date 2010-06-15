@@ -21,7 +21,7 @@ abstract class BaseAuthMethodForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'               => new sfValidatorPropelChoice(array('model' => 'AuthMethod', 'column' => 'id', 'required' => false)),
+      'id'               => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'label'            => new sfValidatorString(array('max_length' => 50)),
       'is_valid_onsite'  => new sfValidatorBoolean(),
       'is_valid_offsite' => new sfValidatorBoolean(),

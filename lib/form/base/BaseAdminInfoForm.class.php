@@ -45,7 +45,7 @@ abstract class BaseAdminInfoForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'                               => new sfValidatorPropelChoice(array('model' => 'AdminInfo', 'column' => 'id', 'required' => false)),
+      'id'                               => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'ui_config_available'              => new sfValidatorBoolean(array('required' => false)),
       'subscriber_branding_available'    => new sfValidatorBoolean(array('required' => false)),
       'subscriber_branding_note'         => new sfValidatorString(array('required' => false)),

@@ -35,7 +35,7 @@ abstract class BaseEResourceForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'                               => new sfValidatorPropelChoice(array('model' => 'EResource', 'column' => 'id', 'required' => false)),
+      'id'                               => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'alt_id'                           => new sfValidatorString(array('max_length' => 3, 'required' => false)),
       'subscription_number'              => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'title'                            => new sfValidatorString(array('max_length' => 255)),

@@ -28,7 +28,7 @@ abstract class BaseIpRangeForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'                             => new sfValidatorPropelChoice(array('model' => 'IpRange', 'column' => 'id', 'required' => false)),
+      'id'                             => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'lib_id'                         => new sfValidatorPropelChoice(array('model' => 'Library', 'column' => 'id')),
       'start_ip'                       => new sfValidatorString(array('max_length' => 15)),
       'end_ip'                         => new sfValidatorString(array('max_length' => 15, 'required' => false)),

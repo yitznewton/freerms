@@ -30,7 +30,7 @@ abstract class BaseAccessInfoForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'                     => new sfValidatorPropelChoice(array('model' => 'AccessInfo', 'column' => 'id', 'required' => false)),
+      'id'                     => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'onsite_access_uri'      => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'offsite_access_uri'     => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'onsite_auth_method_id'  => new sfValidatorPropelChoice(array('model' => 'AuthMethod', 'column' => 'id', 'required' => false)),
