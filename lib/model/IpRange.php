@@ -4,7 +4,7 @@ class IpRange extends BaseIpRange
 {
   public function __toString()
   {
-    return $this->getStartIp() . '&mdash;' . $this->getEndIp();
+    return $this->getStartIp() . '--' . $this->getEndIp();
   }
 
   public function save(PropelPDO $con = null) 

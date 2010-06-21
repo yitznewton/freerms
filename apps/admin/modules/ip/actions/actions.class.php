@@ -89,7 +89,7 @@ class ipActions extends sfActions
     $this->ip_reg_events = IpRegEventPeer::retrieveAll();
 
     foreach ( $organizations as $organization ) {
-      $contact       = $organization->getContact();
+      $contact = $organization->getContact();
       
       $current                  = array();
       $current['organization']  = $organization;
