@@ -47,7 +47,7 @@
         </td>
         <td>
           <?php foreach ($form['phones'] as $phone): ?>
-          <?php echo $email->renderError() ?>
+          <?php echo $phone->renderError() ?>
           <?php echo $phone->render() ?>
           <?php endforeach; ?>
         </td>
