@@ -23,41 +23,30 @@ class ContactForm extends BaseContactForm
     $this->widgetSchema->addFormFormatter('div', $decorator);
     $this->widgetSchema->setFormFormatterName('div');
 
-    $decorator2 = clone $decorator;
-
-    $email_container_form = new sfForm();
-    $email_container_form->widgetSchema->addFormFormatter('div', $decorator2);
-    $email_container_form->widgetSchema->setFormFormatterName('div');
-    $email_container_form->widgetSchema->getFormFormatter()->setRowFormat('%field%');
-
+    $email_container_form = new sfForm();   
     $emails = $this->getObject()->getContactEmails();
 
     foreach ( $emails as $i => $email ) {
-      $email_form = new ContactEmailForm( $email );
-      $email_form->widgetSchema->getFormFormatter()->setRowFormat('<div class="form-input">%field%</div>');
+      $email_form = new ContactEmailForm( $email ); 
 
       unset( $email_form['contact_id'] );
-      //$email_container_form->embedForm( $i, $email_form );
-      $this->embedForm('email'.$email->getId(), $email_form);
+      $email_container_form->embedForm( $i, $email_form );     
     }
     
-    //$this->embedForm( 'emails', $email_container_form );
-    //$this->widgetSchema['emails']->setLabel('mergetroyd');
+    $this->embedForm( 'emails', $email_container_form );
+    $this->widgetSchema['emails']->setLabel('Emails');
 
     $phone_container_form = new sfForm();
-    $phone_container_form->widgetSchema->getFormFormatter()->setRowFormat('%field%');
-
     $phones = $this->getObject()->getContactPhones();
 
     foreach ( $phones as $i => $phone ) {
-      $phone_form = new ContactPhoneForm( $phone );
-      $phone_form->widgetSchema->getFormFormatter()->setRowFormat('<div class="form-input">%field%</div>');
+      $phone_form = new ContactPhoneForm( $phone );      
 
       unset( $phone_form['contact_id'] );
       $phone_container_form->embedForm( $i, $phone_form );
     }
 
     $this->embedForm( 'phones', $phone_container_form );
-    //var_dump($this['email6']->getWidget());exit;
+    $this->widgetSchema['phones']->setLabel('Phone numbers');    
   }
 }
