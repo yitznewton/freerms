@@ -13,7 +13,6 @@ class databaseActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $c = new Criteria();
-    $c->add(EResourcePeer::SUPPRESSION, false);
     $c->addAscendingOrderByColumn(EResourcePeer::TITLE);
 
     if ( $lib_code = $request->getParameter('library') ) {

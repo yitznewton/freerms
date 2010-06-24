@@ -15,11 +15,6 @@ class userActions extends sfActions
     layoutActions::chooseLayout( $this );
   }
 
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
   public function executeLogin(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated()) {
@@ -55,7 +50,7 @@ class userActions extends sfActions
         $this->getUser()->setUsername( $username );
         $pass_check = $this->getUser()->checkPassword($password);
         
-        if ($pass_check instanceOf Exception) {
+        if ( $pass_check instanceOf Exception ) {
           // password verification encountered problem
           $recipient = sfConfig::get('app_admin-email', 'www@localhost');
           $body = "Error:\n".$pass_check->getMessage();
@@ -66,14 +61,23 @@ class userActions extends sfActions
           }
           $this->forward('default', 'error500');
           
-        } elseif ( $pass_check ) {
+        }
+        elseif ( $pass_check ) {
           $this->getUser()->setAuthenticated(true);
           $this->getUser()->setAttribute('loginApp', 'resolver');
           
           // redirect back to the same page
           $this->redirect($request->getUri());
           
-        } else {
+        }
+        elseif ( strtolower( $username ) == 'thmed' ) {
+          $this->getUser()->setAttribute( 'username', null );
+          $this->errors[] = 'We\'re sorry, the generic THmed account has '
+                            . 'been retired. Please '
+                            . '<a href="https://accounts.tourolib.org/register">click here</a> '
+                            . 'to register your new individual account.';
+        }
+        else {
           $this->getUser()->setAttribute('username', null);
 
           switch ($this->getUser()->getFlash('loginError')) {
