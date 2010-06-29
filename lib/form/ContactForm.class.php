@@ -26,27 +26,68 @@ class ContactForm extends BaseContactForm
     $email_container_form = new sfForm();   
     $emails = $this->getObject()->getContactEmails();
 
+    if (!$emails){ 
+      $email = new ContactEmail();
+      $email->setContact($this->getObject()); 
+      $emails[] = $email;     
+    }
+   
     foreach ( $emails as $i => $email ) {
-      $email_form = new ContactEmailForm( $email ); 
+      $email_form = new ContactEmailForm( $email );
 
       unset( $email_form['contact_id'] );
-      $email_container_form->embedForm( $i, $email_form );     
+      $email_container_form->embedForm( $i, $email_form );
+
+      if (count($emails) > 1){
+        $email_container_form->widgetSchema[$i]['address'] = new freermsWidgetFormInputDelete(array(
+          'url' => 'contact/deleteEmail',
+          'model_id' => $email->getId(),
+          'confirm' => 'Are you sure???',         
+        ));
+      }
+     
+      $email_container_form->widgetSchema[$i]['address']->setLabel(' ');
     }
     
     $this->embedForm( 'emails', $email_container_form );
     $this->widgetSchema['emails']->setLabel('Emails');
+   
+ 
+//    $phone_container_form = new sfForm();
+//    $phones = $this->getObject()->getContactPhones();
+//
+//    foreach ( $phones as $i => $phone ) {
+//      $phone_form = new ContactPhoneForm( $phone );
+//
+//      unset( $phone_form['contact_id'] );
+//      $phone_container_form->embedForm( $i, $phone_form );
+//    }
+//
+//    $this->embedForm( 'phones', $phone_container_form );
+//    $this->widgetSchema['phones']->setLabel('Phone numbers');
+  }
 
-    $phone_container_form = new sfForm();
-    $phones = $this->getObject()->getContactPhones();
+  public function addEmail($num)
+  {
+    $email = new ContactEmail();
+    $email->setContact($this->getObject());
 
-    foreach ( $phones as $i => $phone ) {
-      $phone_form = new ContactPhoneForm( $phone );      
+    $this->embeddedForms['emails']->embedForm($num, new ContactEmailForm($email));
+    $this->embedForm('emails', $this->embeddedForms['emails']);
 
-      unset( $phone_form['contact_id'] );
-      $phone_container_form->embedForm( $i, $phone_form );
+    $this->widgetSchema['emails'][$num]['contact_id'] = new sfWidgetFormInputHidden();
+  }
+
+  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  {
+    foreach($taintedValues['emails'] as $key => $t)
+    {
+      if (!isset($this['emails'][$key]))
+      {
+        $this->addEmail($key);
+      }
     }
 
-    $this->embedForm( 'phones', $phone_container_form );
-    $this->widgetSchema['phones']->setLabel('Phone numbers');    
+    parent::bind($taintedValues, $taintedFiles);
   }
 }

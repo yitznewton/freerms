@@ -20,7 +20,7 @@ class contactActions extends sfActions
 
     if ( $org_id = $request->getParameter('organization') ) {
       $this->form->setDefault('org_id', $request->getParameter('organization'));
-    }
+    }    
   }
 
   public function executeCreate(sfWebRequest $request)
@@ -37,9 +37,9 @@ class contactActions extends sfActions
   public function executeEdit(sfWebRequest $request)
   {
     $this->forward404Unless($Contact = ContactPeer::retrieveByPk($request->getParameter('id')), sprintf('Object Contact does not exist (%s).', $request->getParameter('id')));
-    $this->form = new ContactForm($Contact);
+    $this->form = new ContactForm($Contact);    
   }
-
+  
   public function executeUpdate(sfWebRequest $request)
   {
     $this->forward404Unless($request->isMethod(sfRequest::POST) || $request->isMethod(sfRequest::PUT));
@@ -70,5 +70,32 @@ class contactActions extends sfActions
 
       $this->redirect('contact/edit?id='.$Contact->getId());
     }
+  }
+
+  public function executeAddEmailForm($request)
+  {
+    $this->forward404unless($request->isXmlHttpRequest());
+    $number = intval($request->getParameter("num"));
+
+    $contact = ContactPeer::retrieveByPk($request->getParameter('id'));
+    
+    if ($contact){
+      $form = new ContactForm($contact);
+    }
+    else {
+      $form = new ContactForm();
+    }
+
+    $form->addEmail($number);
+
+    return $this->renderPartial('addEmail', array('form' => $form, 'num' => $number));
+  }
+
+  public function executeDeleteEmail(sfWebRequest $request)
+  {   
+    $email = ContactEmailPeer::retrieveByPk($request->getParameter('id'));  
+    $email->delete();
+    
+    $this->redirect('contact/edit?id='.$email->getContact()->getId());
   }
 }
