@@ -38,21 +38,57 @@ class ContactForm extends BaseContactForm
       unset( $email_form['contact_id'] );
       $email_container_form->embedForm( $i, $email_form );
 
-      if (count($emails) > 1){
-        $email_container_form->widgetSchema[$i]['address'] = new freermsWidgetFormInputDelete(array(
-          'url' => 'contact/deleteEmail',
-          'model_id' => $email->getId(),
-          'confirm' => 'Are you sure???',         
-        ));
-      }
-     
+      if (!$this->getObject()->isNew()){
+
+        if (count($emails) > 1){
+
+          $email_container_form->widgetSchema[$i]['address'] =
+            new freermsWidgetFormInputDeleteAdd(array(
+              'delete_text' => 'Delete',
+              'delete_action' => 'contact/deleteEmail',
+              'model_id' => $email->getId(),
+              'confirm' => 'Are you sure???',
+            ));
+
+          if ($i === (count($emails)-1)){
+
+            $email_container_form->widgetSchema[$i]['address'] =
+              new freermsWidgetFormInputDeleteAdd(array(
+                'delete_text' => 'Delete',
+                'delete_action' => 'contact/deleteEmail',
+                'model_id' => $email->getId(),
+                'confirm' => 'Are you sure???',
+                'add_text' => 'Add',
+                'add_action' => 'add_email()',
+              ));
+          }
+        }
+        
+        else{
+          
+          $email_container_form->widgetSchema[$i]['address'] =
+            new freermsWidgetFormInputDeleteAdd(array(
+              'add_text' => 'Add',
+              'add_action' => 'add_email()',
+            ));
+        }
+        
+      } 
+      
       $email_container_form->widgetSchema[$i]['address']->setLabel(' ');
     }
     
     $this->embedForm( 'emails', $email_container_form );
-    $this->widgetSchema['emails']->setLabel('Emails');
+
+    if ($this->getObject()->isNew() || count($emails) <= 1){
+      $this->widgetSchema['emails']->setLabel('Email');
+    }
+    else {
+      $this->widgetSchema['emails']->setLabel('Emails');
+    }
    
- 
+   
+
 //    $phone_container_form = new sfForm();
 //    $phones = $this->getObject()->getContactPhones();
 //

@@ -24,7 +24,7 @@ function add_email(){
 <?php if (!$form->getObject()->isNew()): ?>
 <input type="hidden" name="sf_method" value="put" />
 <?php endif; ?>
-  <table id="test" border="0" cellpadding="0" cellspacing="0">
+  <table border="0" cellpadding="0" cellspacing="0">
     <tfoot>
       <tr>
         <td colspan="2">
@@ -57,11 +57,7 @@ function add_email(){
             <?php foreach ($form['emails'] as $key => $email): ?>
             <?php echo $email->render() ?>
             <?php endforeach; ?>
-          </div>
-
-          <?php if (!$form->getObject()->isNew()): ?>
-            <a href="#" class="input-link" onclick="return add_email();">Add new</a>
-          <?php endif; ?>
+          </div>         
         </td>
       </tr>           
 
