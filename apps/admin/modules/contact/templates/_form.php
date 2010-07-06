@@ -3,6 +3,7 @@
 
 <script type="text/javascript">
 var emails = <?php echo ($form['emails']->count()) ?>;
+var phones = <?php echo ($form['phones']->count()) ?>;
 
 function getEmail(num) {
   var r = $.ajax({
@@ -17,7 +18,22 @@ function add_email(){
   $("#email-container").append(getEmail(emails));
     emails = emails + 1;
   return false;
-} 
+}
+
+function getPhone(num) {
+  var r = $.ajax({
+    type: 'GET',
+    url: '<?php echo url_for('contact/addPhoneForm')?>'+'<?php echo ($form->getObject()->isNew()?'':'?id='.$form->getObject()->getId()).($form->getObject()->isNew()?'?num=':'&num=')?>'+num,
+    async: false
+  }).responseText;
+  return r;
+}
+
+function add_phone(){
+  $("#phone-container").append(getPhone(phones));
+    phones = phones + 1;
+  return false;
+}
 </script>
 
 <form action="<?php echo url_for('contact/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="post" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>
@@ -59,21 +75,20 @@ function add_email(){
             <?php endforeach; ?>
           </div>         
         </td>
-      </tr>           
-
-<!--
+      </tr>
+      
       <tr class="form-row">
         <td>
-          <?php //echo $form['phones'] -> renderLabel() ?>
+          <?php echo $form['phones'] -> renderLabel() ?>
         </td>
         <td>
-          <?php //foreach ($form['phones'] as $phone): ?>
-          <?php //echo $phone->renderError() ?>
-          <?php //echo $phone->render() ?>
-          <?php //endforeach; ?>
+          <div id="phone-container">
+            <?php foreach ($form['phones'] as $phone): ?>
+            <?php echo $phone->render() ?>
+            <?php endforeach; ?>
+          </div>
         </td>
       </tr>
-!-->
     </tbody>
   </table>
 </form>

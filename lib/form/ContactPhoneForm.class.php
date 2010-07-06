@@ -13,8 +13,10 @@ class ContactPhoneForm extends BaseContactPhoneForm
   {
     $this->widgetSchema['number']->setLabel( false );
 
+    $this->setValidator('number', new sfValidatorString(array('required' => false)));
+
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
     $this->widgetSchema->addFormFormatter('div', $decorator);
-    $this->widgetSchema->setFormFormatterName('div');
+    $this->widgetSchema->setFormFormatterName('div');    
   }
 }

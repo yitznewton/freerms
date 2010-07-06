@@ -91,11 +91,38 @@ class contactActions extends sfActions
     return $this->renderPartial('addEmail', array('form' => $form, 'num' => $number));
   }
 
+  public function executeAddPhoneForm($request)
+  {
+    $this->forward404unless($request->isXmlHttpRequest());
+    $number = intval($request->getParameter("num"));
+
+    $contact = ContactPeer::retrieveByPk($request->getParameter('id'));
+
+    if ($contact){
+      $form = new ContactForm($contact);
+    }
+    else {
+      $form = new ContactForm();
+    }
+
+    $form->addPhone($number);
+
+    return $this->renderPartial('addPhone', array('form' => $form, 'num' => $number));
+  }
+
   public function executeDeleteEmail(sfWebRequest $request)
   {   
     $email = ContactEmailPeer::retrieveByPk($request->getParameter('id'));  
     $email->delete();
     
     $this->redirect('contact/edit?id='.$email->getContact()->getId());
+  }
+
+  public function executeDeletePhone(sfWebRequest $request)
+  {
+    $phone = ContactPhonePeer::retrieveByPk($request->getParameter('id'));
+    $phone->delete();
+
+    $this->redirect('contact/edit?id='.$phone->getContact()->getId());
   }
 }

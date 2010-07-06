@@ -47,7 +47,7 @@ class ContactForm extends BaseContactForm
               'delete_text' => 'Delete',
               'delete_action' => 'contact/deleteEmail',
               'model_id' => $email->getId(),
-              'confirm' => 'Are you sure???',
+              'confirm' => 'Are you sure?',
             ));
 
           if ($i === (count($emails)-1)){
@@ -57,7 +57,7 @@ class ContactForm extends BaseContactForm
                 'delete_text' => 'Delete',
                 'delete_action' => 'contact/deleteEmail',
                 'model_id' => $email->getId(),
-                'confirm' => 'Are you sure???',
+                'confirm' => 'Are you sure?',
                 'add_text' => 'Add',
                 'add_action' => 'add_email()',
               ));
@@ -87,20 +87,69 @@ class ContactForm extends BaseContactForm
       $this->widgetSchema['emails']->setLabel('Emails');
     }
    
-   
+    $phone_container_form = new sfForm();
+    $phones = $this->getObject()->getContactPhones();
 
-//    $phone_container_form = new sfForm();
-//    $phones = $this->getObject()->getContactPhones();
-//
-//    foreach ( $phones as $i => $phone ) {
-//      $phone_form = new ContactPhoneForm( $phone );
-//
-//      unset( $phone_form['contact_id'] );
-//      $phone_container_form->embedForm( $i, $phone_form );
-//    }
-//
-//    $this->embedForm( 'phones', $phone_container_form );
-//    $this->widgetSchema['phones']->setLabel('Phone numbers');
+    if (!$phones){
+      $phone = new ContactPhone();
+      $phone->setContact($this->getObject());
+      $phones[] = $phone;
+    }
+
+    foreach ( $phones as $i => $phone ) {
+      $phone_form = new ContactPhoneForm( $phone );
+
+      unset( $phone_form['contact_id'] );
+      $phone_container_form->embedForm( $i, $phone_form );
+
+       if (!$this->getObject()->isNew()){
+
+        if (count($phones) > 1){
+
+          $phone_container_form->widgetSchema[$i]['number'] =
+            new freermsWidgetFormInputDeleteAdd(array(
+              'delete_text' => 'Delete',
+              'delete_action' => 'contact/deletePhone',
+              'model_id' => $phone->getId(),
+              'confirm' => 'Are you sure?',
+            ));
+
+          if ($i === (count($phones)-1)){
+
+            $phone_container_form->widgetSchema[$i]['number'] =
+              new freermsWidgetFormInputDeleteAdd(array(
+                'delete_text' => 'Delete',
+                'delete_action' => 'contact/deletePhone',
+                'model_id' => $phone->getId(),
+                'confirm' => 'Are you sure?',
+                'add_text' => 'Add',
+                'add_action' => 'add_phone()',
+              ));
+          }
+        }
+
+        else{
+
+          $phone_container_form->widgetSchema[$i]['number'] =
+            new freermsWidgetFormInputDeleteAdd(array(
+              'add_text' => 'Add',
+              'add_action' => 'add_phone()',
+            ));
+        }
+
+      }
+      
+      $phone_container_form->widgetSchema[$i]['number']->setLabel(' ');
+    }
+
+    $this->embedForm( 'phones', $phone_container_form );
+
+    if ($this->getObject()->isNew() || count($phones) <= 1){
+      $this->widgetSchema['phones']->setLabel('Phone number');
+    }
+    else {
+      $this->widgetSchema['phones']->setLabel('Phone numbers');
+    }   
   }
 
   public function addEmail($num)
@@ -114,13 +163,32 @@ class ContactForm extends BaseContactForm
     $this->widgetSchema['emails'][$num]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
+  public function addPhone($num)
+  {
+    $phone = new ContactPhone();
+    $phone->setContact($this->getObject());
+
+    $this->embeddedForms['phones']->embedForm($num, new ContactPhoneForm($phone));
+    $this->embedForm('phones', $this->embeddedForms['phones']);
+
+    $this->widgetSchema['phones'][$num]['contact_id'] = new sfWidgetFormInputHidden();
+  }
+
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
-    foreach($taintedValues['emails'] as $key => $t)
+    foreach($taintedValues['emails'] as $key => $newEmail)
     {
       if (!isset($this['emails'][$key]))
       {
         $this->addEmail($key);
+      }
+    }
+
+    foreach($taintedValues['phones'] as $key => $newPhone)
+    {
+      if (!isset($this['phones'][$key]))
+      {
+        $this->addPhone($key);
       }
     }
 
