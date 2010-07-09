@@ -8,7 +8,7 @@ var phones = <?php echo ($form['phones']->count()) ?>;
 function getEmail(num) {
   var r = $.ajax({
     type: 'GET',
-    url: '<?php echo url_for('contact/addEmailForm')?>'+'<?php echo ($form->getObject()->isNew()?'':'?id='.$form->getObject()->getId()).($form->getObject()->isNew()?'?num=':'&num=')?>'+num,
+    url: '<?php echo url_for('contact/addSubform?type=Email')?>'+'<?php echo ($form->getObject()->isNew()?'':'&id='.$form->getObject()->getId()).'&num='?>'+num,
     async: false
   }).responseText;
   return r;
@@ -23,7 +23,7 @@ function add_email(){
 function getPhone(num) {
   var r = $.ajax({
     type: 'GET',
-    url: '<?php echo url_for('contact/addPhoneForm')?>'+'<?php echo ($form->getObject()->isNew()?'':'?id='.$form->getObject()->getId()).($form->getObject()->isNew()?'?num=':'&num=')?>'+num,
+    url: '<?php echo url_for('contact/addSubform?type=Phone')?>'+'<?php echo ($form->getObject()->isNew()?'':'&id='.$form->getObject()->getId()).'&num='?>'+num,
     async: false
   }).responseText;
   return r;

@@ -72,10 +72,24 @@ class contactActions extends sfActions
     }
   }
 
-  public function executeAddEmailForm($request)
+  public function executeAddSubform($request)
   {
     $this->forward404unless($request->isXmlHttpRequest());
-    $number = intval($request->getParameter("num"));
+    
+    switch ( $request->getParameter('type') ) {
+      case 'Email':
+        $method = 'addEmail';
+        break;
+      
+      case 'Phone':
+        $method = 'addPhone';
+        break;
+      
+      default:
+        $this->forward404();
+    }
+    
+    $number = intval($request->getParameter('num'));
 
     $contact = ContactPeer::retrieveByPk($request->getParameter('id'));
     
@@ -86,28 +100,9 @@ class contactActions extends sfActions
       $form = new ContactForm();
     }
 
-    $form->addEmail($number);
+    $form->$method($number);
 
-    return $this->renderPartial('addEmail', array('form' => $form, 'num' => $number));
-  }
-
-  public function executeAddPhoneForm($request)
-  {
-    $this->forward404unless($request->isXmlHttpRequest());
-    $number = intval($request->getParameter("num"));
-
-    $contact = ContactPeer::retrieveByPk($request->getParameter('id'));
-
-    if ($contact){
-      $form = new ContactForm($contact);
-    }
-    else {
-      $form = new ContactForm();
-    }
-
-    $form->addPhone($number);
-
-    return $this->renderPartial('addPhone', array('form' => $form, 'num' => $number));
+    return $this->renderPartial($method, array('form' => $form, 'num' => $number));
   }
 
   public function executeDeleteEmail(sfWebRequest $request)
