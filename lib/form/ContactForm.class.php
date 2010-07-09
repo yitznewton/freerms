@@ -59,7 +59,7 @@ class ContactForm extends BaseContactForm
                 'model_id' => $email->getId(),
                 'confirm' => 'Are you sure?',
                 'add_text' => 'Add',
-                'add_action' => 'add_email()',
+                'add_action' => 'addEmail()',  // Javascript
               ));
           }
         }
@@ -69,7 +69,7 @@ class ContactForm extends BaseContactForm
           $email_container_form->widgetSchema[$i]['address'] =
             new freermsWidgetFormInputDeleteAdd(array(
               'add_text' => 'Add',
-              'add_action' => 'add_email()',
+              'add_action' => 'addEmail()',  // Javascript
             ));
         }
         
@@ -123,7 +123,7 @@ class ContactForm extends BaseContactForm
                 'model_id' => $phone->getId(),
                 'confirm' => 'Are you sure?',
                 'add_text' => 'Add',
-                'add_action' => 'add_phone()',
+                'add_action' => 'addPhone()',  // Javascript
               ));
           }
         }
@@ -133,10 +133,9 @@ class ContactForm extends BaseContactForm
           $phone_container_form->widgetSchema[$i]['number'] =
             new freermsWidgetFormInputDeleteAdd(array(
               'add_text' => 'Add',
-              'add_action' => 'add_phone()',
+              'add_action' => 'addPhone()',  // Javascript
             ));
         }
-
       }
       
       $phone_container_form->widgetSchema[$i]['number']->setLabel(' ');

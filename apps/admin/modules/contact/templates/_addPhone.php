@@ -1,4 +1,4 @@
-<?php echo $form['phones'][$num]->render() ?>
+<?php echo $form['phones'][$index]->render() ?>
 
 
 

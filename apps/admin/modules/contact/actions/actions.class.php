@@ -78,18 +78,20 @@ class contactActions extends sfActions
     
     switch ( $request->getParameter('type') ) {
       case 'Email':
-        $method = 'addEmail';
+        $method    = 'addEmail';
+        $container = 'emails';
         break;
       
       case 'Phone':
-        $method = 'addPhone';
+        $method    = 'addPhone';
+        $container = 'phones';
         break;
       
       default:
         $this->forward404();
     }
     
-    $number = intval($request->getParameter('num'));
+    $index = intval($request->getParameter('index'));
 
     $contact = ContactPeer::retrieveByPk($request->getParameter('id'));
     
@@ -100,9 +102,9 @@ class contactActions extends sfActions
       $form = new ContactForm();
     }
 
-    $form->$method($number);
+    $form->$method($index);
 
-    return $this->renderPartial($method, array('form' => $form, 'num' => $number));
+    return $this->renderPartial('addSubform', array('form' => $form, 'container' => $container, 'index' => $index));
   }
 
   public function executeDeleteEmail(sfWebRequest $request)

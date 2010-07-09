@@ -2,36 +2,28 @@
 <?php use_javascripts_for_form($form) ?>
 
 <script type="text/javascript">
-var emails = <?php echo ($form['emails']->count()) ?>;
-var phones = <?php echo ($form['phones']->count()) ?>;
+var email_count = <?php echo ($form['emails']->count()) ?>;
+var phone_count = <?php echo ($form['phones']->count()) ?>;
 
-function getEmail(num) {
-  var r = $.ajax({
+function getSubform(type, index) {
+  return $.ajax({
     type: 'GET',
-    url: '<?php echo url_for('contact/addSubform?type=Email')?>'+'<?php echo ($form->getObject()->isNew()?'':'&id='.$form->getObject()->getId()).'&num='?>'+num,
+    url: '<?php echo url_for('contact/addSubform') ?>?type=' + type + '<?php echo ($form->getObject()->isNew()?'':'&id='.$form->getObject()->getId()).'&index='?>' + index,
     async: false
   }).responseText;
-  return r;
 }
 
-function add_email(){
-  $("#email-container").append(getEmail(emails));
-    emails = emails + 1;
+function addEmail(){
+  $("#email-container").append(getSubform('Email', email_count));
+  email_count++;
+
   return false;
 }
 
-function getPhone(num) {
-  var r = $.ajax({
-    type: 'GET',
-    url: '<?php echo url_for('contact/addSubform?type=Phone')?>'+'<?php echo ($form->getObject()->isNew()?'':'&id='.$form->getObject()->getId()).'&num='?>'+num,
-    async: false
-  }).responseText;
-  return r;
-}
+function addPhone(){
+  $("#phone-container").append(getSubform('Phone', phone_count));
+  phone_count++;
 
-function add_phone(){
-  $("#phone-container").append(getPhone(phones));
-    phones = phones + 1;
   return false;
 }
 </script>
