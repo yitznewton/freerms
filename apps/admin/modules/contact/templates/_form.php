@@ -47,18 +47,18 @@ function addPhone(){
     </tfoot>
     <tbody>
       <?php echo $form->renderGlobalErrors() ?>
-      <?php echo $form['last_name'] -> renderRow() ?>
-      <?php echo $form['first_name'] -> renderRow() ?>
-      <?php echo $form['title'] -> renderRow() ?>
-      <?php echo $form['role'] -> renderRow() ?>
-      <?php echo $form['address'] -> renderRow() ?>
-      <?php echo $form['fax'] -> renderRow() ?>
-      <?php echo $form['note'] -> renderRow() ?>
-      <?php echo $form['org_id'] -> renderRow() ?>
+      <?php echo $form['last_name']->renderRow() ?>
+      <?php echo $form['first_name']->renderRow() ?>
+      <?php echo $form['title']->renderRow() ?>
+      <?php echo $form['role']->renderRow() ?>
+      <?php echo $form['address']->renderRow() ?>
+      <?php echo $form['fax']->renderRow() ?>
+      <?php echo $form['note']->renderRow() ?>
+      <?php echo $form['org_id']->renderRow() ?>
 
       <tr class="form-row">
         <td>
-          <?php echo $form['emails'] -> renderLabel() ?>          
+          <?php echo $form['emails']->renderLabel() ?>          
         </td>
         <td>
           <div id="email-container">
@@ -71,7 +71,7 @@ function addPhone(){
       
       <tr class="form-row">
         <td>
-          <?php echo $form['phones'] -> renderLabel() ?>
+          <?php echo $form['phones']->renderLabel() ?>
         </td>
         <td>
           <div id="phone-container">

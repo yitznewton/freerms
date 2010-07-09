@@ -13,7 +13,7 @@ class ContactEmailForm extends BaseContactEmailForm
   {
     $this->widgetSchema['address']->setLabel( false );
 
-    $this->setValidator('address', new sfValidatorString(array('required' => false)));
+    $this->setValidator('address', new sfValidatorEmail(array('required' => false)));
 
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
     $this->widgetSchema->addFormFormatter('div', $decorator);

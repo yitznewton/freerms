@@ -7,15 +7,10 @@ class freermsWidgetFormInputDeleteAdd extends sfWidgetFormInput
     parent::configure($options, $attributes);
 
     $this->addOption('model_id');
-
     $this->addOption('confirm');
-
     $this->addOption('delete_action');
-    
     $this->addOption('delete_text', null);
-
     $this->addOption('add_action');
-
     $this->addOption('add_text', null);
   }
 

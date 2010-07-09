@@ -151,26 +151,26 @@ class ContactForm extends BaseContactForm
     }   
   }
 
-  public function addEmail($num)
+  public function addEmail($index)
   {
     $email = new ContactEmail();
     $email->setContact($this->getObject());
 
-    $this->embeddedForms['emails']->embedForm($num, new ContactEmailForm($email));
+    $this->embeddedForms['emails']->embedForm($index, new ContactEmailForm($email));
     $this->embedForm('emails', $this->embeddedForms['emails']);
 
-    $this->widgetSchema['emails'][$num]['contact_id'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['emails'][$index]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
-  public function addPhone($num)
+  public function addPhone($index)
   {
     $phone = new ContactPhone();
     $phone->setContact($this->getObject());
 
-    $this->embeddedForms['phones']->embedForm($num, new ContactPhoneForm($phone));
+    $this->embeddedForms['phones']->embedForm($index, new ContactPhoneForm($phone));
     $this->embedForm('phones', $this->embeddedForms['phones']);
 
-    $this->widgetSchema['phones'][$num]['contact_id'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['phones'][$index]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
