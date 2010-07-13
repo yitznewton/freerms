@@ -73,7 +73,7 @@ class ContactForm extends BaseContactForm
             ));
         }
         
-      } 
+      }      
       
       $email_container_form->widgetSchema[$i]['address']->setLabel(' ');
     }
@@ -174,23 +174,37 @@ class ContactForm extends BaseContactForm
   }
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
-  {
+  {    
     foreach($taintedValues['emails'] as $key => $newEmail)
-    {
-      if (!isset($this['emails'][$key]))
-      {
+    {            
+      if (!($newEmail['address'])){
+
+        unset($taintedValues['emails'][$key]);
+
+        unset($this->embeddedForms['emails']['address']);
+      }
+      
+      elseif (!isset($this['emails'][$key])){
+
         $this->addEmail($key);
       }
     }
 
     foreach($taintedValues['phones'] as $key => $newPhone)
     {
-      if (!isset($this['phones'][$key]))
-      {
+      if (!($newPhone['number'])){
+
+        unset($taintedValues['phones'][$key]);
+
+        unset($this->embeddedForms['phones']['number']);
+      }
+
+      elseif (!isset($this['phones'][$key])){
+
         $this->addPhone($key);
       }
     }
 
     parent::bind($taintedValues, $taintedFiles);
-  }
+  } 
 }
