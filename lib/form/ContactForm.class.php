@@ -109,7 +109,7 @@ class ContactForm extends BaseContactForm
     $this->embedForm( $subobject_class . 's', $container_form );
   }
 
-  public function addEmail($index)
+  public function addContactEmail($index)
   {
     $email = new ContactEmail();
     $email->setContact($this->getObject());
@@ -120,7 +120,7 @@ class ContactForm extends BaseContactForm
     $this->widgetSchema['ContactEmails'][$index]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
-  public function addPhone($index)
+  public function addContactPhone($index)
   {
     $phone = new ContactPhone();
     $phone->setContact($this->getObject());
@@ -133,18 +133,45 @@ class ContactForm extends BaseContactForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
-    foreach($taintedValues['ContactEmails'] as $key => $newEmail) {
-      if (!isset($this['ContactEmails'][$key])) {
-        $this->addEmail($key);
-      }
-    }
-
-    foreach($taintedValues['ContactPhones'] as $key => $newPhone) {
-      if (!isset($this['ContactPhones'][$key])) {
-        $this->addPhone($key);
-      }
-    }
+    $this->pruneEmbedded( 'ContactEmail', $taintedValues );
+    $this->pruneEmbedded( 'ContactPhone', $taintedValues );
 
     parent::bind($taintedValues, $taintedFiles);
+  }
+
+  protected function pruneEmbedded( $class_name, array &$taintedValues )
+  {
+    $container = $class_name . 's';
+
+    if ( ! isset( $taintedValues[$container] ) ) {
+      throw new InvalidArgumentException( 'No such container' );
+    }
+
+    switch ( $class_name ) {
+      case 'ContactEmail':
+        $fieldname = 'address';
+        break;
+
+      case 'ContactPhone':
+        $fieldname = 'number';
+        break;
+    }
+
+    $keys_to_unset = array();
+
+    foreach ( $taintedValues[$container] as $key => $object ) {
+      if ( ! $object[$fieldname] ) {
+        $keys_to_unset[] = $key;
+      }
+      elseif ( ! isset( $this[$container][$key] ) ) {
+        $method = 'add' . $class_name;
+        $this->$method( $key );
+      }
+    }
+
+    foreach ( $keys_to_unset as $key ) {
+      unset( $taintedValues[$container][$key] );
+      unset( $this->embeddedForms[$container][$key] );
+    }
   }
 }
