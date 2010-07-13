@@ -23,37 +23,42 @@ class ContactForm extends BaseContactForm
     $this->widgetSchema->addFormFormatter('div', $decorator);
     $this->widgetSchema->setFormFormatterName('div');
 
-    $emails = $this->getObject()->getContactEmails();
-    $phones = $this->getObject()->getContactPhones();
+    $this->addSubform( 'ContactEmail' );
+    $this->addSubform( 'ContactPhone' );
 
-    if ( ! $emails ) {
-      $email = new ContactEmail();
-      $email->setContact($this->getObject());
-      $emails[] = $email;
-    }
+    $contact = $this->getObject();
 
-    $this->embedForm( 'emails', $this->createSubform( $emails ) );
-
-    if ( ! $phones ) {
-      $phone = new ContactPhone();
-      $phone->setContact($this->getObject());
-      $phones[] = $phone;
-    }
-
-    $this->embedForm( 'phones', $this->createSubform( $phones ) );
-
-    if ($this->getObject()->isNew() || count($phones) <= 1) {
-      $this->widgetSchema['emails']->setLabel('Email');
-      $this->widgetSchema['phones']->setLabel('Phone number');
+    if ( $contact->isNew() || count( $contact->getContactEmails() ) <= 1) {
+      $this->widgetSchema['ContactEmails']->setLabel('Email');
     }
     else {
-      $this->widgetSchema['emails']->setLabel('Emails');
-      $this->widgetSchema['phones']->setLabel('Phone numbers');
+      $this->widgetSchema['ContactEmails']->setLabel('Emails');
+    }
+
+    if ( $contact->isNew() || count( $contact->getContactPhones() ) <= 1) {
+      $this->widgetSchema['ContactPhones']->setLabel('Phone number');
+    }
+    else {
+      $this->widgetSchema['ContactPhones']->setLabel('Phone numbers');
     }
   }
 
-  protected function createSubform( array $subobjects )
+  protected function addSubform( $subobject_class )
   {
+    $getter = 'get' . $subobject_class . 's';
+
+    if ( ! method_exists( $this->getObject(), $getter ) ) {
+      throw new InvalidArgumentException( 'Invalid class' );
+    }
+
+    $subobjects = $this->getObject()->$getter();
+
+    if ( ! $subobjects ) {
+      $object = new $subobject_class();
+      $object->setContact( $this->getObject() );
+      $subobjects = array( $object );
+    }
+
     $container_form = new sfForm();
 
     if ( isset( $subobjects[0] ) ) {
@@ -101,7 +106,7 @@ class ContactForm extends BaseContactForm
       $container_form->widgetSchema[$i][$field_name] = $widget;
     }
 
-    return $container_form;
+    $this->embedForm( $subobject_class . 's', $container_form );
   }
 
   public function addEmail($index)
@@ -109,10 +114,10 @@ class ContactForm extends BaseContactForm
     $email = new ContactEmail();
     $email->setContact($this->getObject());
 
-    $this->embeddedForms['emails']->embedForm($index, new ContactEmailForm($email));
-    $this->embedForm('emails', $this->embeddedForms['emails']);
+    $this->embeddedForms['ContactEmails']->embedForm($index, new ContactEmailForm($email));
+    $this->embedForm('ContactEmails', $this->embeddedForms['ContactEmails']);
 
-    $this->widgetSchema['emails'][$index]['contact_id'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['ContactEmails'][$index]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
   public function addPhone($index)
@@ -120,22 +125,22 @@ class ContactForm extends BaseContactForm
     $phone = new ContactPhone();
     $phone->setContact($this->getObject());
 
-    $this->embeddedForms['phones']->embedForm($index, new ContactPhoneForm($phone));
-    $this->embedForm('phones', $this->embeddedForms['phones']);
+    $this->embeddedForms['ContactPhones']->embedForm($index, new ContactPhoneForm($phone));
+    $this->embedForm('ContactPhones', $this->embeddedForms['ContactPhones']);
 
-    $this->widgetSchema['phones'][$index]['contact_id'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['ContactPhones'][$index]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
-    foreach($taintedValues['emails'] as $key => $newEmail) {
-      if (!isset($this['emails'][$key])) {
+    foreach($taintedValues['ContactEmails'] as $key => $newEmail) {
+      if (!isset($this['ContactEmails'][$key])) {
         $this->addEmail($key);
       }
     }
 
-    foreach($taintedValues['phones'] as $key => $newPhone) {
-      if (!isset($this['phones'][$key])) {
+    foreach($taintedValues['ContactPhones'] as $key => $newPhone) {
+      if (!isset($this['ContactPhones'][$key])) {
         $this->addPhone($key);
       }
     }

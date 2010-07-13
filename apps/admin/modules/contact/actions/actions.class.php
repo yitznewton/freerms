@@ -79,12 +79,12 @@ class contactActions extends sfActions
     switch ( $request->getParameter('type') ) {
       case 'Email':
         $method    = 'addEmail';
-        $container = 'emails';
+        $container = 'ContactEmails';
         break;
       
       case 'Phone':
         $method    = 'addPhone';
-        $container = 'phones';
+        $container = 'ContactPhones';
         break;
       
       default:

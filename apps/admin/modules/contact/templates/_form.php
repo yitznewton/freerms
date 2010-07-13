@@ -2,8 +2,8 @@
 <?php use_javascripts_for_form($form) ?>
 
 <script type="text/javascript">
-var email_count = <?php echo ($form['emails']->count()) ?>;
-var phone_count = <?php echo ($form['phones']->count()) ?>;
+var email_count = <?php echo ($form['ContactEmails']->count()) ?>;
+var phone_count = <?php echo ($form['ContactPhones']->count()) ?>;
 
 function getSubform(type, index) {
   return $.ajax({
@@ -58,11 +58,11 @@ function addContactPhone(){
 
       <tr class="form-row">
         <td>
-          <?php echo $form['emails']->renderLabel() ?>          
+          <?php echo $form['ContactEmails']->renderLabel() ?>
         </td>
         <td>
           <div id="email-container">
-            <?php foreach ($form['emails'] as $key => $email): ?>
+            <?php foreach ($form['ContactEmails'] as $key => $email): ?>
             <?php echo $email->render() ?>
             <?php endforeach; ?>
           </div>         
@@ -71,11 +71,11 @@ function addContactPhone(){
       
       <tr class="form-row">
         <td>
-          <?php echo $form['phones']->renderLabel() ?>
+          <?php echo $form['ContactPhones']->renderLabel() ?>
         </td>
         <td>
           <div id="phone-container">
-            <?php foreach ($form['phones'] as $phone): ?>
+            <?php foreach ($form['ContactPhones'] as $phone): ?>
             <?php echo $phone->render() ?>
             <?php endforeach; ?>
           </div>
