@@ -107,7 +107,7 @@ class contactActions extends sfActions
     return $this->renderPartial('addSubform', array('form' => $form, 'container' => $container, 'index' => $index));
   }
 
-  public function executeDeleteEmail(sfWebRequest $request)
+  public function executeDeleteContactEmail(sfWebRequest $request)
   {   
     $email = ContactEmailPeer::retrieveByPk($request->getParameter('id'));  
     $email->delete();
@@ -115,7 +115,7 @@ class contactActions extends sfActions
     $this->redirect('contact/edit?id='.$email->getContact()->getId());
   }
 
-  public function executeDeletePhone(sfWebRequest $request)
+  public function executeDeleteContactPhone(sfWebRequest $request)
   {
     $phone = ContactPhonePeer::retrieveByPk($request->getParameter('id'));
     $phone->delete();

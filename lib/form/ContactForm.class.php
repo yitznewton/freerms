@@ -23,8 +23,8 @@ class ContactForm extends BaseContactForm
     $this->widgetSchema->addFormFormatter('div', $decorator);
     $this->widgetSchema->setFormFormatterName('div');
 
-    $email_container_form = new sfForm();
     $emails = $this->getObject()->getContactEmails();
+    $phones = $this->getObject()->getContactPhones();
 
     if ( ! $emails ) {
       $email = new ContactEmail();
@@ -32,42 +32,7 @@ class ContactForm extends BaseContactForm
       $emails[] = $email;
     }
 
-    foreach ( $emails as $i => $email ) {
-      $email_form = new ContactEmailForm( $email );
-      unset( $email_form['contact_id'] );
-
-      $email_container_form->embedForm( $i, $email_form );
-
-      $widget = new freermsWidgetFormInputDeleteAdd( array(
-        'model_id'   => $email->getId(),
-        'label'      => false,
-        'confirm'    => 'Are you sure?',
-      ));
-
-      if ( $i === (count( $emails ) - 1) ) {
-        $widget->setOption( 'add_text',   'Add' );
-        $widget->setOption( 'add_action', 'addEmail()' );  // Javascript
-      }
-
-      if ( count( $emails ) > 1 ) {
-        $widget->setOption( 'delete_text',   'Delete' );
-        $widget->setOption( 'delete_action', 'contact/deleteEmail' );
-      }
-
-      $email_container_form->widgetSchema[$i]['address'] = $widget;
-    }
-
-    $this->embedForm( 'emails', $email_container_form );
-
-    if ($this->getObject()->isNew() || count($emails) <= 1) {
-      $this->widgetSchema['emails']->setLabel('Email');
-    }
-    else {
-      $this->widgetSchema['emails']->setLabel('Emails');
-    }
-
-    $phone_container_form = new sfForm();
-    $phones = $this->getObject()->getContactPhones();
+    $this->embedForm( 'emails', $this->createSubform( $emails ) );
 
     if ( ! $phones ) {
       $phone = new ContactPhone();
@@ -75,39 +40,68 @@ class ContactForm extends BaseContactForm
       $phones[] = $phone;
     }
 
-    foreach ( $phones as $i => $phone ) {
-      $phone_form = new ContactPhoneForm( $phone );
-      unset( $phone_form['contact_id'] );
+    $this->embedForm( 'phones', $this->createSubform( $phones ) );
 
-      $phone_container_form->embedForm( $i, $phone_form );
+    if ($this->getObject()->isNew() || count($phones) <= 1) {
+      $this->widgetSchema['emails']->setLabel('Email');
+      $this->widgetSchema['phones']->setLabel('Phone number');
+    }
+    else {
+      $this->widgetSchema['emails']->setLabel('Emails');
+      $this->widgetSchema['phones']->setLabel('Phone numbers');
+    }
+  }
+
+  protected function createSubform( array $subobjects )
+  {
+    $container_form = new sfForm();
+
+    if ( isset( $subobjects[0] ) ) {
+      $class = get_class( $subobjects[0] );
+      $subform_class = $class . 'Form';
+    }
+    else {
+      throw new InvalidArgumentException( 'Argument must be non-empty array' );
+    }
+
+    foreach ( $subobjects as $i => $object ) {
+      $subform = new $subform_class( $object );
+      unset( $subform['contact_id'] );
+
+      $container_form->embedForm( $i, $subform );
 
       $widget = new freermsWidgetFormInputDeleteAdd( array(
-        'model_id'   => $phone->getId(),
+        'model_id'   => $object->getId(),
         'label'      => false,
         'confirm'    => 'Are you sure?',
       ));
 
-      if ( $i === (count( $phones ) - 1) ) {
+      if ( $i === (count( $subobjects ) - 1) ) {
         $widget->setOption( 'add_text',   'Add' );
-        $widget->setOption( 'add_action', 'addPhone()' );  // Javascript
+        $widget->setOption( 'add_action', 'add' . $class . '()' );  // Javascript
       }
 
-      if ( count( $phones ) > 1 ) {
+      if ( count( $subobjects ) > 1 ) {
         $widget->setOption( 'delete_text',   'Delete' );
-        $widget->setOption( 'delete_action', 'contact/deletePhone' );
+        $widget->setOption( 'delete_action', 'contact/delete' . $class );
       }
 
-      $phone_container_form->widgetSchema[$i]['number'] = $widget;
+      // TODO: this breaks the abstraction; refactor? Have to change schema?
+
+      switch ( $class ) {
+        case 'ContactEmail':
+          $field_name = 'address';
+          break;
+        
+        case 'ContactPhone':
+          $field_name = 'number';
+          break;
+      }
+
+      $container_form->widgetSchema[$i][$field_name] = $widget;
     }
 
-    $this->embedForm( 'phones', $phone_container_form );
-
-    if ($this->getObject()->isNew() || count($phones) <= 1) {
-      $this->widgetSchema['phones']->setLabel('Phone number');
-    }
-    else {
-      $this->widgetSchema['phones']->setLabel('Phone numbers');
-    }
+    return $container_form;
   }
 
   public function addEmail($index)

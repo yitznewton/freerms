@@ -13,14 +13,14 @@ function getSubform(type, index) {
   }).responseText;
 }
 
-function addEmail(){
+function addContactEmail(){
   $("#email-container").append(getSubform('Email', email_count));
   email_count++;
 
   return false;
 }
 
-function addPhone(){
+function addContactPhone(){
   $("#phone-container").append(getSubform('Phone', phone_count));
   phone_count++;
 
