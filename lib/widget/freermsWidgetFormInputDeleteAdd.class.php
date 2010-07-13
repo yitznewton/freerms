@@ -17,7 +17,7 @@ class freermsWidgetFormInputDeleteAdd extends sfWidgetFormInput
   protected function renderLinks()
   {
     $controller = sfContext::getInstance()->getController();
-    $html_bits = array();   
+    $html_bits  = array();
 
     $delete_text   = $this->getOption('delete_text');
     $add_text   = $this->getOption('add_text');
