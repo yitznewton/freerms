@@ -21,7 +21,7 @@
           <input type="submit" value="Save" />
 
           <?php if (!$form->getObject()->isNew()): ?>
-          <?php echo link_to('Delete', 'contact/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Deleting will permanently remove this subject tag from all databases.  Are you sure?')) ?>
+          <?php echo link_to('Delete', 'contact/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Deleting will permanently remove this contact from all vendors.  Are you sure?')) ?>
           <?php endif; ?>
        </td>
      </tr>

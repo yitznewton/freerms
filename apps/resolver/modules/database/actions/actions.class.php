@@ -173,7 +173,6 @@ class databaseActions extends sfActions
 
   public function executeURLRefer(sfWebRequest $request)
   {
-    // TODO should this be protected?
     $raw_url = $request->getUri();
     $url = substr($raw_url, strpos($raw_url, '/direct-refer/')+14);
     
