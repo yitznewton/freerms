@@ -55,10 +55,7 @@ class ContactForm extends BaseContactForm
     $objects = $this->getObject()->$getter();
 
     $widget = new freermsWidgetFormInputDeleteAdd2( array(
-      'label'         => false,
-//      'add_action' => 'add' . $class . '()',
-//      'confirm'       => 'Are you sure? Unsaved changes to other form fields will be lost!',
-//      'delete_action' => 'deleteSubform()',
+      'label' => false,
     ));
 
     $widget->setIndex( $index );

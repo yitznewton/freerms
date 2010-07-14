@@ -3,7 +3,7 @@ function clearAll( select_el )
   select_el.find('option:selected').attr('selected', false); 
 }
 
-function update_ip_reg_fields()
+function updateIpRegFields()
 {
   var selected = $('#organization_ip_reg_method_id')
                  .find('option:selected').text();
@@ -37,13 +37,20 @@ function getSubform( type, index )
   }).responseText;
 }
 
+function bindDeleteConfirms()
+{
+  $('.input-link-delete').click( function() {
+    return window.confirm('Are you sure? Make sure other changes are saved first!');
+  });
+}
+
 $(document).ready(function(){
   $('#tab-container > ul').tabs();
 
-  update_ip_reg_fields();
+  updateIpRegFields();
 
   $('#organization_ip_reg_method_id').change( function() {
-    update_ip_reg_fields();
+    updateIpRegFields();
   });
 
   // FIXME: the first new input should not have an accompanying add link
@@ -59,6 +66,8 @@ $(document).ready(function(){
     subform.find('.input-link-delete').click( function() {
       subform.remove();
     });
+
+    bindDeleteConfirms();
 
     email_count++;
 
@@ -78,8 +87,12 @@ $(document).ready(function(){
       subform.remove();
     });
 
+    bindDeleteConfirms();
+
     phone_count++;
 
     return false;
   });
+
+  bindDeleteConfirms();
 });
