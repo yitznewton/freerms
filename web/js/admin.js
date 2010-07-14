@@ -39,6 +39,8 @@ function getSubform( type, index )
 
 function bindDeleteConfirms()
 {
+  $('.input-link-delete').unbind('click');
+
   $('.input-link-delete').click( function() {
     return window.confirm('Are you sure? Make sure other changes are saved first!');
   });
@@ -53,7 +55,6 @@ $(document).ready(function(){
     updateIpRegFields();
   });
 
-  // FIXME: the first new input should not have an accompanying add link
   $('#email-container .input-link-add').click( function() {
     var subform = getSubform('ContactEmail', email_count);
     var new_input_id = $(':text', subform).get(0).id;
