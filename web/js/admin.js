@@ -26,11 +26,40 @@ function update_ip_reg_fields()
   }
 }
 
+function getSubform( type, index )
+{
+  var id_fragment = is_new ? '' : '&id=' + object_id;
+
+  return $.ajax({
+    type: 'GET',
+    url: subform_url + '?type=' + type + id_fragment + '&index=' + index,
+    async: false
+  }).responseText;
+}
+
 $(document).ready(function(){
   $('#tab-container > ul').tabs();
   update_ip_reg_fields();
 
   $('#organization_ip_reg_method_id').change( function() {
     update_ip_reg_fields();
+  });
+
+  // TODO: need to bind to the new delete link
+  // FIXME: the first new input should not have an accompanying add link
+  $('#email-container .input-link-add').click( function() {
+    var subform = getSubform('ContactEmail', email_count);
+    $("#email-container").append( subform );
+    email_count++;
+
+    return false;
+  });
+
+  $('#phone-container .input-link-add').click( function() {
+    var subform = getSubform('ContactPhone', phone_count);
+    $("#phone-container").append( subform );
+    phone_count++;
+
+    return false;
   });
 });

@@ -91,8 +91,7 @@ class ContactForm extends BaseContactForm
         'class'   => 'input-link input-link-add',
       ) );
 
-//        $widget->setOption( 'add_action', 'add' . $class . '()' );  // Javascript
-//        $widget->setOption( 'delete_action', 'contact/delete' . $class );
+      $widget->setOption( 'delete_action', 'contact/delete' . $class );
 
       // TODO: this breaks the abstraction; refactor? Have to change schema?
 
@@ -120,12 +119,19 @@ class ContactForm extends BaseContactForm
     $subobject = new $class();
     $subobject->setContact( $this->getObject() );
 
+    $getter  = 'get' . $class . 's';
+    $objects = $this->getObject()->$getter();
+
     $widget = new freermsWidgetFormInputDeleteAdd2( array(
       'label'         => false,
 //      'add_action' => 'add' . $class . '()',
 //      'confirm'       => 'Are you sure? Unsaved changes to other form fields will be lost!',
 //      'delete_action' => 'deleteSubform()',
     ));
+
+    $widget->setIndex( $index );
+    $widget->setObjects( $objects );
+    $widget->setOption( 'delete_attributes', array( 'class' => 'input-link input-link-delete' ) );
 
     // TODO: this breaks the abstraction; refactor? Have to change schema?
 

@@ -2,32 +2,11 @@
 <?php use_javascripts_for_form($form) ?>
 
 <script type="text/javascript">
-var email_count = <?php echo ($form['ContactEmails']->count()) ?>;
-var phone_count = <?php echo ($form['ContactPhones']->count()) ?>;
-
-function getSubform(type, index) {
-  return $.ajax({
-    type: 'GET',
-    url: '<?php echo url_for('contact/addSubform') ?>?type=' + type + '<?php echo ($form->getObject()->isNew()?'':'&id='.$form->getObject()->getId()).'&index='?>' + index,
-    async: false
-  }).responseText;
-}
-
-function addContactEmail(){
-  var subform = getSubform('ContactEmail', email_count);
-  $("#email-container").append( subform );
-  email_count++;
-
-  return false;
-}
-
-function addContactPhone(){
-  var subform = getSubform('ContactPhone', phone_count);
-  $("#phone-container").append( subform );
-  phone_count++;
-
-  return false;
-}
+  var subform_url = '<?php echo url_for('contact/addSubform') ?>';
+  var object_id   = '<?php echo $form->getObject()->getId() ?>';
+  var is_new      = '<?php echo $form->getObject()->isNew() ?>';
+  var email_count = <?php echo ($form['ContactEmails']->count()) ?>;
+  var phone_count = <?php echo ($form['ContactPhones']->count()) ?>;
 </script>
 
 <form action="<?php echo url_for('contact/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="post" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>

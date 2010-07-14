@@ -51,7 +51,7 @@ class freermsWidgetFormInputDeleteAdd2 extends freermsWidgetFormInputLinks
 
     if ( $this->getOption('delete_action') ) {
       $route = $controller->genUrl( $this->getOption('delete_action') )
-               .'?id=' . $this->objects[$index]->getId();
+               .'?id=' . $this->objects[$this->index]->getId();
 
       $this->options['delete_attributes']['href'] = $route;
     }
@@ -61,7 +61,7 @@ class freermsWidgetFormInputDeleteAdd2 extends freermsWidgetFormInputLinks
 
     if ( $this->getOption('add_action') ) {
       $route = $controller->genUrl( $this->getOption('add_action') )
-               .'?id=' . $this->objects[$index]->getId();
+               .'?id=' . $this->objects[$this->index]->getId();
 
       $this->options['add_attributes']['href'] = $route;
     }
