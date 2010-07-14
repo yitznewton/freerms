@@ -83,17 +83,8 @@ class ContactForm extends BaseContactForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
-    foreach ( $taintedValues['ContactEmails'] as $index => $contact_email ) {
-      if ( ! isset( $this['ContactEmails'][$index] ) ) {
-        $this->addSubform( 'ContactEmail', $index );
-      }
-    }
-
-    foreach ( $taintedValues['ContactPhones'] as $index => $contact_phone ) {
-      if ( ! isset( $this['ContactPhones'][$index] ) ) {
-        $this->addSubform( 'ContactPhone', $index );
-      }
-    }
+    $this->pruneEmbedded( 'ContactEmail', $taintedValues );
+    $this->pruneEmbedded( 'ContactPhone', $taintedValues );
 
     parent::bind( $taintedValues, $taintedFiles );
   }
