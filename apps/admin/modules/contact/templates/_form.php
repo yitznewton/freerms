@@ -14,14 +14,16 @@ function getSubform(type, index) {
 }
 
 function addContactEmail(){
-  $("#email-container").append(getSubform('Email', email_count));
+  var subform = getSubform('ContactEmail', email_count);
+  $("#email-container").append( subform );
   email_count++;
 
   return false;
 }
 
 function addContactPhone(){
-  $("#phone-container").append(getSubform('Phone', phone_count));
+  var subform = getSubform('ContactPhone', phone_count);
+  $("#phone-container").append( subform );
   phone_count++;
 
   return false;

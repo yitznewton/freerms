@@ -76,20 +76,8 @@ class contactActions extends sfActions
   {
     $this->forward404unless($request->isXmlHttpRequest());
     
-    switch ( $request->getParameter('type') ) {
-      case 'Email':
-        $method    = 'addContactEmail';
-        $container = 'ContactEmails';
-        break;
-      
-      case 'Phone':
-        $method    = 'addContactPhone';
-        $container = 'ContactPhones';
-        break;
-      
-      default:
-        $this->forward404();
-    }
+    $type      = $request->getParameter('type');
+    $container = $type . 's';
     
     $index = intval($request->getParameter('index'));
 
@@ -102,9 +90,9 @@ class contactActions extends sfActions
       $form = new ContactForm();
     }
 
-    $form->$method($index);
+    $form->addSubform( $type, $index );
 
-    return $this->renderPartial('addSubform', array('form' => $form, 'container' => $container, 'index' => $index));
+    return $this->renderPartial('addSubform', array('subform' => $form[$container][$index]));
   }
 
   public function executeDeleteContactEmail(sfWebRequest $request)

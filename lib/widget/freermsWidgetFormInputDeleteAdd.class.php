@@ -28,7 +28,7 @@ class freermsWidgetFormInputDeleteAdd extends sfWidgetFormInput
 
       $a_attributes_delete = array(
         'href' => $delete_action,
-        'class' => 'input-link',
+        'class' => 'input-link input-link-delete',
         'onclick' => 'if (confirm(\''.$this->getOption('confirm').'\')) { return true; };return false;',
       );
 
@@ -38,7 +38,7 @@ class freermsWidgetFormInputDeleteAdd extends sfWidgetFormInput
     if ( $add_text ) {
       $a_attributes_add = array(
         'href' => '#',
-        'class' => 'input-link',
+        'class' => 'input-link input-link-delete',
         'onclick' => 'return ' . $this->getOption('add_action'),
       );
       

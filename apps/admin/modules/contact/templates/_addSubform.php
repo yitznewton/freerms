@@ -1,1 +1,1 @@
-<?php echo $form[$container][$index]->render() ?>
+<?php echo $subform->render() ?>

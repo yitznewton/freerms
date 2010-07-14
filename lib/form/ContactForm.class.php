@@ -23,8 +23,8 @@ class ContactForm extends BaseContactForm
     $this->widgetSchema->addFormFormatter('div', $decorator);
     $this->widgetSchema->setFormFormatterName('div');
 
-    $this->addSubform( 'ContactEmail' );
-    $this->addSubform( 'ContactPhone' );
+    $this->addSubformContainer( 'ContactEmail' );
+    $this->addSubformContainer( 'ContactPhone' );
 
     $contact = $this->getObject();
 
@@ -43,7 +43,7 @@ class ContactForm extends BaseContactForm
     }
   }
 
-  protected function addSubform( $subobject_class )
+  protected function addSubformContainer( $subobject_class )
   {
     $getter = 'get' . $subobject_class . 's';
 
@@ -69,27 +69,30 @@ class ContactForm extends BaseContactForm
       throw new InvalidArgumentException( 'Argument must be non-empty array' );
     }
 
+    $widget = new freermsWidgetFormInputDeleteAdd2( array(
+      'label'          => false,
+    ));
+
+    $widget->setObjects( $subobjects );
+
     foreach ( $subobjects as $i => $object ) {
       $subform = new $subform_class( $object );
       unset( $subform['contact_id'] );
 
       $container_form->embedForm( $i, $subform );
 
-      $widget = new freermsWidgetFormInputDeleteAdd( array(
-        'model_id'   => $object->getId(),
-        'label'      => false,
-        'confirm'    => 'Are you sure?',
-      ));
+      $widget->setIndex( $i );
 
-      if ( $i === (count( $subobjects ) - 1) ) {
-        $widget->setOption( 'add_text',   'Add' );
-        $widget->setOption( 'add_action', 'add' . $class . '()' );  // Javascript
-      }
+      $widget->setOption( 'delete_attributes', array(
+        'class' => 'input-link input-link-delete',
+      ) );
 
-      if ( count( $subobjects ) > 1 ) {
-        $widget->setOption( 'delete_text',   'Delete' );
-        $widget->setOption( 'delete_action', 'contact/delete' . $class );
-      }
+      $widget->setOption( 'add_attributes', array(
+        'class'   => 'input-link input-link-add',
+      ) );
+
+//        $widget->setOption( 'add_action', 'add' . $class . '()' );  // Javascript
+//        $widget->setOption( 'delete_action', 'contact/delete' . $class );
 
       // TODO: this breaks the abstraction; refactor? Have to change schema?
 
@@ -109,45 +112,49 @@ class ContactForm extends BaseContactForm
     $this->embedForm( $subobject_class . 's', $container_form );
   }
 
-  public function addContactEmail($index)
+  public function addSubform( $class, $index )
   {
-    $email = new ContactEmail();
-    $email->setContact($this->getObject());
+    $container = $class . 's';
+    $form_class = $class . 'Form';
+    
+    $subobject = new $class();
+    $subobject->setContact( $this->getObject() );
 
-    $this->embeddedForms['ContactEmails']->embedForm($index, new ContactEmailForm($email));
-    $this->embedForm('ContactEmails', $this->embeddedForms['ContactEmails']);
+    $widget = new freermsWidgetFormInputDeleteAdd2( array(
+      'label'         => false,
+//      'add_action' => 'add' . $class . '()',
+//      'confirm'       => 'Are you sure? Unsaved changes to other form fields will be lost!',
+//      'delete_action' => 'deleteSubform()',
+    ));
 
-    $this->widgetSchema['ContactEmails'][$index]['contact_id'] = new sfWidgetFormInputHidden();
+    // TODO: this breaks the abstraction; refactor? Have to change schema?
+
+    switch ( $class ) {
+      case 'ContactEmail':
+        $field_name = 'address';
+        break;
+
+      case 'ContactPhone':
+        $field_name = 'number';
+        break;
+    }
+    
+    $this->embeddedForms[$container]->embedForm( $index, new $form_class( $subobject ) );
+    $this->embedForm( $container, $this->embeddedForms[$container] );
+
+    $this->widgetSchema[$container][$index][$field_name] = $widget;
+    $this->widgetSchema[$container][$index]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
-  public function addContactPhone($index)
+  protected function pruneEmbedded( $class, array &$taintedValues )
   {
-    $phone = new ContactPhone();
-    $phone->setContact($this->getObject());
-
-    $this->embeddedForms['ContactPhones']->embedForm($index, new ContactPhoneForm($phone));
-    $this->embedForm('ContactPhones', $this->embeddedForms['ContactPhones']);
-
-    $this->widgetSchema['ContactPhones'][$index]['contact_id'] = new sfWidgetFormInputHidden();
-  }
-
-  public function bind(array $taintedValues = null, array $taintedFiles = null)
-  {
-    $this->pruneEmbedded( 'ContactEmail', $taintedValues );
-    $this->pruneEmbedded( 'ContactPhone', $taintedValues );
-
-    parent::bind($taintedValues, $taintedFiles);
-  }
-
-  protected function pruneEmbedded( $class_name, array &$taintedValues )
-  {
-    $container = $class_name . 's';
+    $container = $class . 's';
 
     if ( ! isset( $taintedValues[$container] ) ) {
       throw new InvalidArgumentException( 'No such container' );
     }
 
-    switch ( $class_name ) {
+    switch ( $class ) {
       case 'ContactEmail':
         $fieldname = 'address';
         break;
@@ -164,8 +171,7 @@ class ContactForm extends BaseContactForm
         $keys_to_unset[] = $key;
       }
       elseif ( ! isset( $this[$container][$key] ) ) {
-        $method = 'add' . $class_name;
-        $this->$method( $key );
+        $this->addSubform( $class, $key );
       }
     }
 
