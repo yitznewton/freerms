@@ -39,17 +39,27 @@ function getSubform( type, index )
 
 $(document).ready(function(){
   $('#tab-container > ul').tabs();
+
   update_ip_reg_fields();
 
   $('#organization_ip_reg_method_id').change( function() {
     update_ip_reg_fields();
   });
 
-  // TODO: need to bind to the new delete link
   // FIXME: the first new input should not have an accompanying add link
   $('#email-container .input-link-add').click( function() {
     var subform = getSubform('ContactEmail', email_count);
+    var new_input_id = $(':text', subform).get(0).id;
+
     $("#email-container").append( subform );
+
+    // jQuery can't seem to keep track of the new div once it's appended
+    subform = $('#'+new_input_id).parent();
+    
+    subform.find('.input-link-delete').click( function() {
+      subform.remove();
+    });
+
     email_count++;
 
     return false;
@@ -57,7 +67,17 @@ $(document).ready(function(){
 
   $('#phone-container .input-link-add').click( function() {
     var subform = getSubform('ContactPhone', phone_count);
+    var new_input_id = $(':text', subform).get(0).id;
+
     $("#phone-container").append( subform );
+
+    // jQuery can't seem to keep track of the new div once it's appended
+    subform = $('#'+new_input_id).parent();
+
+    subform.find('.input-link-delete').click( function() {
+      subform.remove();
+    });
+
     phone_count++;
 
     return false;
