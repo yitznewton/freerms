@@ -43,6 +43,64 @@ class ContactForm extends BaseContactForm
     }
   }
 
+  public function addSubform( $class, $index )
+  {
+    $container = $class . 's';
+    $form_class = $class . 'Form';
+    
+    $subobject = new $class();
+    $subobject->setContact( $this->getObject() );
+
+    $getter  = 'get' . $class . 's';
+    $objects = $this->getObject()->$getter();
+
+    $widget = new freermsWidgetFormInputDeleteAdd2( array(
+      'label'         => false,
+//      'add_action' => 'add' . $class . '()',
+//      'confirm'       => 'Are you sure? Unsaved changes to other form fields will be lost!',
+//      'delete_action' => 'deleteSubform()',
+    ));
+
+    $widget->setIndex( $index );
+    $widget->setObjects( $objects );
+    $widget->setOption( 'delete_attributes', array( 'class' => 'input-link input-link-delete' ) );
+
+    // TODO: this breaks the abstraction; refactor? Have to change schema?
+
+    switch ( $class ) {
+      case 'ContactEmail':
+        $field_name = 'address';
+        break;
+
+      case 'ContactPhone':
+        $field_name = 'number';
+        break;
+    }
+    
+    $this->embeddedForms[$container]->embedForm( $index, new $form_class( $subobject ) );
+    $this->embedForm( $container, $this->embeddedForms[$container] );
+
+    $this->widgetSchema[$container][$index][$field_name] = $widget;
+    $this->widgetSchema[$container][$index]['contact_id'] = new sfWidgetFormInputHidden();
+  }
+
+  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  {
+    foreach ( $taintedValues['ContactEmails'] as $index => $contact_email ) {
+      if ( ! isset( $this['ContactEmails'][$index] ) ) {
+        $this->addSubform( 'ContactEmail', $index );
+      }
+    }
+
+    foreach ( $taintedValues['ContactPhones'] as $index => $contact_phone ) {
+      if ( ! isset( $this['ContactPhones'][$index] ) ) {
+        $this->addSubform( 'ContactPhone', $index );
+      }
+    }
+
+    parent::bind( $taintedValues, $taintedFiles );
+  }
+
   protected function addSubformContainer( $subobject_class )
   {
     $getter = 'get' . $subobject_class . 's';
@@ -99,7 +157,7 @@ class ContactForm extends BaseContactForm
         case 'ContactEmail':
           $field_name = 'address';
           break;
-        
+
         case 'ContactPhone':
           $field_name = 'number';
           break;
@@ -109,47 +167,6 @@ class ContactForm extends BaseContactForm
     }
 
     $this->embedForm( $subobject_class . 's', $container_form );
-  }
-
-  public function addSubform( $class, $index )
-  {
-    $container = $class . 's';
-    $form_class = $class . 'Form';
-    
-    $subobject = new $class();
-    $subobject->setContact( $this->getObject() );
-
-    $getter  = 'get' . $class . 's';
-    $objects = $this->getObject()->$getter();
-
-    $widget = new freermsWidgetFormInputDeleteAdd2( array(
-      'label'         => false,
-//      'add_action' => 'add' . $class . '()',
-//      'confirm'       => 'Are you sure? Unsaved changes to other form fields will be lost!',
-//      'delete_action' => 'deleteSubform()',
-    ));
-
-    $widget->setIndex( $index );
-    $widget->setObjects( $objects );
-    $widget->setOption( 'delete_attributes', array( 'class' => 'input-link input-link-delete' ) );
-
-    // TODO: this breaks the abstraction; refactor? Have to change schema?
-
-    switch ( $class ) {
-      case 'ContactEmail':
-        $field_name = 'address';
-        break;
-
-      case 'ContactPhone':
-        $field_name = 'number';
-        break;
-    }
-    
-    $this->embeddedForms[$container]->embedForm( $index, new $form_class( $subobject ) );
-    $this->embedForm( $container, $this->embeddedForms[$container] );
-
-    $this->widgetSchema[$container][$index][$field_name] = $widget;
-    $this->widgetSchema[$container][$index]['contact_id'] = new sfWidgetFormInputHidden();
   }
 
   protected function pruneEmbedded( $class, array &$taintedValues )
