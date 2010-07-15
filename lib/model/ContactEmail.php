@@ -18,9 +18,14 @@ require 'lib/model/om/BaseContactEmail.php';
  *
  * @package    lib.model
  */
-class ContactEmail extends BaseContactEmail {
+class ContactEmail extends BaseContactEmail implements freermsSimpleAssoc {
   public function __toString()
   {
     return $this->getAddress();
+  }
+
+  public function getDataFieldName()
+  {
+    return 'address';
   }
 } // ContactEmail

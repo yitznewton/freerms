@@ -83,14 +83,14 @@ class contactActions extends sfActions
 
     $contact = ContactPeer::retrieveByPk($request->getParameter('id'));
     
-    if ($contact){
+    if ($contact) {
       $form = new ContactForm($contact);
     }
     else {
       $form = new ContactForm();
     }
 
-    $form->addSubform( $type, $index );
+    $form->addSubformContainer( $type, $index );
 
     return $this->renderPartial('addSubform', array('subform' => $form[$container][$index]));
   }

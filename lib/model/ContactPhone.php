@@ -18,9 +18,14 @@ require 'lib/model/om/BaseContactPhone.php';
  *
  * @package    lib.model
  */
-class ContactPhone extends BaseContactPhone {
+class ContactPhone extends BaseContactPhone implements freermsSimpleAssoc {
   public function __toString()
   {
     return $this->getNumber();
+  }
+
+  public function getDataFieldName()
+  {
+    return 'number';
   }
 } // ContactPhone

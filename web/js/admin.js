@@ -37,15 +37,6 @@ function getSubform( type, index )
   }).responseText;
 }
 
-function bindDeleteConfirms()
-{
-  $('.input-link-delete').unbind('click');
-
-  $('.input-link-delete').click( function() {
-    return window.confirm('Are you sure? Make sure other changes are saved first!');
-  });
-}
-
 $(document).ready(function(){
   $('#tab-container > ul').tabs();
 
@@ -68,8 +59,6 @@ $(document).ready(function(){
       subform.remove();
     });
 
-    bindDeleteConfirms();
-
     email_count++;
 
     return false;
@@ -88,12 +77,12 @@ $(document).ready(function(){
       subform.remove();
     });
 
-    bindDeleteConfirms();
-
     phone_count++;
 
     return false;
   });
 
-  bindDeleteConfirms();
+  $('.input-link-delete').click( function() {
+    return window.confirm('Are you sure? Make sure other changes are saved first!');
+  });
 });

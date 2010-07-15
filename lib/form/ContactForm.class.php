@@ -43,44 +43,6 @@ class ContactForm extends BaseContactForm
     }
   }
 
-  public function addSubform( $class, $index )
-  {
-    $container = $class . 's';
-    $form_class = $class . 'Form';
-    
-    $subobject = new $class();
-    $subobject->setContact( $this->getObject() );
-
-    $getter  = 'get' . $class . 's';
-    $objects = $this->getObject()->$getter();
-
-    $widget = new freermsWidgetFormInputDeleteAdd2( array(
-      'label' => false,
-    ));
-
-    $widget->setIndex( $index );
-    $widget->setObjects( $objects );
-    $widget->setOption( 'delete_attributes', array( 'class' => 'input-link input-link-delete' ) );
-
-    // TODO: this breaks the abstraction; refactor? Have to change schema?
-
-    switch ( $class ) {
-      case 'ContactEmail':
-        $field_name = 'address';
-        break;
-
-      case 'ContactPhone':
-        $field_name = 'number';
-        break;
-    }
-    
-    $this->embeddedForms[$container]->embedForm( $index, new $form_class( $subobject ) );
-    $this->embedForm( $container, $this->embeddedForms[$container] );
-
-    $this->widgetSchema[$container][$index][$field_name] = $widget;
-    $this->widgetSchema[$container][$index]['contact_id'] = new sfWidgetFormInputHidden();
-  }
-
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
     $this->pruneEmbedded( 'ContactEmail', $taintedValues );
@@ -89,9 +51,16 @@ class ContactForm extends BaseContactForm
     parent::bind( $taintedValues, $taintedFiles );
   }
 
-  protected function addSubformContainer( $subobject_class )
+  public function addSubformContainer( $subobject_class, $index = null )
   {
-    $getter = 'get' . $subobject_class . 's';
+    if ( isset( $index ) && ! is_int( $index ) ) {
+      $msg = 'Second argument must be an integer';
+      throw new InvalidArgumentException( $msg );
+    }
+
+    $container_name = $subobject_class . 's';
+    $getter         = 'get' . $subobject_class . 's';
+    $subform_class  = $subobject_class . 'Form';
 
     if ( ! method_exists( $this->getObject(), $getter ) ) {
       throw new InvalidArgumentException( 'Invalid class' );
@@ -99,62 +68,60 @@ class ContactForm extends BaseContactForm
 
     $subobjects = $this->getObject()->$getter();
 
-    if ( ! $subobjects ) {
-      $object = new $subobject_class();
-      $object->setContact( $this->getObject() );
-      $subobjects = array( $object );
+    if ( isset( $index ) ) {
+      $new_subobject = new $subobject_class();
+      $new_subobject->setContact( $this->getObject() );
+      $subobjects[$index] = $new_subobject;
+    }
+    elseif ( ! $subobjects ) {
+      $new_subobject = new $subobject_class();
+      $new_subobject->setContact( $this->getObject() );
+      $subobjects[] = $new_subobject;
     }
 
     $container_form = new sfForm();
 
-    if ( isset( $subobjects[0] ) ) {
-      $class = get_class( $subobjects[0] );
-      $subform_class = $class . 'Form';
-    }
-    else {
-      throw new InvalidArgumentException( 'Argument must be non-empty array' );
-    }
-
     $widget = new freermsWidgetFormInputDeleteAdd2( array(
-      'label'          => false,
+      'label' => false,
+      'delete_attributes' => array(
+        'class' => 'input-link input-link-delete',
+      ),
+      'add_attributes' => array(
+        'class'   => 'input-link input-link-add',
+      ),
     ));
 
     $widget->setObjects( $subobjects );
 
-    foreach ( $subobjects as $i => $object ) {
-      $subform = new $subform_class( $object );
+    foreach ( $subobjects as $i => $subobject ) {
+      $aWidget = clone $widget;
+
+      if ( $subobject->isNew() ) {
+        $aWidget->setOption( 'delete_action', null );
+      }
+      else {
+        $action = 'contact/delete' . $subobject_class;
+        $aWidget->setOption( 'delete_action', $action );
+      }
+
+      $subform = new $subform_class( $subobject );
       unset( $subform['contact_id'] );
 
       $container_form->embedForm( $i, $subform );
 
-      $widget->setIndex( $i );
+      $aWidget->setIndex( $i );
 
-      $widget->setOption( 'delete_attributes', array(
-        'class' => 'input-link input-link-delete',
-      ) );
-
-      $widget->setOption( 'add_attributes', array(
-        'class'   => 'input-link input-link-add',
-      ) );
-
-      $widget->setOption( 'delete_action', 'contact/delete' . $class );
-
-      // TODO: this breaks the abstraction; refactor? Have to change schema?
-
-      switch ( $class ) {
-        case 'ContactEmail':
-          $field_name = 'address';
-          break;
-
-        case 'ContactPhone':
-          $field_name = 'number';
-          break;
+      // TODO: freermsSimpleAssoc::getDataFieldName() is a bit of a kluge;
+      // modify?
+      if ( ! $subobject instanceof freermsSimpleAssoc ) {
+        $msg = '$subobject class does not implement freermsSimpleAssoc';
+        throw new Exception( $msg );
       }
 
-      $container_form->widgetSchema[$i][$field_name] = $widget;
+      $container_form->widgetSchema[$i][$subobject->getDataFieldName()] = $aWidget;
     }
 
-    $this->embedForm( $subobject_class . 's', $container_form );
+    $this->embedForm( $container_name, $container_form );
   }
 
   protected function pruneEmbedded( $class, array &$taintedValues )
@@ -182,7 +149,8 @@ class ContactForm extends BaseContactForm
         $keys_to_unset[] = $key;
       }
       elseif ( ! isset( $this[$container][$key] ) ) {
-        $this->addSubform( $class, $key );
+        // FIXME: this seems to be overkill
+        $this->addSubformContainer( $class, $key );
       }
     }
 

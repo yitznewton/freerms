@@ -78,7 +78,8 @@ class freermsWidgetFormInputDeleteAdd2 extends freermsWidgetFormInputLinks
 
     if (
       $this->index === (count( $this->objects ) - 1)
-      && ! $this->objects[$this->index]->isNew()
+      &&
+      ( $this->index === 0 || ! $this->objects[$this->index]->isNew() )
     ) {
       $this->addLink( array(
         'text' => $this->getOption('add_text'),
