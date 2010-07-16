@@ -85,10 +85,10 @@
 
   <div id="footer">
     <p>FreERMS 0.1.0b
-    is &copy; 2009 Touro College Libraries.</p>
+    is &copy; 2010 Touro College Libraries.</p>
     <p>For more information, visit the project at
-    <a href="http://freerms.tourolib.org/">
-      http://freerms.tourolib.org/
+    <a href="http://bitbucket.org/yitznewton/freerms">
+      http://bitbucket.org/yitznewton/freerms
     </a></p>
   </div>
 
