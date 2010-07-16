@@ -124,6 +124,13 @@ class ContactForm extends BaseContactForm
     $this->embedForm( $container_name, $container_form );
   }
 
+  /**
+   * Removes unused embedded forms and clears associated objects to avoid
+   * incorrectly adding blank associated objects
+   *
+   * @param string $class
+   * @param array $taintedValues 
+   */
   protected function pruneEmbedded( $class, array &$taintedValues )
   {
     $container = $class . 's';
@@ -132,29 +139,35 @@ class ContactForm extends BaseContactForm
       throw new InvalidArgumentException( 'No such container' );
     }
 
-    switch ( $class ) {
-      case 'ContactEmail':
-        $fieldname = 'address';
-        break;
+    $clearer   = 'clear' . $class . 's';
+    $subobject = new $class();
 
-      case 'ContactPhone':
-        $fieldname = 'number';
-        break;
-    }
+    $this->getObject()->$clearer();
 
-    $keys_to_unset = array();
+    $keys_of_blank_subobjects = array();
 
-    foreach ( $taintedValues[$container] as $key => $object ) {
-      if ( ! $object[$fieldname] ) {
-        $keys_to_unset[] = $key;
+    foreach ( $taintedValues[$container] as $key => $record ) {
+      if (
+        $subobject instanceof freermsSimpleAssoc
+        && ! $record[ $subobject->getDataFieldName() ]
+      ) {
+        $keys_of_blank_subobjects[] = $key;
       }
       elseif ( ! isset( $this[$container][$key] ) ) {
-        // FIXME: this seems to be overkill
         $this->addSubformContainer( $class, $key );
       }
     }
 
-    foreach ( $keys_to_unset as $key ) {
+    foreach ( $keys_of_blank_subobjects as $key ) {
+      $tainted_record = $taintedValues[$container][$key];
+
+      if ( isset( $tainted_record['id'] ) ) {
+        $peer_class = $class . 'Peer';
+        $c = new Criteria();
+        $c->add( constant( $peer_class . '::ID' ), $tainted_record['id'] );
+        call_user_func( $peer_class . '::doDelete', $c );
+      }
+      
       unset( $taintedValues[$container][$key] );
       unset( $this->embeddedForms[$container][$key] );
     }
