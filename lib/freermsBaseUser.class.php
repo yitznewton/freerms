@@ -27,7 +27,7 @@ abstract class freermsBaseUser extends sfBasicSecurityUser
   public function getOnsiteLibraryId()
   {
     if (isset( $this->onsiteLibraryId )) {
-      return $this->getAttribute('onsiteLibraryId');
+      return $this->onsiteLibraryId;
     }
     
     $user_ip = $_SERVER['REMOTE_ADDR'];
