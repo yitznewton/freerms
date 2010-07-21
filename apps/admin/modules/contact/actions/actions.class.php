@@ -11,7 +11,10 @@ class contactActions extends sfActions
 {
   public function executeIndex(sfWebRequest $request)
   {
-    $this->Contacts = ContactPeer::doSelect(new Criteria());
+    $c = new Criteria();
+    $c->addAscendingOrderByColumn(ContactPeer::FIRST_NAME);
+    
+    $this->Contacts = ContactPeer::doSelect($c);
   }
 
   public function executeNew(sfWebRequest $request)

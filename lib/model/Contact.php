@@ -21,7 +21,7 @@ require 'lib/model/om/BaseContact.php';
 class Contact extends BaseContact {
   public function __toString()
   {
-    return $this->getLastName() . ', ' . $this->getFirstName();
+    return $this->getFirstName() . ' ' . $this->getLastName();
   }
 
   public function getFirstContactEmail()
