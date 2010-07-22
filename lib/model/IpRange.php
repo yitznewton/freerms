@@ -16,19 +16,23 @@ class IpRange extends BaseIpRange
       $this->setEndIp('');
     }
 
-    // copy a "before" picture of the IpRange for IpRegEvent processing
-    $old_this = clone $this;
+    // copy a "before" picture of the IpRange
+    $old_this    = clone $this;
+    $is_new      = $this->isNew();
+    $is_modified = $this->isModified();
 
-    $ret = parent::save( $con );
-
-    if ( $this->isNew() ) {
+    if ( $is_new ) {
+      $ret = parent::save( $con );
       IpRegEventPeer::fromNew( $this );
     }
     elseif ( $this->getDeletedAt() ) {
+      $ret = parent::save( $con );
       IpRegEventPeer::fromDeleted( $this );
     }
-    elseif ( $this->isModified() ) {
+    elseif ( $is_modified ) {
       $old_this->reload();
+      $ret = parent::save( $con );
+
       IpRegEventPeer::fromModified( $old_this, $this );
     }
 
