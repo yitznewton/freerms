@@ -6,4 +6,10 @@ class Acquisition extends BaseAcquisition
   {
     return $this->getNote();
   }
+  
+  public function delete(PropelPDO $con = null)
+  {
+    $this->setDeletedAt( time() );
+    $this->save( $con );
+  }
 }

@@ -27,4 +27,79 @@ class IpRegEventPeer extends BaseIpRegEventPeer {
 
     return IpRegEventPeer::doSelect( $c );
   }
+
+  public static function fromNew( IpRange $ip_range )
+  {
+    $acquisitions = AcquisitionPeer::fromIpRange( $ip_range );
+
+    foreach ( $acquisitions as $acquisition ) {
+      $ip_reg_event = new IpRegEvent();
+      $ip_reg_event->setIpRangeId( $ip_range->getId() );
+      $ip_reg_event->setNewStartIp( $ip_range->getStartIp() );
+      $ip_reg_event->setNewEndIp( $ip_range->getEndIp() );
+      $ip_reg_event->setAcqId( $acquisition->getId() );
+      $ip_reg_event->save();
+    }
+  }
+
+  public static function fromModified( IpRange $before, IpRange $after )
+  {
+    $acquisitions = AcquisitionPeer::fromIpRange( $before );
+
+    foreach ( $acquisitions as $acquisition ) {
+      $c = new Criteria();
+      $c->add( IpRegEventPeer::ACQ_ID, $acquisition->getId() );
+      $c->add( IpRegEventPeer::IP_RANGE_ID, $after->getId() );
+
+      $ip_reg_event = IpRegEventPeer::doSelectOne( $c );
+
+      if ( $ip_reg_event ) {
+        $ip_reg_event->setNewStartIp( $after->getEndIp() );
+        $ip_reg_event->setNewEndIp(   $after->getEndIp() );
+      }
+      else {
+        $ip_reg_event = new IpRegEvent();
+        $ip_reg_event->setIpRange( $after );
+        $ip_reg_event->setAcquisition( $acquisition );
+        $ip_reg_event->setOldStartIp( $before->getStartIp() );
+        $ip_reg_event->setOldEndIp( $before->getEndIp() );
+        $ip_reg_event->setNewStartIp( $after->getStartIp() );
+        $ip_reg_event->setNewEndIp( $after->getEndIp() );
+      }
+
+      $ip_reg_event->save();
+    }
+  }
+
+  public static function fromDeleted( IpRange $ip_range )
+  {
+    $acquisitions = AcquisitionPeer::fromIpRange( $ip_range );
+
+    foreach ( $acquisitions as $acquisition ) {
+      $c = new Criteria();
+      $c->add( IpRegEventPeer::ACQ_ID, $acquisition->getId() );
+      $c->add( IpRegEventPeer::IP_RANGE_ID, $ip_range->getId() );
+
+      $ip_reg_event = IpRegEventPeer::doSelectOne( $c );
+
+      if ( $ip_reg_event && ! $ip_reg_event->getOldStartIp() ) {
+        // deleting a newly-added IpRange
+        $ip_reg_event->delete();
+      }
+      elseif ( $ip_reg_event ) {
+        $ip_reg_event->setNewStartIp( null );
+        $ip_reg_event->setNewEndIp( null );
+        $ip_reg_event->save();
+      }
+      else {
+        $ip_reg_event = new IpRegEvent();
+        $ip_reg_event->setIpRange( $ip_range );
+        $ip_reg_event->setAcquisition( $acquisition );
+        $ip_reg_event->setOldStartIp( $ip_range->getStartIp() );
+        $ip_reg_event->setOldEndIp( $ip_range->getEndIp() );
+      }
+
+      $ip_reg_event->save();
+    }
+  }
 } // IpRegEventPeer
