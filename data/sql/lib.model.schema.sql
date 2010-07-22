@@ -77,6 +77,7 @@ CREATE TABLE `acquisitions`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`note` TEXT,
 	`vendor_org_id` INTEGER,
+	`deleted_at` DATETIME,
 	PRIMARY KEY (`id`),
 	INDEX `acquisitions_FI_1` (`vendor_org_id`),
 	CONSTRAINT `acquisitions_FK_1`
@@ -170,14 +171,14 @@ DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE `contacts`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`last_name` VARCHAR(50),
-	`first_name` VARCHAR(50),
+	`last_name` VARCHAR(50)  NOT NULL,
+	`first_name` VARCHAR(50)  NOT NULL,
 	`title` VARCHAR(50),
 	`role` VARCHAR(255),
 	`address` TEXT,
 	`fax` VARCHAR(40),
 	`note` TEXT,
-	`org_id` INTEGER,
+	`org_id` INTEGER  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `contacts_FI_1` (`org_id`),
@@ -185,7 +186,7 @@ CREATE TABLE `contacts`
 		FOREIGN KEY (`org_id`)
 		REFERENCES `organizations` (`id`)
 		ON UPDATE CASCADE
-		ON DELETE SET NULL
+		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -396,16 +397,26 @@ DROP TABLE IF EXISTS `ip_reg_events`;
 
 CREATE TABLE `ip_reg_events`
 (
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`ip_range_id` INTEGER  NOT NULL,
+	`acq_id` INTEGER  NOT NULL,
 	`old_start_ip` VARCHAR(15),
 	`old_end_ip` VARCHAR(15),
 	`new_start_ip` VARCHAR(15),
 	`new_end_ip` VARCHAR(15),
+	`processed` TINYINT default 0 NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
-	PRIMARY KEY (`ip_range_id`),
+	PRIMARY KEY (`id`),
+	INDEX `ip_reg_events_FI_1` (`ip_range_id`),
 	CONSTRAINT `ip_reg_events_FK_1`
 		FOREIGN KEY (`ip_range_id`)
 		REFERENCES `ip_ranges` (`id`)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	INDEX `ip_reg_events_FI_2` (`acq_id`),
+	CONSTRAINT `ip_reg_events_FK_2`
+		FOREIGN KEY (`acq_id`)
+		REFERENCES `acquisitions` (`id`)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 )Type=InnoDB;
