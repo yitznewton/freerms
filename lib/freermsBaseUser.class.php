@@ -2,8 +2,6 @@
 
 abstract class freermsBaseUser extends sfBasicSecurityUser
 {
-  protected $onsiteLibraryId;
-
   abstract public function getLibraryIds();
   abstract public function checkPassword($password);
 
@@ -25,21 +23,27 @@ abstract class freermsBaseUser extends sfBasicSecurityUser
 
   public function getOnsiteLibraryId()
   {
-    if (isset( $this->onsiteLibraryId )) {
-      return $this->onsiteLibraryId;
+    if ( $this->getAttribute( 'onsiteLibraryId' ) ) {
+      return $this->getAttribute( 'onsiteLibraryId' );
     }
     
     $user_ip = $_SERVER['REMOTE_ADDR'];
     
     if ( $user_ip == sfConfig::get('app_offsite-testing-ip') ) {
-      return $this->onsiteLibraryId = false;
+      return $this->setOnsiteLibraryId( false );
     }
 
     if ( $library = LibraryPeer::retrieveByIp( $user_ip ) ) {
-      return $this->onsiteLibraryId = $library->getId();
+      return $this->setOnsiteLibraryId( $library->getId() );
     }
     
     // no matches
-    return $this->onsiteLibraryId = false;
+    return $this->setOnsiteLibraryId( false );
+  }
+
+  protected function setOnsiteLibraryId( $id )
+  {
+    $this->setAttribute( 'onsiteLibraryId', $id );
+    return $id;
   }
 }
