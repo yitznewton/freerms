@@ -3,20 +3,19 @@
 abstract class freermsBaseUser extends sfBasicSecurityUser
 {
   protected $onsiteLibraryId;
-  protected $username;
 
   abstract public function getLibraryIds();
   abstract public function checkPassword($password);
 
   public function getUsername()
   {
-    return $this->username;
+    return $this->getAttribute('username');
   }
 
   public function setUsername( $username )
   {
     if ( is_string( $username ) || $username === '' ) {
-      return $this->username = $username;
+      $this->setAttribute( 'username', $username );
     }
     else {
       $msg = 'Argument must be a non-empty string';

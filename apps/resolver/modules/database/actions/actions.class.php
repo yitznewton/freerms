@@ -138,7 +138,7 @@ class databaseActions extends sfActions
                     . '/ebrary/touro/unauthorized';
 
         $proxy_uri = freermsEZproxy::getEZproxyTicketUrl(
-          $library, $ebrary_uri, $this->getUser()->getAttribute('username')
+          $library, $ebrary_uri, $this->getUser()->getUsername()
         );
 
         $this->redirect($proxy_uri);
