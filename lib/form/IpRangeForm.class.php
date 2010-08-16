@@ -12,7 +12,12 @@ class IpRangeForm extends BaseIpRangeForm
 {
   public function configure()
   {
-    unset($this['updated_at']);
+    unset(
+      $this['updated_at'],
+      $this['start_ip_int'],
+      $this['end_ip_int']
+    );
+
     $this->setWidget(
       'lib_id',
       new sfWidgetFormPropelChoice(array(
@@ -43,7 +48,7 @@ class IpRangeForm extends BaseIpRangeForm
     $this->validatorSchema->setPostValidator(
       new sfValidatorCallback(array('callback' => array($this, 'CheckIpRange')))
     );
-}
+  }
   
   public function checkIpRange($validator, $values)
   {  
@@ -53,7 +58,7 @@ class IpRangeForm extends BaseIpRangeForm
         'Ending IP cannot be lower than starting IP'
       );
     }
-    
+
     if ($values['active_indicator']) {
       $c = new Criteria();
       $c->add(
@@ -93,7 +98,7 @@ class IpRangeForm extends BaseIpRangeForm
     $end   = $this->values['end_ip'];
     
     if (ip2long($start) == ip2long($end)) {
-      $this->values['end_ip'] = '';
+      $this->values['end_ip'] = null;
     }
     
     return parent::save($con);  

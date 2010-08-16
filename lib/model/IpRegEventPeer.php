@@ -19,13 +19,46 @@ require 'lib/model/om/BaseIpRegEventPeer.php';
  * @package    lib.model
  */
 class IpRegEventPeer extends BaseIpRegEventPeer {
-  public static function retrieveAll()
+  public static function retrieveAllDistinct()
   {
     $c = new Criteria();
+    $c->addSelectColumn( IpRegEventPeer::IP_RANGE_ID );
+    $c->addSelectColumn( IpRegEventPeer::OLD_START_IP );
+    $c->addSelectColumn( IpRegEventPeer::NEW_START_IP );
+    $c->addSelectColumn( IpRegEventPeer::OLD_END_IP );
+    $c->addSelectColumn( IpRegEventPeer::NEW_END_IP );
     $c->addAscendingOrderByColumn( IpRegEventPeer::OLD_START_IP );
     $c->addAscendingOrderByColumn( IpRegEventPeer::NEW_START_IP );
+    $c->setDistinct();
 
-    return IpRegEventPeer::doSelect( $c );
+    $con = Propel::getConnection(self::DATABASE_NAME, Propel::CONNECTION_READ);
+    $stmt = BasePeer::doSelect( $c, $con );
+    
+    $ret = array();
+
+    while ( $record = $stmt->fetch( PDO::FETCH_ASSOC ) ) {
+      $dummy_ip_reg_event = new IpRegEvent();
+      $dummy_ip_reg_event->fromDistinctArray( $record );
+
+      $ret[] = $dummy_ip_reg_event;
+    }
+
+    return $ret;
+  }
+
+  public static function byLibrary()
+  {
+    $c = new Criteria();
+    $c->addJoin( IpRegEventPeer::IP_RANGE_ID, IpRangePeer::ID );
+    $c->addJoin( IpRangePeer::LIB_ID, LibraryPeer::ID );
+    $c->addAscendingOrderByColumn( LibraryPeer::NAME );
+
+    $ip_reg_events = IpRegEventPeer::doSelectJoinIpRange( $c );
+  }
+
+  public static function byVendor()
+  {
+    throw new Exception('write me');
   }
 
   public static function fromNew( IpRange $ip_range )

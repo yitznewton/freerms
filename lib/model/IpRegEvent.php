@@ -37,4 +37,13 @@ class IpRegEvent extends BaseIpRegEvent {
     
     return "Modified: $old becomes " . $this->getIpRange() . ' (' . $this->getIpRange()->getLibrary() . ')';
   }
+
+  public function fromDistinctArray( array $array )
+  {
+    $this->setOldStartIp( $array['OLD_START_IP'] );
+    $this->setOldEndIp(  $array['OLD_END_IP'] );
+    $this->setNewStartIp( $array['NEW_START_IP'] );
+    $this->setNewEndIp(  $array['NEW_END_IP'] );
+    $this->setIpRangeId( $array['IP_RANGE_ID'] );
+  }
 } // IpRegEvent

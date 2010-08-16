@@ -7,21 +7,50 @@ class IpRange extends BaseIpRange
     return $this->getStartIp() . '--' . $this->getEndIp();
   }
 
+  public function setStartIp( $v )
+  {
+    if ( $v ) {
+      $num = @ip2long( $v );
+
+      if ( ! $num ) {
+        throw new Exception( 'Invalid' );
+      }
+
+      $this->setStartIpInt( $num );
+    }
+
+    return parent::setStartIp( $v );
+  }
+
+  public function setEndIp( $v )
+  {
+    if ( $v ) {
+      $num = @ip2long( $v );
+
+      if ( ! $num ) {
+        throw new Exception( 'Invalid' );
+      }
+
+      $this->setEndIpInt( $num );
+    }
+
+    return parent::setEndIp( $v );
+  }
+
   public function save(PropelPDO $con = null) 
   {
     $start = $this->getStartIp();
     $end   = $this->getEndIp();
-    
+
     if (ip2long($start) == ip2long($end)) {
       $this->setEndIp('');
     }
 
     // copy a "before" picture of the IpRange
-    $old_this    = clone $this;
-    $is_new      = $this->isNew();
-    $is_modified = $this->isModified();
+    $old_this = clone $this;
+    $ret      = null;
 
-    if ( $is_new ) {
+    if ( $this->isNew() ) {
       $ret = parent::save( $con );
       IpRegEventPeer::fromNew( $this );
     }
@@ -29,7 +58,7 @@ class IpRange extends BaseIpRange
       $ret = parent::save( $con );
       IpRegEventPeer::fromDeleted( $this );
     }
-    elseif ( $is_modified ) {
+    elseif ( $this->isModified() ) {
       $old_this->reload();
       $ret = parent::save( $con );
 

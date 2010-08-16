@@ -27,8 +27,9 @@ class OrganizationPeer extends BaseOrganizationPeer
     $c->addJoin( AcquisitionPeer::VENDOR_ORG_ID, OrganizationPeer::ID );
     $c->addJoin( OrganizationPeer::IP_REG_METHOD_ID, IpRegMethodPeer::ID );
     $c->add( IpRegMethodPeer::LABEL, 'none', Criteria::NOT_EQUAL );
+    $c->setDistinct();
 
-    return OrganizationPeer::doSelect( $c );
+    return OrganizationPeer::doSelectJoinIpRegMethod( $c );
   }
 
   public static function retrieveByEResource($id, Criteria $c = null)

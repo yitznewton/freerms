@@ -22,7 +22,7 @@ class libraryActions extends sfActions
   {
     $this->form = new LibraryForm();
 
-    $this->ips = IpRangePeer::retrieveIpsByLibraryId(1);
+    $this->ips = IpRangePeer::retrieveByLibraryId(1);
     $this->eresources = null;
   }
 
@@ -42,7 +42,7 @@ class libraryActions extends sfActions
     $this->forward404Unless($library = LibraryPeer::retrieveByPk($request->getParameter('id')), sprintf('Object library does not exist (%s).', $request->getParameter('id')));
     $this->form = new LibraryForm($library);
     
-    $this->ips = IpRangePeer::retrieveIpsByLibraryId($request->getParameter('id'));
+    $this->ips = IpRangePeer::retrieveByLibraryId($request->getParameter('id'));
     $this->eresources = EResourcePeer::retrieveByLibraryId($request->getParameter('id')); 
   }
 

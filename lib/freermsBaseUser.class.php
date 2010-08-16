@@ -32,32 +32,12 @@ abstract class freermsBaseUser extends sfBasicSecurityUser
     
     $user_ip = $_SERVER['REMOTE_ADDR'];
     
-    if ($user_ip == sfConfig::get('app_offsite-testing-ip')) {
+    if ( $user_ip == sfConfig::get('app_offsite-testing-ip') ) {
       return $this->onsiteLibraryId = false;
     }
-    
-    $ip_ranges = IpRangePeer::doSelect(new Criteria());
-    foreach ($ip_ranges as $range) {
-      if (! $range->getEndIp() ) {
-        // single IP
-        
-        if ($user_ip == $range->getStartIp()) {
-          // match
-          return $this->onsiteLibraryId = $range->getLibId();
-        } else {
-          continue;
-        }
-      }
-      
-      // not single IP
-      
-      if (IpRangePeer::isInRange(
-        $user_ip, $range->getStartIp(), $range->getEndIp()
-      )) {
-        // match
-        $library_id = $range->getLibId();
-        return $this->onsiteLibraryId = $library_id;
-      }
+
+    if ( $library = LibraryPeer::retrieveByIp( $user_ip ) ) {
+      return $this->onsiteLibraryId = $library->getId();
     }
     
     // no matches
