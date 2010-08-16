@@ -8,35 +8,27 @@
 <h2>Summary</h2>
 <ul>
   <?php foreach ( $ip_reg_events as $ip_reg_event ): ?>
-  <li><?php echo $ip_reg_event ?> <?php echo link_to( 'Remove', 'ipregevent/delete?id=' . $ip_reg_event->getIpRangeId(), array( 'confirm' => 'This cannot be reversed.' ) ) ?></li>
+  <li><?php echo $ip_reg_event ?> (__REMOVE__)</li>
   <?php endforeach; ?>
 </ul>
 <?php else: ?>
 <p>There are no unprocessed IP registration events.</p>
 <?php endif; ?>
 
-<?php if ( isset( $organizations['auto email'] ) ): ?>
-<h3>Automatic email registration</h3>
-<p>There are IP ranges eligible for automatic registration to selected
-  vendors via email.</p>
-<p><?php echo link_to( 'Click here to auto-register', 'ipregevent/autoregister', array( 'confirm' => 'This will send email to vendors.' ) ) ?></p>
-
-<?php endif; ?>
-
-<?php if ( isset( $organizations['manual email'] ) ): ?>
-  <h3>Manual email registration</h3>
+<?php if ( isset( $organizations['email'] ) ): ?>
+  <h3>Email registration</h3>
 
   <ul>
-  <?php foreach ( $organizations['manual email'] as $org_array ): ?>
+  <?php foreach ( $organizations['email'] as $org_array ): ?>
     <li>
       <div>
         <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
-        <div><?php echo link_to( $org_array['contact']->getFirstContactName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
+        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
         <div><?php echo mail_to( $org_array['contact']->getFirstContactEmail() ) ?></div>
       </div>
       <ul>
         <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
-        <li><?php echo $ip_reg_event ?></li>
+        <li><?php echo $ip_reg_event ?> (__REMOVE__)</li>
         <?php endforeach; ?>
       </ul>
     </li>
@@ -53,13 +45,13 @@
       <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
       <div>
         <?php if ( $org_array['contact'] ): ?>
-        <div><?php echo link_to( $org_array['contact']->getFirstContactName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
+        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
         <?php endif; ?>
         <div><?php echo $org_array['contact']->getFirstContactPhone() ? $org_array['contact']->getFirstContactPhone() : $org_array['organization']->getPhone() ?></div>
       </div>
       <ul>
         <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
-        <li><?php echo $ip_reg_event ?></li>
+        <li><?php echo $ip_reg_event ?> (__REMOVE__)</li>
         <?php endforeach; ?>
       </ul>
     </li>
@@ -79,7 +71,7 @@
       </div>
       <ul>
         <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
-        <li><?php echo $ip_reg_event ?></li>
+        <li><?php echo $ip_reg_event ?> (__REMOVE__)</li>
         <?php endforeach; ?>
       </ul>
     </li>
@@ -105,7 +97,7 @@
       </div>
       <ul>
         <?php foreach ( $organization_array['ip_reg_events'] as $ip_reg_event ): ?>
-        <li><?php echo $ip_reg_event ?></li>
+        <li><?php echo $ip_reg_event ?> (__REMOVE__)</li>
         <?php endforeach; ?>
       </ul>
     </li>
@@ -133,7 +125,7 @@
       </div>
       <ul>
         <?php foreach ( $organization_array['ip_reg_events'] as $ip_reg_event ): ?>
-        <li><?php echo $ip_reg_event ?></li>
+        <li><?php echo $ip_reg_event ?> (__REMOVE__)</li>
         <?php endforeach; ?>
       </ul>
     </li>

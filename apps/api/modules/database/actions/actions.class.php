@@ -33,18 +33,9 @@ class databaseActions extends sfActions
     $results = array();
 
     foreach ($ers as $er) {
-      $results[] = array(
-        'id'          => $er->getId(),
-        'title'       => $er->getTitle(),
-        'alt_title'   => $er->getAltTitle(),
-        'description'   => $er->getDescription(),
-        // TODO: this needs to be generalized for instance
-        'uri'         => 'https://erms.tourolib.org/database/'. $er->getId(),
-        'public_note' => $er->getPublicNote(),
-        'unavailable' => $er->getProductUnavailable(),
-        'suppression' => $er->getSuppression(),
-      );
+      $results[] = $this->getOutputFields( $er, false );
     }
+    
     $json_result = json_encode( $results );
 
     $this->getResponse()->setContent( $json_result );
@@ -77,35 +68,34 @@ class databaseActions extends sfActions
 
     $this->getResponse()->setContent( $json_result );
     return sfView::NONE;
-
   }
 
-  protected function getOutputFields( EResource $eresource )
+  protected function getOutputFields( EResource $eresource, $retrieve_foreign = true )
   {
-    $subjectAssocs = $eresource->getEResourceDbSubjectAssocsJoinDbSubject();
-    
-    $subjects = array();
-    foreach ($subjectAssocs as $subjectAssoc){
-      $subjects[] = $subjectAssoc->getDbSubject()->getLabel();
-    }   
-    
-    $library_codes = array();
-    foreach ($eresource->getLibraries() as $l) {
-      $library_codes[] = $l->getCode();
-    }
-
     $output_fields = array(
       'id'          => $eresource->getId(),
       'title'       => $eresource->getTitle(),
       'alt_title'   => $eresource->getAltTitle(),
-      'description'   => $eresource->getDescription(),
-      // TODO: this needs to be generalized for instance
-      'uri'         => 'https://erms.tourolib.org/database/'. $eresource->getId(),
+      'description' => $eresource->getDescription(),
+      'uri'         => $eresource->getUserUrl(),
       'public_note' => $eresource->getPublicNote(),
       'unavailable' => $eresource->getProductUnavailable(),
-      'libraries'   => $library_codes,
-      'subjects'    => $subjects,
     );
+
+    if ( $retrieve_foreign ) {
+      $subjectAssocs = $eresource->getEResourceDbSubjectAssocsJoinDbSubject();
+
+      $output_fields['libraries'] = array();
+      $output_fields['subjects']  = array();
+
+      foreach ($subjectAssocs as $subjectAssoc){
+        $output_fields['subjects'][] = $subjectAssoc->getDbSubject()->getLabel();
+      }
+
+      foreach ($eresource->getLibraries() as $l) {
+        $output_fields['libraries'][] = $l->getCode();
+      }
+    }
 
     return $output_fields;
   }

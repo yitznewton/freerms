@@ -26,6 +26,35 @@ class Organization extends BaseOrganization {
     return $this->getName();
   }
 
+  public function getDistinctIpRegEvents()
+  {
+    $c = new Criteria();
+    $c->addSelectColumn( IpRegEventPeer::IP_RANGE_ID );
+    $c->addSelectColumn( IpRegEventPeer::OLD_START_IP );
+    $c->addSelectColumn( IpRegEventPeer::NEW_START_IP );
+    $c->addSelectColumn( IpRegEventPeer::OLD_END_IP );
+    $c->addSelectColumn( IpRegEventPeer::NEW_END_IP );
+    $c->addJoin( IpRegEventPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->add( AcquisitionPeer::VENDOR_ORG_ID, $this->getId() );
+    $c->addAscendingOrderByColumn( IpRegEventPeer::OLD_START_IP );
+    $c->addAscendingOrderByColumn( IpRegEventPeer::NEW_START_IP );
+    $c->setDistinct();
+
+    $con = Propel::getConnection(IpRegEventPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+    $stmt = BasePeer::doSelect( $c, $con );
+    
+    $ret = array();
+
+    while ( $record = $stmt->fetch( PDO::FETCH_ASSOC ) ) {
+      $dummy_ip_reg_event = new IpRegEvent();
+      $dummy_ip_reg_event->fromDistinctArray( $record );
+
+      $ret[] = $dummy_ip_reg_event;
+    }
+
+    return $ret;
+  }
+
   public function getIpRegEvents()
   {
     if ( isset( $this->ip_reg_events ) ) {

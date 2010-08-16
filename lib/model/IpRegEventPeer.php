@@ -19,12 +19,120 @@ require 'lib/model/om/BaseIpRegEventPeer.php';
  * @package    lib.model
  */
 class IpRegEventPeer extends BaseIpRegEventPeer {
-  public static function retrieveAll()
+  public static function retrieveAllDistinct()
   {
     $c = new Criteria();
+    $c->addSelectColumn( IpRegEventPeer::IP_RANGE_ID );
+    $c->addSelectColumn( IpRegEventPeer::OLD_START_IP );
+    $c->addSelectColumn( IpRegEventPeer::NEW_START_IP );
+    $c->addSelectColumn( IpRegEventPeer::OLD_END_IP );
+    $c->addSelectColumn( IpRegEventPeer::NEW_END_IP );
     $c->addAscendingOrderByColumn( IpRegEventPeer::OLD_START_IP );
     $c->addAscendingOrderByColumn( IpRegEventPeer::NEW_START_IP );
+    $c->setDistinct();
 
-    return IpRegEventPeer::doSelect( $c );
+    $con = Propel::getConnection(self::DATABASE_NAME, Propel::CONNECTION_READ);
+    $stmt = BasePeer::doSelect( $c, $con );
+    
+    $ret = array();
+
+    while ( $record = $stmt->fetch( PDO::FETCH_ASSOC ) ) {
+      $dummy_ip_reg_event = new IpRegEvent();
+      $dummy_ip_reg_event->fromDistinctArray( $record );
+
+      $ret[] = $dummy_ip_reg_event;
+    }
+
+    return $ret;
+  }
+
+  public static function byLibrary()
+  {
+    $c = new Criteria();
+    $c->addJoin( IpRegEventPeer::IP_RANGE_ID, IpRangePeer::ID );
+    $c->addJoin( IpRangePeer::LIB_ID, LibraryPeer::ID );
+    $c->addAscendingOrderByColumn( LibraryPeer::NAME );
+
+    $ip_reg_events = IpRegEventPeer::doSelectJoinIpRange( $c );
+  }
+
+  public static function byVendor()
+  {
+    throw new Exception('write me');
+  }
+
+  public static function fromNew( IpRange $ip_range )
+  {
+    $acquisitions = AcquisitionPeer::fromIpRange( $ip_range );
+
+    foreach ( $acquisitions as $acquisition ) {
+      $ip_reg_event = new IpRegEvent();
+      $ip_reg_event->setIpRangeId( $ip_range->getId() );
+      $ip_reg_event->setNewStartIp( $ip_range->getStartIp() );
+      $ip_reg_event->setNewEndIp( $ip_range->getEndIp() );
+      $ip_reg_event->setAcqId( $acquisition->getId() );
+      $ip_reg_event->save();
+    }
+  }
+
+  public static function fromModified( IpRange $before, IpRange $after )
+  {
+    $acquisitions = AcquisitionPeer::fromIpRange( $before );
+
+    foreach ( $acquisitions as $acquisition ) {
+      $c = new Criteria();
+      $c->add( IpRegEventPeer::ACQ_ID, $acquisition->getId() );
+      $c->add( IpRegEventPeer::IP_RANGE_ID, $after->getId() );
+
+      $ip_reg_event = IpRegEventPeer::doSelectOne( $c );
+
+      if ( $ip_reg_event ) {
+        $ip_reg_event->setNewStartIp( $after->getEndIp() );
+        $ip_reg_event->setNewEndIp(   $after->getEndIp() );
+      }
+      else {
+        $ip_reg_event = new IpRegEvent();
+        $ip_reg_event->setIpRange( $after );
+        $ip_reg_event->setAcquisition( $acquisition );
+        $ip_reg_event->setOldStartIp( $before->getStartIp() );
+        $ip_reg_event->setOldEndIp( $before->getEndIp() );
+        $ip_reg_event->setNewStartIp( $after->getStartIp() );
+        $ip_reg_event->setNewEndIp( $after->getEndIp() );
+      }
+
+      $ip_reg_event->save();
+    }
+  }
+
+  public static function fromDeleted( IpRange $ip_range )
+  {
+    $acquisitions = AcquisitionPeer::fromIpRange( $ip_range );
+
+    foreach ( $acquisitions as $acquisition ) {
+      $c = new Criteria();
+      $c->add( IpRegEventPeer::ACQ_ID, $acquisition->getId() );
+      $c->add( IpRegEventPeer::IP_RANGE_ID, $ip_range->getId() );
+
+      $ip_reg_event = IpRegEventPeer::doSelectOne( $c );
+
+      if ( $ip_reg_event && ! $ip_reg_event->getOldStartIp() ) {
+        // deleting a newly-added IpRange
+        $ip_reg_event->delete();
+      }
+      elseif ( $ip_reg_event ) {
+        $ip_reg_event->setNewStartIp( null );
+        $ip_reg_event->setNewEndIp( null );
+        $ip_reg_event->save();
+      }
+      else {
+        $ip_reg_event = new IpRegEvent();
+        $ip_reg_event->setIpRange( $ip_range );
+        $ip_reg_event->setAcquisition( $acquisition );
+        $ip_reg_event->setOldStartIp( $ip_range->getStartIp() );
+        $ip_reg_event->setOldEndIp( $ip_range->getEndIp() );
+      }
+
+      $ip_reg_event->save();
+    }
   }
 } // IpRegEventPeer

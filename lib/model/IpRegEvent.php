@@ -1,7 +1,5 @@
 <?php
-
 require 'lib/model/om/BaseIpRegEvent.php';
-
 
 /**
  * Skeleton subclass for representing a row from the 'ip_reg_events' table.
@@ -40,13 +38,12 @@ class IpRegEvent extends BaseIpRegEvent {
     return "Modified: $old becomes " . $this->getIpRange() . ' (' . $this->getIpRange()->getLibrary() . ')';
   }
 
-  public function initialize( IpRange $ip_range )
+  public function fromDistinctArray( array $array )
   {
-    $this->setIpRangeId( $ip_range->getId() );
-
-    if ( ! $ip_range->isNew() ) {
-      $this->setOldStartIp( $ip_range->getStartIp() );
-      $this->setOldEndIp( $ip_range->getEndIp() );
-    }
+    $this->setOldStartIp( $array['OLD_START_IP'] );
+    $this->setOldEndIp(  $array['OLD_END_IP'] );
+    $this->setNewStartIp( $array['NEW_START_IP'] );
+    $this->setNewEndIp(  $array['NEW_END_IP'] );
+    $this->setIpRangeId( $array['IP_RANGE_ID'] );
   }
 } // IpRegEvent

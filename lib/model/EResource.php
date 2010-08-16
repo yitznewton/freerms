@@ -4,6 +4,9 @@ class EResource extends BaseEResource
 {
   public function getUserURL()
   {
+    // needed for api app
+    sfProjectConfiguration::getActive()->loadHelpers( array( 'Url' ) );
+    
     return public_path( '/database/' . $this->getId(), true );
   }
 

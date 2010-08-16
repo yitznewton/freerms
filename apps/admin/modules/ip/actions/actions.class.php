@@ -86,7 +86,7 @@ class ipActions extends sfActions
     $organization_array = array();
 
     $organizations = OrganizationPeer::retrieveHavingIpRegEvents();
-    $this->ip_reg_events = IpRegEventPeer::retrieveAll();
+    $this->ip_reg_events = IpRegEventPeer::retrieveAllDistinct();
 
     foreach ( $organizations as $organization ) {
       $contact = $organization->getContact();
@@ -94,22 +94,12 @@ class ipActions extends sfActions
       $current                  = array();
       $current['organization']  = $organization;
       $current['contact']       = $contact;
-      $current['ip_reg_events'] = $organization->getIpRegEvents();
+      $current['ip_reg_events'] = $organization->getDistinctIpRegEvents();
 
       switch ( $organization->getIpRegMethod()->getLabel() ) {
-        case 'auto email':
+        case 'email':
           if ( $contact && $contact->getFirstContactEmail() ) {
-            $organization_array['auto email'][ $organization->getName() ] = $current;
-          }
-          else {
-            $organization_array['other'][ $organization->getName() ] = $current;
-          }
-
-          break;
-
-        case 'manual email':
-          if ( $contact && $contact->getFirstContactEmail() ) {
-            $organization_array['manual email'][ $organization->getName() ] = $current;
+            $organization_array['email'][ $organization->getName() ] = $current;
           }
           else {
             $organization_array['other'][ $organization->getName() ] = $current;

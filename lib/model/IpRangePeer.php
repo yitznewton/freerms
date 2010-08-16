@@ -2,7 +2,7 @@
 
 class IpRangePeer extends BaseIpRangePeer
 {
-  public static function retrieveIpsByLibraryId($id)
+  public static function retrieveByLibraryId( $id )
   {
     $c = new Criteria();
     $c->add(IpRangePeer::LIB_ID, $id);
@@ -10,27 +10,6 @@ class IpRangePeer extends BaseIpRangePeer
     $c->addAscendingOrderByColumn(IpRangePeer::START_IP);    
 
     return IpRangePeer::doSelect($c);
-  }
-
-  public static function isInRange($testIP, $startIP, $endIP)
-  {
-    if (! $testIP = @ip2long($testIP)) {
-      throw new Exception('Test IP not valid');
-    }
-
-    if (! $startIP = @ip2long($startIP)) {
-      throw new Exception('Start IP not valid');
-    }
-
-    if (! $endIP = @ip2long($endIP)) {
-      throw new Exception('End IP not valid');
-    }
-
-    if ( ($testIP >= $startIP) && ($testIP <= $endIP) ) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   public static function doRangesIntersect($start1, $end1, $start2, $end2)
