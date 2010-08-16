@@ -33,6 +33,8 @@ AuthMethod:
     IsValidOffsite: true
 
 IpRegMethod:
+  None:
+    Label: none
   WebAdmin:
     Label: web admin
   WebContactForm:

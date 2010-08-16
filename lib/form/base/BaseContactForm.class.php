@@ -20,8 +20,6 @@ abstract class BaseContactForm extends BaseFormPropel
       'title'                          => new sfWidgetFormInputText(),
       'role'                           => new sfWidgetFormInputText(),
       'address'                        => new sfWidgetFormTextarea(),
-      'email'                          => new sfWidgetFormInputText(),
-      'phone'                          => new sfWidgetFormInputText(),
       'fax'                            => new sfWidgetFormInputText(),
       'note'                           => new sfWidgetFormTextarea(),
       'org_id'                         => new sfWidgetFormPropelChoice(array('model' => 'Organization', 'add_empty' => true)),
@@ -31,14 +29,12 @@ abstract class BaseContactForm extends BaseFormPropel
     ));
 
     $this->setValidators(array(
-      'id'                             => new sfValidatorPropelChoice(array('model' => 'Contact', 'column' => 'id', 'required' => false)),
+      'id'                             => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'last_name'                      => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'first_name'                     => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'title'                          => new sfValidatorString(array('max_length' => 50, 'required' => false)),
       'role'                           => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'address'                        => new sfValidatorString(array('required' => false)),
-      'email'                          => new sfValidatorString(array('max_length' => 100, 'required' => false)),
-      'phone'                          => new sfValidatorString(array('max_length' => 40, 'required' => false)),
       'fax'                            => new sfValidatorString(array('max_length' => 40, 'required' => false)),
       'note'                           => new sfValidatorString(array('required' => false)),
       'org_id'                         => new sfValidatorPropelChoice(array('model' => 'Organization', 'column' => 'id', 'required' => false)),

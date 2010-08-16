@@ -31,8 +31,8 @@
     <li>
       <div>
         <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
-        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
-        <div><?php echo mail_to( $org_array['contact']->getEmail() ) ?></div>
+        <div><?php echo link_to( $org_array['contact']->getFirstContactName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
+        <div><?php echo mail_to( $org_array['contact']->getFirstContactEmail() ) ?></div>
       </div>
       <ul>
         <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>
@@ -53,9 +53,9 @@
       <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
       <div>
         <?php if ( $org_array['contact'] ): ?>
-        <div><?php echo link_to( $org_array['contact']->getFirstName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
+        <div><?php echo link_to( $org_array['contact']->getFirstContactName() . ' ' . $org_array['contact']->getLastName(), 'contact/edit?id=' . $org_array['contact']->getId() ) ?></div>
         <?php endif; ?>
-        <div><?php echo $org_array['contact']->getPhone() ? $org_array['contact']->getPhone() : $org_array['organization']->getPhone() ?></div>
+        <div><?php echo $org_array['contact']->getFirstContactPhone() ? $org_array['contact']->getFirstContactPhone() : $org_array['organization']->getPhone() ?></div>
       </div>
       <ul>
         <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>

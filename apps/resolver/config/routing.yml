@@ -1,4 +1,4 @@
-database_index:
+homepage:
   url:   /
   param: { module: database, action: index }
 

@@ -326,32 +326,6 @@ propel:
 #      type: VARCHAR
 #      size: 25
 #      required: true
-#  contact_phones: 
-#    _attributes: 
-#      phpName: ContactPhone
-#    id: 
-#      type: INTEGER
-#      required: true
-#      autoIncrement: true
-#      primaryKey: true
-#    contact_id: 
-#      type: INTEGER
-#      required: true
-#      foreignTable: contacts
-#      foreignReference: id
-#      onDelete: CASCADE
-#      onUpdate: CASCADE
-#    phone_number: 
-#      type: VARCHAR
-#      size: 40
-#      required: true
-#    phone_type_id: 
-#      type: INTEGER
-#      required: true
-#      foreignTable: contact_phone_types
-#      foreignReference: id
-#      onDelete: RESTRICT
-#      onUpdate: CASCADE
   contacts: 
     _attributes: 
       phpName: Contact
@@ -374,12 +348,6 @@ propel:
       size: 255
     address: 
       type: LONGVARCHAR
-    email: 
-      type: VARCHAR
-      size: 100
-    phone:
-      type: VARCHAR
-      size: 40
     fax:
       type: VARCHAR
       size: 40
@@ -393,6 +361,44 @@ propel:
       onUpdate: CASCADE
     updated_at: 
       type: TIMESTAMP
+      required: true
+  contact_emails:
+    _attributes:
+      phpName: ContactEmail
+    id:
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    contact_id:
+      type: INTEGER
+      required: true
+      foreignTable: contacts
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    address:
+      type: VARCHAR
+      size: 100
+      required: true
+  contact_phones:
+    _attributes:
+      phpName: ContactPhone
+    id:
+      type: INTEGER
+      required: true
+      autoIncrement: true
+      primaryKey: true
+    contact_id:
+      type: INTEGER
+      required: true
+      foreignTable: contacts
+      foreignReference: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    number:
+      type: VARCHAR
+      size: 40
       required: true
 #  er_containers: 
 #    _attributes: 
@@ -921,6 +927,15 @@ propel:
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
+    usage_stats_uri:
+      type: VARCHAR
+      size: 255
+    usage_stats_username:
+      type: VARCHAR
+      size: 25
+    usage_stats_password:
+      type: VARCHAR
+      size: 25
     note: 
       type: LONGVARCHAR
     updated_at: 

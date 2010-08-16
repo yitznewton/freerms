@@ -43,7 +43,34 @@ class AdminInfoForm extends BaseAdminInfoForm
       ->setLabel('Admin doc URI');
     $this->widgetSchema['user_doc_uri']
       ->setLabel('User doc URI');
-    
+
+    $org = OrganizationPeer::retrieveByEResource($this->getObject()->getId());
+
+    if ($org){
+
+      if ($org->getUsageStatsUri()){
+        $this->widgetSchema['usage_stats_uri']
+          = new freermsWidgetFormInputDisplay(array(
+          'indicator' => 'Vendor-level',
+          'text' => $org->getUsageStatsUri()
+        ));
+      }
+      if ($org->getUsageStatsUsername()){
+        $this->widgetSchema['usage_stats_username']
+          = new freermsWidgetFormInputDisplay(array(
+          'indicator' => 'Vendor-level',
+          'text' => $org->getUsageStatsUsername()
+        ));
+      }
+      if ($org->getUsageStatsPassword()){
+        $this->widgetSchema['usage_stats_password']
+          = new freermsWidgetFormInputDisplay(array(
+          'indicator' => 'Vendor-level',
+          'text' => $org->getUsageStatsPassword()
+        ));
+      }
+    }
+
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema); 
     $this->widgetSchema->addFormFormatter('div', $decorator); 
     $this->widgetSchema->setFormFormatterName('div');

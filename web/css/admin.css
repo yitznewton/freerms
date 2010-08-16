@@ -75,6 +75,11 @@ li.ui-tabs-nav-item a{
   margin-top: 0;
 }
 
+.form-row .input-display{
+  margin-left: 0.5em;
+  font-size: 0.8em;  
+}
+
 /* change the width of the following
  * to adjust the Libraries tab in the
  * database area of the admin interface */

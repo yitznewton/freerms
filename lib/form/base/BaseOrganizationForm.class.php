@@ -28,12 +28,15 @@ abstract class BaseOrganizationForm extends BaseFormPropel
       'web_contact_form_uri'    => new sfWidgetFormInputText(),
       'ip_reg_method_id'        => new sfWidgetFormPropelChoice(array('model' => 'IpRegMethod', 'add_empty' => true)),
       'ip_reg_contact_id'       => new sfWidgetFormPropelChoice(array('model' => 'Contact', 'add_empty' => true)),
+      'usage_stats_uri'         => new sfWidgetFormInputText(),
+      'usage_stats_username'    => new sfWidgetFormInputText(),
+      'usage_stats_password'    => new sfWidgetFormInputText(),
       'note'                    => new sfWidgetFormTextarea(),
       'updated_at'              => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
-      'id'                      => new sfValidatorPropelChoice(array('model' => 'Organization', 'column' => 'id', 'required' => false)),
+      'id'                      => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
       'name'                    => new sfValidatorString(array('max_length' => 255)),
       'alt_name'                => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'account_number'          => new sfValidatorString(array('max_length' => 40, 'required' => false)),
@@ -47,6 +50,9 @@ abstract class BaseOrganizationForm extends BaseFormPropel
       'web_contact_form_uri'    => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'ip_reg_method_id'        => new sfValidatorPropelChoice(array('model' => 'IpRegMethod', 'column' => 'id', 'required' => false)),
       'ip_reg_contact_id'       => new sfValidatorPropelChoice(array('model' => 'Contact', 'column' => 'id', 'required' => false)),
+      'usage_stats_uri'         => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'usage_stats_username'    => new sfValidatorString(array('max_length' => 25, 'required' => false)),
+      'usage_stats_password'    => new sfValidatorString(array('max_length' => 25, 'required' => false)),
       'note'                    => new sfValidatorString(array('required' => false)),
       'updated_at'              => new sfValidatorDateTime(),
     ));

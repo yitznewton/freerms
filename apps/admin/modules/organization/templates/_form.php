@@ -51,6 +51,9 @@
             <?php echo $form['ip_reg_contact_id']->renderRow() ?>
           </fieldset>
 
+          <?php echo $form['usage_stats_uri']->renderRow() ?>
+          <?php echo $form['usage_stats_username']->renderRow() ?>
+          <?php echo $form['usage_stats_password']->renderRow() ?>
           <?php echo $form['note']->renderRow() ?>
         </tbody>
       </table>
@@ -86,9 +89,7 @@
           <tr>
             <td><?php echo link_to($contact, 'contact/edit?id='.$contact->getId()) ?></td>
             <td><?php echo $contact->getRole() ?></td>
-            <td><a href="mailto:<?php echo $contact->getEmail() ?>">
-              <?php echo $contact->getEmail() ?></a>
-            </td>
+            <td><?php echo mail_to( $contact->getFirstContactEmail() ) ?></td>
             <td><?php echo link_to('delete', 'contact/delete?id='.$contact->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?')) ?></td>
           </tr>
           <?php endforeach; ?>
