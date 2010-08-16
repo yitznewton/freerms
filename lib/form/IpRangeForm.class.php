@@ -60,6 +60,7 @@ class IpRangeForm extends BaseIpRangeForm
     }
 
     if ($values['active_indicator']) {
+      // TODO: replace this with a new method IpRangePeer::doRangesCollide()
       $c = new Criteria();
       $c->add(
         IpRangePeer::ID, $this->getObject()->getId(), Criteria::NOT_EQUAL
@@ -91,16 +92,4 @@ class IpRangeForm extends BaseIpRangeForm
     
     return $values;
   }    
-  
-  public function save($con = null) 
-  {
-    $start = $this->values['start_ip'];
-    $end   = $this->values['end_ip'];
-    
-    if (ip2long($start) == ip2long($end)) {
-      $this->values['end_ip'] = null;
-    }
-    
-    return parent::save($con);  
-  } 
 }

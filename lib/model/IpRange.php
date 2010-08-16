@@ -42,8 +42,9 @@ class IpRange extends BaseIpRange
     $start = $this->getStartIp();
     $end   = $this->getEndIp();
 
-    if (ip2long($start) == ip2long($end)) {
-      $this->setEndIp('');
+    if ( ! $end ) {
+      // this needs to be set for Library::retrieveByIp() etc.
+      $this->setEndIp( $this->getStartIp() );
     }
 
     // copy a "before" picture of the IpRange
