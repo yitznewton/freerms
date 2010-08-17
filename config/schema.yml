@@ -684,13 +684,15 @@ propel:
       size: 15
       required: true
     start_ip_int:
-      type: BIGINT
+      type: INTEGER
+      sqlType: INTEGER UNSIGNED
       required: true
     end_ip: 
       type: VARCHAR
       size: 15
     end_ip_int:
-      type: BIGINT
+      type: INTEGER
+      sqlType: INTEGER UNSIGNED
     active_indicator: 
       type: BOOLEAN
       required: true
