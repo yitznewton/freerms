@@ -67,7 +67,7 @@
     <li>
       <div>
         <div><?php echo link_to( $org_array['organization']->getName(), 'organization/edit?id=' . $org_array['organization']->getId() ) ?></div>
-        <div><?php echo link_to( $org_array['organization']->getWebAdminUri(), $org_array['organization']->getWebAdminUri() ) ?></div>
+        <div><?php echo link_to( $org_array['organization']->getWebAdminUri(), $org_array['organization']->getWebAdminUri(), array( 'absolute' => true ) ) ?></div>
       </div>
       <ul>
         <?php foreach ( $org_array['ip_reg_events'] as $ip_reg_event ): ?>

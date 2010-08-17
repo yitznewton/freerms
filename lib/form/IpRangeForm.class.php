@@ -10,6 +10,13 @@
  */
 class IpRangeForm extends BaseIpRangeForm
 {
+  public function setup()
+  {
+    $this->validatorSchema = new freermsValidatorSchemaFixedPost();
+
+    parent::setup();
+  }
+
   public function configure()
   {
     unset(
@@ -35,61 +42,10 @@ class IpRangeForm extends BaseIpRangeForm
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema); 
     $this->widgetSchema->addFormFormatter('div', $decorator); 
     $this->widgetSchema->setFormFormatterName('div');    
-       
-    $ip_pattern = '/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.';
-    $ip_pattern .= '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.';
-    $ip_pattern .= '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.';
-    $ip_pattern .= '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/';
-    $this->setValidator('start_ip', new sfValidatorRegex(
-      array('pattern' => $ip_pattern)));
-    $this->setValidator('end_ip',new sfValidatorRegex(
-      array('pattern' => $ip_pattern, 'required' => false))); 
 
-    $this->validatorSchema->setPostValidator(
-      new sfValidatorCallback(array('callback' => array($this, 'CheckIpRange')))
-    );
+    $this->setValidator( 'start_ip', new freermsValidatorIpAddress() );
+    $this->setValidator( 'end_ip',   new freermsValidatorIpAddress() );
+
+    $this->validatorSchema->setPostValidator( new freermsValidatorIpRange() );
   }
-  
-  public function checkIpRange($validator, $values)
-  {  
-    if ( $values['end_ip'] && ip2long($values['end_ip']) < ip2long($values['start_ip']) ) {
-      throw new sfValidatorError(
-        $validator,
-        'Ending IP cannot be lower than starting IP'
-      );
-    }
-
-    if ($values['active_indicator']) {
-      // TODO: replace this with a new method IpRangePeer::doRangesCollide()
-      $c = new Criteria();
-      $c->add(
-        IpRangePeer::ID, $this->getObject()->getId(), Criteria::NOT_EQUAL
-      );
-      $c->add(IpRangePeer::ACTIVE_INDICATOR, 1);
-      $active_ips = IpRangePeer::doSelect($c);    
-    
-      foreach ($active_ips as $aip) {   
-        try {
-          if (IpRangePeer::doRangesIntersect(       
-            $values['start_ip'], $values['end_ip'],
-            $aip->getStartIp(), $aip->getEndIp()
-          )) {                        
-            $conflicting_range = $aip->getStartIp();
-            if ($aip->getEndIp()) {
-              $conflicting_range .= ' - ' . $aip->getEndIp();
-            }
-            
-            throw new sfValidatorError(
-              $validator,
-              "Range conflicts with an existing range, $conflicting_range"
-            );        
-          }
-        } catch (ipException $e) {
-          // ignore invalid-IP exception - we're handling in this function
-        }
-      }             
-    }       
-    
-    return $values;
-  }    
 }

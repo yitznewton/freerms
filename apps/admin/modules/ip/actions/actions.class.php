@@ -15,7 +15,7 @@ class ipActions extends sfActions
     $c = new Criteria();
     switch ($request->getParameter('sort')) {
       case 'start-ip':
-        $c->addAscendingOrderByColumn(IpRangePeer::START_IP);
+        $c->addAscendingOrderByColumn(IpRangePeer::START_IP_INT);
         break;
       case 'library':
         $c->addJoin(IpRangePeer::LIB_ID, LibraryPeer::ID);
@@ -23,7 +23,7 @@ class ipActions extends sfActions
         break;
       default:
         $c->addAscendingOrderByColumn(IpRangePeer::PROXY_INDICATOR);
-        $c->addAscendingOrderByColumn(IpRangePeer::START_IP);
+        $c->addAscendingOrderByColumn(IpRangePeer::START_IP_INT);
     }
     
     $this->ip_range_list = IpRangePeer::doSelectJoinLibrary($c);

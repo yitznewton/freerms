@@ -7,60 +7,25 @@ class IpRangePeer extends BaseIpRangePeer
     $c = new Criteria();
     $c->add(IpRangePeer::LIB_ID, $id);
     $c->addAscendingOrderByColumn(IpRangePeer::PROXY_INDICATOR);
-    $c->addAscendingOrderByColumn(IpRangePeer::START_IP);    
+    $c->addAscendingOrderByColumn(IpRangePeer::START_IP_INT);
 
     return IpRangePeer::doSelect($c);
   }
 
-  public static function doRangesIntersect($start1, $end1, $start2, $end2)
+  public static function retrieveOverlapping( IpRange $ip_range )
   {
-    if (! $start1 = @ip2long($start1)) {
-      throw new ipException('First starting IP not valid');
+    if ( ! $ip_range->getActiveIndicator() ) {
+      return false;
     }
+
+    $c = new Criteria();
+    $c->add( IpRangePeer::ID, $ip_range->getId(), Criteria::NOT_EQUAL );
+    $c->add( IpRangePeer::ACTIVE_INDICATOR, 1 );
+    $c->add( IpRangePeer::START_IP_INT, $ip_range->getEndIpInt(), Criteria::LESS_EQUAL );
+    $c->add( IpRangePeer::END_IP_INT, $ip_range->getStartIpInt(), Criteria::GREATER_EQUAL );
     
-    if ($end1 && !($end1 = @ip2long($end1))) {
-      throw new ipException('First ending IP not valid');
-    }
-    
-    if (! $start2 = @ip2long($start2)) {
-      throw new ipException('Second starting IP not valid');
-    }
-    
-    if ($end2 && !($end2 = @ip2long($end2))) {
-      throw new ipException('Second starting IP not valid');
-    }
-    
-    if (!$end1 && !$end2) {
-      // both are single IP addresses
-      return ($start1 == $start2);
-    }
-    
-    if (!$end1) {
-      // first is single
-      return ($start1 >= $start2 && $start1 <= $end2);
-    }
-    
-    if (!$end2) {
-      // second is single
-      return ($start2 >= $start1 && $start2 <= $end1);
-    }
-    
-    if (ip2long($start1) > ip2long($end1)) {
-      return true;
-    }
-    // must be both are ranges
-    elseif (
-      ($start1 >= $start2 && $start1 <= $end2)
-      || ($end1 >= $start2 && $end1 <= $end2)
-      || ($start2 >= $start1 && $start2 <= $end1)
-      || ($end2 >= $start1 && $end2 <= $end1)
-    ) {
-      return true;
-    }    
-    else {
-      return false;  
-    }
-  }  
+    return IpRangePeer::doSelect( $c );
+  }
 
 	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
 	{
