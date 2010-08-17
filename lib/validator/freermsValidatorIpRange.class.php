@@ -12,7 +12,10 @@ class freermsValidatorIpRange extends sfValidatorBase
 
   protected function doClean( $values )
   {
-    if ( @ip2long( $values['end_ip'] ) < @ip2long( $values['start_ip'] ) ) {
+    $start = sprintf( '%u', @ip2long( $values['start_ip'] ) );
+    $end   = sprintf( '%u', @ip2long( $values['end_ip'] ) );
+
+    if ( $end < $start ) {
       throw new sfValidatorError( $this, 'inverted' );
     }
 

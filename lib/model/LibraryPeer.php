@@ -10,6 +10,8 @@ class LibraryPeer extends BaseLibraryPeer
       throw new Exception( 'Invalid IP' );
     }
 
+    $num = sprintf( '%u', $num );
+
     $c = new Criteria();
     $c->add( IpRangePeer::START_IP_INT, $num, Criteria::LESS_EQUAL );
     $c->add( IpRangePeer::END_IP_INT, $num, Criteria::GREATER_EQUAL );

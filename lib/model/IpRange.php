@@ -16,6 +16,8 @@ class IpRange extends BaseIpRange
         throw new Exception( 'Invalid' );
       }
 
+      $num = sprintf( '%u', $num );
+
       $this->setStartIpInt( $num );
     }
 
@@ -31,6 +33,8 @@ class IpRange extends BaseIpRange
         throw new Exception( 'Invalid' );
       }
 
+      $num = sprintf( '%u', $num );
+      
       $this->setEndIpInt( $num );
     }
 
