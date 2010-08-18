@@ -41,6 +41,40 @@ class IpRange extends BaseIpRange
     return parent::setEndIp( $v );
   }
 
+  /**
+   * Bypass type casting to prevent the unsigned integer being corrupted on
+   * 32-bit platforms
+   *
+   * @param int $v
+   * @return IpRange
+   */
+  public function setStartIpInt($v)
+  {
+    if ($this->start_ip_int !== $v) {
+      $this->start_ip_int = $v;
+      $this->modifiedColumns[] = IpRangePeer::START_IP_INT;
+    }
+
+    return $this;
+  }
+
+  /**
+   * Bypass type casting to prevent the unsigned integer being corrupted on
+   * 32-bit platforms
+   *
+   * @param int $v
+   * @return IpRange
+   */
+  public function setEndIpInt($v)
+  {
+    if ($this->end_ip_int !== $v) {
+      $this->end_ip_int = $v;
+      $this->modifiedColumns[] = IpRangePeer::END_IP_INT;
+    }
+
+    return $this;
+  }
+
   public function save(PropelPDO $con = null) 
   {
     $start = $this->getStartIp();
