@@ -9,7 +9,8 @@ class freermsAPIUser extends freermsBaseUser
     }
     
     if (! is_string($password) || strlen($password) < 1 ) {
-      throw new Exception('Password must be a non-empty string');
+      $msg = 'Password must be a non-empty string';
+      throw new InvalidArgumentException( $msg );
     }
     
     if (! $this->getUsername() ) {

@@ -56,7 +56,7 @@ class userActions extends sfActions
           $this->redirect($request->getUri());
           
         } else {
-          $this->getUser()->setUsername(null);
+          $this->getUser()->clearUsername();
           $this->errors[] = 'Invalid username or password';
         }
       }

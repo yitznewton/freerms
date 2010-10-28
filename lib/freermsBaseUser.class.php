@@ -21,6 +21,11 @@ abstract class freermsBaseUser extends sfBasicSecurityUser
     }
   }
 
+  public function clearUsername()
+  {
+    $this->setAttribute( 'username', null );
+  }
+
   public function getOnsiteLibraryId()
   {
     if ( $this->getAttribute( 'onsiteLibraryId' ) ) {
