@@ -13,6 +13,8 @@ class ipActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $c = new Criteria();
+    $c->add( IpRangePeer::DELETED_AT, null, Criteria::ISNULL );
+
     switch ($request->getParameter('sort')) {
       case 'start-ip':
         $c->addAscendingOrderByColumn(IpRangePeer::START_IP_INT);
