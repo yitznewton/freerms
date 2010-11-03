@@ -57,6 +57,8 @@ class databaseActions extends sfActions
     $this->forward404Unless($er_id || $alt_id);
     
     $c = new Criteria();
+    $c->add( EResourcePeer::DELETED_AT, null, Criteria::ISNULL );
+
     $er_id
       ? $c->add(EResourcePeer::ID, $er_id)
       : $c->add(EResourcePeer::ALT_ID, $alt_id, Criteria::LIKE);
