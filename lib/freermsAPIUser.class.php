@@ -39,6 +39,10 @@ class freermsAPIUser extends freermsBaseUser
     
     $result = json_decode($json);
 
+    if ( isset( $result->program ) ) {
+      $this->setProgram( $result->program );
+    }
+
     if (isset($result->sites)) {
       $this->setUserLibrarys($result->sites);
       $this->setUserGroups($result->groups);
@@ -50,8 +54,23 @@ class freermsAPIUser extends freermsBaseUser
       return false;
     }
   }
+
+  public function getProgram()
+  {
+    return $this->getAttribute( 'program' );
+  }
+
+  public function getLibraryIds()
+  {
+    return $this->getAttribute('userLibraryIds');
+  }
+
+  protected function setProgram( $code )
+  {
+    $this->setAttribute( 'program', $code );
+  }
   
-  protected function setUserLibrarys($codes)
+  protected function setUserLibrarys( $codes )
   {
     $ids = array();
     foreach ($codes as $c) {
@@ -64,7 +83,7 @@ class freermsAPIUser extends freermsBaseUser
     return $ids;
   }
   
-  protected function setUserGroups($groups)
+  protected function setUserGroups( $groups )
   {
     foreach ($groups as $g) {
       if (! $prefix = sfConfig::get('app_user-api_credential-prefix') ) {
@@ -75,10 +94,5 @@ class freermsAPIUser extends freermsBaseUser
     }
 
     return $this->getCredentials();
-  }
-
-  public function getLibraryIds()
-  {
-    return $this->getAttribute('userLibraryIds');
   }
 }
