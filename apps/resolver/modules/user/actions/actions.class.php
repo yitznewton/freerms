@@ -20,14 +20,21 @@ class userActions extends sfActions
     if ($this->getUser()->isAuthenticated()) {
       $this->redirect('@homepage');
     }
-    
-    if ($this->getUser()->getOnsiteLibraryId()) {
+
+    if ( $this->getUser()->getFlash( 'force_login' ) === true ) {
+      // renew this flash attribute
+      $this->forced = '1';
+    }
+    elseif ( $request->getParameter('forced') ) {
+      // bypass site recognition
+    }
+    elseif ( $this->getUser()->getOnsiteLibraryId() ) {
       $this->getUser()->setAuthenticated(true);
       $this->getUser()->setAttribute('userLibraryIds',
         array($this->getUser()->getOnsiteLibraryId()));
       $this->redirect($request->getUri());
     }
-   
+    
     $username = $request->getParameter('username');
     $password = $request->getParameter('password');
 
@@ -49,7 +56,7 @@ class userActions extends sfActions
       if (! $this->errors ) {
         $this->getUser()->setUsername( $username );
         $pass_check = $this->getUser()->checkPassword($password);
-        
+
         if ( $pass_check instanceOf Exception ) {
           // password verification encountered problem
           $recipient = sfConfig::get('app_admin-email', 'www@localhost');
@@ -68,7 +75,6 @@ class userActions extends sfActions
           
           // redirect back to the same page
           $this->redirect($request->getUri());
-          
         }
         elseif ( strtolower( $username ) == 'thmed' ) {
           $this->getUser()->setAttribute( 'username', null );
@@ -101,8 +107,7 @@ class userActions extends sfActions
 
   public function executeLogout(sfWebRequest $request)
   {
-    $this->getUser()->getAttributeHolder()->clear();
-    $this->getUser()->setAuthenticated(false);
+    $this->getUser()->logout();
     $this->forward('user', 'redirectHome');
   }
   
