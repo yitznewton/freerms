@@ -116,7 +116,7 @@ class databaseActions extends sfActions
         $script_path = "$root/lib/access/eresource$er_id.inc.php";
         $this->forward404Unless(is_readable($script_path));
         require($script_path);
-        exit();
+        return;
         break;
       
       case 'Referer URL':
