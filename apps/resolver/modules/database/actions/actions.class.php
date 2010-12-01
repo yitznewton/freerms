@@ -107,6 +107,14 @@ class databaseActions extends sfActions
     // cleared to refer
     
     $this->er->recordUsageAttempt($user_affiliation[0], true);
+
+    $access_hander = BaseAccessHandler::factory( $this );
+
+    if ( ! $access_handler ) {
+      throw new UnexpectedValueException( 'No access handler generated' );
+    }
+
+    return $access_handler->execute();
     
     switch ($auth->getLabel())
     {

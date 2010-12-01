@@ -6,7 +6,14 @@ class BaseAccessHander
 
   public function execute()
   {
-    // redirect directly to access URI
+    if ( $action->getUser()->getOnsiteLibraryId() ) {
+      $method = 'getOnsiteAccessUri';
+    }
+    else {
+      $method = 'getOffsiteAccessUri';
+    }
+
+    $this->action->redirect( $this->action->er->getAccessInfo()->$method() );
   }
 
   protected function __construct( sfAction $action )
@@ -14,16 +21,16 @@ class BaseAccessHander
     $this->action = $action;
   }
 
-  public function factory( sfAction $action )
+  static public function factory( sfAction $action )
   {
-    if ($action->getUser()->getOnsiteLibraryId()) {
+    if ( $action->getUser()->getOnsiteLibraryId() ) {
       $method = 'getOnsiteAuthMethod';
     }
     else {
       $method = 'getOffsiteAuthMethod';
     }
     
-    switch ($action->er->getAccessInfo()->$method()) {
+    switch ( $action->er->getAccessInfo()->$method() ) {
       case 'Script':
       case 'IP + Script':
         return ScriptAccessHandler::factory( $action );
