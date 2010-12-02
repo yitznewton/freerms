@@ -77,7 +77,7 @@ class databaseActions extends sfActions
         'no access information');
       $this->forward404();
     }
-    
+
     // if not available to this user
     if (! array_intersect($user_affiliation, $this->er->getLibraryIds()) ) {
       $this->er->recordUsageAttempt($user_affiliation[0], false,
@@ -108,61 +108,13 @@ class databaseActions extends sfActions
     
     $this->er->recordUsageAttempt($user_affiliation[0], true);
 
-    $access_hander = BaseAccessHandler::factory( $this );
+    $access_handler = BaseAccessHandler::factory( $this );
 
     if ( ! $access_handler ) {
       throw new UnexpectedValueException( 'No access handler generated' );
     }
 
     return $access_handler->execute();
-    
-    switch ($auth->getLabel())
-    {
-      case 'Script':
-      case 'IP + Script':
-        $root = str_replace('\\', '/', sfConfig::get('sf_root_dir'));
-        $script_path = "$root/lib/access/eresource$er_id.inc.php";
-        $this->forward404Unless(is_readable($script_path));
-        require($script_path);
-        return;
-        break;
-      
-      case 'Referer URL':
-        $this->getUser()->setFlash('er_id', $er_id);
-        $this->getUser()->setFlash('access_uri', $access_uri);
-        $this->redirect('database/refer');
-        break;
-      
-      case 'EZproxy':
-        $library = LibraryPeer::retrieveByPK($user_affiliation[0]);
-        $proxy_uri = freermsEZproxy::getEZproxyTicketUrl(
-          $library, $access_uri, $this->getUser()->getAttribute('username')
-        );
-        $this->redirect($proxy_uri);
-        break;
-
-      case 'ebrarySSO':
-        $library = LibraryPeer::retrieveByPK($user_affiliation[0]);
-
-        $ebrary_uri = 'http://' . $library->getEZProxyHost()
-                    . '/ebrary/touro/unauthorized';
-
-        $proxy_uri = freermsEZproxy::getEZproxyTicketUrl(
-          $library, $ebrary_uri, $this->getUser()->getUsername()
-        );
-
-        $this->redirect($proxy_uri);
-        break;
-        
-      case 'Unavailable':
-        $this->getUser()->setFlash('title', $er->getTitle());        
-        $this->redirect('database/authmethodUnavailable');
-        break;
-      
-      default:
-        $this->redirect($access_uri);
-        break;
-    }
   }
 
   public function executeRefer()

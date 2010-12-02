@@ -1,6 +1,6 @@
 <?php
 
-class BaseAccessHander
+class BaseAccessHandler
 {
   protected $action;
 
@@ -14,6 +14,8 @@ class BaseAccessHander
     }
 
     $this->action->redirect( $this->action->er->getAccessInfo()->$method() );
+
+    return;
   }
 
   protected function __construct( sfAction $action )
@@ -24,13 +26,15 @@ class BaseAccessHander
   static public function factory( sfAction $action )
   {
     if ( $action->getUser()->getOnsiteLibraryId() ) {
-      $method = 'getOnsiteAuthMethod';
+      $auth_id = $action->er->getAccessInfo()->getOnsiteAuthMethodId();
     }
     else {
-      $method = 'getOffsiteAuthMethod';
+      $auth_id = $action->er->getAccessInfo()->getOffsiteAuthMethodId();
     }
-    
-    switch ( $action->er->getAccessInfo()->$method() ) {
+
+    $auth = AuthMethodPeer::retrieveByPK($auth_id);
+
+    switch ( $auth->getLabel() ) {
       case 'Script':
       case 'IP + Script':
         return ScriptAccessHandler::factory( $action );
