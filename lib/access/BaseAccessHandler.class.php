@@ -4,6 +4,11 @@ class BaseAccessHandler
 {
   protected $action;
 
+  protected function __construct( sfAction $action )
+  {
+    $this->action = $action;
+  }
+
   public function execute()
   {
     if ( $action->getUser()->getOnsiteLibraryId() ) {
@@ -13,14 +18,23 @@ class BaseAccessHandler
       $method = 'getOffsiteAccessUri';
     }
 
-    $this->action->redirect( $this->action->er->getAccessInfo()->$method() );
+    $this->action->redirect( $this->action->getEResource()->getAccessInfo()->$method() );
 
     return;
   }
 
-  protected function __construct( sfAction $action )
+  protected function getAccessUri()
   {
-    $this->action = $action;
+    $er_id = $this->action->getEResource()->getId();
+
+    $this->action->getUser()->setFlash('er_id', $er_id );
+
+    if ( $this->action->getUser()->getOnsiteLibraryId() ) {
+      return $this->action->er->getAccessInfo()->getOnsiteAccessUri();
+    }
+    else {
+      return $this->action->er->getAccessInfo()->getOffsiteAccessUri();
+    }
   }
 
   static public function factory( sfAction $action )

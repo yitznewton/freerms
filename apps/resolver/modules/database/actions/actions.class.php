@@ -199,4 +199,14 @@ class databaseActions extends sfActions
     $this->er = EResourcePeer::retrieveByPK($er_id);
     $this->forward404Unless($this->er);
   }
+
+  public function getEResource()
+  {
+    if ( $this->er instanceof EResource ) {
+      return $this->er;
+    }
+    else {
+      return null;
+    }
+  }
 }
