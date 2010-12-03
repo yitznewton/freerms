@@ -508,7 +508,7 @@ CREATE TABLE `usage_attempts`
 	`date` DATETIME  NOT NULL,
 	`auth_successful` TINYINT  NOT NULL,
 	`additional_user_data` VARCHAR(255),
-	`note` VARCHAR(255)  NOT NULL,
+	`note` VARCHAR(255),
 	PRIMARY KEY (`id`),
 	INDEX `usage_attempts_FI_1` (`er_id`),
 	CONSTRAINT `usage_attempts_FK_1`

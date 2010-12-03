@@ -19,7 +19,7 @@ abstract class BaseUsageAttemptFormFilter extends BaseFormFilterPropel
       'date'                 => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'auth_successful'      => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'additional_user_data' => new sfWidgetFormFilterInput(),
-      'note'                 => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'note'                 => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(

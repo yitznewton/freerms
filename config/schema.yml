@@ -1069,7 +1069,6 @@ propel:
     note:
       type: VARCHAR
       size: 255
-      required: true
   usage_stats_formats: 
     _attributes: 
       phpName: UsageStatsFormat

@@ -34,7 +34,7 @@ abstract class BaseUsageAttemptForm extends BaseFormPropel
       'date'                 => new sfValidatorDateTime(),
       'auth_successful'      => new sfValidatorBoolean(),
       'additional_user_data' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'note'                 => new sfValidatorString(array('max_length' => 255)),
+      'note'                 => new sfValidatorString(array('max_length' => 255, 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('usage_attempt[%s]');
