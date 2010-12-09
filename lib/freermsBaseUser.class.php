@@ -21,6 +21,13 @@ abstract class freermsBaseUser extends sfBasicSecurityUser
     }
   }
 
+  public function getFirstLibrary()
+  {
+    $user_affiliation = $this->getLibraryIds();
+
+    return LibraryPeer::retrieveByPK( $user_affiliation[0] );
+  }
+
   public function clearUsername()
   {
     $this->setAttribute( 'username', null );

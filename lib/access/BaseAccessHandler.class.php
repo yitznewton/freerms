@@ -7,15 +7,17 @@ class BaseAccessHandler
   const DESCRIPTION   = 'Open or IP-based';
 
   protected $action;
+  protected $isOnsite;
 
   protected function __construct( sfAction $action )
   {
     $this->action = $action;
+    $this->isOnsite = $action->getUser()->getOnsiteLibraryId() ? true : false;
   }
 
   public function execute()
   {
-    if ( $action->getUser()->getOnsiteLibraryId() ) {
+    if ( $this->isOnsite ) {
       $method = 'getOnsiteAccessUri';
     }
     else {
@@ -33,7 +35,7 @@ class BaseAccessHandler
 
     $this->action->getUser()->setFlash('er_id', $er_id );
 
-    if ( $this->action->getUser()->getOnsiteLibraryId() ) {
+    if ( $this->isOnsite ) {
       return $this->action->er->getAccessInfo()->getOnsiteAccessUri();
     }
     else {
@@ -44,24 +46,18 @@ class BaseAccessHandler
   static public function factory( sfAction $action )
   {
     if ( $action->getUser()->getOnsiteLibraryId() ) {
-      $auth_id = $action->er->getAccessInfo()->getOnsiteAuthMethodId();
+      $class = $action->er->getAccessInfo()->getOnsiteAccessHandler();
     }
     else {
-      $auth_id = $action->er->getAccessInfo()->getOffsiteAuthMethodId();
+      $class = $action->er->getAccessInfo()->getOffsiteAccessHandler();
     }
 
-    $auth = AuthMethodPeer::retrieveByPK($auth_id);
-
-    switch ( $auth->getLabel() ) {
-      case 'Script':
-      case 'IP + Script':
-        return ScriptAccessHandler::factory( $action );
-      case 'Referer URL':
-        return new RefererAccessHandler( $action );
-      case 'Unavailable':
-        return new UnavailableAccessHandler( $action );
-      default:
-        return new BaseAccessHandler( $action );
+    if ( class_exists( $class ) ) {
+      return new $class( $action );
+    }
+    else {
+      $msg = 'Unknown access handler class';
+      throw new UnexpectedValueException( $msg );
     }
   }
 
