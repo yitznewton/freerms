@@ -2,6 +2,10 @@
 
 class BaseAccessHandler
 {
+  const IS_VALID_ONSITE  = true;
+  const IS_VALID_OFFSITE = true;
+  const DESCRIPTION   = 'Open or IP-based';
+
   protected $action;
 
   protected function __construct( sfAction $action )
@@ -58,6 +62,45 @@ class BaseAccessHandler
         return new UnavailableAccessHandler( $action );
       default:
         return new BaseAccessHandler( $action );
+    }
+  }
+
+  static public function loadClasses()
+  {
+    $directory = dirname(__FILE__);
+
+    if ( ! is_dir( $directory ) ) {
+      throw new UnexpectedValueException( 'Not a directory' );
+    }
+
+    $dir_obj = dir( $directory );
+
+    while ( ( $entry = $dir_obj->read() ) !== false ) {
+      if (
+        $entry != 'BaseAccessHandler.class.php'
+        && substr( $entry, -23 ) == 'AccessHandler.class.php'
+      ) {
+        require_once( $directory . '/' . $entry );
+      }
+    }
+
+    unset( $dir_obj );
+
+    $directory = $directory . '/script';
+
+    if ( is_dir( $directory ) && is_readable( $directory ) ) {
+      $dir_obj = dir( $directory );
+
+      while ( ( $entry = $dir_obj->read() ) !== false ) {
+        if (
+          $entry != 'BaseAccessHandler.class.php'
+          && substr( $entry, -23 ) == 'AccessHandler.class.php'
+        ) {
+          require_once( $directory . '/' . $entry );
+        }
+      }
+
+      unset( $dir_obj );
     }
   }
 }

@@ -15,18 +15,12 @@ propel:
     offsite_access_uri:
       type: VARCHAR
       size: 255
-    onsite_auth_method_id: 
-      type: INTEGER
-      foreignTable: auth_methods
-      foreignReference: id
-      onDelete: SET NULL
-      onUpdate: CASCADE
-    offsite_auth_method_id: 
-      type: INTEGER
-      foreignTable: auth_methods
-      foreignReference: id
-      onDelete: SET NULL
-      onUpdate: CASCADE
+    onsite_access_handler:
+      type: VARCHAR
+      size: 255
+    offsite_access_handler:
+      type: VARCHAR
+      size: 255
     access_username: 
       type: VARCHAR
       size: 25
@@ -284,26 +278,6 @@ propel:
 #      type: VARCHAR
 #      size: 255
 #      required: true
-  auth_methods: 
-    _attributes: 
-      phpName: AuthMethod
-    id: 
-      type: INTEGER
-      required: true
-      autoIncrement: true
-      primaryKey: true
-    label: 
-      type: VARCHAR
-      size: 50
-      required: true
-    is_valid_onsite:
-      type: BOOLEAN
-      required: true
-      default: 1
-    is_valid_offsite:
-      type: BOOLEAN
-      required: true
-      default: 1
 #  billing_statuses: 
 #    _attributes: 
 #      phpName: BillingStatus

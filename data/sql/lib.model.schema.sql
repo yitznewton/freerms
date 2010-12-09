@@ -15,8 +15,8 @@ CREATE TABLE `access_infos`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`onsite_access_uri` VARCHAR(255),
 	`offsite_access_uri` VARCHAR(255),
-	`onsite_auth_method_id` INTEGER,
-	`offsite_auth_method_id` INTEGER,
+	`onsite_access_handler` VARCHAR(255),
+	`offsite_access_handler` VARCHAR(255),
 	`access_username` VARCHAR(25),
 	`access_password` VARCHAR(25),
 	`access_password_note` TEXT,
@@ -25,19 +25,7 @@ CREATE TABLE `access_infos`
 	`referral_note` TEXT,
 	`note` TEXT,
 	`deleted_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `access_infos_FI_1` (`onsite_auth_method_id`),
-	CONSTRAINT `access_infos_FK_1`
-		FOREIGN KEY (`onsite_auth_method_id`)
-		REFERENCES `auth_methods` (`id`)
-		ON UPDATE CASCADE
-		ON DELETE SET NULL,
-	INDEX `access_infos_FI_2` (`offsite_auth_method_id`),
-	CONSTRAINT `access_infos_FK_2`
-		FOREIGN KEY (`offsite_auth_method_id`)
-		REFERENCES `auth_methods` (`id`)
-		ON UPDATE CASCADE
-		ON DELETE SET NULL
+	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -143,22 +131,6 @@ CREATE TABLE `admin_infos`
 		REFERENCES `usage_stats_freqs` (`id`)
 		ON UPDATE CASCADE
 		ON DELETE SET NULL
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- auth_methods
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `auth_methods`;
-
-
-CREATE TABLE `auth_methods`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`label` VARCHAR(50)  NOT NULL,
-	`is_valid_onsite` TINYINT default 1 NOT NULL,
-	`is_valid_offsite` TINYINT default 1 NOT NULL,
-	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------

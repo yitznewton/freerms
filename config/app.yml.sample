@@ -9,5 +9,5 @@ all:
     credential-prefix:  freerms
   
   access:
-    onsite-auth-default: IP
-    offsite-auth-default: Referer URL
+    default-handler-onsite: BaseAccessHandler
+    default-handler-offsite: RefererAccessHandler

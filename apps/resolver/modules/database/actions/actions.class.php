@@ -86,23 +86,12 @@ class databaseActions extends sfActions
       return;
     }
     
-    // figure out which referral method to use
-    if ($this->getUser()->getOnsiteLibraryId()) {
-      $access_uri = $access->getOnsiteAccessUri();
-      $auth_id = $access->getOnsiteAuthMethodId();
-    } else {
-      $access_uri = $access->getOffsiteAccessUri();
-      $auth_id = $access->getOffsiteAuthMethodId();
-    }
-    
-
     if ($this->er->getProductUnavailable()) {
       $this->er->recordUsageAttempt($user_affiliation[0], false, 'unavailable');
       $this->setTemplate('unavailable');
 
       return;
     }
-    $auth = AuthMethodPeer::retrieveByPK($auth_id);
 
     // cleared to refer
     
@@ -148,7 +137,7 @@ class databaseActions extends sfActions
     $this->title = $this->getUser()->getFlash('title');
   }
   
-  public function executeAuthmethodUnavailable(sfWebRequest $request)
+  public function executeUnavailableHandler(sfWebRequest $request)
   {
     $this->title = $this->getUser()->getFlash('title');
   }

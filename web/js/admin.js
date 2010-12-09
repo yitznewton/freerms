@@ -38,7 +38,16 @@ function getSubform( type, index )
 }
 
 $(document).ready(function(){
-  $('#tab-container > ul').tabs();
+  admin_tabset = $('#tab-container > ul').tabs();
+  admin_tabs = $('#tab-container .ui-tabs-panel');
+
+  for ( i = 0 ; i < admin_tabs.length ; i++ ) {
+    if ( $(admin_tabs.get(i)).find('.ui-state-error').length ) {
+      // an error is displayed in this tab
+      admin_tabset.tabs( 'select', i );
+      break;
+    }
+  }
 
   updateIpRegFields();
 

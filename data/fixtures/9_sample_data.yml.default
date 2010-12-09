@@ -7,13 +7,13 @@ AccessInfo:
   ASC_acc:
     OnsiteAccessUri: http://www.example.com/ebsco
     OffsiteAccessUri: http://www.example.com/ebsco
-    onsite_auth_method_id: Ip
-    offsite_auth_method_id: RefererUrl
+    onsite_access_handler: BaseAccessHandler
+    offsite_access_handler: RefererAccessHandler
   BHB_acc:
     OnsiteAccessUri: http://www.example.com/bib-hebrew-book
     OffsiteAccessUri: http://www.example.com/bib-hebrew-book
-    onsite_auth_method_id: IpScript
-    offsite_auth_method_id: RefererUrl
+    onsite_access_handler: ScriptAccessHandler
+    offsite_access_handler: RefererAccessHandler
 
 AdminInfo:
   ASC_adm:

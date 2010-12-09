@@ -1,37 +1,3 @@
-AuthMethod:
-  Ip:
-    Label: IP
-    IsValidOnsite: true
-    IsValidOffsite: false
-  IpScript:
-    Label: IP + script
-    IsValidOnsite: true
-    IsValidOffsite: false
-  Script:
-    Label: Script
-    IsValidOnsite: true
-    IsValidOffsite: true
-  RefererUrl:
-    Label: Referer URL
-    IsValidOnsite: true
-    IsValidOffsite: true
-#  EZproxy:
-#    Label: EZproxy
-#    IsValidOnsite: false
-#    IsValidOffsite: true
-  LoginPW:
-    Label: Login + password
-    IsValidOnsite: true
-    IsValidOffsite: true
-  Unrestricted:
-    Label: Unrestricted
-    IsValidOnsite: true
-    IsValidOffsite: true
-  Unavailable:
-    Label: Unavailable
-    IsValidOnsite: false
-    IsValidOffsite: true
-
 IpRegMethod:
   None:
     Label: none
