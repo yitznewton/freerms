@@ -27,6 +27,10 @@ abstract class BaseDbSubjectForm extends BaseFormPropel
       'e_resource_db_subject_assoc_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'EResource', 'required' => false)),
     ));
 
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorPropelUnique(array('model' => 'DbSubject', 'column' => array('slug')))
+    );
+
     $this->widgetSchema->setNameFormat('db_subject[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);

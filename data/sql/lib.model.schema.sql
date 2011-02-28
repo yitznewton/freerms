@@ -262,6 +262,7 @@ CREATE TABLE `eresource_db_subject_assoc`
 (
 	`er_id` INTEGER  NOT NULL,
 	`db_subject_id` INTEGER  NOT NULL,
+	`featured_weight` INTEGER default -1 NOT NULL,
 	PRIMARY KEY (`er_id`,`db_subject_id`),
 	CONSTRAINT `eresource_db_subject_assoc_FK_1`
 		FOREIGN KEY (`er_id`)
@@ -288,7 +289,8 @@ CREATE TABLE `db_subjects`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`label` VARCHAR(100)  NOT NULL,
 	`slug` VARCHAR(100),
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `db_subjects_U_1` (`slug`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------

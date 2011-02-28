@@ -591,6 +591,10 @@ propel:
       foreignReference: id
       onDelete: CASCADE
       onUpdate: CASCADE
+    featured_weight:
+      type: INTEGER
+      required: true
+      default: -1
   db_subjects:
     _attributes:
       phpName: DbSubject
@@ -605,7 +609,8 @@ propel:
       required: true
     slug:
       type: VARCHAR
-      size: 100     
+      size: 100
+      index: unique
   general_statuses: 
     _attributes: 
       phpName: GeneralStatus

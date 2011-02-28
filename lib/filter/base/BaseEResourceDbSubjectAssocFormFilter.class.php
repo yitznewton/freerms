@@ -12,9 +12,11 @@ abstract class BaseEResourceDbSubjectAssocFormFilter extends BaseFormFilterPrope
   public function setup()
   {
     $this->setWidgets(array(
+      'featured_weight' => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
+      'featured_weight' => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('e_resource_db_subject_assoc_filters[%s]');
@@ -32,8 +34,9 @@ abstract class BaseEResourceDbSubjectAssocFormFilter extends BaseFormFilterPrope
   public function getFields()
   {
     return array(
-      'er_id'         => 'ForeignKey',
-      'db_subject_id' => 'ForeignKey',
+      'er_id'           => 'ForeignKey',
+      'db_subject_id'   => 'ForeignKey',
+      'featured_weight' => 'Number',
     );
   }
 }

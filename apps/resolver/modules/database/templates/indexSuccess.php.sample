@@ -1,16 +1,15 @@
-<?php use_helper('PagerNavigation') ?>
-
-<h1>Available Databases</h1>
-
 <script type="text/javascript">
   function get_selected_value()
-    {
-      var selected_value = document.getElementById("dbsubject").value;
-      var url = '?subject=';
-
-      window.location.href = url + selected_value;
-    }
+  {
+    var selected_value = document.getElementById("dbsubject").value;
+    var url = window.location.protocol + '//'
+            + window.location.host
+            + window.location.pathname + '?subject=';
+    window.location.href = url + selected_value;
+  }
 </script>
+
+<h1>Available Databases</h1>
 
 <select id="dbsubject" onchange="get_selected_value()" >
   <option value="">All subjects</option>
@@ -27,12 +26,23 @@
 
 </select>
 
-<div class="pager"><?php echo pager_navigation($pager, 'database/index?subject='.$selected_subject.'&page=', 10) ?></div>
+<?php if ($featured_dbs): ?>
+<h2>Featured databases:</h2>
+<ul id="featured">
+  <?php foreach ($featured_dbs as $er): ?>
+   <li>
+     <?php echo link_to($er->getTitle(), 'database/access?id='.$er->getId()) ?> -
+ 	<?php echo $er->getDescription() ?>
+  </li>
+  <?php endforeach; ?>
+</ul>
+<?php endif; ?>
 
+<?php if ($featured_dbs): ?>
+<h2>All databases in this subject:</h2>
+<?php endif; ?>
 <ul>
-
-  <?php foreach ($pager->getResults() as $er): ?>
-
+  <?php foreach ($databases as $er): ?>
   <li>
     <?php echo link_to($er->getTitle(), 'database/access?id='.$er->getId()) ?> -
 	<?php echo $er->getDescription() ?>
@@ -46,9 +56,4 @@
 	<?php endif; ?>
   </li>
   <?php endforeach; ?>
-
-</ul>
-
-<div class="pager"><?php echo pager_navigation($pager, 'database/index?subject='.$selected_subject.'&page=', 10) ?></div>
-
-
+ </ul>
