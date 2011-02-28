@@ -26,7 +26,8 @@ class EResourceForm extends BaseEResourceForm
     $this->widgetSchema['alt_title']->setLabel('Alternate title');
     $this->widgetSchema['suppression']->setLabel('Suppress display');
     $this->widgetSchema['e_resource_db_subject_assoc_list']
-      ->setLabel('Subjects');
+      ->setLabel('Subjects')
+      ->setOption('expanded', true);
 
     $c = new Criteria();
     $c->addAscendingOrderByColumn(DbSubjectPeer::LABEL);
@@ -37,7 +38,16 @@ class EResourceForm extends BaseEResourceForm
     freermsActions::embedForm($this, 'AccessInfo');
     freermsActions::embedForm($this, 'Acquisition');   
     freermsActions::embedForm($this, 'AdminInfo');   
-        
+
+    $subject_container_form = new sfForm();
+
+    foreach ( $this->getObject()->getEResourceDbSubjectAssocs() as $esa ) {
+      $form = new EResourceDbSubjectAssocForm( $esa );
+      $subject_container_form->embedForm( $esa->getDbSubjectId(), $form );
+    }
+
+    $this->embedForm( 'EResourceDbSubjectAssocs', $subject_container_form );
+
     $lang_url = 'http://www.loc.gov/marc/languages/language_name.html';
     $this->widgetSchema['language']
       = new freermsWidgetFormInputLink(

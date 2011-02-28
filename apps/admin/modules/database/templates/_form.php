@@ -7,11 +7,12 @@
     jQuery("#e_resource_db_subject_assoc_clear").show();
   });
 
-  tab_names = new Array();
+  tab_names = [];
   tab_names[0] = 'general';
   tab_names[1] = 'access';
-  tab_names[2] = 'libraries';
-  tab_names[3] = 'admin';
+  tab_names[2] = 'admin';
+  tab_names[3] = 'subjects';
+  tab_names[4] = 'libraries';
 
   function set_tab_state() {
     active_tab = jQuery('#tab-container > ul').data('selected.tabs');
@@ -36,6 +37,7 @@
       <li class="ui-tabs-nav-item"><a href="#general"><span>General</span></a></li>
       <li class="ui-tabs-nav-item"><a href="#access"><span>Access</span></a></li>
       <li class="ui-tabs-nav-item"><a href="#admin"><span>Admin</span></a></li>
+      <li class="ui-tabs-nav-item"><a href="#subjects"><span>Subjects</span></a></li>
       <li class="ui-tabs-nav-item"><a href="#libraries"><span>Libraries</span></a></li>
     </ul>
 
@@ -52,12 +54,6 @@
           <?php echo $form['alt_title']->renderRow() ?>
           <?php echo $form['alt_id']->renderRow() ?>
           <?php echo $form['Acquisition']['vendor_org_id']->renderRow() ?>
-          <?php echo $form['e_resource_db_subject_assoc_list']->renderRow() ?>
-          <div id="e_resource_db_subject_assoc_clear" class="form-row" style="display: none;">
-            <label>&nbsp;</label>
-            <input type="button" value="Clear Subjects"
-            onclick="clearAll(jQuery('#e_resource_e_resource_db_subject_assoc_list'))">
-          </div>
           <?php echo $form['subscription_number']->renderRow() ?>
           <?php echo $form['language']->renderRow() ?>
           <?php echo $form['description']->renderRow() ?>
@@ -78,6 +74,16 @@
     <div id="libraries">
       <?php echo $form['Acquisition']->renderError() ?>
       <?php echo $form['Acquisition']['acq_lib_assoc_list']->renderRow() ?>
+    </div>
+
+    <div id="subjects">
+      <?php echo $form['e_resource_db_subject_assoc_list']->renderError() ?>
+      <?php echo $form['e_resource_db_subject_assoc_list'] ?>
+      <?php foreach ( $form['EResourceDbSubjectAssocs'] as $subject_form ): ?>
+        <?php echo $subject_form->renderError() ?>
+        <?php echo $subject_form->renderHiddenFields() ?>
+        <?php echo $subject_form ?>
+      <?php endforeach; ?>
     </div>
 
   </div>
