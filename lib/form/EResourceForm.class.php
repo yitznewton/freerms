@@ -12,7 +12,7 @@ class EResourceForm extends BaseEResourceForm
 {
   public function configure()
   {
-    unset(      
+    unset(
       $this['sort_title'],
       $this['access_info_id'],
       $this['acq_id'],
@@ -21,7 +21,7 @@ class EResourceForm extends BaseEResourceForm
       $this['updated_at'],
       $this['deleted_at']
     );
-    
+
     $this->widgetSchema['alt_id']->setLabel('Alternate ID');
     $this->widgetSchema['alt_title']->setLabel('Alternate title');
     $this->widgetSchema['suppression']->setLabel('Suppress display');
@@ -34,10 +34,10 @@ class EResourceForm extends BaseEResourceForm
 
     $this->widgetSchema['e_resource_db_subject_assoc_list']
       ->setOption('criteria', $c);
-    
+
     freermsActions::embedForm($this, 'AccessInfo');
-    freermsActions::embedForm($this, 'Acquisition');   
-    freermsActions::embedForm($this, 'AdminInfo');   
+    freermsActions::embedForm($this, 'Acquisition');
+    freermsActions::embedForm($this, 'AdminInfo');
 
     $subject_container_form = new sfForm();
 
@@ -59,48 +59,50 @@ class EResourceForm extends BaseEResourceForm
       );
 
     $this->setValidator('language', new sfValidatorRegex(array(
-      'pattern' => '/^([a-zA-Z]{3})*$/')));          
-        
+      'pattern' => '/^([a-zA-Z]{3})*$/')));
+
     // begin fix for the evil unique-with-multiple-nulls bug in Trac #41
     $this->validatorSchema['alt_id']->setOption('empty_value', null);
-    
+
     $v1_base = new sfValidatorChoice(
       array('choices' => array(null), 'required' => false)
     );
     $v1 = new sfValidatorSchemaFilter('alt_id', $v1_base);
-    
+
     $v2 = new sfValidatorPropelUnique(
       array('model' => 'EResource', 'column' => array('alt_id'))
     );
-    
+
     $this->validatorSchema->setPostValidator(
       new sfValidatorOr(array($v1, $v2))
     );
     // end fix for #41
 
-    $decorator = new freermsWidgetFormatterDiv($this->widgetSchema); 
-    $this->widgetSchema->addFormFormatter('div', $decorator); 
-    $this->widgetSchema->setFormFormatterName('div');  
+    $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
+    $this->widgetSchema->addFormFormatter('div', $decorator);
+    $this->widgetSchema->setFormFormatterName('div');
   }
-  
+
   public function save($con = null)
   {
     $object = parent::save();
     $this->saveAcqLibAssocList();
-    
+    $this->saveEResourceDbSubjectAssocList();
+
+
     return $object;
-  }  
+  }
 
   protected function saveAcqLibAssocList()
   {
     // this list within the embedded Acquisition form;
     // see FreERMS Trac ticket 11
-    
+
     $acquisition_object = $this->getObject()->getAcquisition();
 
     $er_values = $this->getValues();
     $lib_assoc_values = $er_values['Acquisition']['acq_lib_assoc_list'];
-    
+
     $c = new Criteria();
     $c->add(AcqLibAssocPeer::ACQ_ID, $acquisition_object->getPrimaryKey());
     AcqLibAssocPeer::doDelete($c);
@@ -112,6 +114,53 @@ class EResourceForm extends BaseEResourceForm
         $obj = new AcqLibAssoc();
         $obj->setAcqId($acquisition_object->getPrimaryKey());
         $obj->setLibId($value);
+        $obj->save();
+      }
+    }
+  }
+
+  public function saveEResourceDbSubjectAssocList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['e_resource_db_subject_assoc_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $c = new Criteria();
+    $c->add(EResourceDbSubjectAssocPeer::ER_ID, $this->object->getPrimaryKey());
+    EResourceDbSubjectAssocPeer::doDelete($c, $con);
+
+    $er_values = $this->getValues();
+    $sub_assoc_values = $er_values['EResourceDbSubjectAssocs'];
+
+
+    $values = $this->getValue('e_resource_db_subject_assoc_list');
+
+    if (is_array($values)){
+
+      foreach ($values as $value){
+        $obj = new EResourceDbSubjectAssoc();
+        $obj->setErId($this->object->getPrimaryKey());
+
+        foreach ($sub_assoc_values as $sub_value){
+          if ($value === $sub_value['db_subject_id']){
+            $obj->setDbSubjectId($sub_value['db_subject_id']);
+            $obj->setFeaturedWeight($sub_value['featured_weight']);
+          }
+        }
+
+        $obj->setDbSubjectId($value);
         $obj->save();
       }
     }
