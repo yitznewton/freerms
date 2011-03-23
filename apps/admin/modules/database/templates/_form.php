@@ -4,7 +4,6 @@
 <script type="text/javascript">
   jQuery(document).ready(function(){
     jQuery("#tab-container > ul").tabs();
-    jQuery("#e_resource_db_subject_assoc_clear").show();
   });
 
   tab_names = [];
@@ -20,12 +19,12 @@
   }
 </script>
 
-<form action="<?php echo url_for('database/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?> onsubmit="set_tab_state();">
+<form id="admin-form-database" action="<?php echo url_for('database/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?> onsubmit="set_tab_state();">
 <?php if (!$form->getObject()->isNew()): ?>
 <input type="hidden" name="sf_method" value="PUT" />
 <?php endif; ?>
   <div>
-    <?php echo $form->renderHiddenFields() ?>
+    <?php echo $form['id'] ?>
     <input type="submit" value="Save" />
     <?php if (!$form->getObject()->isNew()): ?>
     <?php echo link_to('Delete', 'database/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?')) ?>
@@ -62,12 +61,10 @@
     </div>
 
     <div id="access">
-      <?php echo $form['AccessInfo']->renderError() ?>
       <?php echo $form['AccessInfo'] ?>
     </div>
 
     <div id="admin">
-      <?php echo $form['AdminInfo']->renderError() ?>
       <?php echo $form['AdminInfo'] ?>
     </div>
 
@@ -77,11 +74,8 @@
     </div>
 
     <div id="subjects">
-      <?php echo $form['e_resource_db_subject_assoc_list']->renderError() ?>
       <?php echo $form['e_resource_db_subject_assoc_list'] ?>
       <?php foreach ( $form['EResourceDbSubjectAssocs'] as $subject_form ): ?>
-        <?php echo $subject_form->renderError() ?>
-        <?php echo $subject_form->renderHiddenFields() ?>
         <?php echo $subject_form ?>
       <?php endforeach; ?>
     </div>

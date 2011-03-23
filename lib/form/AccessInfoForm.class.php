@@ -12,7 +12,9 @@ class AccessInfoForm extends BaseAccessInfoForm
 {
   public function configure()
   {
-    unset($this['deleted_at']);
+    unset(
+      $this['deleted_at']
+    );
     
     $this->widgetSchema['ezproxy_cfg_entry']
       ->setLabel('ezproxy.cfg entry');

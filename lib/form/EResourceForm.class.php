@@ -29,11 +29,8 @@ class EResourceForm extends BaseEResourceForm
       ->setLabel('Subjects')
       ->setOption('expanded', true);
 
-    $c = new Criteria();
-    $c->addAscendingOrderByColumn(DbSubjectPeer::LABEL);
-
     $this->widgetSchema['e_resource_db_subject_assoc_list']
-      ->setOption('criteria', $c);
+      ->setOption('order_by', array('Label', 'asc'));
 
     freermsActions::embedForm($this, 'AccessInfo');
     freermsActions::embedForm($this, 'Acquisition');
@@ -114,53 +111,6 @@ class EResourceForm extends BaseEResourceForm
         $obj = new AcqLibAssoc();
         $obj->setAcqId($acquisition_object->getPrimaryKey());
         $obj->setLibId($value);
-        $obj->save();
-      }
-    }
-  }
-
-  public function saveEResourceDbSubjectAssocList($con = null)
-  {
-    if (!$this->isValid())
-    {
-      throw $this->getErrorSchema();
-    }
-
-    if (!isset($this->widgetSchema['e_resource_db_subject_assoc_list']))
-    {
-      // somebody has unset this widget
-      return;
-    }
-
-    if (null === $con)
-    {
-      $con = $this->getConnection();
-    }
-
-    $c = new Criteria();
-    $c->add(EResourceDbSubjectAssocPeer::ER_ID, $this->object->getPrimaryKey());
-    EResourceDbSubjectAssocPeer::doDelete($c, $con);
-
-    $er_values = $this->getValues();
-    $sub_assoc_values = $er_values['EResourceDbSubjectAssocs'];
-
-
-    $values = $this->getValue('e_resource_db_subject_assoc_list');
-
-    if (is_array($values)){
-
-      foreach ($values as $value){
-        $obj = new EResourceDbSubjectAssoc();
-        $obj->setErId($this->object->getPrimaryKey());
-
-        foreach ($sub_assoc_values as $sub_value){
-          if ($value === $sub_value['db_subject_id']){
-            $obj->setDbSubjectId($sub_value['db_subject_id']);
-            $obj->setFeaturedWeight($sub_value['featured_weight']);
-          }
-        }
-
-        $obj->setDbSubjectId($value);
         $obj->save();
       }
     }

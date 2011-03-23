@@ -12,7 +12,7 @@ default:
     - ui.theme.css
     - admin.css
 
-  javascripts:    [jquery.js, jquery-ui.js, admin.js]
+  javascripts:    [jquery.js, jquery-ui.js, admin.js, ui.sortable.js]
 
   has_layout:     true
   layout:         layout

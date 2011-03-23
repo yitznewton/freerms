@@ -218,4 +218,21 @@ form#login-form label{
   padding: 0;
 }
 
+#subjects h3{
+  margin-top: 0;
+}
+
+ul.sortable{
+  background: #aaa;
+  min-height: 6px;
+  margin: 0 0 1.4em;
+  padding: 0;
+  width: 300px;
+}
+
+ul.sortable li{
+  list-style: none;
+  min-height: 1.2em;
+  padding: 0.2em 0.4em;
+}
 
