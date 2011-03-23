@@ -1,25 +1,7 @@
 <?php include_stylesheets_for_form($form) ?>
 <?php include_javascripts_for_form($form) ?>
 
-<script type="text/javascript">
-  jQuery(document).ready(function(){
-    jQuery("#tab-container > ul").tabs();
-  });
-
-  tab_names = [];
-  tab_names[0] = 'general';
-  tab_names[1] = 'access';
-  tab_names[2] = 'admin';
-  tab_names[3] = 'subjects';
-  tab_names[4] = 'libraries';
-
-  function set_tab_state() {
-    active_tab = jQuery('#tab-container > ul').data('selected.tabs');
-    document.getElementById('tab-state').value = tab_names[active_tab];
-  }
-</script>
-
-<form id="admin-form-database" action="<?php echo url_for('database/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?> onsubmit="set_tab_state();">
+<form id="admin-form-database" action="<?php echo url_for('database/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="POST" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>
 <?php if (!$form->getObject()->isNew()): ?>
 <input type="hidden" name="sf_method" value="PUT" />
 <?php endif; ?>
@@ -81,7 +63,4 @@
     </div>
 
   </div>
-
-  <input type="hidden" id="tab-state" name="tab-state" value="general" />
-
 </form>

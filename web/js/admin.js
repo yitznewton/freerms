@@ -203,10 +203,13 @@ function getSubform( type, index )
 }
 
 $(document).ready(function(){
-  admin_tabset = $('#tab-container > ul').tabs();
-  admin_tabs = $('#tab-container .ui-tabs-panel');
+  var admin_tabset = $('#tab-container > ul').tabs({
+    cookie: {}
+  });
 
-  for ( i = 0 ; i < admin_tabs.length ; i++ ) {
+  var admin_tabs = $('#tab-container .ui-tabs-panel');
+
+  for ( var i = 0 ; i < admin_tabs.length ; i++ ) {
     if ( $(admin_tabs.get(i)).find('.ui-state-error').length ) {
       // an error is displayed in this tab
       admin_tabset.tabs( 'select', i );
@@ -228,7 +231,7 @@ $(document).ready(function(){
     $("#email-container").append( subform );
 
     // jQuery can't seem to keep track of the new div once it's appended
-    subform = $('#'+new_input_id).parent();
+    var subform = $('#'+new_input_id).parent();
     
     subform.find('.input-link-delete').click( function() {
       subform.remove();
@@ -246,7 +249,7 @@ $(document).ready(function(){
     $("#phone-container").append( subform );
 
     // jQuery can't seem to keep track of the new div once it's appended
-    subform = $('#'+new_input_id).parent();
+    var subform = $('#'+new_input_id).parent();
 
     subform.find('.input-link-delete').click( function() {
       subform.remove();
