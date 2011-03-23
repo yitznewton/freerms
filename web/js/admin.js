@@ -17,29 +17,23 @@ function freerms_admin_subject_sorter()
   ul_disabled.id = 'subjects-disabled';
   ul_disabled.className = 'sortable';
 
-  $subjects.find('ul.checkbox_list input').each( function() {
-    var weight = -1;
+  var weighted_subjects = [];
 
-    var id;
+  $('ul.checkbox_list input', subjects).each( function() {
+    var subject_id;
     var id_matches = this.id.match(/_(\d+)$/);
 
+    var weight = -1;
+
     if ( id_matches ) {
-      id = id_matches[1];
+      subject_id = id_matches[1];
     }
-
-    if ( id ) {
-      var weight_id = 'e_resource_EResourceDbSubjectAssocs_'
-                      + id + '_featured_weight';
-
-      var weight_el = document.getElementById( weight_id );
-
-      if ( weight_el ) {
-        weight = weight_el.value;
-      }
+    else {
+      throw 'Unexpected lack of subject id';
     }
 
     var li = document.createElement('li');
-    li.id = 'subject-list-' + id;
+    li.id = 'subject-list-' + subject_id;
     li.className = 'ui-state-default';
     li.innerHTML = $(this).siblings('label').text();
 
@@ -48,9 +42,14 @@ function freerms_admin_subject_sorter()
 
     li.appendChild( span_arrow );
 
-    if ( this.checked && weight != -1 ) {
-      // TODO: fix weighting
-      ul_featured.appendChild( li );
+    var weight_id = 'e_resource_EResourceDbSubjectAssocs_'
+                    + subject_id + '_featured_weight';
+
+    var weight_el = document.getElementById( weight_id );
+
+    if ( weight_el && weight_el.value != -1 ) {
+      weight = weight_el.value;
+      weighted_subjects.push([ li, weight ]);
     }
     else if ( this.checked ) {
       ul_nonfeatured.appendChild( li );
@@ -59,6 +58,14 @@ function freerms_admin_subject_sorter()
       ul_disabled.appendChild( li );
     }
   });
+
+  weighted_subjects.sort( function(a,b){ return a[1] - b[1] } );
+
+  for ( var i = 0; i < weighted_subjects.length; i++ ) {
+    ul_featured.appendChild( weighted_subjects[i][0] );
+  }
+
+  $('ul.checkbox_list', subjects).remove();
 
   $subjects.append( '<h3>Featured</h3>' );
   subjects.appendChild( ul_featured );
@@ -83,10 +90,8 @@ function freerms_admin_subject_sorter()
   });
 
   document.getElementById('admin-form-database').onsubmit = function() {
-    var er_id = document.getElementById('e_resource_id').value;
-    var that = this;
-
-    $subjects.children().remove();
+    var er_id  = document.getElementById('e_resource_id').value;
+    var that   = this;
 
     var weight = 0;
 
@@ -111,7 +116,7 @@ function freerms_admin_subject_sorter()
 
       var subject_id = subject_id_matches[1];
 
-      freerms_admin_subject_inputs( that, er_id, subject_id, '-1' );
+      freerms_admin_subject_inputs( that, er_id, subject_id, -1 );
     });
 
     return true;

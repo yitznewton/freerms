@@ -43,6 +43,9 @@ class EResourceForm extends BaseEResourceForm
       $subject_container_form->embedForm( $esa->getDbSubjectId(), $form );
     }
 
+    $subject_container_form->getValidatorSchema()
+      ->setOption('allow_extra_fields', true);
+
     $this->embedForm( 'EResourceDbSubjectAssocs', $subject_container_form );
 
     $lang_url = 'http://www.loc.gov/marc/languages/language_name.html';
@@ -86,7 +89,6 @@ class EResourceForm extends BaseEResourceForm
     $this->saveAcqLibAssocList();
     $this->saveEResourceDbSubjectAssocList();
 
-
     return $object;
   }
 
@@ -111,6 +113,53 @@ class EResourceForm extends BaseEResourceForm
         $obj = new AcqLibAssoc();
         $obj->setAcqId($acquisition_object->getPrimaryKey());
         $obj->setLibId($value);
+        $obj->save();
+      }
+    }
+  }
+
+  public function saveEResourceDbSubjectAssocList( $con = null )
+  {
+    // this is copied from parent with fix below. why the !@$# does symfony
+    // delete all assoc records first, and then add them back?
+
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['e_resource_db_subject_assoc_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $c = new Criteria();
+    $c->add(EResourceDbSubjectAssocPeer::ER_ID, $this->object->getPrimaryKey());
+    EResourceDbSubjectAssocPeer::doDelete($c, $con);
+
+    $values = $this->getValue('e_resource_db_subject_assoc_list');
+    $embedded_values = $this->getValue('EResourceDbSubjectAssocs');
+
+    if (is_array($values))
+    {
+      foreach ($values as $value)
+      {
+        $obj = new EResourceDbSubjectAssoc();
+        $obj->setErId($this->object->getPrimaryKey());
+        $obj->setDbSubjectId($value);
+
+        // this is a fix
+        if ( isset( $embedded_values[ $value ]['featured_weight'] ) ) {
+          $obj->setFeaturedWeight(
+            $embedded_values[ $value ]['featured_weight'] );
+        }
+
         $obj->save();
       }
     }
