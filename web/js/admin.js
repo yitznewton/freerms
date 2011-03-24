@@ -1,3 +1,41 @@
+(function( $ ){
+  $.fn.appendSubjectInputs = function( er_id, subject_id, weight ) {
+    if ( this[0].tagName != 'FORM' ) {
+      throw 'Can only call appendSubjectInputs() on a form element';
+    }
+
+    if ( typeof weight == 'undefined' ) {
+      weight = '-1';
+    }
+
+    var el_input;
+
+    el_input       = document.createElement('input');
+    el_input.type  = 'hidden';
+    el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
+                     + er_id + '][featured_weight]';
+    el_input.value = weight;
+
+    this.append( el_input );
+
+    el_input       = document.createElement('input');
+    el_input.type  = 'hidden';
+    el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
+                     + er_id + '][er_id]';
+    el_input.value = er_id;
+
+    this.append( el_input );
+
+    el_input       = document.createElement('input');
+    el_input.type  = 'hidden';
+    el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
+                     + subject_id + '][db_subject_id]';
+    el_input.value = subject_id;
+
+    this.append( el_input );
+  };
+})( jQuery );
+
 function freerms_admin_subject_sorter()
 {
   var databases  = document.getElementById('admin-subject-databases');
@@ -77,7 +115,7 @@ function freerms_admin_subject_sorter()
     }
   });
 
-  weighted_databases.sort( function(a,b){ return a[1] - b[1] } );
+  weighted_databases.sort( function(a,b){return a[1] - b[1]} );
 
   for ( var i = 0; i < weighted_databases.length; i++ ) {
     ul_featured.appendChild( weighted_databases[i][0] );
@@ -103,6 +141,7 @@ function freerms_admin_subject_sorter()
   document.getElementById('admin-form-subject').onsubmit = function() {
     var subject_id  = document.getElementById('db_subject_id').value;
     var that   = this;
+    var $this = $(this);
 
     var weight = 0;
 
@@ -115,7 +154,7 @@ function freerms_admin_subject_sorter()
 
       var er_id = er_id_matches[1];
 
-      freerms_admin_subject_inputs( that, er_id, subject_id, weight++ );
+      $this.appendSubjectInputs( er_id, subject_id, weight++ );
     });
 
     $('li', ul_nonfeatured).each( function() {
@@ -127,44 +166,11 @@ function freerms_admin_subject_sorter()
 
       var er_id = er_id_matches[1];
 
-      freerms_admin_subject_inputs( that, er_id, subject_id, -1 );
+      $this.appendSubjectInputs( er_id, subject_id, -1 );
     });
 
     return true;
   }
-}
-
-function freerms_admin_subject_inputs( form, er_id, subject_id, weight )
-{
-  if ( typeof weight == 'undefined' ) {
-    weight = '-1';
-  }
-
-  var el_input;
-
-  el_input       = document.createElement('input');
-  el_input.type  = 'hidden';
-  el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
-                   + er_id + '][featured_weight]';
-  el_input.value = weight;
-
-  form.appendChild( el_input );
-
-  el_input       = document.createElement('input');
-  el_input.type  = 'hidden';
-  el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
-                   + er_id + '][er_id]';
-  el_input.value = er_id;
-
-  form.appendChild( el_input );
-
-  el_input       = document.createElement('input');
-  el_input.type  = 'hidden';
-  el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
-                   + subject_id + '][db_subject_id]';
-  el_input.value = subject_id;
-
-  form.appendChild( el_input );
 }
 
 function clearAll( select_el )
