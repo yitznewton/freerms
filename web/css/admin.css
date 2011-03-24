@@ -218,8 +218,12 @@ form#login-form label{
   padding: 0;
 }
 
-#subjects h3{
-  margin-top: 0;
+#admin-subject-databases h3{
+  margin: 1.2em 0 0.6em;
+}
+
+#admin-subject-databases ul{
+  margin: 0 0 0.4em;
 }
 
 ul.sortable{

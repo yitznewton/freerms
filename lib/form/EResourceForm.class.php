@@ -36,18 +36,6 @@ class EResourceForm extends BaseEResourceForm
     freermsActions::embedForm($this, 'Acquisition');
     freermsActions::embedForm($this, 'AdminInfo');
 
-    $subject_container_form = new sfForm();
-
-    foreach ( $this->getObject()->getEResourceDbSubjectAssocs() as $esa ) {
-      $form = new EResourceDbSubjectAssocForm( $esa );
-      $subject_container_form->embedForm( $esa->getDbSubjectId(), $form );
-    }
-
-    $subject_container_form->getValidatorSchema()
-      ->setOption('allow_extra_fields', true);
-
-    $this->embedForm( 'EResourceDbSubjectAssocs', $subject_container_form );
-
     $lang_url = 'http://www.loc.gov/marc/languages/language_name.html';
     $this->widgetSchema['language']
       = new freermsWidgetFormInputLink(

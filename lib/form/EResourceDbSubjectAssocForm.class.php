@@ -13,7 +13,7 @@ class EResourceDbSubjectAssocForm extends BaseEResourceDbSubjectAssocForm
   public function configure()
   {
     $this->widgetSchema['featured_weight']->setLabel(
-      'Weight for ' . $this->getObject()->getDbSubject()->getLabel() );
+      'Weight for ' . $this->getObject()->getEResource()->getTitle() );
     
     $this->widgetSchema->setAttribute('class', 'EResourceDbSubjectAssocForm');
   }

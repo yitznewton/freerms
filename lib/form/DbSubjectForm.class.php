@@ -19,5 +19,14 @@ class DbSubjectForm extends BaseDbSubjectForm
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema);
     $this->widgetSchema->addFormFormatter('div', $decorator);
     $this->widgetSchema->setFormFormatterName('div');
+
+    $er_container_form = new sfForm();
+
+    foreach ( $this->getObject()->getEResourceDbSubjectAssocs() as $esa ) {
+      $form = new EResourceDbSubjectAssocForm( $esa );
+      $er_container_form->embedForm( $esa->getErId(), $form );
+    }
+
+    $this->embedForm( 'EResourceDbSubjectAssocs', $er_container_form );
   }
 }

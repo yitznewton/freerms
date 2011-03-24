@@ -57,9 +57,6 @@
 
     <div id="subjects">
       <?php echo $form['e_resource_db_subject_assoc_list'] ?>
-      <?php foreach ( $form['EResourceDbSubjectAssocs'] as $subject_form ): ?>
-        <?php echo $subject_form ?>
-      <?php endforeach; ?>
     </div>
 
   </div>

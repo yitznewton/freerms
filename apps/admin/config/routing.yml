@@ -16,6 +16,15 @@ e_resource:
     column:              id
     with_wildcard_routes: true
 
+subject:
+  class: sfPropelRouteCollection
+  options:
+    model:               DbSubject
+    module:              subject
+    prefix_path:         /subject
+    column:              id
+    with_wildcard_routes: true
+
 homepage:
   url:   /
   param: { module: database, action: index }
