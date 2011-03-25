@@ -4,8 +4,12 @@
       throw 'Can only call appendSubjectInputs() on a form element';
     }
 
-    if ( typeof weight == 'undefined' ) {
-      weight = '-1';
+    if (
+      typeof er_id == 'undefined'
+      || typeof subject_id == 'undefined'
+      || typeof weight == 'undefined'
+    ) {
+      throw 'Missing argument';
     }
 
     var el_input;
@@ -107,8 +111,7 @@ function freerms_admin_subject_sorter()
     var weight_el = document.getElementById( weight_id );
 
     if ( weight_el && weight_el.value != -1 ) {
-      weight = weight_el.value;
-      weighted_databases.push([ li, weight ]);
+      weighted_databases.push([ li, weight_el.value ]);
     }
     else {
       ul_nonfeatured.appendChild( li );
@@ -139,9 +142,8 @@ function freerms_admin_subject_sorter()
   $old_form_elements.remove();
 
   document.getElementById('admin-form-subject').onsubmit = function() {
-    var subject_id  = document.getElementById('db_subject_id').value;
-    var that   = this;
-    var $this = $(this);
+    var subject_id = document.getElementById('db_subject_id').value;
+    var $this      = $(this);
 
     var weight = 0;
 
@@ -149,7 +151,7 @@ function freerms_admin_subject_sorter()
       var er_id_matches = this.id.match(/-(\d+)$/);
 
       if ( ! er_id_matches ) {
-        throw 'Unexpected value: id';
+        throw 'Unexpected subject id: ' + this.id;
       }
 
       var er_id = er_id_matches[1];
@@ -161,7 +163,7 @@ function freerms_admin_subject_sorter()
       var er_id_matches = this.id.match(/-(\d+)$/);
 
       if ( ! er_id_matches ) {
-        throw 'Unexpected value: id';
+        throw 'Unexpected subject id: ' + this.id;
       }
 
       var er_id = er_id_matches[1];
