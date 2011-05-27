@@ -10,11 +10,6 @@
  */
 class userActions extends sfActions
 {
-  public function preExecute()
-  {
-    layoutActions::chooseLayout( $this );
-  }
-
   public function executeLogin(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated()) {

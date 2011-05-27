@@ -35,9 +35,8 @@ all:
 #
     login_module:           sfGuardAuth
     login_action:           signin
-#
-    secure_module:          sfGuardAuth   # To be called when a user doesn't have
-    secure_action:          secure    # The credentials required for an action
+    secure_module:          sfGuardAuth
+    secure_action:          secure
 #
 #    module_disabled_module: default   # To be called when a user requests 
 #    module_disabled_action: disabled  # A module disabled in the module.yml

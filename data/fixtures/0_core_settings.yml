@@ -1,0 +1,13 @@
+IpRegMethod:
+  None:
+    Label: none
+  WebAdmin:
+    Label: web admin
+  WebContactForm:
+    Label: web contact form
+  AutoEmail:
+    Label: auto email
+  ManualEmail:
+    Label: manual email
+  Phone:
+    Label: phone

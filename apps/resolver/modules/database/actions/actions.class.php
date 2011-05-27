@@ -10,11 +10,6 @@
  */
 class databaseActions extends sfActions
 {
-  public function preExecute()
-  {
-    layoutActions::chooseLayout( $this );
-  }
-
   public function executeIndex(sfWebRequest $request)
   {
     $user_affiliation = $this->getUser()->getLibraryIds();
@@ -24,8 +19,11 @@ class databaseActions extends sfActions
                
     $c = new Criteria();
     $c->setDistinct();
+    $c->addJoin(AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID);
+    $c->addJoin(AcquisitionPeer::ID, EResourcePeer::ACQ_ID);
+    $c->add(AcqLibAssocPeer::LIB_ID, $user_affiliation, Criteria::IN);
     $c->add(EResourcePeer::SUPPRESSION, 0);
-
+    
     if ($subject) {
       $this->selected_subject = $subject_slug;
 

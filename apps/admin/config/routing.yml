@@ -29,14 +29,6 @@ homepage:
   url:   /
   param: { module: database, action: index }
 
-login:
-  url:   /login
-  param: { module: user, action: login }
-
-logout:
-  url:   /logout
-  param: { module: user, action: logout }
-
 default_index:
   url:   /:module
   param: { action: index }

@@ -1,10 +1,4 @@
 rendering: ~
-
-loginApp:
-  class: loginAppFilter
-  param:
-    app: admin
-
 security:  ~
 
 # insert your own filters here

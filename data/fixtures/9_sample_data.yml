@@ -1,0 +1,71 @@
+#########################################################################
+# IMPORTANT: as this file is in the Subversion repository, do NOT add
+# any actual private data or passwords!
+#########################################################################
+
+AccessInfo:
+  ASC_acc:
+    OnsiteAccessUri: http://www.example.com/ebsco
+    OffsiteAccessUri: http://www.example.com/ebsco
+    onsite_access_handler: BaseAccessHandler
+    offsite_access_handler: RefererAccessHandler
+  BHB_acc:
+    OnsiteAccessUri: http://www.example.com/bib-hebrew-book
+    OffsiteAccessUri: http://www.example.com/bib-hebrew-book
+    onsite_access_handler: ScriptAccessHandler
+    offsite_access_handler: RefererAccessHandler
+
+AdminInfo:
+  ASC_adm:
+    Note: placeholder
+  BHB_adm:
+    Note: placeholder
+
+Acquisition:
+  ASC_acq:
+    Note: placeholder
+  BHB_acq:
+    Note: placeholder
+
+EResource:
+  AcadSearchCompl:
+    Title: Academic Search Complete
+    AltId: ASC
+    Description: Designed for academic institutions. Search articles in over 5,300 publications (over 4,460 peer-reviewed) back to 1865, citations & abstracts for 9,300 journals & 10,900 publications (monographs, reports, conference proceedings, etc.), cited references for 1,000 journals. Covers all areas of academic study (area studies, biology, chemistry, ethnic & multicultural studies, general science, law, mathematics, music, physics, psychology, religion & theology, women's studies, etc.). Updated daily. Use eJournals to link to individual titles. 
+    access_info_id: ASC_acc
+    admin_info_id: ASC_adm
+    acq_id: ASC_acq
+  BibHebrBook:
+    Title: Bibliography of the Hebrew Book
+    AltId: BHB
+    Description: Search citations for about 141,000 titles & over 15,000 author biographies. Covers over 90% of all books published in the Hebrew languages (3,800 Yiddish, 2,800 Ladino, etc.) from 1473 to 1960.
+    access_info_id: BHB_acc
+    admin_info_id: BHB_adm
+    acq_id: BHB_acq
+    
+Library:
+  TCNY:
+    Name: Touro College New York
+    Code: TCNY
+    Address: |
+      33 West 23rd Street
+      New York, NY 10010
+    EzproxyHost: lb-proxy8
+  TCS:
+    Name: Touro College South
+    Code: TCS
+    Address: |
+      1703 Washington Avenue
+      Miami Beach, FL 33139
+    EzproxyHost: lb-proxy10
+    
+AcqLibAssoc:
+  ASC_TCNY:
+    lib_id: TCNY
+    acq_id: ASC_acq
+  ASC_TCS:
+    lib_id: TCS
+    acq_id: ASC_acq
+  BHB_TCNY:
+    lib_id: TCNY
+    acq_id: BHB_acq
