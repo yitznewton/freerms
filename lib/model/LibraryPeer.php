@@ -2,6 +2,12 @@
 
 class LibraryPeer extends BaseLibraryPeer
 {
+  /**
+   * Returns the Library that is assigned the given IP address
+   *
+   * @param string $ip
+   * @return Library
+   */
   public static function retrieveByIp( $ip )
   {
     $num = @ip2long( $ip );
@@ -24,6 +30,8 @@ class LibraryPeer extends BaseLibraryPeer
       
       return $ip_range->getLibrary();
     }
+    
+    return null;
   }
   
   public static function retrieveKeyedArray()

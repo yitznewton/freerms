@@ -10,6 +10,33 @@
  */
 class databaseActions extends sfActions
 {
+  public function preExecute()
+  {
+    if ( ! $this->getUser()->hasAttribute('onsite_library_id') ) {
+      $onsite_library = LibraryPeer::retrieveByIp( $_SERVER['REMOTE_ADDR'] );
+      
+      if ( $onsite_library ) {
+        $this->getUser()->setAttribute( 'onsite_library_id',
+          $onsite_library->getId() );
+      }
+      else {
+        $this->getUser()->setAttribute( 'onsite_library_id', false );
+      }
+    }
+    
+    $onsite_library_id = $this->getUser()->getAttribute('onsite_library_id');
+    
+    if ( $onsite_library_id ) {
+      $this->affiliation = array( $onsite_library_id );
+    }
+    elseif ( $this->getUser()->isAuthenticated() ) {
+      $this->affiliation = $this->getUser()->getLibraryIds();
+    }
+    else {
+      // force auth
+    }
+  }
+  
   public function executeIndex(sfWebRequest $request)
   {
     $user_affiliation = $this->getUser()->getLibraryIds();
