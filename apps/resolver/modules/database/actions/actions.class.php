@@ -19,6 +19,10 @@ class databaseActions extends sfActions
    * @see freermsAffiliationFilter
    */
   public $user_affiliation = array();
+  /**
+   * @var EResource
+   */
+  public $er;
   
   public function executeIndex(sfWebRequest $request)
   {
