@@ -71,32 +71,32 @@ class databaseActions extends sfActions
     $er_id = $request->getParameter('id')
       or $alt_id = $request->getParameter('alt_id');
     
-    $this->forward404Unless($er_id || $alt_id);
+    $this->forward404Unless( $er_id || $alt_id );
     
     $c = new Criteria();
-    $c->add( EResourcePeer::DELETED_AT, null, Criteria::ISNULL );
 
-    $er_id
-      ? $c->add(EResourcePeer::ID, $er_id)
-      : $c->add(EResourcePeer::ALT_ID, $alt_id, Criteria::LIKE);
+    if ( $er_id ) {
+      $c->add(EResourcePeer::ID, $er_id);
+    }
+    else {
+      $c->add(EResourcePeer::ALT_ID, $alt_id, Criteria::LIKE);
+    }
 
     $ers = EResourcePeer::doSelectJoinAccessInfo($c);
     $this->forward404Unless($ers);
     $this->er = $ers[0];
-    $er_id = $this->er->getId();
     
     $access = $this->er->getAccessInfo();
     
-    if (!$access) {
+    if ( ! $access ) {
       $this->er->recordUsageAttempt( $this->user_affiliation[0], false,
         'no access information' );
       $this->forward404();
     }
 
-    // if not available to this user
-    if (
-      ! array_intersect( $this->user_affiliation,$this->er->getLibraryIds())
-    ) {
+    if ( ! array_intersect(
+      $this->user_affiliation, $this->er->getLibraryIds()
+    )) {
       $this->er->recordUsageAttempt( $this->user_affiliation[0], false,
         'not available to user' );
       $this->setTemplate('unauthorized');
@@ -111,8 +111,9 @@ class databaseActions extends sfActions
       return;
     }
 
-    // cleared to refer
+    // all clear
     
+    // TODO: how to properly deal with multi affiliations
     $this->er->recordUsageAttempt( $this->user_affiliation[0], true );
 
     $access_handler = BaseAccessHandler::factory( $this );
