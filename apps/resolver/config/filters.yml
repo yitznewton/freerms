@@ -1,6 +1,9 @@
 rendering: ~
 security:  ~
 
+affiliation:
+  class: freermsAffiliationFilter
+  
 # insert your own filters here
 
 cache:     ~

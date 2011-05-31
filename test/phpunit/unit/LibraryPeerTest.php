@@ -7,7 +7,7 @@ class unit_LibraryPeerTest extends sfPHPUnitBaseTestCase
   {
     new sfDatabaseManager(ProjectConfiguration::getApplicationConfiguration('resolver', 'test', true));
     $loader = new sfPropelData();
-    $loader->loadData( sfConfig::get('sf_data_dir').'/fixtures/test.yml' );
+    $loader->loadData( sfConfig::get('sf_test_dir').'/data/fixtures/test.yml' );
   }
   
   public function testRetrieveByIp()

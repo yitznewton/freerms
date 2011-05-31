@@ -10,36 +10,18 @@
  */
 class databaseActions extends sfActions
 {
-  public function preExecute()
-  {
-    if ( ! $this->getUser()->hasAttribute('onsite_library_id') ) {
-      $onsite_library = LibraryPeer::retrieveByIp( $_SERVER['REMOTE_ADDR'] );
-      
-      if ( $onsite_library ) {
-        $this->getUser()->setAttribute( 'onsite_library_id',
-          $onsite_library->getId() );
-      }
-      else {
-        $this->getUser()->setAttribute( 'onsite_library_id', false );
-      }
-    }
-    
-    $onsite_library_id = $this->getUser()->getAttribute('onsite_library_id');
-    
-    if ( $onsite_library_id ) {
-      $this->affiliation = array( $onsite_library_id );
-    }
-    elseif ( $this->getUser()->isAuthenticated() ) {
-      $this->affiliation = $this->getUser()->getLibraryIds();
-    }
-    else {
-      // force auth
-    }
-  }
+  /**
+   * An array of id's representing Librarys that the user is affiliated with,
+   * whether by onsite detection or from the user's record. Manipulated by
+   * freermsAffiliationFilter
+   *
+   * @var array int[]
+   * @see freermsAffiliationFilter
+   */
+  public $user_affiliation = array();
   
   public function executeIndex(sfWebRequest $request)
   {
-    $user_affiliation = $this->getUser()->getLibraryIds();
     $subject_slug = $request->getParameter('subject');
 
     $subject = DbSubjectPeer::retrieveBySlug( $subject_slug );
@@ -48,7 +30,7 @@ class databaseActions extends sfActions
     $c->setDistinct();
     $c->addJoin(AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID);
     $c->addJoin(AcquisitionPeer::ID, EResourcePeer::ACQ_ID);
-    $c->add(AcqLibAssocPeer::LIB_ID, $user_affiliation, Criteria::IN);
+    $c->add(AcqLibAssocPeer::LIB_ID, $this->user_affiliation, Criteria::IN);
     $c->add(EResourcePeer::SUPPRESSION, 0);
     
     if ($subject) {
@@ -101,24 +83,25 @@ class databaseActions extends sfActions
     
     $access = $this->er->getAccessInfo();
     
-    $user_affiliation = $this->getUser()->getLibraryIds();
-    
     if (!$access) {
-      $this->er->recordUsageAttempt($user_affiliation[0], false,
-        'no access information');
+      $this->er->recordUsageAttempt( $this->user_affiliation[0], false,
+        'no access information' );
       $this->forward404();
     }
 
     // if not available to this user
-    if (! array_intersect($user_affiliation, $this->er->getLibraryIds()) ) {
-      $this->er->recordUsageAttempt($user_affiliation[0], false,
-        'not available to user');
+    if (
+      ! array_intersect( $this->user_affiliation,$this->er->getLibraryIds())
+    ) {
+      $this->er->recordUsageAttempt( $this->user_affiliation[0], false,
+        'not available to user' );
       $this->setTemplate('unauthorized');
       return;
     }
     
     if ($this->er->getProductUnavailable()) {
-      $this->er->recordUsageAttempt($user_affiliation[0], false, 'unavailable');
+      $this->er->recordUsageAttempt(
+        $this->user_affiliation[0], false, 'unavailable' );
       $this->setTemplate('unavailable');
 
       return;
@@ -126,7 +109,7 @@ class databaseActions extends sfActions
 
     // cleared to refer
     
-    $this->er->recordUsageAttempt($user_affiliation[0], true);
+    $this->er->recordUsageAttempt( $this->user_affiliation[0], true );
 
     $access_handler = BaseAccessHandler::factory( $this );
 
@@ -185,8 +168,7 @@ class databaseActions extends sfActions
       $this->redirect( $url );
     }
 
-    $user_affiliation = $this->getUser()->getLibraryIds();
-    $user_libraries = LibraryPeer::retrieveByPKs($user_affiliation);
+    $user_libraries = LibraryPeer::retrieveByPKs( $this->user_affiliation );
     $this->forward404Unless($user_libraries);
 
 

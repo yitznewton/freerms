@@ -23,11 +23,6 @@
 interface freermsUserInterface
 {
   /**
-   * @param string $password
-   * @return bool
-   */
-  public function checkPassword( $password );
-  /**
    * @return array int[]
    */
   public function getLibraryIds();
