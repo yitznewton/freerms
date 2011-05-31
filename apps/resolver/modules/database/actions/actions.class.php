@@ -116,10 +116,10 @@ class databaseActions extends sfActions
     // TODO: how to properly deal with multi affiliations
     $this->er->recordUsageAttempt( $this->user_affiliation[0], true );
 
-    $access_handler = BaseAccessHandler::factory( $this );
+    $access_handler = BaseAccessHandler::factory( $this, $er );
 
     if ( ! $access_handler ) {
-      throw new UnexpectedValueException( 'No access handler generated' );
+      throw new UnexpectedValueException( 'No access handler found' );
     }
 
     return $access_handler->execute();

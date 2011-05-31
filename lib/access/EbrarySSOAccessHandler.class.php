@@ -2,6 +2,10 @@
 
 class EbrarySSOAccessHandler extends EZproxyAccessHandler
 {
+  const IS_VALID_ONSITE  = true;
+  const IS_VALID_OFFSITE = true;
+  const DESCRIPTION   = 'ebrary SSO';
+  
   public function execute()
   {
     // FIXME: take the Touro out of this... modularize the ebrary handler,

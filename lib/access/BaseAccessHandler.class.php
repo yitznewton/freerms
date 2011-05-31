@@ -7,11 +7,13 @@ class BaseAccessHandler
   const DESCRIPTION   = 'Open or IP-based';
 
   protected $action;
+  protected $er;
   protected $isOnsite;
 
-  protected function __construct( sfAction $action )
+  protected function __construct( sfAction $action, EResource $er )
   {
-    $this->action = $action;
+    $this->action   = $action;
+    $this->er       = $er;
     $this->isOnsite = $action->getUser()->getOnsiteLibraryId() ? true : false;
   }
 
@@ -43,17 +45,17 @@ class BaseAccessHandler
     }
   }
 
-  static public function factory( sfAction $action )
+  static public function factory( sfAction $action, EResource $er )
   {
     if ( $action->getUser()->getOnsiteLibraryId() ) {
-      $class = $action->er->getAccessInfo()->getOnsiteAccessHandler();
+      $class = $er->getAccessInfo()->getOnsiteAccessHandler();
     }
     else {
-      $class = $action->er->getAccessInfo()->getOffsiteAccessHandler();
+      $class = $er->getAccessInfo()->getOffsiteAccessHandler();
     }
 
     if ( class_exists( $class ) ) {
-      return new $class( $action );
+      return new $class( $action, $er );
     }
     else {
       $msg = 'Unknown access handler class';
@@ -82,7 +84,7 @@ class BaseAccessHandler
 
     unset( $dir_obj );
 
-    $directory = $directory . '/script';
+    $directory = $directory . '/custom';
 
     if ( is_dir( $directory ) && is_readable( $directory ) ) {
       $dir_obj = dir( $directory );
@@ -98,5 +100,47 @@ class BaseAccessHandler
 
       unset( $dir_obj );
     }
+  }
+  
+  static public function getOnsiteHandlers()
+  {
+    BaseAccessHandler::loadClasses();
+
+    $classes = array();
+
+    foreach ( get_declared_classes() as $class_name ) {
+      if (
+        substr( $class_name, -13 ) == 'AccessHandler'
+        && substr( $class_name, 0, 10 ) != 'AccessInfo'
+        && $class_name::IS_VALID_ONSITE
+      ) {
+        $classes[ $class_name ] = $class_name::DESCRIPTION;
+      }
+    }
+
+    natcasesort( $classes );
+    
+    return $classes;
+  }
+
+  static public function getOffsiteHandlers()
+  {
+    BaseAccessHandler::loadClasses();
+
+    $classes = array();
+
+    foreach ( get_declared_classes() as $class_name ) {
+      if (
+        substr( $class_name, -13 ) == 'AccessHandler'
+        && substr( $class_name, 0, 10 ) != 'AccessInfo'
+        && $class_name::IS_VALID_OFFSITE
+      ) {
+        $classes[ $class_name ] = $class_name::DESCRIPTION;
+      }
+    }
+
+    natcasesort( $classes );
+    
+    return $classes;
   }
 }

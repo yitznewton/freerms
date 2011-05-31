@@ -1,6 +1,9 @@
 <?php
-class AccessInfo1AccessHandler extends ScriptAccessHandler
+class AccessInfo1AccessHandler extends BaseAccessHandler
 {
+  const IS_VALID_ONSITE  = true;
+  const IS_VALID_OFFSITE = true;
+  
   public function execute()
   {
     if ( ! $this->action->getUser()->getUsername() ) {
