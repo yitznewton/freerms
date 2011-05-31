@@ -10,7 +10,6 @@ default:
     - ui.core.css
     - ui.tabs.css
     - ui.theme.css
-    - layout.css
     - admin.css
 
   javascripts:

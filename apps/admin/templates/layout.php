@@ -69,7 +69,7 @@
       <?php if ($sf_user->isAuthenticated()): ?>
       <ul class="nav-links">	  
         <li class="menu-link">
-          <a href="<?php echo url_for('user/logout') ?>">Logout</a>
+          <a href="<?php echo url_for('sfGuardAuth/signout') ?>">Logout</a>
         </li>  
       </ul> 
       <?php endif; ?>
