@@ -26,4 +26,8 @@ interface freermsUserInterface
    * @return array int[]
    */
   public function getLibraryIds();
+  /**
+   * @return string
+   */
+  public function getUsername();
 }

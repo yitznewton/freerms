@@ -10,11 +10,11 @@ class BaseAccessHandler
   protected $er;
   protected $isOnsite;
 
-  protected function __construct( sfAction $action, EResource $er )
+  protected function __construct( sfAction $action, EResource $er, $is_onsite )
   {
     $this->action   = $action;
     $this->er       = $er;
-    $this->isOnsite = $action->getUser()->getOnsiteLibraryId() ? true : false;
+    $this->isOnsite = $is_onsite;
   }
 
   public function execute()
@@ -47,7 +47,9 @@ class BaseAccessHandler
 
   static public function factory( sfAction $action, EResource $er )
   {
-    if ( $action->getUser()->getOnsiteLibraryId() ) {
+    $is_onsite = $action->getUser()->getAttribute('is_onsite');
+    
+    if ( $is_onsite ) {
       $class = $er->getAccessInfo()->getOnsiteAccessHandler();
     }
     else {
@@ -55,11 +57,11 @@ class BaseAccessHandler
     }
 
     if ( class_exists( $class ) ) {
-      return new $class( $action, $er );
+      return new $class( $action, $er, $is_onsite );
     }
     else {
       $msg = 'Unknown access handler class';
-      throw new UnexpectedValueException( $msg );
+      throw new MissingAccessHandlerException( $msg );
     }
   }
 

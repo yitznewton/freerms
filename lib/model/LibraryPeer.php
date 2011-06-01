@@ -55,4 +55,23 @@ class LibraryPeer extends BaseLibraryPeer
     
     return self::doSelectOne($c);
   }
+  
+  /**
+   * Cycles through user's library ids, and returns first Library found
+   *
+   * @param freermsUserInterface $user
+   * @return Library
+   */
+  public static function getFirstForUser( freermsUserInterface $user )
+  {
+    $library_ids = $user->getLibraryIds();
+    
+    for ( $i = 0; $i < count($library_ids); $i++ ) {
+      if ( $library = LibraryPeer::retrieveByPK( $library_ids[$i] )) {
+        return $library;
+      }
+    }
+    
+    return null;
+  }
 }

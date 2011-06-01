@@ -90,8 +90,8 @@ class AccessInfoForm extends BaseAccessInfoForm
 
       if (
         class_exists( $custom_class_name )
-        &&  ( $site == 'offsite' && $custom_class_name::IS_VALID_OFFSITE )
-            || ( $site == 'onsite' && $custom_class_name::IS_VALID_ONSITE )
+        &&  (( $site == 'offsite' && $custom_class_name::IS_VALID_OFFSITE )
+            || ( $site == 'onsite' && $custom_class_name::IS_VALID_ONSITE ))
       ) {
         $class = 'AccessInfo' . $id . 'AccessHandler';
         $access_handlers[ $custom_class_name ] = 'Custom';

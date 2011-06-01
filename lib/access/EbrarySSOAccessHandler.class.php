@@ -4,23 +4,17 @@ class EbrarySSOAccessHandler extends EZproxyAccessHandler
 {
   const IS_VALID_ONSITE  = true;
   const IS_VALID_OFFSITE = true;
-  const DESCRIPTION   = 'ebrary SSO';
+  const DESCRIPTION      = 'ebrary SSO';
   
-  public function execute()
+  protected function getAccessUri()
   {
-    // FIXME: take the Touro out of this... modularize the ebrary handler,
-    // and add this as a config setting
-    $ebrary_uri = 'http://' . $library->getEZProxyHost()
-                  . '/ebrary/touro/unauthorized';
+    $ebrary_site = sfConfig::get('app_ebrary-site');
+    
+    if ( ! is_string( $ebrary_site ) ) {
+      throw new UnexpectedValueException('ebrary site not set in config');
+    }
 
-    $proxy_uri = EZproxyAccessHandler::composeTicketUrl(
-      $this->action->getUser()->getFirstLibrary(),
-      $ebrary_uri,
-      $this->action->getUser()->getUsername()
-    );
-
-    $this->action->redirect( $proxy_uri );
-
-    return;
+    return 'http://' . $this->getLibrary()->getEZProxyHost()
+           . '/ebrary/' . $ebrary_site . '/unauthorized';
   }
 }
