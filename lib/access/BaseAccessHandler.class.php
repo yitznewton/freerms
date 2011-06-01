@@ -2,9 +2,10 @@
 
 class BaseAccessHandler
 {
-  const IS_VALID_ONSITE  = true;
-  const IS_VALID_OFFSITE = true;
-  const DESCRIPTION   = 'Open or IP-based';
+  const IS_VALID_ONSITE   = true;
+  const IS_VALID_OFFSITE  = true;
+  const DESCRIPTION       = 'Open or IP-based';
+  const FORCE_AUTH_ONSITE = false;
 
   protected $action;
   protected $er;
@@ -19,6 +20,18 @@ class BaseAccessHandler
 
   public function execute()
   {
+    $class_name = get_class( $this );
+    
+    if (
+      $class_name::FORCE_AUTH_ONSITE
+      && ! $this->action->getUser()->isAuthenticated()
+    ) {
+      $this->action->forward(
+        sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action') );
+
+      return;
+    }
+    
     if ( $this->isOnsite ) {
       $method = 'getOnsiteAccessUri';
     }

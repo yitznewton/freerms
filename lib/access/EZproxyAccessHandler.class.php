@@ -2,9 +2,9 @@
 
 class EZproxyAccessHandler extends BaseAccessHandler
 {
-  const IS_VALID_ONSITE  = true;
+  const IS_VALID_ONSITE  = false;
   const IS_VALID_OFFSITE = true;
-  const DESCRIPTION   = 'EZproxy';
+  const DESCRIPTION      = 'EZproxy';
   
   /**
    * The first Library associated with the user
@@ -15,6 +15,18 @@ class EZproxyAccessHandler extends BaseAccessHandler
   
   public function execute()
   {
+    $class_name = get_class( $this );
+    
+    if (
+      $class_name::FORCE_AUTH_ONSITE
+      && ! $this->action->getUser()->isAuthenticated()
+    ) {
+      $this->action->forward(
+        sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action') );
+
+      return;
+    }
+    
     if ( ! $this->getLibrary() ) {
       throw new RuntimeException( 'Unable to retrieve Library for user' );
     }

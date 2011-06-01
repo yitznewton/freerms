@@ -2,9 +2,10 @@
 
 class EbrarySSOAccessHandler extends EZproxyAccessHandler
 {
-  const IS_VALID_ONSITE  = true;
-  const IS_VALID_OFFSITE = true;
-  const DESCRIPTION      = 'ebrary SSO';
+  const IS_VALID_ONSITE   = true;
+  const IS_VALID_OFFSITE  = true;
+  const DESCRIPTION       = 'ebrary SSO';
+  const FORCE_AUTH_ONSITE = true;
   
   protected function getAccessUri()
   {
