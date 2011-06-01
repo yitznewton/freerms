@@ -33,6 +33,8 @@ class unit_LibraryPeerTest extends sfPHPUnitBaseTestCase
  */
 class freermsTestUserNotNull implements freermsUserInterface
 {
+  public function getUsername() {}
+  
   public function getLibraryIds()
   {
     return array( LibraryPeer::doSelectOne( new Criteria() )->getId() );
@@ -45,6 +47,8 @@ class freermsTestUserNotNull implements freermsUserInterface
  */
 class freermsTestUserNull implements freermsUserInterface
 {
+  public function getUsername() {}
+  
   public function getLibraryIds()
   {
     return array();

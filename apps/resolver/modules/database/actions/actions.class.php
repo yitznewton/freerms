@@ -11,14 +11,14 @@
 class databaseActions extends sfActions
 {
   /**
-   * An array of id's representing Librarys that the user is affiliated with,
-   * whether by onsite detection or from the user's record. Manipulated by
-   * freermsAffiliationFilter
+   * An object representing Librarys that the user is affiliated with,
+   * whether by onsite detection or from the user's record. Instantiated
+   * and passed by freermsAffiliationFilter
    *
-   * @var array int[]
+   * @var freermsUserAffiliation
    * @see freermsAffiliationFilter
    */
-  public $user_affiliation = array();
+  public $affiliation;
   /**
    * @var EResource
    */
@@ -34,7 +34,7 @@ class databaseActions extends sfActions
     $c->setDistinct();
     $c->addJoin(AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID);
     $c->addJoin(AcquisitionPeer::ID, EResourcePeer::ACQ_ID);
-    $c->add(AcqLibAssocPeer::LIB_ID, $this->user_affiliation, Criteria::IN);
+    $c->add(AcqLibAssocPeer::LIB_ID, $this->affiliation->get(), Criteria::IN);
     $c->add(EResourcePeer::SUPPRESSION, 0);
     
     if ($subject) {
@@ -89,15 +89,15 @@ class databaseActions extends sfActions
     $access = $this->er->getAccessInfo();
     
     if ( ! $access ) {
-      $this->er->recordUsageAttempt( $this->user_affiliation[0], false,
+      $this->er->recordUsageAttempt( $this->affiliation->getOne(), false,
         'no access information' );
       $this->forward404();
     }
 
     if ( ! array_intersect(
-      $this->user_affiliation, $this->er->getLibraryIds()
+      $this->affiliation->get(), $this->er->getLibraryIds()
     )) {
-      $this->er->recordUsageAttempt( $this->user_affiliation[0], false,
+      $this->er->recordUsageAttempt( $this->affiliation->getOne(), false,
         'not available to user' );
       $this->setTemplate('unauthorized');
       return;
@@ -105,7 +105,7 @@ class databaseActions extends sfActions
     
     if ($this->er->getProductUnavailable()) {
       $this->er->recordUsageAttempt(
-        $this->user_affiliation[0], false, 'unavailable' );
+        $this->affiliation->getOne(), false, 'unavailable' );
       $this->setTemplate('unavailable');
 
       return;
@@ -114,7 +114,7 @@ class databaseActions extends sfActions
     // all clear to grant access
     
     // TODO: how to properly deal with multi affiliations
-    $this->er->recordUsageAttempt( $this->user_affiliation[0], true );
+    $this->er->recordUsageAttempt( $this->affiliation->getOne(), true );
 
     $access_handler = BaseAccessHandler::factory( $this, $this->er );
 
@@ -169,8 +169,10 @@ class databaseActions extends sfActions
       $this->redirect( $url );
     }
 
-    $user_libraries = LibraryPeer::retrieveByPKs( $this->user_affiliation );
-    $this->forward404Unless($user_libraries);
+    $user_libraries = LibraryPeer::retrieveByPKs(
+      $this->affiliation->get() );
+    
+    $this->forward404Unless( $user_libraries );
 
 
     // FIXME: remove once we have our ebrary MARC records fixed

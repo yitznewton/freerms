@@ -23,6 +23,10 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsUserInter
 {
   public function getLibraryIds()
   {
+    if ( ! $this->isAuthenticated() ) {
+      return array();
+    }
+    
     $library_ids = array();
     
     foreach ( $this->getGroups() as $group ) {
