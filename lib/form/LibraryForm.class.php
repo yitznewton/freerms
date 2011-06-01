@@ -20,6 +20,9 @@ class LibraryForm extends BaseLibraryForm
     $this->widgetSchema['alt_name']->setLabel('Alternate name');
     $this->widgetSchema['fte']->setLabel('FTE');
     $this->widgetSchema['ezproxy_host']->setLabel('EZproxy host');
+    $this->widgetSchema['ezproxy_key']->setLabel('EZproxy key');
+    
+    $this->widgetSchema->moveField( 'alt_name', sfWidgetFormSchema::BEFORE, 'code');
 
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema); 
     $this->widgetSchema->addFormFormatter('div', $decorator); 
