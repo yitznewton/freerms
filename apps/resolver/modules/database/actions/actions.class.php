@@ -8,7 +8,7 @@
  * @author     Your name here
  * @version    SVN: $Id: actions.class.php 12479 2008-10-31 10:54:40Z fabien $
  */
-class databaseActions extends sfActions
+class databaseActions extends touroLayoutActions
 {
   /**
    * An object representing Librarys that the user is affiliated with,
@@ -61,6 +61,7 @@ class databaseActions extends sfActions
     $this->databases = EResourcePeer::doSelect($c);
 
     $c = new Criteria();
+    $c->add( DbSubjectPeer::LABEL, 'Trials', Criteria::NOT_EQUAL );
     $c->addAscendingOrderByColumn(DbSubjectPeer::LABEL);
 
     $this->db_subject_list = DbSubjectPeer::doSelect($c);

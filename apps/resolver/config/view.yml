@@ -6,8 +6,11 @@ default:
     description:  Electronic Resource Management System
     title:        <?php echo sfConfig::get('app_local-erms-name') ?>
 
-  stylesheets:    []
-  javascripts:    [jquery.js, resolver.js]
+  stylesheets:
+    - resolver.css: { media: all }
+  
+  javascripts:
+    - resolver.js
 
   has_layout:     true
   layout:         layout
