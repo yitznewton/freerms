@@ -117,24 +117,18 @@ class databaseActions extends sfActions
     $this->er->recordUsageAttempt( $this->affiliation->getOne(), true );
 
     $access_handler = BaseAccessHandler::factory( $this, $this->er );
-
-    return $access_handler->execute();
+    $access_handler->execute();
   }
 
-  public function executeRefer()
+  public function executeRefer( sfWebRequest $request )
   {
-    // FIXME: sample template is now broken
-    $er_id = $this->getUser()->getFlash('er_id');
-    $this->access_uri = $this->getUser()->getFlash('access_uri');
+    $this->forward404Unless(
+      $this->title = $this->getUser()->getFlash('er_title'));
+    
+    $this->forward404Unless(
+      $this->access_uri = $this->getUser()->getFlash('er_access_uri'));
 
-    if (!$this->access_uri) {
-      $this->redirect(sfConfig::get('app_homepage-redirect-url'));
-    }
-
-    if ($er_id) {
-      $this->er = EResourcePeer::retrieveByPK($er_id);
-      $this->forward404Unless($this->er);
-    }
+    $this->referral_note = $this->getUser()->getFlash('er_referral_note');
   }
 
   public function executeURLRefer(sfWebRequest $request)
