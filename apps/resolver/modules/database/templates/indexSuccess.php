@@ -2,7 +2,7 @@
 
 <h1>Available Databases</h1>
 
-<select id="db-subject-select" onchange="get_selected_value()" >
+<select id="db-subject-select">
   <option value="">All subjects</option>
 
   <?php foreach ($db_subject_list as $subject): ?>
