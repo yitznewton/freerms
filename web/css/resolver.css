@@ -35,3 +35,7 @@ ul.nav-links li{
 .database-index-intro{
   border-bottom: 2px solid gray;
 }
+
+.description-short{
+  display: none;
+}

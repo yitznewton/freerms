@@ -10,6 +10,8 @@ default:
     - resolver.css: { media: all }
   
   javascripts:
+    - jquery.js
+    - global.js
     - resolver.js
 
   has_layout:     true
