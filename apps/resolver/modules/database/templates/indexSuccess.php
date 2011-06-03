@@ -1,19 +1,8 @@
-<script type="text/javascript">
-  function get_selected_value()
-  {
-    var selected_value = document.getElementById("dbsubject").value;
-    var url = window.location.protocol + '//'
-            + window.location.host
-            + window.location.pathname + '?subject=';
-    window.location.href = url + selected_value;
-  }
-</script>
-
 <?php use_helper('Text') ?>
 
 <h1>Available Databases</h1>
 
-<select id="dbsubject" onchange="get_selected_value()" >
+<select id="db-subject-select" onchange="get_selected_value()" >
   <option value="">All subjects</option>
 
   <?php foreach ($db_subject_list as $subject): ?>
