@@ -1,6 +1,9 @@
+li{
+  margin: 0 0 0.75em;
+}
 #post-1289 h1 {
     font-size: 2em;
-    margin: 1em 0;
+    margin: 0.4em 0 1em;
 }
 .form-row {
     clear: both;
@@ -33,6 +36,6 @@ select#dbsubject {
 .database-index-intro{
   margin: 0 0 2em;
 }
-li{
-  margin: 0 0 0.75em;
+#db-subject-select{
+  margin: 1em 0;
 }
