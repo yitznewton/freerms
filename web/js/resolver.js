@@ -1,3 +1,5 @@
+$ = jQuery;  // Nevada template steals the $ variable
+
 $(document).ready( function() {
   $('.description-full').hide();
   $('.description-short').show();

@@ -4,7 +4,7 @@
   <?php if ( strlen( $er->getDescription() ) > 220 ): ?>
   <span class="description-short">
     <?php echo truncate_text( $er->getDescription(), 200 ) ?>
-    [<a href="#" class="show-more" >show more</a>]
+    [<a href="#" class="show-more" >full description</a>]
   </span>
   <span class="description-full">
     <?php echo $er->getDescription() ?>
