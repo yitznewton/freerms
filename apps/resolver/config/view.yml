@@ -7,7 +7,10 @@ default:
     title:        <?php echo sfConfig::get('app_local-erms-name') ?>
 
   stylesheets:    []
-  javascripts:    [jquery.js, resolver.js]
+  javascripts:
+    - jquery.js
+    - global.js
+    - resolver.js
 
   has_layout:     true
   layout:         layout
