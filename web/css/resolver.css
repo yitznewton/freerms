@@ -31,3 +31,7 @@ ul.nav-links li{
 #touro-content{
   clear: both;
 }
+
+.database-index-intro{
+  border-bottom: 2px solid gray;
+}

@@ -1,0 +1,38 @@
+#post-1289 h1 {
+    font-size: 2em;
+    margin: 1em 0;
+}
+.form-row {
+    clear: both;
+    padding: 0.5em 0;
+}
+.form-row label {
+    float: left;
+    width: 8em;
+}
+.database-title {
+    font-size: 1.1em;
+}
+.product-note {
+    font-size: 1.2em;
+    font-style: italic;
+}
+#new-login {
+    margin: 0 0 1em;
+}
+#new-login h2 {
+    font-size: 1.8em;
+    margin: 1em 0 0.5em;
+}
+#new-login div {
+    font-size: 1.2em;
+}
+select#dbsubject {
+    margin: 1em 0;
+}
+.database-index-intro{
+  margin: 0 0 2em;
+}
+li{
+  margin: 0 0 0.75em;
+}
