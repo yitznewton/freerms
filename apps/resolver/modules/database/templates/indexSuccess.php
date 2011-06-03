@@ -3,7 +3,7 @@
 <h1>Find Articles</h1>
 
 <h2>Select subject area:</h2>
-<select id="db-subject-select" onchange="get_selected_value()" >
+<select id="db-subject-select">
   <option value="">All subjects</option>
 
   <?php foreach ($db_subject_list as $subject): ?>
