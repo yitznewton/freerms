@@ -19,3 +19,13 @@ all:
       encoding:   utf8
       persistent: true
       pooling:    true
+  propel_users:
+    class:        sfPropelDatabase
+    param:
+      classname:  PropelPDO
+      dsn:        mysql:dbname=users;host=localhost
+      username:   users
+      password:   
+      encoding:   utf8
+      persistent: true
+      pooling:    true
