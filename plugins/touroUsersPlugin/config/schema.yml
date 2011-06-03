@@ -1,0 +1,124 @@
+propel_users:
+  _attributes:      { package: plugins.touroUsersPlugin.lib.model }
+
+  users:
+    _attributes:    { phpName: User }
+    # using Touro ID for primary key, not autogen
+    id:
+      type: integer
+      primaryKey: true
+      required: true
+    username:       { type: varchar, size: 20, index: unique }
+    password:       { type: varchar, size: 40 }
+    surname:        { type: varchar, size: 40, required: true }
+    given_name:     { type: varchar, size: 40, required: true }
+    street:         { type: varchar, size: 255 }
+    city:           { type: varchar, size: 60 }
+    state:          { type: varchar, size: 2 }
+    zip:            { type: varchar, size: 9 }
+    telephone:      { type: varchar, size: 50 }
+    email:          { type: varchar, size: 60, index: unique }
+    email_confirm_hash:  { type: varchar, size: 32 }
+    barcode:        { type: varchar, size: 14, index: unique }
+    home_libr:      { type: varchar, size: 5 }
+    created_at:     ~
+    updated_at:     ~
+    updated_by:
+      type: integer
+      foreignTable: users
+      foreignReference: id
+    last_login:     { type: timestamp }
+    expires_on:     { type: date, required: true }
+    status_id:
+      type: integer
+      foreignTable: statuses
+      foreignReference: id
+      required: true
+    program_id:
+      type: integer
+      foreignTable: programs
+      foreignReference: id
+    library_id:
+      type: integer
+      foreignTable: libraries
+      foreignReference: id
+    
+  statuses:
+    _attributes:    { phpName: Status }
+    id:             ~
+    name:           { type: varchar, size: 25, required: true, index: unique }
+    
+  programs:
+    _attributes:    { phpName: Program }
+    id:             ~
+    name:           { type: varchar, size: 100, required: true }
+    touro_pgm:      { type: varchar, size: 3, required: true }
+    touro_ext:      { type: varchar, size: 3, required: true }
+    home_libr:      { type: varchar, size: 5 }
+    site_id:
+      type: integer
+      foreignTable: sites
+      foreignReference: id
+    library_id:
+      type: integer
+      foreignTable: libraries
+      foreignReference: id
+    _uniques:
+      unique_1:     [touro_pgm, touro_ext]
+    _indexes:
+      name:         [name]
+   
+  sites:
+    _attributes:    { phpName: Site }
+    id:             ~
+    name:           { type: varchar, size: 100, required: true, index: unique }
+    code:           { type: varchar, size: 10, required: true, index: unique }
+    library_id:
+      type: integer
+      foreignTable: libraries
+      foreignReference: id
+
+  libraries:
+    _attributes:    { phpName: Library }
+    id:             ~
+    name:           { type: varchar, size: 100, required: true, index: unique }
+    code:           { type: varchar, size: 6, required: true, index: unique }
+   
+  groups:
+    _attributes:    { phpName: Group }
+    id:             ~
+    name:           { type: varchar, size: 100, required: true, index: unique }
+    note:           { type: longvarchar }
+  
+  user_site_assoc:
+    user_id:
+      type: integer
+      primaryKey: true
+      required: true
+      foreignTable: users
+      foreignReference: id
+      onDelete: cascade
+    site_id:
+      type: integer
+      primaryKey: true
+      required: true
+      foreignTable: sites
+      foreignReference: id
+      onDelete: cascade
+   
+  user_group_assoc:
+    user_id:
+      type: integer
+      primaryKey: true
+      required: true
+      foreignTable: users
+      foreignReference: id
+      onDelete: cascade
+    group_id:
+      type: integer
+      primaryKey: true
+      required: true
+      foreignTable: groups
+      foreignReference: id
+      onDelete: cascade
+
