@@ -41,6 +41,7 @@ class EResourcePeer extends BaseEResourcePeer
     array $library_ids, DbSubject $subject = null, $featured_only = false )
   {
     $c = new Criteria();
+    $c->setDistinct();
     $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
     $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
     $c->add( AcqLibAssocPeer::LIB_ID, $library_ids, Criteria::IN);
