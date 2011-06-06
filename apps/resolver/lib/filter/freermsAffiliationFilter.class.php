@@ -47,7 +47,7 @@ class freermsAffiliationFilter extends sfFilter
     
     // push affiliation data to the action
     
-    $this->getContext()->getActionStack()->getFirstEntry()
+    $this->getContext()->getActionStack()->getLastEntry()
       ->getActionInstance()->affiliation = $affiliation;
   }
   
