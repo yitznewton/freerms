@@ -8,7 +8,7 @@
  * @author     Your name here
  * @version    SVN: $Id: actions.class.php 12479 2008-10-31 10:54:40Z fabien $
  */
-class databaseActions extends touroLayoutActions
+class databaseActions extends sfActions
 {
   /**
    * An object representing Librarys that the user is affiliated with,

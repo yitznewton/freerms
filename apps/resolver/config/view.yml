@@ -16,4 +16,4 @@ default:
     - resolver.js
 
   has_layout:     true
-  layout:         layout
+  layout:         tc
