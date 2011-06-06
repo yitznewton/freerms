@@ -106,7 +106,13 @@ class freermsUserAffiliation
     
     $ip = $_SERVER['REMOTE_ADDR'];
     
-    if ( $ip == sfConfig::get('app_offsite-testing-ip') ) {
+    $offsite_ips = sfConfig::get('app_offsite-testing-ip-addresses');
+    
+    if ( ! is_array( $offsite_ips )) {
+      $offsite_ips = array( $offsite_ips );
+    }
+    
+    if ( in_array( $ip, $offsite_ips )) {
       $this->isOnsite = false;
       return null;
     }
