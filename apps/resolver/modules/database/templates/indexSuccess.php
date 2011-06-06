@@ -1,5 +1,3 @@
-<?php use_helper('Text') ?>
-
 <h1>Available Databases</h1>
 
 <form class="form-subject">
