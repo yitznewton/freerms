@@ -1,3 +1,5 @@
+<?php use_helper('Text') ?>
+
 <li>
   <?php echo link_to($er->getTitle(), 'database/access?id='.$er->getId()) ?> -
 

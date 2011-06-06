@@ -1,22 +1,16 @@
-<?php use_helper('Text') ?>
-
 <h1>Find Articles</h1>
 
 <h2>Select subject area:</h2>
-<select id="db-subject-select">
-  <option value="">All subjects</option>
 
-  <?php foreach ($db_subject_list as $subject): ?>
-    <option value="<?php echo $subject->getSlug() ?>"
-      <?php if ($selected_subject == $subject->getSlug()): ?>
-      selected="selected"
-      <?php endif; ?>
-      >
-      <?php echo $subject->getLabel() ?>
-    </option>
-  <?php endforeach; ?>
-
-</select>
+<form class="form-subject">
+  <?php echo $subject_widget->render(
+    'subject',
+    $subject_default,
+    array('id' => 'select-subject')
+  ) ?>
+  
+  <input type="submit" value="Submit" />
+</form>
 
 <div class="database-index-intro">
   <p>The following subscribed resources are restricted to the Touro community.
@@ -29,7 +23,7 @@
 <?php if ( $featured_dbs ): ?>
 <h2>Featured databases:</h2>
 <ul id="featured">
-  <?php foreach ( $databases as $er ): ?>
+  <?php foreach ( $featured_dbs as $er ): ?>
   <?php include_partial('databaseListElement', array('er' => $er)) ?>
   <?php endforeach; ?>
 </ul>
