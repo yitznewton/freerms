@@ -26,6 +26,10 @@ class unit_EResourcePeerTest extends sfPHPUnitBaseTestCase
     
     $this->assertContains( $er,
       EResourcePeer::retrieveByAffiliationAndSubject(
+        array(15), null ));
+    
+    $this->assertContains( $er,
+      EResourcePeer::retrieveByAffiliationAndSubject(
         array(15), $real_subject ));
   }
   

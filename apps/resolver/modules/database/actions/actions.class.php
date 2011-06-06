@@ -30,14 +30,23 @@ class databaseActions extends sfActions
     $subject      = DbSubjectPeer::retrieveBySlug( $subject_slug );
     
     if ( $subject ) {
-      $this->selected_subject = $subject_slug;
+      $this->subject = $subject;
       $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
         $this->affiliation->get(), $subject, true );
     }
     else {
-      $this->selected_subject = null;
+      $this->subject = null;
       $this->featured_dbs = array();
     }
+    
+    $this->subject_default = $subject_slug;
+    
+    $this->subject_widget = new sfWidgetFormPropelChoice( array(
+      'add_empty'  => true,
+      'model'      => 'DbSubject',
+      'order_by'   => array('Label', 'asc'),
+      'key_method' => 'getSlug',
+    ));
 
     $this->databases = EResourcePeer::retrieveByAffiliationAndSubject(
       $this->affiliation->get(), $subject );

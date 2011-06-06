@@ -2,21 +2,16 @@
 
 <h1>Available Databases</h1>
 
-<select id="db-subject-select">
-  <option value="">All subjects</option>
-
-  <?php foreach ($db_subject_list as $subject): ?>
-    <option value="<?php echo $subject->getSlug() ?>"
-      <?php if ($selected_subject == $subject->getSlug()): ?>
-      selected="selected"
-      <?php endif; ?>
-      >
-      <?php echo $subject->getLabel() ?>
-    </option>
-  <?php endforeach; ?>
-
-</select>
-
+<form class="form-subject">
+  <?php echo $subject_widget->render(
+    'subject',
+    $subject_default,
+    array('id' => 'select-subject')
+  ) ?>
+  
+  <input type="submit" value="Submit" />
+</form>
+  
 <?php if ( $featured_dbs ): ?>
 <h2>Featured databases:</h2>
 <ul id="featured">

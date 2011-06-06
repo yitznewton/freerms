@@ -38,21 +38,25 @@ class EResourcePeer extends BaseEResourcePeer
    * @return array EResource[]
    */
   public static function retrieveByAffiliationAndSubject(
-    array $library_ids, DbSubject $subject, $featured_only = false )
+    array $library_ids, DbSubject $subject = null, $featured_only = false )
   {
     $c = new Criteria();
     $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
     $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
-    $c->addJoin( EResourcePeer::ID, EResourceDbSubjectAssocPeer::ER_ID );
-    $c->add( EResourceDbSubjectAssocPeer::DB_SUBJECT_ID, $subject->getId() );
     $c->add( AcqLibAssocPeer::LIB_ID, $library_ids, Criteria::IN);
     $c->add( EResourcePeer::SUPPRESSION, 0 );
     
-    if ( $featured_only ) {
-      $c->add( EResourceDbSubjectAssocPeer::FEATURED_WEIGHT, -1,
-        Criteria::NOT_EQUAL );
-      $c->addAscendingOrderByColumn(
-        EresourceDbSubjectAssocPeer::FEATURED_WEIGHT );
+    if ( $subject ) {
+      $c->addJoin( EResourcePeer::ID, EResourceDbSubjectAssocPeer::ER_ID );
+      $c->add( EResourceDbSubjectAssocPeer::DB_SUBJECT_ID,
+        $subject->getId() );
+      
+      if ( $featured_only ) {
+        $c->add( EResourceDbSubjectAssocPeer::FEATURED_WEIGHT, -1,
+          Criteria::NOT_EQUAL );
+        $c->addAscendingOrderByColumn(
+          EresourceDbSubjectAssocPeer::FEATURED_WEIGHT );
+      }
     }
     
     $c->addAscendingOrderByColumn(
