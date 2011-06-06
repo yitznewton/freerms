@@ -10,12 +10,10 @@ $(document).ready( function() {
     return false;
   });
 
-  FR.$$('db-subject-select').onchange = function() {
-    var url = window.location.protocol + '//'
-            + window.location.host
-            + window.location.pathname + '?subject=' + this.value;
-          
-    window.location.href = url;
+  $('.form-subject :submit').hide();
+  
+  FR.$$('select-subject').onchange = function() {
+    this.parentNode.submit();
   };
 });
 
