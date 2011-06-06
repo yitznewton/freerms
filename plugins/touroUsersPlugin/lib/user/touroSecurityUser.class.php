@@ -21,10 +21,21 @@ class touroSecurityUser extends sfGuardSecurityUser implements freermsUserInterf
 
     return $this->user;
   }
-  
+
+  /**
+   * @return array int[]
+   */
   public function getLibraryIds()
   {
-    throw new Exception('f');
+    if ( ! $this->isAuthenticated() ) {
+      return array();
+    }
+    elseif ( $user = $this->getGuardUser() ) {
+      return $this->getGuardUser()->getLibraryIds();
+    }
+    else {
+      return array();
+    }
   }
   
   public function getUsername()
