@@ -27,6 +27,39 @@ class EResourcePeer extends BaseEResourcePeer
     
     return EResourcePeer::doSelect($c);
   }
+  
+  /**
+   * Returns an array of EResources which are set as featured for the given
+   * subject, and available at the given Librarys
+   *
+   * @param array int[] $library_ids
+   * @param DbSubject $subject
+   * @param bool $featured_only
+   * @return array EResource[]
+   */
+  public static function retrieveByAffiliationAndSubject(
+    array $library_ids, DbSubject $subject, $featured_only = false )
+  {
+    $c = new Criteria();
+    $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
+    $c->addJoin( EResourcePeer::ID, EResourceDbSubjectAssocPeer::ER_ID );
+    $c->add( EResourceDbSubjectAssocPeer::DB_SUBJECT_ID, $subject->getId() );
+    $c->add( AcqLibAssocPeer::LIB_ID, $library_ids, Criteria::IN);
+    $c->add( EResourcePeer::SUPPRESSION, 0 );
+    
+    if ( $featured_only ) {
+      $c->add( EResourceDbSubjectAssocPeer::FEATURED_WEIGHT, -1,
+        Criteria::NOT_EQUAL );
+      $c->addAscendingOrderByColumn(
+        EresourceDbSubjectAssocPeer::FEATURED_WEIGHT );
+    }
+    
+    $c->addAscendingOrderByColumn(
+      EResourcePeer::SORT_TITLE );
+    
+    return EResourcePeer::doSelect( $c );
+  }
 
   public static function doCount(Criteria $criteria, $distinct = false, PropelPDO $con = null)
   {

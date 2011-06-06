@@ -20,7 +20,7 @@
 <?php if ( $featured_dbs ): ?>
 <h2>Featured databases:</h2>
 <ul id="featured">
-  <?php foreach ( $databases as $er ): ?>
+  <?php foreach ( $featured_dbs as $er ): ?>
   <?php include_partial('databaseListElement', array('er' => $er)) ?>
   <?php endforeach; ?>
 </ul>

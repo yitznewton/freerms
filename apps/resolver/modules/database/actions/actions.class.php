@@ -27,43 +27,20 @@ class databaseActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $subject_slug = $request->getParameter('subject');
-
-    $subject = DbSubjectPeer::retrieveBySlug( $subject_slug );
-               
-    $c = new Criteria();
-    $c->setDistinct();
-    $c->addJoin(AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID);
-    $c->addJoin(AcquisitionPeer::ID, EResourcePeer::ACQ_ID);
-    $c->add(AcqLibAssocPeer::LIB_ID, $this->affiliation->get(), Criteria::IN);
-    $c->add(EResourcePeer::SUPPRESSION, 0);
+    $subject      = DbSubjectPeer::retrieveBySlug( $subject_slug );
     
-    if ($subject) {
+    if ( $subject ) {
       $this->selected_subject = $subject_slug;
-
-      $this->getUser()->setAttribute('subject', $subject_slug);
-
-      $c->addJoin(EResourcePeer::ID, EResourceDbSubjectAssocPeer::ER_ID);
-      $c->add(EResourceDbSubjectAssocPeer::DB_SUBJECT_ID, $subject->getId());
-
-      $c1 = clone $c;
-      $c1->add(EResourceDbSubjectAssocPeer::FEATURED_WEIGHT, -1, Criteria::NOT_EQUAL);
-      $c1->addAscendingOrderByColumn(EresourceDbSubjectAssocPeer::FEATURED_WEIGHT);
-
-      $this->featured_dbs = EResourcePeer::doSelect($c1);
+      $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
+        $this->affiliation->get(), $subject, true );
     }
     else {
       $this->selected_subject = null;
       $this->featured_dbs = array();
     }
 
-    $c->addAscendingOrderByColumn(EResourcePeer::SORT_TITLE);       
-
-    $this->databases = EResourcePeer::doSelect($c);
-
-    $c = new Criteria();
-    $c->addAscendingOrderByColumn(DbSubjectPeer::LABEL);
-
-    $this->db_subject_list = DbSubjectPeer::doSelect($c);
+    $this->databases = EResourcePeer::retrieveByAffiliationAndSubject(
+      $this->affiliation->get(), $subject );
   }
 
   public function executeAccess(sfWebRequest $request)
