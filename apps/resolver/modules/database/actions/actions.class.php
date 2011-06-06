@@ -41,10 +41,17 @@ class databaseActions extends sfActions
     
     $this->subject_default = $subject_slug;
     
+    $c_subject_widget = new Criteria();
+    $c_subject_widget->addJoin( DbSubjectPeer::ID, EResourceDbSubjectAssocPeer::DB_SUBJECT_ID );
+    $c_subject_widget->addJoin( EResourceDbSubjectAssocPeer::ER_ID, EResourcePeer::ID );
+    $c_subject_widget->add( EResourcePeer::DELETED_AT, null, Criteria::ISNULL );
+    $c_subject_widget->add( EResourcePeer::SUPPRESSION, 0 );
+    $c_subject_widget->addAscendingOrderByColumn( DbSubjectPeer::LABEL );
+    
     $this->subject_widget = new sfWidgetFormPropelChoice( array(
       'add_empty'  => true,
       'model'      => 'DbSubject',
-      'order_by'   => array('Label', 'asc'),
+      'criteria'   => $c_subject_widget,
       'key_method' => 'getSlug',
     ));
 
