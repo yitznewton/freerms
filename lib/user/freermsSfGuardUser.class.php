@@ -27,12 +27,16 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsUserInter
       return array();
     }
     
-    $library_ids = array();
+    $con = Propel::getConnection();
     
-    foreach ( $this->getGroups() as $group ) {
-      $library_ids[] = $group->getId();
-    }
+    $q = 'SELECT l.id FROM libraries l '
+         . 'JOIN sf_guard_group g ON l.code = g.name '
+         . 'JOIN sf_guard_user_group ug ON g.id = ug.group_id '
+         . 'WHERE ug.user_id = ?';
     
-    return $library_ids;
+    $st = $con->prepare( $q );
+    $st->execute( array( $this->getGuardUser()->getId() ));
+
+    return $st->fetchAll( PDO::FETCH_COLUMN );
   }
 }
