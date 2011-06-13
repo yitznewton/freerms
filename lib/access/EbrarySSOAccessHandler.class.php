@@ -5,7 +5,21 @@ class EbrarySSOAccessHandler extends EZproxyAccessHandler
   const IS_VALID_ONSITE   = true;
   const IS_VALID_OFFSITE  = true;
   const DESCRIPTION       = 'ebrary SSO';
-  const FORCE_AUTH_ONSITE = true;
+  
+  public function execute()
+  {
+    if (
+      strpos( 'site.ebrary.com', $_SERVER['HTTP_REFERER'] ) !== false
+      && ! $this->action->getUser()->isAuthenticated()
+    ) {
+      $this->action->forward(
+        sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action') );
+
+      return;
+    }
+    
+    return parent::execute();
+  }
   
   protected function getAccessUri()
   {
