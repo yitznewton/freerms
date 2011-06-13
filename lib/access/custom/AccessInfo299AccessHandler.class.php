@@ -10,7 +10,6 @@ class AccessInfo299AccessHandler extends RefererAccessHandler
   public function getAccessUri()
   {
     $library_ids   = $this->action->affiliation->get();
-    
     $library_codes = LibraryPeer::getCodesForIds( $library_ids );
     
     if ( ! $library_codes ) {
