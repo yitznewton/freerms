@@ -107,10 +107,22 @@ class databaseActions extends sfActions
     // all clear to grant access
     
     // TODO: how to properly deal with multi affiliations
-    $this->er->recordUsageAttempt( $this->affiliation->getOne(), true );
-
     $access_handler = BaseAccessHandler::factory( $this, $this->er );
-    $access_handler->execute();
+    
+    try {
+      $access_handler->execute();
+      $this->er->recordUsageAttempt( $this->affiliation->getOne(), true );
+    }
+    catch ( Exception $e ) {
+      if ( $e->getMessage() == 'unauthorized' ) {
+        $this->setTemplate('unauthorized');
+      }
+      else {
+        throw $e;
+      }
+    }
+    
+    $this->database = $this->er;
   }
 
   public function executeRefer( sfWebRequest $request )

@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * for Computer Database (links to multiple accounts)
+ */
 class AccessInfo266AccessHandler extends RefererAccessHandler
 {
   const IS_VALID_ONSITE   = true;

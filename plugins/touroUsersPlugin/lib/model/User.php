@@ -61,7 +61,7 @@ class User extends BaseUser
     $st->execute( $st_args );
     
     $user_library_codes = $st->fetchAll( PDO::FETCH_COLUMN );
-    
+
     // match with freerms library codes
     
     $c = new Criteria();

@@ -79,7 +79,7 @@ propel_users:
       foreignReference: id
 
   libraries:
-    _attributes:    { phpName: Library }
+    _attributes:    { phpName: TouroUsersLibrary }
     id:             ~
     name:           { type: varchar, size: 100, required: true, index: unique }
     code:           { type: varchar, size: 6, required: true, index: unique }
