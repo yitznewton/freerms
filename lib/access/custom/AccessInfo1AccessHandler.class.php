@@ -15,8 +15,7 @@ class AccessInfo1AccessHandler extends BaseAccessHandler
     $access_uri = $this->getAccessUri();
 
     if ( ! in_array( $this->action->getUser()->getProgram(), array('HS PA ','HS PAM') ) ) {
-      $this->action->setTemplate('unauthorized');
-      return;
+      throw new freermsUnauthorizedException();
     }
 
     if ( $this->isOnsite ) {

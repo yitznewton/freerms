@@ -8,6 +8,8 @@ class RefererAccessHandler extends BaseAccessHandler
 
   public function execute()
   {
+    $this->checkAffiliation();
+    
     if ( ! $this->getAccessUri() ) {
       $this->action->redirect( sfConfig::get('app_homepage-redirect-url') );
       return;
