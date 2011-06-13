@@ -58,6 +58,15 @@ class BaseAccessHandler
       return $this->er->getAccessInfo()->getOffsiteAccessUri();
     }
   }
+  
+  protected function checkAffiliation()
+  {
+    if ( ! array_intersect(
+      $this->action->affiliation->get(), $this->er->getLibraryIds()
+    )) {
+      throw new freermsUnauthorizedException();
+    }
+  }
 
   static public function factory( sfAction $action, EResource $er )
   {
