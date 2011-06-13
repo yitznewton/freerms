@@ -11,8 +11,7 @@ class AccessInfo508AccessHandler extends EZproxyAccessHandler
   public function execute()
   {
     if ( ! in_array( $this->action->getUser()->getProgramCode(), array('HS PA ','HS PAM') )) {
-      // TODO: create new Exception class in public codebase
-      throw new RuntimeException('unauthorized');
+      throw new freermsUnauthorizedException();
     }
 
     $access_uri = $this->getAccessUri();
