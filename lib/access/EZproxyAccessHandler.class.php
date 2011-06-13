@@ -15,6 +15,8 @@ class EZproxyAccessHandler extends BaseAccessHandler
   
   public function execute()
   {
+    $this->checkAffiliation();
+    
     $class_name = get_class( $this );
     
     if (
@@ -40,6 +42,18 @@ class EZproxyAccessHandler extends BaseAccessHandler
     $this->action->redirect( $proxy_uri );
 
     return;
+  }
+  
+  /**
+   * 
+   */
+  protected function checkAffiliation()
+  {
+    if ( ! array_intersect(
+      $this->action->affiliation->get(), $this->er->getLibraryIds()
+    )) {
+      throw new freermsUnauthorizedException();
+    }
   }
   
   protected function getLibrary()

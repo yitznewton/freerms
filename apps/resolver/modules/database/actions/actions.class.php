@@ -77,27 +77,18 @@ class databaseActions extends sfActions
 
     $ers = EResourcePeer::doSelectJoinAccessInfo($c);
     $this->forward404Unless($ers);
-    $this->er = $ers[0];
+    $this->eresource = $ers[0];
     
-    $access = $this->er->getAccessInfo();
+    $access = $this->eresource->getAccessInfo();
     
     if ( ! $access ) {
-      $this->er->recordUsageAttempt( $this->affiliation->getOne(), false,
-        'no access information' );
+      $this->eresource->recordUsageAttempt( $this->affiliation->getOne(),
+        false, 'no access information' );
       $this->forward404();
     }
 
-    if ( ! array_intersect(
-      $this->affiliation->get(), $this->er->getLibraryIds()
-    )) {
-      $this->er->recordUsageAttempt( $this->affiliation->getOne(), false,
-        'not available to user' );
-      $this->setTemplate('unauthorized');
-      return;
-    }
-    
-    if ($this->er->getProductUnavailable()) {
-      $this->er->recordUsageAttempt(
+    if ($this->eresource->getProductUnavailable()) {
+      $this->eresource->recordUsageAttempt(
         $this->affiliation->getOne(), false, 'unavailable' );
       $this->setTemplate('unavailable');
 
@@ -107,22 +98,20 @@ class databaseActions extends sfActions
     // all clear to grant access
     
     // TODO: how to properly deal with multi affiliations
-    $access_handler = BaseAccessHandler::factory( $this, $this->er );
+    $this->eresource
+      ->recordUsageAttempt( $this->affiliation->getOne(), true );
+
+    $access_handler = BaseAccessHandler::factory( $this, $this->eresource );
     
     try {
       $access_handler->execute();
-      $this->er->recordUsageAttempt( $this->affiliation->getOne(), true );
+      $this->eresource->recordUsageAttempt(
+        $this->affiliation->getOne(), true );
     }
-    catch ( Exception $e ) {
-      if ( $e->getMessage() == 'unauthorized' ) {
-        $this->setTemplate('unauthorized');
-      }
-      else {
-        throw $e;
-      }
+    catch ( freermsUnauthorizedException $e ) {
+      $this->setTemplate('unauthorized');
+      return;
     }
-    
-    $this->database = $this->er;
   }
 
   public function executeRefer( sfWebRequest $request )

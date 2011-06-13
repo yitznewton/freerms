@@ -20,6 +20,8 @@ class BaseAccessHandler
 
   public function execute()
   {
+    $this->checkAffiliation();
+    
     $class_name = get_class( $this );
     
     if (
@@ -39,7 +41,8 @@ class BaseAccessHandler
       $method = 'getOffsiteAccessUri';
     }
 
-    $this->action->redirect( $this->action->getEResource()->getAccessInfo()->$method() );
+    $this->action->redirect(
+      $this->action->getEResource()->getAccessInfo()->$method() );
 
     return;
   }
