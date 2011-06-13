@@ -17,3 +17,6 @@ default:
 
   has_layout:     true
   layout:         tc
+
+  components:
+    logoutLink: [database, logoutLink]

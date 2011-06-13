@@ -6,6 +6,8 @@ class touroUsersSigninForm extends sfGuardFormSignin
   {
     parent::configure();
     
+    unset( $this['remember'] );
+    
     $this->validatorSchema->setPostValidator(new touroUsersValidatorUser());
   }
 }

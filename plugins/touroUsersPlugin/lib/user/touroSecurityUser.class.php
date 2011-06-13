@@ -40,6 +40,21 @@ class touroSecurityUser extends sfGuardSecurityUser implements freermsUserInterf
   
   public function getUsername()
   {
-    throw new Exception('f');
+    return $this->getGuardUser()->getUsername();
+  }
+  
+  /**
+   * @return string
+   */
+  public function getProgramCode()
+  {
+    $program = $this->getGuardUser()->getProgram();
+    
+    if ( ! $program ) {
+      return null;
+    }
+    
+    return sprintf( '%-3s%-3s',
+      $program->getTouroPgm(), $program->getTouroExt() );
   }
 }
