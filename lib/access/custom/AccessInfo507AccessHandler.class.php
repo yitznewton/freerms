@@ -13,10 +13,7 @@ class AccessInfo507AccessHandler extends BaseAccessHandler
     
     $library_codes = LibraryPeer::getCodesForIds( $library_ids );
     
-    $affiliated_libraries = LibraryPeer::retrieveByPks(
-      $this->action->affiliation->get());
-    
-    $credentials = $this->getFormCredentials( $affiliated_libraries );
+    $credentials = $this->getFormCredentials( $library_codes );
 
     if ( ! $credentials ) {
       throw new RuntimeException('unauthorized');
@@ -28,13 +25,13 @@ class AccessInfo507AccessHandler extends BaseAccessHandler
   }
   
   /**
-   * @param array $libraries 
+   * @param array string[] $libraries 
    * @return array string[]
    */
   protected function getFormCredentials( array $libraries )
   {
-    foreach ( $libraries as $library ) {
-      switch ( $library->getCode() ) {
+    foreach ( $libraries as $code ) {
+      switch ( $code ) {
         case 'TCNY':
           return array( 'user' => 'NY@touro.edu', 'pass' => 'NY');
         case 'TCS':
