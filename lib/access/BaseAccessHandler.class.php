@@ -42,22 +42,20 @@ class BaseAccessHandler
     }
 
     $this->action->redirect(
-      $this->action->getEResource()->getAccessInfo()->$method() );
+      $this->er->getAccessInfo()->$method() );
 
     return;
   }
 
   protected function getAccessUri()
   {
-    $er_id = $this->action->getEResource()->getId();
-
-    $this->action->getUser()->setFlash('er_id', $er_id );
+    $this->action->getUser()->setFlash( 'er_id', $this->er->getId() );
 
     if ( $this->isOnsite ) {
-      return $this->action->er->getAccessInfo()->getOnsiteAccessUri();
+      return $this->er->getAccessInfo()->getOnsiteAccessUri();
     }
     else {
-      return $this->action->er->getAccessInfo()->getOffsiteAccessUri();
+      return $this->er->getAccessInfo()->getOffsiteAccessUri();
     }
   }
 
