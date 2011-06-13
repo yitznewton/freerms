@@ -1,6 +1,6 @@
 <?php
 
-require_once '/path/to/symfony-home/lib/autoload/sfCoreAutoload.class.php';
+require_once '/usr/local/lib/symfony-1.4/lib/autoload/sfCoreAutoload.class.php';
 
 sfCoreAutoload::register();
 
@@ -11,5 +11,6 @@ class ProjectConfiguration extends sfProjectConfiguration
     $this->enablePlugins('sfPropelPlugin');
     $this->enablePlugins('sfGuardPlugin');
     $this->enablePlugins('sfPHPUnit2Plugin');
+    $this->enablePlugins('touroUsersPlugin');
   }
 }

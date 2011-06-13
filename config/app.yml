@@ -11,3 +11,5 @@ all:
   access:
     default-handler-onsite: BaseAccessHandler
     default-handler-offsite: RefererAccessHandler
+
+  sf_guard_plugin_signin_form: touroUsersSigninForm
