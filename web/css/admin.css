@@ -1,5 +1,47 @@
-@import url("layout.css");
-
+#container{
+  position: relative;
+  margin: 0 auto 20px auto;
+  text-align: left;
+  width: 95%;
+  min-height: 470px;
+}
+#footer{
+  clear: both;
+  padding-top: 1em;
+  text-align: center;
+  padding: 1em;
+  font-size: 0.8em;
+}
+#footer p {
+  margin: 0;
+}
+#header{
+  position: relative; 
+  height: 70px; 
+  width: 100%;
+  border-bottom:1px solid #B2C7D7;
+} 
+#content{
+  float: right; 
+  position: relative; 
+  width: 82%;  
+  padding-left: 2px;
+  overflow: hidden; /*fix for IE*/
+}
+#nav{
+  width: 15%; 
+  float: left;
+  position: relative; 
+}
+ul.nav-links{
+  list-style: none;
+  padding: 0;
+  margin: 0.75em 0 0;
+  font-size: 0.9em;
+}
+ul.nav-links li{
+  padding: 0.2em 0;
+}
 html{background-color: #fff;}
 body{font-family: Verdana, Arial, sans-serif;}
 a img{border: 0;}
@@ -7,32 +49,34 @@ a{text-decoration: none;}
 a:hover {text-decoration: underline;}
 h1{margin: 0px;} 
 h2{font-size: 1.3em;}
-
 #logo-localization{
   font-size: 10pt;
   font-weight: bold;
   color: black;
 }
-
 ul#breadcrumbs{
   padding: 0;
   font-weight: bold;
   font-size: 1.1em;
   margin: 0.75em 0;
 }
-
 ul#breadcrumbs li{
   display: inline;
 }
-
+ul#breadcrumbs li a{
+  background: none;
+  padding-left: 0;
+  color: blue;
+}
+ul#breadcrumbs li a:visited{
+  color: purple;  
+}
 .nav-links li{
   list-style: none;
 }
-
 #tab-container{
   margin-top: 1em;
 }
-
 li.ui-tabs-nav-item a{
   font-weight: bold;
 }
@@ -42,7 +86,6 @@ li.ui-tabs-nav-item a{
   margin: 4px 0;
   padding: 4px 0;
 }
-
 .form-row label,div.label{
   display: block;
   font-size: 0.8em;
@@ -51,132 +94,107 @@ li.ui-tabs-nav-item a{
   width: 150px;
   padding-right: 0.75em;
 }
-
 .form-row input[type=text]{
   margin-right: 3px;
   width: 15em;
 }
-
 .form-row .input-links{
   margin-left: 0.5em;
 }
-
 .form-row a.input-link{
   font-size: 0.8em;
   color: blue;
 }
-
 .form-row a.input-link:visited{
   color: purple;
 }
-
 .form-row-checkbox{
   padding-top: 0;
   margin-top: 0;
 }
-
 .form-row .input-display{
   margin-left: 0.5em;
   font-size: 0.8em;  
 }
-
 /* change the width of the following
  * to adjust the Libraries tab in the
  * database area of the admin interface */
-
 ul.checkbox_list li{
   clear: both;
   width: 20em;
   padding: 0.5em 0;
 }
-
 ul.checkbox_list li span input{
   float: left;
 }
-
 ul.checkbox_list li span label{
   font-weight: normal;
   padding-left: 0.5em;
   width: auto;
 }
-
 ul.checkbox_list li a.input-link{
   float: right;
   margin-left: 0.75em;
   color: blue;
 }
-
 ul.checkbox_list li a.input-link:visited{
   color: purple;
 }
-
 table#ip-table{
   border-collapse: collapse;
   font-size: 0.9em;
   margin: 0 0 1.25em;
 }
-
 table#ip-table tbody{
   border-top:1px solid #DDDDDD;
   border-bottom:1px solid #DDDDDD;
 }
-
 table#ip-table thead tr th{
   padding: 0.5em;
 }
-
 table#ip-table tbody tr td{
   padding: 0.5em;
   border-left:1px solid #DDDDDD;
   border-right:1px solid #DDDDDD;
 }
-
 ul.checkbox_list{
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-
 ul.checkbox_list li label{
   font-size: 0.9em;
 }
-
 ul.checkbox_list a.input-link{
   font-size: 0.8em;
   margin-left: 0.5em;
 }
-
 table.index-table{
   border-collapse: collapse;
   margin-left: 3px;
   font-size: 0.9em;
-  margin: 0.5em 0;
+  margin: 0 0 0.5em;
 }
-
 table.index-table tbody tr td{
   border-left:1px solid #DDDDDD;
   border-right:1px solid #DDDDDD;
   padding: 0.5em;
 }
-
 table.index-table thead tr th{
   border-left:1px solid #B2C7D7;
   border-right:1px solid #B2C7D7;
   padding: 0.5em;
 }
-
 ul.database-list{
   list-style-type: none;
   margin: 0;
   padding: 0;
   font-size: 0.9em;
 }
-
 ul.database-list li{
   padding: 0.25em 0;
   margin: 0;
 }
-
 .ui-state-error{
   font-size: 0.8em;
   line-height: 1.4em;
@@ -185,47 +203,38 @@ ul.database-list li{
   margin: 0 0 1em;
   padding: 0 0.5em;
 }
-
 .ui-icon{
   float: left;
   margin-right: 0.3em;
 }
-
 form#login-form div{
   clear:both;
   padding:0.25em 0;
 }
-
 form#login-form label{
   font-size:0.9em;
   float:left;
   width:6em;
 }
-
 .pager{
   margin: 1em 0;
 }
-
 #user-url{
   margin: 0.5em 0 1em;
   font-size: 0.9em;
 }
-
 #organization-form fieldset{
   clear: both;
   border: 0;
   margin: 0;
   padding: 0;
 }
-
 #admin-subject-databases h3{
   margin: 1.2em 0 0.6em;
 }
-
 #admin-subject-databases ul{
   margin: 0 0 0.4em;
 }
-
 ul.sortable{
   background: #aaa;
   min-height: 6px;
@@ -233,10 +242,14 @@ ul.sortable{
   padding: 0;
   width: 300px;
 }
-
 ul.sortable li{
   list-style: none;
   min-height: 1.2em;
   padding: 0.2em 0.4em;
 }
-
+.sf_admin_list table{
+  width: auto;
+}
+#sf_admin_container h1{
+  margin: 0;
+}

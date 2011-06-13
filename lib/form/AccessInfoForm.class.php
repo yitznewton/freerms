@@ -69,45 +69,35 @@ class AccessInfoForm extends BaseAccessInfoForm
 
   protected function getAccessHandlers( $site )
   {
-    if ( $site != 'offsite' && $site != 'onsite' ) {
-      $msg = '$site must be either offsite or onsite';
-      throw new InvalidArgumentException( $msg );
+    switch ( $site ) {
+      case 'onsite':
+        $access_handlers = BaseAccessHandler::getOnsiteHandlers();
+        break;
+      
+      case 'offsite':
+        $access_handlers = BaseAccessHandler::getOffsiteHandlers();
+        break;
+      
+      default:
+        $msg = '$site must be either offsite or onsite';
+        throw new InvalidArgumentException( $msg );
     }
+    
+    if ( $this->getObject() ) {
+      $id = $this->getObject()->getId();
+      
+      $custom_class_name = 'AccessInfo' . $id . 'AccessHandler';
 
-    BaseAccessHandler::loadClasses();
-
-    $access_handlers = array();
-
-    foreach ( get_declared_classes() as $class ) {
       if (
-        substr( $class, -13 ) == 'AccessHandler'
-        && substr( $class, 0, 6 ) != 'Script'
+        class_exists( $custom_class_name )
+        &&  (( $site == 'offsite' && $custom_class_name::IS_VALID_OFFSITE )
+            || ( $site == 'onsite' && $custom_class_name::IS_VALID_ONSITE ))
       ) {
-        if (
-          ( $site == 'offsite' && ! $class::IS_VALID_OFFSITE )
-          || ( $site == 'onsite' && ! $class::IS_VALID_ONSITE )
-        ) {
-          break;
-        }
-
-        $access_handlers[ $class ] = $class::DESCRIPTION;
+        $class = 'AccessInfo' . $id . 'AccessHandler';
+        $access_handlers[ $custom_class_name ] = 'Custom';
       }
     }
-
-    $id = $this->getObject()->getId();
-
-    if (
-      $this->getObject()
-      && class_exists( 'AccessInfo' . $id . 'AccessHandler' )
-      &&  ( $site == 'offsite' && $class::IS_VALID_OFFSITE )
-          || ( $site == 'onsite' && $class::IS_VALID_ONSITE )
-    ) {
-      $class = 'AccessInfo' . $id . 'AccessHandler';
-      $access_handlers[ $class ] = $class::DESCRIPTION;
-    }
-
-    asort( $access_handlers );
-
+    
     return $access_handlers;
   }
 }

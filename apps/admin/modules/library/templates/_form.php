@@ -36,19 +36,7 @@
     </ul>
          
     <div id="general">
-      <table>  
-        <tbody>      
-          <?php echo $form->renderGlobalErrors() ?>    
-          <?php echo $form['name']->renderRow() ?>  
-          <?php echo $form['alt_name']->renderRow() ?>      
-          <?php echo $form['code']->renderRow() ?>      
-          <?php echo $form['address']->renderRow() ?>    
-          <?php echo $form['ezproxy_host']->renderRow() ?>     
-          <?php echo $form['cost_center_no']->renderRow() ?>     
-          <?php echo $form['fte']->renderRow() ?>  
-          <?php echo $form['note']->renderRow() ?>           
-        </tbody>
-      </table>
+      <?php echo $form ?>
     </div>   
     
     <div id="ip-ranges">          

@@ -31,3 +31,7 @@ ul.nav-links li{
 #touro-content{
   clear: both;
 }
+
+.description-short{
+  display: none;
+}

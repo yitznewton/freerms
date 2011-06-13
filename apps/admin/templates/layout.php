@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
     <?php include_http_metas() ?>
     <?php include_metas() ?>
@@ -69,7 +69,7 @@
       <?php if ($sf_user->isAuthenticated()): ?>
       <ul class="nav-links">	  
         <li class="menu-link">
-          <a href="<?php echo url_for('user/logout') ?>">Logout</a>
+          <a href="<?php echo url_for('sfGuardAuth/signout') ?>">Logout</a>
         </li>  
       </ul> 
       <?php endif; ?>
@@ -84,11 +84,11 @@
   </div>
 
   <div id="footer">
-    <p>FreERMS 0.1.0b
-    is &copy; 2010 Touro College Libraries.</p>
+    <p>FreERMS
+    is &copy; 2011 yitznewton.</p>
     <p>For more information, visit the project at
-    <a href="http://bitbucket.org/yitznewton/freerms">
-      http://bitbucket.org/yitznewton/freerms
+    <a href="https://github.com/yitznewton/freerms">
+      https://github.com/yitznewton/freerms
     </a></p>
   </div>
 

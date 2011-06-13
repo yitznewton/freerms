@@ -16,6 +16,7 @@ default:
     - jquery.js
     - jquery-ui.js
     - jquery.cookie.js
+    - global.js
     - admin.js
     - ui.sortable.js
 

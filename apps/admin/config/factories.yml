@@ -59,7 +59,7 @@ all:
 #      send_http_headers: true
 #
   user:
-    class: freermsAPIUser
+    class: freermsSfGuardUser
 #
 #    param:
 #      timeout:         1800

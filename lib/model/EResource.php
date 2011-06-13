@@ -24,14 +24,10 @@ class EResource extends BaseEResource
     
     if ($access) {
       $access->delete();
-      $access->setDeletedAt( $cur_time );
-      $access->save( $con );
     }
     
     if ($admin) {
       $admin->delete();
-      $admin->setDeletedAt( $cur_time );
-      $admin->save( $con );
     }
     
     return true;

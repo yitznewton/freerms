@@ -10,49 +10,53 @@
  */
 class databaseActions extends sfActions
 {
-  public function preExecute()
-  {
-    layoutActions::chooseLayout( $this );
-  }
-
+  /**
+   * An object representing Librarys that the user is affiliated with,
+   * whether by onsite detection or from the user's record. Instantiated
+   * and passed by freermsAffiliationFilter
+   *
+   * @var freermsUserAffiliation
+   * @see freermsAffiliationFilter
+   */
+  public $affiliation;
+  /**
+   * @var EResource
+   */
+  public $er;
+  
   public function executeIndex(sfWebRequest $request)
   {
-    $user_affiliation = $this->getUser()->getLibraryIds();
     $subject_slug = $request->getParameter('subject');
-
-    $subject = DbSubjectPeer::retrieveBySlug( $subject_slug );
-               
-    $c = new Criteria();
-    $c->setDistinct();
-    $c->add(EResourcePeer::SUPPRESSION, 0);
-
-    if ($subject) {
-      $this->selected_subject = $subject_slug;
-
-      $this->getUser()->setAttribute('subject', $subject_slug);
-
-      $c->addJoin(EResourcePeer::ID, EResourceDbSubjectAssocPeer::ER_ID);
-      $c->add(EResourceDbSubjectAssocPeer::DB_SUBJECT_ID, $subject->getId());
-
-      $c1 = clone $c;
-      $c1->add(EResourceDbSubjectAssocPeer::FEATURED_WEIGHT, -1, Criteria::NOT_EQUAL);
-      $c1->addAscendingOrderByColumn(EresourceDbSubjectAssocPeer::FEATURED_WEIGHT);
-
-      $this->featured_dbs = EResourcePeer::doSelect($c1);
+    $subject      = DbSubjectPeer::retrieveBySlug( $subject_slug );
+    
+    if ( $subject ) {
+      $this->subject = $subject;
+      $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
+        $this->affiliation->get(), $subject, true );
     }
     else {
-      $this->selected_subject = null;
+      $this->subject = null;
       $this->featured_dbs = array();
     }
+    
+    $this->subject_default = $subject_slug;
+    
+    $c_subject_widget = new Criteria();
+    $c_subject_widget->addJoin( DbSubjectPeer::ID, EResourceDbSubjectAssocPeer::DB_SUBJECT_ID );
+    $c_subject_widget->addJoin( EResourceDbSubjectAssocPeer::ER_ID, EResourcePeer::ID );
+    $c_subject_widget->add( EResourcePeer::DELETED_AT, null, Criteria::ISNULL );
+    $c_subject_widget->add( EResourcePeer::SUPPRESSION, 0 );
+    $c_subject_widget->addAscendingOrderByColumn( DbSubjectPeer::LABEL );
+    
+    $this->subject_widget = new sfWidgetFormPropelChoice( array(
+      'add_empty'  => true,
+      'model'      => 'DbSubject',
+      'criteria'   => $c_subject_widget,
+      'key_method' => 'getSlug',
+    ));
 
-    $c->addAscendingOrderByColumn(EResourcePeer::SORT_TITLE);       
-
-    $this->databases = EResourcePeer::doSelect($c);
-
-    $c = new Criteria();
-    $c->addAscendingOrderByColumn(DbSubjectPeer::LABEL);
-
-    $this->db_subject_list = DbSubjectPeer::doSelect($c);
+    $this->databases = EResourcePeer::retrieveByAffiliationAndSubject(
+      $this->affiliation->get(), $subject );
   }
 
   public function executeAccess(sfWebRequest $request)
@@ -60,72 +64,65 @@ class databaseActions extends sfActions
     $er_id = $request->getParameter('id')
       or $alt_id = $request->getParameter('alt_id');
     
-    $this->forward404Unless($er_id || $alt_id);
+    $this->forward404Unless( $er_id || $alt_id );
     
     $c = new Criteria();
-    $c->add( EResourcePeer::DELETED_AT, null, Criteria::ISNULL );
 
-    $er_id
-      ? $c->add(EResourcePeer::ID, $er_id)
-      : $c->add(EResourcePeer::ALT_ID, $alt_id, Criteria::LIKE);
+    if ( $er_id ) {
+      $c->add(EResourcePeer::ID, $er_id);
+    }
+    else {
+      $c->add(EResourcePeer::ALT_ID, $alt_id, Criteria::LIKE);
+    }
 
     $ers = EResourcePeer::doSelectJoinAccessInfo($c);
     $this->forward404Unless($ers);
-    $this->er = $ers[0];
-    $er_id = $this->er->getId();
+    $this->eresource = $ers[0];
     
-    $access = $this->er->getAccessInfo();
+    $access = $this->eresource->getAccessInfo();
     
-    $user_affiliation = $this->getUser()->getLibraryIds();
-    
-    if (!$access) {
-      $this->er->recordUsageAttempt($user_affiliation[0], false,
-        'no access information');
+    if ( ! $access ) {
+      $this->eresource->recordUsageAttempt( $this->affiliation->getOne(),
+        false, 'no access information' );
       $this->forward404();
     }
 
-    // if not available to this user
-    if (! array_intersect($user_affiliation, $this->er->getLibraryIds()) ) {
-      $this->er->recordUsageAttempt($user_affiliation[0], false,
-        'not available to user');
-      $this->setTemplate('unauthorized');
-      return;
-    }
-    
-    if ($this->er->getProductUnavailable()) {
-      $this->er->recordUsageAttempt($user_affiliation[0], false, 'unavailable');
+    if ($this->eresource->getProductUnavailable()) {
+      $this->eresource->recordUsageAttempt(
+        $this->affiliation->getOne(), false, 'unavailable' );
       $this->setTemplate('unavailable');
 
       return;
     }
 
-    // cleared to refer
+    // all clear to grant access
     
-    $this->er->recordUsageAttempt($user_affiliation[0], true);
+    // TODO: how to properly deal with multi affiliations
+    $this->eresource
+      ->recordUsageAttempt( $this->affiliation->getOne(), true );
 
-    $access_handler = BaseAccessHandler::factory( $this );
-
-    if ( ! $access_handler ) {
-      throw new UnexpectedValueException( 'No access handler generated' );
+    $access_handler = BaseAccessHandler::factory( $this, $this->eresource );
+    
+    try {
+      $access_handler->execute();
+      $this->eresource->recordUsageAttempt(
+        $this->affiliation->getOne(), true );
     }
-
-    return $access_handler->execute();
+    catch ( freermsUnauthorizedException $e ) {
+      $this->setTemplate('unauthorized');
+      return;
+    }
   }
 
-  public function executeRefer()
+  public function executeRefer( sfWebRequest $request )
   {
-    // FIXME: sample template is now broken
-    $er_id = $this->getUser()->getFlash('er_id');
-    $this->access_uri = $this->getUser()->getFlash('access_uri');
+    $this->forward404Unless(
+      $this->title = $this->getUser()->getFlash('er_title'));
+    
+    $this->forward404Unless(
+      $this->access_uri = $this->getUser()->getFlash('er_access_uri'));
 
-    if (!$this->access_uri) {
-      $this->redirect(sfConfig::get('app_homepage-redirect-url'));
-    }
-
-    if ($er_id) {
-      $this->er = EResourcePeer::retrieveByPK($er_id);
-      $this->forward404Unless($this->er);
-    }
+    $this->referral_note = $this->getUser()->getFlash('er_referral_note');
   }
 
   public function executeURLRefer(sfWebRequest $request)
@@ -160,9 +157,10 @@ class databaseActions extends sfActions
       $this->redirect( $url );
     }
 
-    $user_affiliation = $this->getUser()->getLibraryIds();
-    $user_libraries = LibraryPeer::retrieveByPKs($user_affiliation);
-    $this->forward404Unless($user_libraries);
+    $user_libraries = LibraryPeer::retrieveByPKs(
+      $this->affiliation->get() );
+    
+    $this->forward404Unless( $user_libraries );
 
 
     // FIXME: remove once we have our ebrary MARC records fixed
@@ -193,15 +191,5 @@ class databaseActions extends sfActions
     }
     $this->er = EResourcePeer::retrieveByPK($er_id);
     $this->forward404Unless($this->er);
-  }
-
-  public function getEResource()
-  {
-    if ( $this->er instanceof EResource ) {
-      return $this->er;
-    }
-    else {
-      return null;
-    }
   }
 }

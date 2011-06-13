@@ -8,8 +8,22 @@ class RefererAccessHandler extends BaseAccessHandler
 
   public function execute()
   {
-    $this->action->getUser()->setFlash('er_id', $this->action->er->getId() );
-    $this->action->getUser()->setFlash('access_uri', $this->getAccessUri() );
+    $this->checkAffiliation();
+    
+    if ( ! $this->getAccessUri() ) {
+      $this->action->redirect( sfConfig::get('app_homepage-redirect-url') );
+      return;
+    }
+    
+    $this->action->getUser()->setFlash(
+      'er_title', $this->er->getTitle() );
+    
+    $this->action->getUser()->setFlash(
+      'er_referral_note', $this->er->getAccessInfo()->getReferralNote() );
+    
+    $this->action->getUser()->setFlash(
+      'er_access_uri', $this->getAccessUri() );
+    
     $this->action->redirect('database/refer');
 
     return;

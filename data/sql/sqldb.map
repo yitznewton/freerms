@@ -1,3 +1,0 @@
-# Sqlfile -> Database map
-lib.model.schema.sql=propel
-plugins.freermsPropelUserPlugin.lib.model.schema.sql=db2

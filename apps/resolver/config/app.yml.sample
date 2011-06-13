@@ -1,5 +1,0 @@
-all:
-  # only allows one offsite IP for now
-  offsite-testing-ip:    127.0.0.1
-  
-  homepage-redirect-url: http://www.touro.edu/library/
