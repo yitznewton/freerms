@@ -34,7 +34,6 @@ class AccessInfo299AccessHandler extends RefererAccessHandler
   protected function getTarget( array $libraries )
   {
     foreach ( $libraries as $code ) {
-      var_dump($code);
       switch ( $code ) {
         case 'TUN':
         case 'TUN-ALUM':
