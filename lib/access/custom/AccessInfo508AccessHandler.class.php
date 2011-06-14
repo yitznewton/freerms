@@ -29,7 +29,7 @@ class AccessInfo508AccessHandler extends EZproxyAccessHandler
       return;
     }
     else {
-      parent::execute();  // pass to EZproxy
+      EZproxyAccessHandler::execute();  // pass to EZproxy
       return;
     }
   }
