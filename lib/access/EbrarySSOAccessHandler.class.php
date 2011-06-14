@@ -9,16 +9,13 @@ class EbrarySSOAccessHandler extends EZproxyAccessHandler
   public function execute()
   {
     if (
-      strpos( 'site.ebrary.com', $_SERVER['HTTP_REFERER'] ) !== false
-      && ! $this->action->getUser()->isAuthenticated()
+      ! $this->isOnsite
+      || isset( $_GET['signin'] )
     ) {
-      $this->action->forward(
-        sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action') );
-
-      return;
+      return EZproxyAccessHandler::execute();
     }
     
-    return parent::execute();
+    return BaseAccessHandler::execute();
   }
   
   protected function getAccessUri()

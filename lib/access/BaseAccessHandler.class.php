@@ -70,7 +70,8 @@ class BaseAccessHandler
 
   static public function factory( sfAction $action, EResource $er )
   {
-    $is_onsite = $action->getUser()->getAttribute('is_onsite');
+    $affiliation = new freermsUserAffiliation( $action->getUser() );
+    $is_onsite   = $affiliation->isOnsite();
     
     if ( $is_onsite ) {
       $class = $er->getAccessInfo()->getOnsiteAccessHandler();
