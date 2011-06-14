@@ -26,16 +26,17 @@ class databaseActions extends sfActions
   
   public function executeIndex(sfWebRequest $request)
   {
-    $subject_slug = $request->getParameter('subject');
-    $subject      = DbSubjectPeer::retrieveBySlug( $subject_slug );
+    $subject_slug  = $request->getParameter('subject');
+    $this->subject = DbSubjectPeer::retrieveBySlug( $subject_slug );
     
-    if ( $subject ) {
-      $this->subject = $subject;
+    $show_featured = LibraryPeer::isAnyShowFeaturedSubjects(
+      $this->affiliation->get() );
+    
+    if ( $this->subject && $show_featured ) {
       $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
-        $this->affiliation->get(), $subject, true );
+        $this->affiliation->get(), $this->subject, true );
     }
     else {
-      $this->subject = null;
       $this->featured_dbs = array();
     }
     
@@ -56,7 +57,7 @@ class databaseActions extends sfActions
     ));
 
     $this->databases = EResourcePeer::retrieveByAffiliationAndSubject(
-      $this->affiliation->get(), $subject );
+      $this->affiliation->get(), $this->subject );
   }
 
   public function executeAccess(sfWebRequest $request)
