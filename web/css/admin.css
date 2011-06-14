@@ -80,10 +80,8 @@ ul#breadcrumbs li a:visited{
 li.ui-tabs-nav-item a{
   font-weight: bold;
 }
- 
 .form-row{
   clear: both;
-  margin: 4px 0;
   padding: 4px 0;
 }
 .form-row label,div.label{
@@ -93,6 +91,7 @@ li.ui-tabs-nav-item a{
   float: left;
   width: 150px;
   padding-right: 0.75em;
+  padding-bottom: 1.2em;
 }
 .form-row input[type=text]{
   margin-right: 3px;
@@ -240,7 +239,7 @@ ul.sortable{
   min-height: 6px;
   margin: 0 0 1.4em;
   padding: 0;
-  width: 300px;
+  width: 500px;
 }
 ul.sortable li{
   list-style: none;
