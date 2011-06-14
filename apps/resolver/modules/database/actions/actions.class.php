@@ -169,7 +169,7 @@ class databaseActions extends sfActions
       $this->redirect( $url );
     }
 
-    if ($this->getUser()->getOnsiteLibraryId()) {
+    if ( $this->affiliation->getOnsiteLibraryId() ) {
       $this->redirect( $url );
     }
 
