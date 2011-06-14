@@ -48,7 +48,13 @@ class touroSecurityUser extends sfGuardSecurityUser implements freermsUserInterf
    */
   public function getProgramCode()
   {
-    $program = $this->getGuardUser()->getProgram();
+    $guard_user = $this->getGuardUser();
+    
+    if ( ! $guard_user ) {
+      return null;
+    }
+    
+    $program = $guard_user->getProgram();
     
     if ( ! $program ) {
       return null;
