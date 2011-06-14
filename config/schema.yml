@@ -757,6 +757,10 @@ propel:
       type: INTEGER
     fte: 
       type: INTEGER
+    show_featured_subjects:
+      type: BOOLEAN
+      required: true
+      default: 1
     note: 
       type: LONGVARCHAR
     updated_at: 
