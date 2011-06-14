@@ -44,13 +44,8 @@ class touroLayoutFilter extends sfFilter
   {
     $cookie_domain = $_SERVER['SERVER_NAME'];
     
-    if ( strpos('.', $cookie_domain) !== false ) {
-      $last_dot_pos = 0 - strlen($cookie_domain)
-                      + strrpos( $cookie_domain, '.' ) - 1;
-      $cookie_domain = substr(
-        $cookie_domain,
-        strrpos( $cookie_domain, '.', $last_dot_pos )
-      );
+    if ( strpos($cookie_domain, '.') !== false ) {
+      $cookie_domain = preg_replace('/^[^\.]+/', '', $cookie_domain);
     }
 
     // check for layout in GET and cookie
