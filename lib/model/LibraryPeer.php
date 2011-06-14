@@ -74,4 +74,20 @@ class LibraryPeer extends BaseLibraryPeer
     
     return null;
   }
+  
+  /**
+   * Returns whether ShowFeaturedSubjects is set on any of the Librarys with
+   * the given ids
+   * 
+   * @param array int[] $ids 
+   * @return boolean
+   */
+  public static function isAnyShowFeaturedSubjects( array $ids )
+  {
+    $c = new Criteria();
+    $c->add( LibraryPeer::SHOW_FEATURED_SUBJECTS, 1 );
+    $c->add( LibraryPeer::ID, $ids, Criteria::IN );
+    
+    return LibraryPeer::doSelect( $c ) ? true : false;
+  }
 }
