@@ -105,9 +105,12 @@ class databaseActions extends sfActions
     $access_handler = BaseAccessHandler::factory( $this, $this->eresource );
     
     try {
-      $access_handler->execute();
+      // FIXME: what about recording attempt when access fails in
+      // AccessHandler?
       $this->eresource->recordUsageAttempt(
         $this->affiliation->getOne(), true );
+      
+      $access_handler->execute();
     }
     catch ( freermsUnauthorizedException $e ) {
       $this->setTemplate('unauthorized');
