@@ -93,9 +93,11 @@ class EResource extends BaseEResource
       throw new Exception('Result indicator must be a boolean');
     }
     
+    $session = substr( session_id(), 0, 8 );
+    
     $c = new Criteria();
     $c->add( UsageAttemptPeer::ER_ID, $this->getId() );
-    $c->add( UsageAttemptPeer::DATE, time() );
+    $c->add( UsageAttemptPeer::PHPSESSID, $session );
     $c->add( UsageAttemptPeer::AUTH_SUCCESSFUL, $result );
     
     if ( $note ) {
@@ -109,6 +111,7 @@ class EResource extends BaseEResource
       
       $usage = new UsageAttempt();
       $usage->setErId( $this->getId() );
+      $usage->setPhpsessid( $session );
       $usage->setLibId( $user_affiliation );
       if ($ip_trunc) $usage->setIp($ip_trunc);
       $usage->setDate( time() );
