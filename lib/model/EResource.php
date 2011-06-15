@@ -94,9 +94,13 @@ class EResource extends BaseEResource
     }
     
     $c = new Criteria();
-    $c->add(UsageAttemptPeer::ER_ID, $this->getId());
-    $c->add(UsageAttemptPeer::AUTH_SUCCESSFUL, $result);
-    if ($note) $c->add(UsageAttemptPeer::NOTE, $note);
+    $c->add( UsageAttemptPeer::ER_ID, $this->getId() );
+    $c->add( UsageAttemptPeer::DATE, time() );
+    $c->add( UsageAttemptPeer::AUTH_SUCCESSFUL, $result );
+    
+    if ( $note ) {
+      $c->add( UsageAttemptPeer::NOTE, $note );
+    }
     
     if (! $existing_attempt = UsageAttemptPeer::doSelect($c) ) {
       // grab first three octets of user's IP address
@@ -106,7 +110,6 @@ class EResource extends BaseEResource
       $usage = new UsageAttempt();
       $usage->setErId( $this->getId() );
       $usage->setLibId( $user_affiliation );
-      $usage->setPhpsessid( session_id() );
       if ($ip_trunc) $usage->setIp($ip_trunc);
       $usage->setDate( time() );
       $usage->setAuthSuccessful($result);
