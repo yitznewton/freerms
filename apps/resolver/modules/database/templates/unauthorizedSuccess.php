@@ -1,1 +1,2 @@
-We're sorry, your affiliation does not permit you to access <?php echo $eresource->getTitle() ?>.
+<p>We're sorry, your affiliation does not permit you to access
+<?php echo $eresource->getTitle() ?>.</p>
