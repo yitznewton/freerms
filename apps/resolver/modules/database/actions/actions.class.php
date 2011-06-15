@@ -98,10 +98,6 @@ class databaseActions extends sfActions
 
     // all clear to grant access
     
-    // TODO: how to properly deal with multi affiliations
-    $this->eresource
-      ->recordUsageAttempt( $this->affiliation->getOne(), true );
-
     $access_handler = BaseAccessHandler::factory( $this, $this->eresource );
     
     try {
