@@ -47,3 +47,8 @@ ul.nav-links li{
 .description-short{
   display: none;
 }
+.product-note{
+  margin: 0.4em 0 1em;
+  font-style: italic;
+  font-size: 1.2em;
+}
