@@ -95,7 +95,6 @@ class EResource extends BaseEResource
     
     $c = new Criteria();
     $c->add(UsageAttemptPeer::ER_ID, $this->getId());
-    $c->add(UsageAttemptPeer::PHPSESSID, session_id());
     $c->add(UsageAttemptPeer::AUTH_SUCCESSFUL, $result);
     if ($note) $c->add(UsageAttemptPeer::NOTE, $note);
     

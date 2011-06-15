@@ -1033,10 +1033,6 @@ propel:
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
-    phpsessid: 
-      type: VARCHAR
-      size: 32
-      required: true
     ip:
       type: VARCHAR
       size: 15
