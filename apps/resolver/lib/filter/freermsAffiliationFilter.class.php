@@ -55,5 +55,7 @@ class freermsAffiliationFilter extends sfFilter
   {
     $this->getContext()->getController()->forward(
       sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action'));
+    
+    throw new sfStopException();
   }
 }
