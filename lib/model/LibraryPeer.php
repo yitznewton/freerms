@@ -76,14 +76,15 @@ class LibraryPeer extends BaseLibraryPeer
   }
   
   /**
-   * Cycles through library ids, and returns first Library found
+   * Returns first Library found for given freermsUserAffiliation
    *
-   * @param array int[] $ids
+   * @param freermsUserAffiliation $affiliation
    * @return Library
    */
-  public static function retrieveOneForPKs( array $ids )
+  public static function retrieveOneForAffiliation(
+    freermsUserAffiliation $affiliation )
   {
-    foreach ( $ids as $id ) {
+    foreach ( $affiliation->get() as $id ) {
       if ( $library = LibraryPeer::retrieveByPK( $id )) {
         return $library;
       }
