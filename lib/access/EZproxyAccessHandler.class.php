@@ -59,8 +59,8 @@ class EZproxyAccessHandler extends BaseAccessHandler
       return $this->library;
     }
 
-    return $this->library
-      = LibraryPeer::retrieveOneForPKs( $this->action->affiliation->get() );
+    return $this->library = LibraryPeer::retrieveOneForAffiliation(
+      $this->action->affiliation );
   }
   
   static public function composeTicketUrl(Library $library, $access_url, $user = 'user', $encoding = 'md5' )
