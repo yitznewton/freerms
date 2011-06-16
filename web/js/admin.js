@@ -1,3 +1,35 @@
+function FRSubjectSorter( id )
+{
+  this.ul           = document.createElement('ul');
+  this.ul.id        = id;
+  this.ul.className = 'sortable';
+}
+
+FRSubjectSorter.prototype.add = function( title, weight_input_el ) {
+  var li = document.createElement('li');
+  
+  li.className       = 'ui-state-default';
+  li.innerHTML       = title;
+  li.weight_input_el = weight_input_el;
+  
+  var span_arrow = document.createElement('span');
+  span_arrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
+  li.appendChild( span_arrow );
+  
+  this.ul.appendChild( li );
+}
+
+FRSubjectSorterFeatured.prototype = new FRSubjectSorter();
+
+function FRSubjectSorterFeatured( id )
+{
+  FRSubjectSorter.prototype.constructor.call( this, id );
+}
+
+//FRSubjectSorterFeatured.prototype.add = function( title, weight_input_el ) {
+//  
+//}
+
 (function( $ ){
   $.fn.appendSubjectInputs = function( er_id, subject_id, weight ) {
     if ( this[0].tagName != 'FORM' ) {
@@ -42,15 +74,15 @@
 
 function freerms_admin_subject_sorter()
 {
-  var databases  = document.getElementById('admin-subject-databases');
+  var databases = FR.$$('admin-subject-databases');
 
-  if ( databases === null ) {
+  if ( ! databases ) {
     return;
   }
 
   var $databases = $(databases);
   var $old_form_elements = $('table', databases);
-  $old_form_elements.hide();
+  //$old_form_elements.hide();
 
   var ul_featured = document.createElement('ul');
   ul_featured.id = 'databases-featured';
@@ -175,6 +207,62 @@ function freerms_admin_subject_sorter()
   }
 }
 
+function freerms_admin_subject_featured_add( title, weight_input_el )
+{
+  console.log('featured - adding ' + title);
+}
+
+function freerms_admin_subject_nonfeatured_add( title, weight_input_el )
+{
+  console.log('nonfeatured - adding ' + title);
+}
+
+function freerms_admin_subject_sorter2( featured_sorter, nonfeatured_sorter )
+{
+  $('#admin-subject-databases tr').each( function() {
+    var i;
+    
+    var $label = $('th label', this);
+    
+    if ( ! $label.length ) {
+      throw new Error('Label not found');
+    }
+
+    var for_matches = $label.attr('for')
+      .match(/db_subject_EResourceDbSubjectAssocs_(\d+)_featured_weight/);
+      
+    if ( ! for_matches ) {
+      throw new Error('Could not match er_id');
+    }
+    
+    var er_id = for_matches[1];
+    
+    var title_matches = $label.text().match(/Weight for (.+)/);
+    
+    if ( ! title_matches ) {
+      throw new Error('Could not match title');
+    }
+    
+    var title = title_matches[1];
+    
+    var weight_input_id = 'db_subject_EResourceDbSubjectAssocs_'
+                          + er_id + '_featured_weight';
+                        
+    var weight_input_el = FR.$$( weight_input_id );
+    
+    if ( ! weight_input_el ) {
+      throw new Error('Could not retrieve weight input for ' + er_id);
+    }
+    
+    if ( weight_input_el.value == -1 ) {
+      nonfeatured_sorter.add( title, weight_input_el );
+    }
+    else {
+      featured_sorter.add( title, weight_input_el );
+    }
+  });
+}
+
 function clearAll( select_el )
 {
   select_el.find('option:selected').attr('selected', false); 
@@ -230,7 +318,24 @@ $(document).ready(function(){
   }
 
   updateIpRegFields();
-  freerms_admin_subject_sorter();
+  
+  var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
+  var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
+  
+  freerms_admin_subject_sorter2( featured_sorter, nonfeatured_sorter );
+  
+  $('#admin-subject-databases').append( featured_sorter.ul )
+                               .append( nonfeatured_sorter.ul )
+                               ;
+  $(featured_sorter.ul).sortable({
+    connectWith: ['#databases-nonfeatured'],
+    placeholder: 'ui-state-highlight'
+  });
+  
+  $(nonfeatured_sorter.ul).sortable({
+    connectWith: ['#databases-featured'],
+    placeholder: 'ui-state-highlight'
+  });
 
   $('#organization_ip_reg_method_id').change( function() {
     updateIpRegFields();
