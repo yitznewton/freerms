@@ -14,19 +14,6 @@ class unit_LibraryPeerTest extends sfPHPUnitBaseTestCase
     $this->assertNull( LibraryPeer::retrieveByIp('8.8.8.8') );
   }
   
-  public function testGetFirstForUser()
-  {
-    $user = new freermsTestUserNotNull();
-    
-    $this->assertInstanceOf( 'Library',
-      LibraryPeer::getFirstForUser($user) );
-    
-    $user = new freermsTestUserNull();
-    
-    $this->assertNull( LibraryPeer::getFirstForUser($user) );
-  }
-}
-
 /**
  * Included this class, because PHPUnit mocks do not support interface
  * type hinting

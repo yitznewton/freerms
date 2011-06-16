@@ -19,10 +19,7 @@ class EZproxyAccessHandler extends BaseAccessHandler
     
     $class_name = get_class( $this );
     
-    if (
-      $class_name::FORCE_AUTH_ONSITE
-      && ! $this->action->getUser()->isAuthenticated()
-    ) {
+    if ( ! $this->action->getUser()->isAuthenticated() ) {
       $this->action->forward(
         sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action') );
 
@@ -36,7 +33,7 @@ class EZproxyAccessHandler extends BaseAccessHandler
     $proxy_uri = EZproxyAccessHandler::composeTicketUrl(
       $this->getLibrary(),
       $this->getAccessUri(),
-      $this->action->getUser()->getUsername()
+      $this->action->getUser()->getGuardUser()->getUsername()
     );
 
     $this->action->redirect( $proxy_uri );
@@ -61,9 +58,9 @@ class EZproxyAccessHandler extends BaseAccessHandler
     if ( $this->library ) {
       return $this->library;
     }
-    
+
     return $this->library
-      = LibraryPeer::getFirstForUser( $this->action->getUser() );
+      = LibraryPeer::retrieveOneForPKs( $this->action->affiliation->get() );
   }
   
   static public function composeTicketUrl(Library $library, $access_url, $user = 'user', $encoding = 'md5' )
