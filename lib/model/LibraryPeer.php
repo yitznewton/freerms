@@ -57,7 +57,6 @@ class LibraryPeer extends BaseLibraryPeer
   }
   
   /**
-<<<<<<< HEAD
    * @param array int[] $ids
    * @return array string[]
    */
