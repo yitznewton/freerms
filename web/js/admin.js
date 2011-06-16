@@ -19,6 +19,21 @@ FRSubjectSorter.prototype.add = function( title, weight_input_el ) {
   this.ul.appendChild( li );
 }
 
+FRSubjectSorter.prototype.bind = function() {
+  var i;
+  var li;
+  
+  for ( i = 0; i < this.ul.childNodes.length; i++ ) {
+    if ( this.ul.childNodes[i].tagName != 'LI' ) {
+      continue;
+    }
+    
+    li = this.ul.childNodes[i];
+    
+    console.log(li);
+  }
+}
+
 FRSubjectSorterFeatured.prototype = new FRSubjectSorter();
 
 function FRSubjectSorterFeatured( id )
@@ -327,6 +342,7 @@ $(document).ready(function(){
   $('#admin-subject-databases').append( featured_sorter.ul )
                                .append( nonfeatured_sorter.ul )
                                ;
+
   $(featured_sorter.ul).sortable({
     connectWith: ['#databases-nonfeatured'],
     placeholder: 'ui-state-highlight'
@@ -335,6 +351,13 @@ $(document).ready(function(){
   $(nonfeatured_sorter.ul).sortable({
     connectWith: ['#databases-featured'],
     placeholder: 'ui-state-highlight'
+  });
+  
+  $('#admin-form-subject').submit( function() {
+    featured_sorter.bind();
+    nonfeatured_sorter.bind();
+    
+    return true;
   });
 
   $('#organization_ip_reg_method_id').change( function() {
