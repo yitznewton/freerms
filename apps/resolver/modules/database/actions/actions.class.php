@@ -178,6 +178,9 @@ class databaseActions extends sfActions
     $this->redirect($proxy_url);
   }
 
+  /**
+   * @deprecated
+   */
   public function executeDirectRefer(sfWebRequest $request)
   {
     $raw_url = $request->getUri();
