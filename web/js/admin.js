@@ -1,8 +1,10 @@
 function FRSubjectRow( tr )
 {
-  this.tr = tr;
+  this.connections = [];
   this.er_id;
   this.title;
+  
+  this.tr = tr;
   
   var $label = $('th label', tr);
 
@@ -77,6 +79,19 @@ FRSubjectSorter.prototype.render = function() {
 
     this.ul.appendChild( li );
   }
+  
+  var $this_ul = $(this.ul);
+  
+  $this_ul.sortable({
+    connectWith: this.connections,
+    placeholder: 'ui-state-highlight'
+  });
+  
+  return $this_ul;
+}
+
+FRSubjectSorter.prototype.setConnections = function( connections ) {
+  this.connections = connections;
 }
 
 FRSubjectSorter.prototype.bind = function() {
@@ -110,7 +125,7 @@ FRSubjectSorterFeatured.prototype.bind = function() {
 FRSubjectSorterFeatured.prototype.render = function() {
   this.sort();
   
-  FRSubjectSorter.prototype.render.call( this );
+  return FRSubjectSorter.prototype.render.call( this );
 }
 
 FRSubjectSorterFeatured.prototype.sort = function() {
@@ -195,23 +210,15 @@ $(document).ready(function(){
       }
     });
     
-    nonfeatured_sorter.render();
-    featured_sorter.render();
+    nonfeatured_sorter.setConnections( ['#databases-featured'] );
+    featured_sorter.setConnections( ['#databases-nonfeatured'] );
+    
+    var $subject_container = $('#admin-subject-databases');
+    
+    featured_sorter.render().appendTo( $subject_container );
+    nonfeatured_sorter.render().appendTo( $subject_container );
 
-    $('#admin-subject-databases').append( featured_sorter.ul )
-                                 .append( nonfeatured_sorter.ul )
-                                 .find('table').hide()
-                                 ;
-
-    $(featured_sorter.ul).sortable({
-      connectWith: ['#databases-nonfeatured'],
-      placeholder: 'ui-state-highlight'
-    });
-
-    $(nonfeatured_sorter.ul).sortable({
-      connectWith: ['#databases-featured'],
-      placeholder: 'ui-state-highlight'
-    });
+    $('table', $subject_container).hide();
 
     $('#admin-form-subject').submit( function() {
       featured_sorter.bind();
