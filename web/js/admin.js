@@ -1,6 +1,5 @@
 function FRSubjectRow( tr )
 {
-  this.connections = [];
   this.er_id;
   this.title;
   
@@ -57,6 +56,7 @@ function FRSubjectSorter( id )
   this.ul.id        = id;
   this.ul.className = 'sortable';
   this.items        = [];
+  this.connections  = [];
 }
 
 FRSubjectSorter.prototype.add = function( item ) {
