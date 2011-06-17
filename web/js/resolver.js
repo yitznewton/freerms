@@ -26,7 +26,6 @@ var FRResolver = {
     }
   }
 };
->>>>>>> 8bb842fdeb1df762c30393b25599e0b8dfa9af81
 
 $(document).ready( function() {
   FRResolver.refer( FR.$$('referral-link'), FR.$$('referral-note') );
