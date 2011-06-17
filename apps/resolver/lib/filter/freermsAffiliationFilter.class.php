@@ -45,6 +45,8 @@ class freermsAffiliationFilter extends sfFilter
     
     // TODO: whatif isAuthenticated but has no affiliation?
     
+    $this->getContext()->set('affiliation', $affiliation);
+    
     // push affiliation data to the action
     
     $this->getContext()->getActionStack()->getLastEntry()
