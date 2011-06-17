@@ -103,24 +103,13 @@ FRSubjectSorter.prototype.bind = function() {
       continue;
     }
     
-    this.ul.childNodes[i].weight_input_el.value = -1;
+    var value_to_bind = (this instanceof FRSubjectSorterFeatured) ? i : -1;
+    
+    this.ul.childNodes[i].weight_input_el.value = value_to_bind;
   }
 }
 
 FRSubjectSorterFeatured.prototype = new FRSubjectSorter();
-
-FRSubjectSorterFeatured.prototype.bind = function() {
-  var i;
-  var li;
-  
-  for ( i = 0; i < this.ul.childNodes.length; i++ ) {
-    if ( this.ul.childNodes[i].tagName != 'LI' ) {
-      continue;
-    }
-    
-    this.ul.childNodes[i].weight_input_el.value = i;
-  }
-}
 
 FRSubjectSorterFeatured.prototype.render = function() {
   this.sort();
