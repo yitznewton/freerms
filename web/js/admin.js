@@ -1,178 +1,142 @@
-(function( $ ){
-  $.fn.appendSubjectInputs = function( er_id, subject_id, weight ) {
-    if ( this[0].tagName != 'FORM' ) {
-      throw 'Can only call appendSubjectInputs() on a form element';
-    }
-
-    if (
-      typeof er_id == 'undefined'
-      || typeof subject_id == 'undefined'
-      || typeof weight == 'undefined'
-    ) {
-      throw 'Missing argument';
-    }
-
-    var el_input;
-
-    el_input       = document.createElement('input');
-    el_input.type  = 'hidden';
-    el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
-                     + er_id + '][featured_weight]';
-    el_input.value = weight;
-
-    this.append( el_input );
-
-    el_input       = document.createElement('input');
-    el_input.type  = 'hidden';
-    el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
-                     + er_id + '][er_id]';
-    el_input.value = er_id;
-
-    this.append( el_input );
-
-    el_input       = document.createElement('input');
-    el_input.type  = 'hidden';
-    el_input.name  = 'db_subject[EResourceDbSubjectAssocs]['
-                     + subject_id + '][db_subject_id]';
-    el_input.value = subject_id;
-
-    this.append( el_input );
-  };
-})( jQuery );
-
-function freerms_admin_subject_sorter()
+function FRSubjectRow( tr )
 {
-  var databases  = document.getElementById('admin-subject-databases');
+  this.connections = [];
+  this.er_id;
+  this.title;
+  
+  this.tr = tr;
+  
+  var $label = $('th label', tr);
 
-  if ( databases === null ) {
-    return;
+  if ( ! $label.length ) {
+    throw new Error('Label not found');
   }
 
-  var $databases = $(databases);
-  var $old_form_elements = $('table', databases);
-  $old_form_elements.hide();
+  var for_matches = $label.attr('for')
+    .match(/db_subject_EResourceDbSubjectAssocs_(\d+)_featured_weight/);
 
-  var ul_featured = document.createElement('ul');
-  ul_featured.id = 'databases-featured';
-  ul_featured.className = 'sortable';
+  if ( ! for_matches ) {
+    throw new Error('Could not match er_id');
+  }
 
-  var ul_nonfeatured = document.createElement('ul');
-  ul_nonfeatured.id = 'databases-nonfeatured';
-  ul_nonfeatured.className = 'sortable';
+  this.er_id = for_matches[1];
 
-  var weighted_databases = [];
+  var title_matches = $label.text().match(/Weight for (.+)/);
 
-  $('tr', databases).each( function() {
-    var database_id;
+  if ( ! title_matches ) {
+    throw new Error('Could not match title');
+  }
 
-    $('input', this).each( function() {
-      var database_id_ptn = /db_subject_EResourceDbSubjectAssocs_(\d+)_er_id/;
-      var database_id_matches = this.id.match( database_id_ptn );
+  this.title = title_matches[1];
+}
 
-      if ( database_id_matches ) {
-        database_id = database_id_matches[1];
-        return false;  // break
-      }
-    });
+FRSubjectRow.prototype.isFeatured = function() {
+  var weight_input_el = this._getWeightInputEl();
 
-    if ( database_id === null ) {
-      throw 'Unexpected lack of database id';
-    }
+  if ( ! weight_input_el ) {
+    throw new Error('Could not retrieve weight input for ' + er_id);
+  }
+    
+  return ( weight_input_el.value != -1 );
+}
 
-    var weight = -1;
+FRSubjectRow.prototype._getWeightInputEl = function() {
+  var weight_input_id = 'db_subject_EResourceDbSubjectAssocs_'
+                        + this.er_id + '_featured_weight';
 
-    var label_matches = $('label', this).text().match(/Weight for (.+)$/);
+  return FR.$$( weight_input_id );
+}
 
-    if ( label_matches === null ) {
-      throw 'Could not find label for database ' + database_id;
-    }
+FRSubjectRow.prototype.getItem = function() {
+  return { title: this.title, weight_input_el: this._getWeightInputEl() };
+}
+  
+function FRSubjectSorter( id )
+{
+  this.ul           = document.createElement('ul');
+  this.ul.id        = id;
+  this.ul.className = 'sortable';
+  this.items        = [];
+}
 
+FRSubjectSorter.prototype.add = function( item ) {
+  this.items.push( item );
+}
+
+FRSubjectSorter.prototype.render = function() {
+  var i;
+  
+  for ( i = 0; i < this.items.length; i++ ) {
     var li = document.createElement('li');
-    li.id = 'database-list-' + database_id;
-    li.className = 'ui-state-default';
-    li.innerHTML = label_matches[1];
 
-    var url_replace = 'database/'+database_id+'/edit#subjects';
-    var target_url = window.location.pathname
-                     .replace(/subject.+$/, url_replace);
-
-    li.onclick = function() {
-      window.open( target_url );
-    }
+    li.className       = 'ui-state-default';
+    li.innerHTML       = this.items[i].title;
+    li.weight_input_el = this.items[i].weight_input_el;
 
     var span_arrow = document.createElement('span');
     span_arrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
-
     li.appendChild( span_arrow );
 
-    var weight_id = 'db_subject_EResourceDbSubjectAssocs_'
-                    + database_id + '_featured_weight';
-
-    var weight_el = document.getElementById( weight_id );
-
-    if ( weight_el && weight_el.value != -1 ) {
-      weighted_databases.push([ li, weight_el.value ]);
-    }
-    else {
-      ul_nonfeatured.appendChild( li );
-    }
-  });
-
-  weighted_databases.sort( function(a,b){return a[1] - b[1]} );
-
-  for ( var i = 0; i < weighted_databases.length; i++ ) {
-    ul_featured.appendChild( weighted_databases[i][0] );
+    this.ul.appendChild( li );
   }
-
-  $databases.append( '<h3>Featured</h3>' );
-  databases.appendChild( ul_featured );
-  $databases.append( '<h3>Non-featured</h3>' );
-  databases.appendChild( ul_nonfeatured );
-
-  $(ul_featured).sortable({
-    connectWith: ['#databases-nonfeatured'],
+  
+  var $this_ul = $(this.ul);
+  
+  $this_ul.sortable({
+    connectWith: this.connections,
     placeholder: 'ui-state-highlight'
   });
+  
+  return $this_ul;
+}
 
-  $(ul_nonfeatured).sortable({
-    connectWith: ['#databases-featured'],
-    placeholder: 'ui-state-highlight'
-  });
+FRSubjectSorter.prototype.setConnections = function( connections ) {
+  this.connections = connections;
+}
 
-  $old_form_elements.remove();
-
-  document.getElementById('admin-form-subject').onsubmit = function() {
-    var subject_id = document.getElementById('db_subject_id').value;
-    var $this      = $(this);
-
-    var weight = 0;
-
-    $('li', ul_featured).each( function() {
-      var er_id_matches = this.id.match(/-(\d+)$/);
-
-      if ( ! er_id_matches ) {
-        throw 'Unexpected subject id: ' + this.id;
-      }
-
-      var er_id = er_id_matches[1];
-
-      $this.appendSubjectInputs( er_id, subject_id, weight++ );
-    });
-
-    $('li', ul_nonfeatured).each( function() {
-      var er_id_matches = this.id.match(/-(\d+)$/);
-
-      if ( ! er_id_matches ) {
-        throw 'Unexpected subject id: ' + this.id;
-      }
-
-      var er_id = er_id_matches[1];
-
-      $this.appendSubjectInputs( er_id, subject_id, -1 );
-    });
-
-    return true;
+FRSubjectSorter.prototype.bind = function() {
+  var i;
+  var li;
+  
+  for ( i = 0; i < this.ul.childNodes.length; i++ ) {
+    if ( this.ul.childNodes[i].tagName != 'LI' ) {
+      continue;
+    }
+    
+    this.ul.childNodes[i].weight_input_el.value = -1;
   }
+}
+
+FRSubjectSorterFeatured.prototype = new FRSubjectSorter();
+
+FRSubjectSorterFeatured.prototype.bind = function() {
+  var i;
+  var li;
+  
+  for ( i = 0; i < this.ul.childNodes.length; i++ ) {
+    if ( this.ul.childNodes[i].tagName != 'LI' ) {
+      continue;
+    }
+    
+    this.ul.childNodes[i].weight_input_el.value = i;
+  }
+}
+
+FRSubjectSorterFeatured.prototype.render = function() {
+  this.sort();
+  
+  return FRSubjectSorter.prototype.render.call( this );
+}
+
+FRSubjectSorterFeatured.prototype.sort = function() {
+  this.items.sort( function(a, b) {
+    return a.weight_input_el.value - b.weight_input_el.value;
+  });
+}
+
+function FRSubjectSorterFeatured( id )
+{
+  FRSubjectSorter.prototype.constructor.call( this, id );
 }
 
 function clearAll( select_el )
@@ -230,7 +194,37 @@ $(document).ready(function(){
   }
 
   updateIpRegFields();
-  freerms_admin_subject_sorter();
+  
+  if ( FR.$$('admin-subject-databases') ) {
+    var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
+    var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
+
+    $('#admin-subject-databases tr').each( function() {
+      var row = new FRSubjectRow( this );
+
+      if ( row.isFeatured() ) {
+        featured_sorter.add( row.getItem() );
+      }
+      else {
+        nonfeatured_sorter.add( row.getItem() );
+      }
+    });
+    
+    nonfeatured_sorter.setConnections( ['#databases-featured'] );
+    featured_sorter.setConnections( ['#databases-nonfeatured'] );
+    
+    var $subject_container = $('#admin-subject-databases');
+    
+    featured_sorter.render().appendTo( $subject_container );
+    nonfeatured_sorter.render().appendTo( $subject_container );
+
+    $('table', $subject_container).hide();
+
+    $('#admin-form-subject').submit( function() {
+      featured_sorter.bind();
+      nonfeatured_sorter.bind();
+    });
+  }
 
   $('#organization_ip_reg_method_id').change( function() {
     updateIpRegFields();

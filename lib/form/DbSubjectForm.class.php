@@ -22,7 +22,10 @@ class DbSubjectForm extends BaseDbSubjectForm
 
     $er_container_form = new sfForm();
 
-    foreach ( $this->getObject()->getEResourceDbSubjectAssocs() as $esa ) {
+    $c = new Criteria();
+    $c->addAscendingOrderByColumn( EResourcePeer::SORT_TITLE );
+    
+    foreach ( $this->getObject()->getEResourceDbSubjectAssocs( $c ) as $esa ) {
       $form = new EResourceDbSubjectAssocForm( $esa );
       $er_container_form->embedForm( $esa->getErId(), $form );
     }
