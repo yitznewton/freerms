@@ -1,3 +1,54 @@
+function FRSubjectRow( tr )
+{
+  this.tr = tr;
+  this.er_id;
+  this.title;
+  
+  var $label = $('th label', tr);
+
+  if ( ! $label.length ) {
+    throw new Error('Label not found');
+  }
+
+  var for_matches = $label.attr('for')
+    .match(/db_subject_EResourceDbSubjectAssocs_(\d+)_featured_weight/);
+
+  if ( ! for_matches ) {
+    throw new Error('Could not match er_id');
+  }
+
+  this.er_id = for_matches[1];
+
+  var title_matches = $label.text().match(/Weight for (.+)/);
+
+  if ( ! title_matches ) {
+    throw new Error('Could not match title');
+  }
+
+  this.title = title_matches[1];
+}
+
+FRSubjectRow.prototype.isFeatured = function() {
+  var weight_input_el = this._getWeightInputEl();
+
+  if ( ! weight_input_el ) {
+    throw new Error('Could not retrieve weight input for ' + er_id);
+  }
+    
+  return ( weight_input_el.value != -1 );
+}
+
+FRSubjectRow.prototype._getWeightInputEl = function() {
+  var weight_input_id = 'db_subject_EResourceDbSubjectAssocs_'
+                        + this.er_id + '_featured_weight';
+
+  return FR.$$( weight_input_id );
+}
+
+FRSubjectRow.prototype.getItem = function() {
+  return { title: this.title, weight_input_el: this._getWeightInputEl() };
+}
+  
 function FRSubjectSorter( id )
 {
   this.ul           = document.createElement('ul');
@@ -6,8 +57,8 @@ function FRSubjectSorter( id )
   this.items        = [];
 }
 
-FRSubjectSorter.prototype.add = function( title, weight_input_el ) {
-  this.items.push({ title: title, weight_input_el: weight_input_el });
+FRSubjectSorter.prototype.add = function( item ) {
+  this.items.push( item );
 }
 
 FRSubjectSorter.prototype.render = function() {
@@ -73,55 +124,6 @@ function FRSubjectSorterFeatured( id )
   FRSubjectSorter.prototype.constructor.call( this, id );
 }
 
-function freerms_admin_subject_sorter2( featured_sorter, nonfeatured_sorter )
-{
-  $('#admin-subject-databases tr').each( function() {
-    var i;
-    
-    var $label = $('th label', this);
-    
-    if ( ! $label.length ) {
-      throw new Error('Label not found');
-    }
-
-    var for_matches = $label.attr('for')
-      .match(/db_subject_EResourceDbSubjectAssocs_(\d+)_featured_weight/);
-      
-    if ( ! for_matches ) {
-      throw new Error('Could not match er_id');
-    }
-    
-    var er_id = for_matches[1];
-    
-    var title_matches = $label.text().match(/Weight for (.+)/);
-    
-    if ( ! title_matches ) {
-      throw new Error('Could not match title');
-    }
-    
-    var title = title_matches[1];
-    
-    var weight_input_id = 'db_subject_EResourceDbSubjectAssocs_'
-                          + er_id + '_featured_weight';
-                        
-    var weight_input_el = FR.$$( weight_input_id );
-    
-    if ( ! weight_input_el ) {
-      throw new Error('Could not retrieve weight input for ' + er_id);
-    }
-    
-    if ( weight_input_el.value == -1 ) {
-      nonfeatured_sorter.add( title, weight_input_el );
-    }
-    else {
-      featured_sorter.add( title, weight_input_el );
-    }
-  });
-  
-  featured_sorter.render();
-  nonfeatured_sorter.render();
-}
-
 function clearAll( select_el )
 {
   select_el.find('option:selected').attr('selected', false); 
@@ -178,30 +180,44 @@ $(document).ready(function(){
 
   updateIpRegFields();
   
-  var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
-  var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
-  
-  freerms_admin_subject_sorter2( featured_sorter, nonfeatured_sorter );
-  
-  $('#admin-subject-databases').append( featured_sorter.ul )
-                               .append( nonfeatured_sorter.ul )
-                               .find('table').hide()
-                               ;
+  if ( FR.$$('admin-subject-databases') ) {
+    var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
+    var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
 
-  $(featured_sorter.ul).sortable({
-    connectWith: ['#databases-nonfeatured'],
-    placeholder: 'ui-state-highlight'
-  });
-  
-  $(nonfeatured_sorter.ul).sortable({
-    connectWith: ['#databases-featured'],
-    placeholder: 'ui-state-highlight'
-  });
-  
-  $('#admin-form-subject').submit( function() {
-    featured_sorter.bind();
-    nonfeatured_sorter.bind();
-  });
+    $('#admin-subject-databases tr').each( function() {
+      var row = new FRSubjectRow( this );
+
+      if ( row.isFeatured() ) {
+        featured_sorter.add( row.getItem() );
+      }
+      else {
+        nonfeatured_sorter.add( row.getItem() );
+      }
+    });
+    
+    nonfeatured_sorter.render();
+    featured_sorter.render();
+
+    $('#admin-subject-databases').append( featured_sorter.ul )
+                                 .append( nonfeatured_sorter.ul )
+                                 .find('table').hide()
+                                 ;
+
+    $(featured_sorter.ul).sortable({
+      connectWith: ['#databases-nonfeatured'],
+      placeholder: 'ui-state-highlight'
+    });
+
+    $(nonfeatured_sorter.ul).sortable({
+      connectWith: ['#databases-featured'],
+      placeholder: 'ui-state-highlight'
+    });
+
+    $('#admin-form-subject').submit( function() {
+      featured_sorter.bind();
+      nonfeatured_sorter.bind();
+    });
+  }
 
   $('#organization_ip_reg_method_id').change( function() {
     updateIpRegFields();
