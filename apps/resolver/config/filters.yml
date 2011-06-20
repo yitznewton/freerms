@@ -5,6 +5,8 @@ affiliation:
   class: freermsAffiliationFilter
 layout:
   class: touroLayoutFilter
+freerms_cache:
+  class: freermsResolverCacheFilter
   
 # insert your own filters here
 

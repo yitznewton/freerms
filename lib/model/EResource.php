@@ -83,6 +83,11 @@ class EResource extends BaseEResource
     return $this;
   }
   
+  /**
+   * @param int $user_affiliation
+   * @param bool $result
+   * @param string $note 
+   */
   public function recordUsageAttempt($user_affiliation, $result, $note = null)
   {
     if ($note && !is_string($note)) {
