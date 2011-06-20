@@ -10,7 +10,6 @@ class ProjectConfiguration extends sfProjectConfiguration
   {
     $this->enablePlugins('sfPropelPlugin');
     $this->enablePlugins('sfGuardPlugin');
-    $this->enablePlugins('sfPHPUnit2Plugin');
     $this->enablePlugins('touroUsersPlugin');
   }
 }

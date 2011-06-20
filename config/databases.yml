@@ -13,7 +13,7 @@ all:
     class:        sfPropelDatabase
     param:
       classname:  PropelPDO
-      dsn:        mysql:dbname=freerms;host=localhost
+      dsn:        mysql:dbname=freerms_live;host=localhost
       username:   freerms
       password:   
       encoding:   utf8
@@ -25,7 +25,7 @@ all:
       classname:  PropelPDO
       dsn:        mysql:dbname=users;host=localhost
       username:   users
-      password:   
+      password:   wan1tkwsn
       encoding:   utf8
       persistent: true
       pooling:    true
