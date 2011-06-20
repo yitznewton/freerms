@@ -39,18 +39,13 @@ class freermsAffiliationFilter extends sfFilter
   {
     $affiliation = new freermsUserAffiliation( $this->user );
     
+    $this->getContext()->setAffiliation( $affiliation );
+    
     if ( ! $affiliation->isOnsite() && ! $this->user->isAuthenticated() ) {
       $this->forwardToLoginAction();
     }
     
     // TODO: whatif isAuthenticated but has no affiliation?
-    
-    $this->getContext()->set('affiliation', $affiliation);
-    
-    // push affiliation data to the action
-    
-    $this->getContext()->getActionStack()->getLastEntry()
-      ->getActionInstance()->affiliation = $affiliation;
   }
   
   protected function forwardToLoginAction()
