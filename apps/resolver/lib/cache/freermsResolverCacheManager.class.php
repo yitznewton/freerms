@@ -7,12 +7,12 @@ class freermsResolverCacheManager extends sfViewCacheManager
     $key = parent::generateCacheKey($internalUri, $hostName, $vary,
       $contextualPrefix);
     
-    $affiliation_array = $this->getContext()->get('affiliation')->get();
+    $affiliation_array = $this->getContext()->getAffiliation()->get();
     
     sort( $affiliation_array );
     
     $affiliation_string = implode( '-', $affiliation_array );
-    
+   
     return $key . '-' . $affiliation_string;
   }
 }
