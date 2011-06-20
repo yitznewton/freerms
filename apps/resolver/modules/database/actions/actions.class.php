@@ -91,7 +91,8 @@ class databaseActions extends sfActions
 
     // all clear to grant access
     
-    $access_handler = BaseAccessHandler::factory( $this, $this->eresource );
+    $access_handler = BaseAccessHandler::factory(
+      $this, $this->eresource, $affiliation );
     
     try {
       // FIXME: what about recording attempt when access fails in
