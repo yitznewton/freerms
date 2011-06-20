@@ -9,13 +9,16 @@ class BaseAccessHandler
 
   protected $action;
   protected $er;
+  protected $affiliation;
   protected $isOnsite;
 
-  protected function __construct( sfAction $action, EResource $er, $is_onsite )
+  protected function __construct( sfAction $action, EResource $er,
+    freermsUserAffiliation $affiliation, $is_onsite )
   {
-    $this->action   = $action;
-    $this->er       = $er;
-    $this->isOnsite = $is_onsite;
+    $this->action      = $action;
+    $this->er          = $er;
+    $this->affiliation = $affiliation;
+    $this->isOnsite    = $is_onsite;
   }
 
   public function execute()
@@ -62,7 +65,7 @@ class BaseAccessHandler
   protected function checkAffiliation()
   {
     if ( ! array_intersect(
-      $this->getContext()->getAffiliation()->get(),
+      $this->affiliation->get(),
       $this->er->getLibraryIds()
     )) {
       throw new freermsUnauthorizedException();
