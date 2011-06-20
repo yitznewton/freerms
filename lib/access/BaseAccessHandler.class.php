@@ -9,13 +9,16 @@ class BaseAccessHandler
 
   protected $action;
   protected $er;
+  protected $affiliation;
   protected $isOnsite;
 
-  protected function __construct( sfAction $action, EResource $er, $is_onsite )
+  protected function __construct( sfAction $action, EResource $er,
+    freermsUserAffiliation $affiliation, $is_onsite )
   {
-    $this->action   = $action;
-    $this->er       = $er;
-    $this->isOnsite = $is_onsite;
+    $this->action      = $action;
+    $this->er          = $er;
+    $this->affiliation = $affiliation;
+    $this->isOnsite    = $is_onsite;
   }
 
   public function execute()
@@ -62,17 +65,22 @@ class BaseAccessHandler
   protected function checkAffiliation()
   {
     if ( ! array_intersect(
-      $this->getContext()->getAffiliation()->get(),
-      $this->er->getLibraryIds()
+      $this->affiliation->get(), $this->er->getLibraryIds()
     )) {
       throw new freermsUnauthorizedException();
     }
   }
 
+  /**
+   * @param sfAction $action
+   * @param EResource $er
+   * @param freermsUserAffiliation $affiliation
+   * @return BaseAccessHandler
+   */
   static public function factory( sfAction $action, EResource $er,
     freermsUserAffiliation $affiliation )
   {
-    $is_onsite   = $affiliation->isOnsite();
+    $is_onsite = $affiliation->isOnsite();
     
     if ( $is_onsite ) {
       $class = $er->getAccessInfo()->getOnsiteAccessHandler();
@@ -82,7 +90,7 @@ class BaseAccessHandler
     }
 
     if ( class_exists( $class ) ) {
-      return new $class( $action, $er, $is_onsite );
+      return new $class( $action, $er, $affiliation, $is_onsite );
     }
     else {
       $msg = 'Unknown access handler class';
@@ -113,7 +121,7 @@ class BaseAccessHandler
 
     $directory = $directory . '/custom';
 
-    if ( is_dir( $directory ) && is_readable( $directory ) ) {
+    if ( is_dir( $directory ) && is_readable( $directory )) {
       $dir_obj = dir( $directory );
 
       while ( ( $entry = $dir_obj->read() ) !== false ) {
