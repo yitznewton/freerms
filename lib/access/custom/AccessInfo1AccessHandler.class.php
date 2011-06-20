@@ -6,7 +6,6 @@ class AccessInfo1AccessHandler extends BaseAccessHandler
   
   public function execute()
   {
-    $affiliation = $this->getContext()->getAffiliation();
     $user = $this->action->getUser();
     
     // do some logic, and redirect user as appropriate
