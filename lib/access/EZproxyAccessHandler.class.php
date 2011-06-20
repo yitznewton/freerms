@@ -47,7 +47,8 @@ class EZproxyAccessHandler extends BaseAccessHandler
   protected function checkAffiliation()
   {
     if ( ! array_intersect(
-      $this->action->affiliation->get(), $this->er->getLibraryIds()
+      $this->getContext()->getAffiliation()->get(),
+      $this->er->getLibraryIds()
     )) {
       throw new freermsUnauthorizedException();
     }
@@ -60,7 +61,7 @@ class EZproxyAccessHandler extends BaseAccessHandler
     }
 
     return $this->library = LibraryPeer::retrieveOneForAffiliation(
-      $this->action->affiliation );
+      $this->getContext()->getAffiliation() );
   }
   
   static public function composeTicketUrl(Library $library, $access_url, $user = 'user', $encoding = 'md5' )

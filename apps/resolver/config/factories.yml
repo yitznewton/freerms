@@ -77,6 +77,12 @@ all:
       cache_dir:                 %SF_TEMPLATE_CACHE_DIR%
       lifetime:                  600
       prefix:                    %SF_APP_DIR%/template
+  
+  view_cache_manager:
+    class: freermsResolverCacheManager
+    param:
+      cache_key_use_vary_headers: true
+      cache_key_use_host_name:    false
 #
 #  i18n:
 #    class: sfI18N

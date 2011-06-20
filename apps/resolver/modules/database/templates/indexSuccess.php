@@ -14,7 +14,7 @@
 <h2>Featured databases:</h2>
 <ul id="featured">
   <?php foreach ( $featured_dbs as $er ): ?>
-  <?php include_partial('databaseListElement', array('er' => $er)) ?>
+  <?php include_partial('listElement', array('er' => $er)) ?>
   <?php endforeach; ?>
 </ul>
 <?php endif; ?>
@@ -23,8 +23,5 @@
 <h2>All databases in this subject:</h2>
 <?php endif; ?>
 
-<ul>
-  <?php foreach ( $databases as $er ): ?>
-  <?php include_partial('databaseListElement', array('er' => $er)) ?>
-  <?php endforeach; ?>
-</ul>
+<?php // separate partial in order to enable caching ?>
+<?php include_partial('list', array('databases' => $databases)) ?>

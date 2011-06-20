@@ -11,15 +11,6 @@
 class databaseActions extends sfActions
 {
   /**
-   * An object representing Librarys that the user is affiliated with,
-   * whether by onsite detection or from the user's record. Instantiated
-   * and passed by freermsAffiliationFilter
-   *
-   * @var freermsUserAffiliation
-   * @see freermsAffiliationFilter
-   */
-  public $affiliation;
-  /**
    * @var EResource
    */
   public $er;
@@ -28,13 +19,14 @@ class databaseActions extends sfActions
   {
     $subject_slug  = $request->getParameter('subject');
     $this->subject = DbSubjectPeer::retrieveBySlug( $subject_slug );
+    $affiliation   = $this->getContext()->getAffiliation();
     
     $show_featured = LibraryPeer::isAnyShowFeaturedSubjects(
-      $this->affiliation->get() );
+      $affiliation->get() );
     
     if ( $this->subject && $show_featured ) {
       $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
-        $this->affiliation->get(), $this->subject, true );
+        $affiliation->get(), $this->subject, true );
     }
     else {
       $this->featured_dbs = array();
@@ -57,7 +49,7 @@ class databaseActions extends sfActions
     ));
 
     $this->databases = EResourcePeer::retrieveByAffiliationAndSubject(
-      $this->affiliation->get(), $this->subject );
+      $affiliation->get(), $this->subject );
   }
 
   public function executeAccess(sfWebRequest $request)
@@ -80,17 +72,18 @@ class databaseActions extends sfActions
     $this->forward404Unless($ers);
     $this->eresource = $ers[0];
     
-    $access = $this->eresource->getAccessInfo();
+    $access      = $this->eresource->getAccessInfo();
+    $affiliation = $this->getContext()->getAffiliation();
     
     if ( ! $access ) {
-      $this->eresource->recordUsageAttempt( $this->affiliation->getOne(),
+      $this->eresource->recordUsageAttempt( $affiliation->getOne(),
         false, 'no access information' );
       $this->forward404();
     }
 
     if ($this->eresource->getProductUnavailable()) {
       $this->eresource->recordUsageAttempt(
-        $this->affiliation->getOne(), false, 'unavailable' );
+        $affiliation->getOne(), false, 'unavailable' );
       $this->setTemplate('unavailable');
 
       return;
@@ -104,7 +97,7 @@ class databaseActions extends sfActions
       // FIXME: what about recording attempt when access fails in
       // AccessHandler?
       $this->eresource->recordUsageAttempt(
-        $this->affiliation->getOne(), true );
+        $affiliation->getOne(), true );
       
       $access_handler->execute();
     }
@@ -152,13 +145,14 @@ class databaseActions extends sfActions
     // commented out to fix RT #1266
     // $url = urldecode( $url );
 
-    // FIXME: remove host dependency
-    if ( strpos( $url, 'erms.tourolib.org' ) ) {
+    $affiliation = $this->getContext()->getAffiliation();
+    
+    if ( strpos( $url, $_SERVER['SERVER_NAME'] )) {
       $this->redirect( $url );
     }
 
     $user_libraries = LibraryPeer::retrieveByPKs(
-      $this->affiliation->get() );
+      $affiliation->get() );
     
     $this->forward404Unless( $user_libraries );
 
@@ -168,7 +162,7 @@ class databaseActions extends sfActions
       $this->redirect( $url );
     }
 
-    if ( $this->affiliation->isOnsite() ) {
+    if ( $affiliation->isOnsite() ) {
       $this->redirect( $url );
     }
 
