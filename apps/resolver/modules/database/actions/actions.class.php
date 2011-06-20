@@ -147,8 +147,7 @@ class databaseActions extends sfActions
 
     $affiliation = $this->getContext()->getAffiliation();
     
-    // FIXME: remove host dependency
-    if ( strpos( $url, 'erms.tourolib.org' ) ) {
+    if ( strpos( $url, $_SERVER['SERVER_NAME'] )) {
       $this->redirect( $url );
     }
 
