@@ -3,6 +3,8 @@ security:  ~
 
 affiliation:
   class: freermsAffiliationFilter
+freerms_cache:
+  class: freermsResolverCacheFilter
   
 # insert your own filters here
 
