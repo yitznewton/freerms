@@ -62,7 +62,8 @@ class BaseAccessHandler
   protected function checkAffiliation()
   {
     if ( ! array_intersect(
-      $this->action->affiliation->get(), $this->er->getLibraryIds()
+      $this->getContext()->getAffiliation()->get(),
+      $this->er->getLibraryIds()
     )) {
       throw new freermsUnauthorizedException();
     }
@@ -70,7 +71,7 @@ class BaseAccessHandler
 
   static public function factory( sfAction $action, EResource $er )
   {
-    $affiliation = new freermsUserAffiliation( $action->getUser() );
+    $affiliation = $this->getContext()->getAffiliation();
     $is_onsite   = $affiliation->isOnsite();
     
     if ( $is_onsite ) {
