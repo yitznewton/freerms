@@ -72,10 +72,16 @@ class BaseAccessHandler
     }
   }
 
+  /**
+   * @param sfAction $action
+   * @param EResource $er
+   * @param freermsUserAffiliation $affiliation
+   * @return BaseAccessHandler
+   */
   static public function factory( sfAction $action, EResource $er,
     freermsUserAffiliation $affiliation )
   {
-    $is_onsite   = $affiliation->isOnsite();
+    $is_onsite = $affiliation->isOnsite();
     
     if ( $is_onsite ) {
       $class = $er->getAccessInfo()->getOnsiteAccessHandler();
@@ -116,7 +122,7 @@ class BaseAccessHandler
 
     $directory = $directory . '/custom';
 
-    if ( is_dir( $directory ) && is_readable( $directory ) ) {
+    if ( is_dir( $directory ) && is_readable( $directory )) {
       $dir_obj = dir( $directory );
 
       while ( ( $entry = $dir_obj->read() ) !== false ) {
