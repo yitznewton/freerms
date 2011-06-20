@@ -69,9 +69,9 @@ class BaseAccessHandler
     }
   }
 
-  static public function factory( sfAction $action, EResource $er )
+  static public function factory( sfAction $action, EResource $er,
+    freermsUserAffiliation $affiliation )
   {
-    $affiliation = $this->getContext()->getAffiliation();
     $is_onsite   = $affiliation->isOnsite();
     
     if ( $is_onsite ) {
