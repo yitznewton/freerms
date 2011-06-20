@@ -1,15 +1,23 @@
-form#login-form{
+.form-signin{
   margin-top: 1em;
-}
-
-form#login-form div{
   clear:both;
   padding:0.25em 0;
 }
 
-form#login-form label{
-  float:left;
-  width:6em;
+.form-signin table{
+  margin-bottom: 0.6em;
+}
+
+.form-signin tbody, .form-signin tbody th{
+  border: none;
+}
+
+.form-signin th{
+  width:9em;
+}
+
+.form-signin th, .form-signin td{
+  padding: 0.4em 0.2em;
 }
 
 ul.nav-links{
@@ -32,6 +40,15 @@ ul.nav-links li{
   clear: both;
 }
 
+.database-index-intro{
+  border-bottom: 2px solid gray;
+}
+
 .description-short{
   display: none;
+}
+.product-note{
+  margin: 0.4em 0 1em;
+  font-style: italic;
+  font-size: 1.2em;
 }

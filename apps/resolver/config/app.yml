@@ -1,6 +1,11 @@
 all:
   .options:
     offsite-testing-ip-addresses:
-      - 127.0.0.1
+      # YBS
+      - 192.168.65.184
+      # Dr. Kadish - until we implement option to manually force login
+      # on-campus
+      - 192.168.47.113
   
-  homepage-redirect-url: http://www.touro.edu/library/
+  homepage-redirect-url: http://www.tourolib.org/
+  ebrary-site: touro

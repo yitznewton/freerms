@@ -1,3 +1,5 @@
+$ = jQuery;  // Nevada template steals the $ variable
+
 var FRResolver = {
   refer: function( link, note ) {
     if ( ! link ) {

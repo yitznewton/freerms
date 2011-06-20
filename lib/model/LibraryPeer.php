@@ -57,6 +57,25 @@ class LibraryPeer extends BaseLibraryPeer
   }
   
   /**
+   * @param array int[] $ids
+   * @return array string[]
+   */
+  public static function getCodesForIds( array $ids )
+  {
+    $con = Propel::getConnection();
+    
+    $questionmarks = str_repeat( '?,', count($ids) - 1 ) . '?';
+    
+    $q = 'SELECT l.code FROM libraries l '
+         . "WHERE l.id IN ($questionmarks)";
+    
+    $st = $con->prepare( $q );
+    $st->execute( $ids );
+
+    return $st->fetchAll( PDO::FETCH_COLUMN );
+  }
+  
+  /**
    * Returns first Library found for given freermsUserAffiliation
    *
    * @param freermsUserAffiliation $affiliation

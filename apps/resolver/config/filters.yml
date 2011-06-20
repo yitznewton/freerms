@@ -3,6 +3,8 @@ security:  ~
 
 affiliation:
   class: freermsAffiliationFilter
+layout:
+  class: touroLayoutFilter
 freerms_cache:
   class: freermsResolverCacheFilter
   
