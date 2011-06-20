@@ -85,7 +85,7 @@ class BaseAccessHandler
     }
 
     if ( class_exists( $class ) ) {
-      return new $class( $action, $er, $is_onsite );
+      return new $class( $action, $er, $affiliation, $is_onsite );
     }
     else {
       $msg = 'Unknown access handler class';
