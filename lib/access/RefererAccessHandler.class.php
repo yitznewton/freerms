@@ -6,7 +6,7 @@ class RefererAccessHandler extends BaseAccessHandler
   const IS_VALID_OFFSITE = true;
   const DESCRIPTION   = 'Referer URL';
 
-  public function execute()
+  public function execute( sfAction $action )
   {
     $this->checkAffiliation();
     
@@ -15,16 +15,16 @@ class RefererAccessHandler extends BaseAccessHandler
       return;
     }
     
-    $this->action->getUser()->setFlash(
+    $action->getUser()->setFlash(
       'er_title', $this->er->getTitle() );
     
-    $this->action->getUser()->setFlash(
+    $action->getUser()->setFlash(
       'er_referral_note', $this->er->getAccessInfo()->getReferralNote() );
     
-    $this->action->getUser()->setFlash(
+    $action->getUser()->setFlash(
       'er_access_uri', $this->getAccessUri() );
     
-    $this->action->redirect('database/refer');
+    $action->redirect('database/refer');
 
     return;
   }
