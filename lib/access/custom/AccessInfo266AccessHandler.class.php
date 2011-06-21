@@ -11,13 +11,12 @@ class AccessInfo266AccessHandler extends RefererAccessHandler
   protected function getAccessUri()
   {
     $affiliated_libraries = LibraryPeer::retrieveByPks(
-      $this->action->affiliation->get());
+      $this->affiliation->get() );
     
     $lib_code = $this->getGaleCode( $affiliated_libraries );
     
     if ( ! $lib_code ) {
-      $this->action->setTemplate('unauthorized');
-      return;
+      throw new freermsUnauthorizedException();
     }
     
     return "http://infotrac.galegroup.com/itweb/$lib_code?db=CDB";
