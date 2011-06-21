@@ -6,16 +6,13 @@ class EbrarySSOAccessHandler extends EZproxyAccessHandler
   const IS_VALID_OFFSITE  = true;
   const DESCRIPTION       = 'ebrary SSO';
   
-  public function execute()
+  public function execute( sfAction $action )
   {
-    if (
-      ! $this->isOnsite
-      || isset( $_GET['signin'] )
-    ) {
-      return EZproxyAccessHandler::execute();
+    if ( ! $this->isOnsite || isset( $_GET['signin'] )) {
+      return EZproxyAccessHandler::execute( $action );
     }
     
-    return BaseAccessHandler::execute();
+    return BaseAccessHandler::execute( $action );
   }
   
   protected function getAccessUri()

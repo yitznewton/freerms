@@ -20,7 +20,7 @@ database_direct_url:
 
 database_direct_refer:
   url:   /direct-refer/*
-  param: { module: database, action: URLRefer }
+  param: { module: database, action: directRefer }
   
 logout:
   url:   /logout

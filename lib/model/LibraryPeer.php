@@ -97,6 +97,7 @@ class LibraryPeer extends BaseLibraryPeer
    * Returns whether ShowFeaturedSubjects is set on any of the Librarys with
    * the given ids
    * 
+   * @deprecated
    * @param array int[] $ids 
    * @return boolean
    */

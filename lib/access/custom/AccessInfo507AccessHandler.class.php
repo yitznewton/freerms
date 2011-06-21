@@ -7,9 +7,9 @@ class AccessInfo507AccessHandler extends BaseAccessHandler
   const IS_VALID_ONSITE  = true;
   const IS_VALID_OFFSITE = true;
   
-  public function execute()
+  public function execute( sfAction $action )
   {
-    $library_ids   = $this->action->affiliation->get();
+    $library_ids   = $this->affiliation->get();
     
     $library_codes = LibraryPeer::getCodesForIds( $library_ids );
     
@@ -19,9 +19,9 @@ class AccessInfo507AccessHandler extends BaseAccessHandler
       throw new RuntimeException('unauthorized');
     }
     
-    $this->action->credentials = $credentials;
-    $this->action->setLayout( false );
-    $this->action->setTemplate( 'AccessInfo507' );
+    $action->credentials = $credentials;
+    $action->setLayout( false );
+    $action->setTemplate( 'AccessInfo507' );
   }
   
   /**
