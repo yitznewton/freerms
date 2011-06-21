@@ -7,7 +7,7 @@ class AccessInfo440AccessHandler extends BaseAccessHandler
   const IS_VALID_ONSITE   = true;
   const IS_VALID_OFFSITE  = true;
 
-  public function execute()
+  public function execute( sfAction $action )
   {
     $library_ids   = $this->affiliation->get();
     $library_codes = LibraryPeer::getCodesForIds( $library_ids );
@@ -16,8 +16,8 @@ class AccessInfo440AccessHandler extends BaseAccessHandler
       throw new RuntimeException('unauthorized');
     }
 
-    $this->action->utd_codes = $this->getUTDCodes( $library_codes );
-    $this->action->setTemplate('AccessInfo440');
+    $action->utd_codes = $this->getUTDCodes( $library_codes );
+    $action->setTemplate('AccessInfo440');
   }
   
   /**

@@ -50,14 +50,13 @@
       <?php echo $form['AdminInfo'] ?>
     </div>
 
-    <div id="libraries">
-      <?php echo $form['Acquisition']->renderError() ?>
-      <?php echo $form['Acquisition']['acq_lib_assoc_list']->renderRow() ?>
-    </div>
-
     <div id="subjects">
       <?php echo $form['e_resource_db_subject_assoc_list'] ?>
     </div>
 
+    <div id="libraries">
+      <?php echo $form['Acquisition']->renderError() ?>
+      <?php echo $form['Acquisition']['acq_lib_assoc_list']->renderRow() ?>
+    </div>
   </div>
 </form>

@@ -6,10 +6,10 @@ class UnavailableAccessHandler extends BaseAccessHandler
   const IS_VALID_OFFSITE = true;
   const DESCRIPTION   = 'Unavailable';
 
-  public function execute()
+  public function execute( sfAction $action )
   {
-    $this->action->getUser()->setFlash('title', $this->action->er->getTitle());
-    $this->action->forward('database', 'unavailableHandler');
+    $action->getUser()->setFlash('title', $this->er->getTitle());
+    $action->forward('database', 'unavailableHandler');
 
     return;
   }
