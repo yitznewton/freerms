@@ -17,36 +17,26 @@ class databaseActions extends sfActions
   
   public function executeIndex(sfWebRequest $request)
   {
-    $subject_slug  = $request->getParameter('subject');
-    $this->subject = DbSubjectPeer::retrieveBySlug( $subject_slug );
     $affiliation   = $this->getContext()->getAffiliation();
+    $subject_slug  = $request->getParameter('subject');
     
-    $show_featured = LibraryPeer::isAnyShowFeaturedSubjects(
-      $affiliation->get() );
+    if ( $subject_slug ) {
+      $this->subject = DbSubjectPeer::retrieveBySlug( $subject_slug );
+    }
+    else {
+      $this->subject = null;
+    }
     
-    if ( $this->subject && $show_featured ) {
+    if ( $this->subject ) {
       $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
         $affiliation->get(), $this->subject, true );
     }
     else {
       $this->featured_dbs = array();
     }
-    
+
     $this->subject_default = $subject_slug;
-    
-    $c_subject_widget = new Criteria();
-    $c_subject_widget->addJoin( DbSubjectPeer::ID, EResourceDbSubjectAssocPeer::DB_SUBJECT_ID );
-    $c_subject_widget->addJoin( EResourceDbSubjectAssocPeer::ER_ID, EResourcePeer::ID );
-    $c_subject_widget->add( EResourcePeer::DELETED_AT, null, Criteria::ISNULL );
-    $c_subject_widget->add( EResourcePeer::SUPPRESSION, 0 );
-    $c_subject_widget->addAscendingOrderByColumn( DbSubjectPeer::LABEL );
-    
-    $this->subject_widget = new sfWidgetFormPropelChoice( array(
-      'add_empty'  => true,
-      'model'      => 'DbSubject',
-      'criteria'   => $c_subject_widget,
-      'key_method' => 'getSlug',
-    ));
+    $this->subject_widget  = new DbSubjectWidgetFormChoice();
 
     $this->databases = EResourcePeer::retrieveByAffiliationAndSubject(
       $affiliation->get(), $this->subject );
