@@ -97,44 +97,38 @@ class databaseActions extends sfActions
   public function executeRefer( sfWebRequest $request )
   {
     $this->forward404Unless(
-      $this->title = $this->getUser()->getFlash('er_title'));
-    
-    $this->forward404Unless(
       $this->access_uri = $this->getUser()->getFlash('er_access_uri'));
 
+    // may be null if coming from directRefer
+    $this->title = $this->getUser()->getFlash('er_title');
+    
     $this->referral_note = $this->getUser()->getFlash('er_referral_note');
   }
 
-  public function executeURLRefer(sfWebRequest $request)
+  /**
+   * This method passes a client-specified URL for referral
+   *
+   * @param sfWebRequest $request 
+   */
+  public function executeDirectRefer(sfWebRequest $request)
   {
     $raw_url = $request->getUri();
-    $url = substr($raw_url, strpos($raw_url, '/direct-refer/')+14);
+    $url = substr( $raw_url, strpos($raw_url, '/direct-refer/') + 14 );
     
     $this->getUser()->setFlash('er_id', null);
-    $this->getUser()->setFlash('access_uri', $url);
+    $this->getUser()->setFlash('er_access_uri', $url);
     $this->redirect('database/refer');
   }
   
-  public function executeHandleUnauthorized()
-  {
-    $this->title = $this->getUser()->getFlash('title');
-  }
-  
-  public function executeUnavailableHandler(sfWebRequest $request)
-  {
-    $this->title = $this->getUser()->getFlash('title');
-  }
-
   public function executeDirectUrl(sfWebRequest $request)
   {
     $raw_url = $request->getUri();
-    $url     = substr($raw_url, strrpos($raw_url, '/url/')+5);
-    // commented out to fix RT #1266
-    // $url = urldecode( $url );
+    $url     = substr( $raw_url, strrpos($raw_url, '/url/') + 5 );
 
     $affiliation = $this->getContext()->getAffiliation();
     
     if ( strpos( $url, $_SERVER['SERVER_NAME'] )) {
+      // multiple references to the FreERMS host
       $this->redirect( $url );
     }
 
@@ -142,7 +136,6 @@ class databaseActions extends sfActions
       $affiliation->get() );
     
     $this->forward404Unless( $user_libraries );
-
 
     // FIXME: remove once we have our ebrary MARC records fixed
     if (strpos( $url, 'ebrary' ) !== false) {
@@ -153,27 +146,21 @@ class databaseActions extends sfActions
       $this->redirect( $url );
     }
 
-    $proxy_url = freermsEZproxy::getEZproxyTicketUrl(
-      $user_libraries[0], $url, $this->getUser()->getAttribute('username')
+    $proxy_url = EZproxyAccessHandler::composeTicketUrl(
+      $user_libraries[0], $url,
+      $this->getUser()->getGuardUser()->getUsername()
     );
+    
     $this->redirect($proxy_url);
   }
 
-  /**
-   * @deprecated
-   */
-  public function executeDirectRefer(sfWebRequest $request)
+  public function executeHandleUnauthorized()
   {
-    $raw_url = $request->getUri();
-    $url = substr($raw_url, strpos($raw_url, '-refer/')+7);
-    
-    $er_id = $this->getUser()->getFlash('er_id');
-    $this->access_uri = $this->getUser()->getFlash('access_uri');
-
-    if (!$er_id || !$this->access_uri) {
-      $this->redirect(sfConfig::get('app_homepage-redirect-url'));
-    }
-    $this->er = EResourcePeer::retrieveByPK($er_id);
-    $this->forward404Unless($this->er);
+    $this->title = $this->getUser()->getFlash('title');
+  }
+  
+  public function executeUnavailableHandler(sfWebRequest $request)
+  {
+    $this->title = $this->getUser()->getFlash('title');
   }
 }
