@@ -9,7 +9,7 @@ class AccessInfo507AccessHandler extends BaseAccessHandler
   
   public function execute()
   {
-    $library_ids   = $this->action->affiliation->get();
+    $library_ids   = $this->affiliation->get();
     
     $library_codes = LibraryPeer::getCodesForIds( $library_ids );
     
