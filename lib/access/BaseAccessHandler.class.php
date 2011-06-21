@@ -61,8 +61,7 @@ class BaseAccessHandler
   protected function checkAffiliation()
   {
     if ( ! array_intersect(
-      $this->affiliation->get(),
-      $this->er->getLibraryIds()
+      $this->affiliation->get(), $this->er->getLibraryIds()
     )) {
       throw new freermsUnauthorizedException();
     }
