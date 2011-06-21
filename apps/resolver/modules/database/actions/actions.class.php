@@ -44,36 +44,35 @@ class databaseActions extends sfActions
 
   public function executeAccess(sfWebRequest $request)
   {
-    $er_id = $request->getParameter('id')
-      or $alt_id = $request->getParameter('alt_id');
-    
-    $this->forward404Unless( $er_id || $alt_id );
-    
     $c = new Criteria();
 
-    if ( $er_id ) {
-      $c->add(EResourcePeer::ID, $er_id);
+    if ( $request->hasParameter('id') ) {
+      $c->add( EResourcePeer::ID, $request->getParameter('id') );
+    }
+    else if ( $request->hasParameter('alt_id' ) ) {
+      $c->add( EResourcePeer::ALT_ID, $request->getParameter('alt_id'),
+        Criteria::LIKE );
     }
     else {
-      $c->add(EResourcePeer::ALT_ID, $alt_id, Criteria::LIKE);
-    }
-
-    $ers = EResourcePeer::doSelectJoinAccessInfo($c);
-    $this->forward404Unless($ers);
-    $this->eresource = $ers[0];
-    
-    $access      = $this->eresource->getAccessInfo();
-    $affiliation = $this->getContext()->getAffiliation();
-    
-    if ( ! $access ) {
-      $this->eresource->recordUsageAttempt( $affiliation->getOne(),
-        false, 'no access information' );
       $this->forward404();
     }
 
-    if ($this->eresource->getProductUnavailable()) {
-      $this->eresource->recordUsageAttempt(
+    $ers = EResourcePeer::doSelectJoinAccessInfo( $c );
+    $this->forward404Unless( $ers );
+    $this->er = $ers[0];
+    
+    $access      = $this->er->getAccessInfo();
+    $affiliation = $this->getContext()->getAffiliation();
+    
+    if ( ! $access ) {
+      $msg = 'EResource ' . $this->er->getId() . ' lacks AccessInfo';
+      throw new RuntimeException( $msg );
+    }
+
+    if ( $this->er->getProductUnavailable() ) {
+      $this->er->recordUsageAttempt(
         $affiliation->getOne(), false, 'unavailable' );
+      
       $this->setTemplate('unavailable');
 
       return;
@@ -81,20 +80,17 @@ class databaseActions extends sfActions
 
     // all clear to grant access
     
-    $access_handler = BaseAccessHandler::factory(
-      $this->eresource, $affiliation );
+    $access_handler = BaseAccessHandler::factory( $this->er, $affiliation );
     
     try {
       // FIXME: what about recording attempt when access fails in
       // AccessHandler?
-      $this->eresource->recordUsageAttempt(
-        $affiliation->getOne(), true );
-      
+      $this->er->recordUsageAttempt( $affiliation->getOne(), true );
       $access_handler->execute( $this );
     }
     catch ( freermsUnauthorizedException $e ) {
       $this->setTemplate('unauthorized');
-      return;
+      return; 
     }
   }
 
