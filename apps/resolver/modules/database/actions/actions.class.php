@@ -89,6 +89,7 @@ class databaseActions extends sfActions
       $access_handler->execute( $this );
     }
     catch ( freermsUnauthorizedException $e ) {
+      $this->title = $er->getTitle();
       $this->setTemplate('unauthorized');
       return; 
     }
@@ -154,11 +155,18 @@ class databaseActions extends sfActions
     $this->redirect($proxy_url);
   }
 
+  /**
+   * @deprecated
+   */
   public function executeHandleUnauthorized()
   {
     $this->title = $this->getUser()->getFlash('title');
   }
   
+  /**
+   * @deprecated
+   * @param sfWebRequest $request 
+   */
   public function executeUnavailableHandler(sfWebRequest $request)
   {
     $this->title = $this->getUser()->getFlash('title');
