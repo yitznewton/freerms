@@ -43,8 +43,9 @@ class EResourcePeer extends BaseEResourcePeer
     $c = new Criteria();
     $c->setDistinct();
     $c->addJoin( AcqLibAssocPeer::ACQ_ID, AcquisitionPeer::ID );
+    $c->addJoin( LibraryPeer::ID, AcqLibAssocPeer::LIB_ID );
     $c->addJoin( AcquisitionPeer::ID, EResourcePeer::ACQ_ID );
-    $c->add( AcqLibAssocPeer::LIB_ID, $library_ids, Criteria::IN);
+    $c->add( LibraryPeer::ID, $library_ids, Criteria::IN );
     $c->add( EResourcePeer::SUPPRESSION, 0 );
     
     if ( $subject ) {
@@ -55,6 +56,7 @@ class EResourcePeer extends BaseEResourcePeer
       if ( $featured_only ) {
         $c->add( EResourceDbSubjectAssocPeer::FEATURED_WEIGHT, -1,
           Criteria::NOT_EQUAL );
+        $c->add( LibraryPeer::SHOW_FEATURED_SUBJECTS, 1 );
         $c->addAscendingOrderByColumn(
           EresourceDbSubjectAssocPeer::FEATURED_WEIGHT );
       }
