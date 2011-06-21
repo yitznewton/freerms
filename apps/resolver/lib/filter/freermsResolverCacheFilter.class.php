@@ -4,8 +4,6 @@ class freermsResolverCacheFilter extends sfFilter
 {
   public function execute( $filterChain )
   {
-    $affiliation = $this->getContext()->getAffiliation();
-    
     if ( $this->getContext()->getAffiliation()->get() ) {
       $this->addCache();
     }
