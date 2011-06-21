@@ -89,7 +89,7 @@ class databaseActions extends sfActions
       $access_handler->execute( $this );
     }
     catch ( freermsUnauthorizedException $e ) {
-      $this->title = $er->getTitle();
+      $this->title = $this->er->getTitle();
       $this->setTemplate('unauthorized');
       return; 
     }
