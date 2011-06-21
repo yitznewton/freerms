@@ -92,7 +92,7 @@ class databaseActions extends sfActions
     // all clear to grant access
     
     $access_handler = BaseAccessHandler::factory(
-      $this, $this->eresource, $affiliation );
+      $this->eresource, $affiliation );
     
     try {
       // FIXME: what about recording attempt when access fails in
@@ -100,7 +100,7 @@ class databaseActions extends sfActions
       $this->eresource->recordUsageAttempt(
         $affiliation->getOne(), true );
       
-      $access_handler->execute();
+      $access_handler->execute( $this );
     }
     catch ( freermsUnauthorizedException $e ) {
       $this->setTemplate('unauthorized');

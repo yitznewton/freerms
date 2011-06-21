@@ -7,21 +7,19 @@ class BaseAccessHandler
   const DESCRIPTION       = 'Open or IP-based';
   const FORCE_AUTH_ONSITE = false;
 
-  protected $action;
   protected $er;
   protected $affiliation;
   protected $isOnsite;
 
-  protected function __construct( sfAction $action, EResource $er,
+  protected function __construct( EResource $er,
     freermsUserAffiliation $affiliation, $is_onsite )
   {
-    $this->action      = $action;
     $this->er          = $er;
     $this->affiliation = $affiliation;
     $this->isOnsite    = $is_onsite;
   }
 
-  public function execute()
+  public function execute( sfAction $action )
   {
     $this->checkAffiliation();
     
@@ -29,9 +27,9 @@ class BaseAccessHandler
     
     if (
       $class_name::FORCE_AUTH_ONSITE
-      && ! $this->action->getUser()->isAuthenticated()
+      && ! $action->getUser()->isAuthenticated()
     ) {
-      $this->action->forward(
+      $action->forward(
         sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action') );
 
       return;
@@ -44,7 +42,7 @@ class BaseAccessHandler
       $method = 'getOffsiteAccessUri';
     }
 
-    $this->action->redirect(
+    $action->redirect(
       $this->er->getAccessInfo()->$method() );
 
     return;
@@ -52,8 +50,6 @@ class BaseAccessHandler
 
   protected function getAccessUri()
   {
-    $this->action->getUser()->setFlash( 'er_id', $this->er->getId() );
-
     if ( $this->isOnsite ) {
       return $this->er->getAccessInfo()->getOnsiteAccessUri();
     }
@@ -73,12 +69,11 @@ class BaseAccessHandler
   }
 
   /**
-   * @param sfAction $action
    * @param EResource $er
    * @param freermsUserAffiliation $affiliation
    * @return BaseAccessHandler
    */
-  static public function factory( sfAction $action, EResource $er,
+  static public function factory( EResource $er,
     freermsUserAffiliation $affiliation )
   {
     $is_onsite = $affiliation->isOnsite();
@@ -91,7 +86,7 @@ class BaseAccessHandler
     }
 
     if ( class_exists( $class ) ) {
-      return new $class( $action, $er, $affiliation, $is_onsite );
+      return new $class( $er, $affiliation, $is_onsite );
     }
     else {
       $msg = 'Unknown access handler class';
