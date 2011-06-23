@@ -24,13 +24,7 @@ class AccessInfo508AccessHandler extends EZproxyAccessHandler
 
     $access_uri = $this->getAccessUri();
 
-    if ( $this->isOnsite ) {
-      $action->redirect( $access_uri );
-      return;
-    }
-    else {
-      EZproxyAccessHandler::execute( $action );  // pass to EZproxy
-      return;
-    }
+    EZproxyAccessHandler::execute( $action );  // pass to EZproxy
+    return;
   }
 }
