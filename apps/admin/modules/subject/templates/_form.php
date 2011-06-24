@@ -11,7 +11,7 @@
   <?php echo $form->renderHiddenFields() ?>
   <input type="submit" value="Save" />
   <?php if (!$form->getObject()->isNew()): ?>
-  <?php echo link_to('Delete', 'database/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?')) ?>
+  <?php echo link_to('Delete', 'subject/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?')) ?>
   <?php endif; ?>
 </div>
 

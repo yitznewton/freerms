@@ -9,12 +9,4 @@ class DbSubjectPeer extends BaseDbSubjectPeer
     
     return DbSubjectPeer::doSelectOne( $c );
   }
-  
-  public static function retrieveHomeSubject()
-  {
-    $c = new Criteria();
-    $c->add( DbSubjectPeer::LABEL, 'HOME' );
-    
-    return DbSubjectPeer::doSelectOne( $c );
-  }
 }

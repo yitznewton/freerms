@@ -64,6 +64,15 @@
         <li class="menu-link-current">Subjects</li>  
         <?php endif; ?>
 
+        <?php if ($this->getActionName() != 'edit'
+          || $this->getModuleName() != 'featured'): ?>
+        <li class="menu-link">
+          <a href="<?php echo url_for('featured/edit') ?>">Featured databases</a>
+        </li>  
+        <?php else: ?>
+        <li class="menu-link-current">Featured databases</li>  
+        <?php endif; ?>
+
       </ul> 
       
       <?php if ($sf_user->isAuthenticated()): ?>
