@@ -18,4 +18,12 @@ class DbSubject extends BaseDbSubject
     
     return parent::getEResourceDbSubjectAssocs( $criteria, $con );
   }
+  
+  /**
+   * @return bool
+   */
+  public function isHomeSubject()
+  {
+    return $this->getLabel() == 'HOME';
+  }
 }
