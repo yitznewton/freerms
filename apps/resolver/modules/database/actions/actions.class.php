@@ -31,6 +31,10 @@ class databaseActions extends sfActions
       $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
         $affiliation->get(), $this->subject, true );
     }
+    elseif ( $subject = DbSubjectPeer::retrieveHomeSubject() ) {
+      $this->featured_dbs = EResourcePeer::retrieveByAffiliationAndSubject(
+        $affiliation->get(), $subject, true );
+    }
     else {
       $this->featured_dbs = array();
     }

@@ -13,6 +13,7 @@ class DbSubjectWidgetFormChoice extends sfWidgetFormPropelChoice
     $c = new Criteria();
     $c->addJoin( DbSubjectPeer::ID, EResourceDbSubjectAssocPeer::DB_SUBJECT_ID );
     $c->addJoin( EResourceDbSubjectAssocPeer::ER_ID, EResourcePeer::ID );
+    $c->add( DbSubjectPeer::LABEL, 'HOME', Criteria::NOT_EQUAL );
     $c->add( EResourcePeer::DELETED_AT, null, Criteria::ISNULL );
     $c->add( EResourcePeer::SUPPRESSION, 0 );
     $c->addAscendingOrderByColumn( DbSubjectPeer::LABEL );
