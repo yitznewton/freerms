@@ -18,23 +18,4 @@ class DbSubject extends BaseDbSubject
     
     return parent::getEResourceDbSubjectAssocs( $criteria, $con );
   }
-  
-  /**
-   * @return bool
-   */
-  public function isHomeSubject()
-  {
-    return $this->getLabel() == 'HOME';
-  }
-  
-  /**
-   * @param PropelPDO $con 
-   */
-  public function delete(PropelPDO $con = null) {
-    if ( $this->isHomeSubject() ) {
-      throw new RuntimeException('Cannot delete home subject');
-    }
-    
-    parent::delete($con);
-  }
 }

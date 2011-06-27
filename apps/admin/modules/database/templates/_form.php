@@ -37,6 +37,7 @@
           <?php echo $form['Acquisition']['vendor_org_id']->renderRow() ?>
           <?php echo $form['subscription_number']->renderRow() ?>
           <?php echo $form['language']->renderRow() ?>
+          <?php echo $form['is_featured']->renderRow() ?>
           <?php echo $form['description']->renderRow() ?>
         </tbody>
       </table>
