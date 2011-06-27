@@ -167,6 +167,10 @@ function getSubform( type, index )
 }
 
 $(document).ready(function(){
+  if ( FR.$$('signin_username') ) {
+    FR.$$('signin_username').focus();
+  }
+  
   var admin_tabset = $('#tab-container > ul').tabs({
     cookie: {}
   });
