@@ -63,7 +63,13 @@ FRSubjectRow.prototype.init = function() {
 
 FRSubjectRow.prototype.remove = function() {
   if ( this.ajax_on_remove ) {
-    $.ajax( this.ajax_on_remove );
+    var url_matches = window.location.href.match(/^.+admin[^\.]*\.php/);
+    
+    if ( ! url_matches ) {
+      return false;
+    }
+    
+    $.ajax( url_matches[0] + this.ajax_on_remove );
   }
           
   this.weight_input_el.parentNode.removeChild( this.weight_input_el );
@@ -232,11 +238,10 @@ $(document).ready(function(){
     $('#admin-subject-databases tr').each( function() {
       var row = new FRSubjectRow( this, 'db_subject_EResourceDbSubjectAssocs' );
 
-      // FIXME: get base url from PHP
-      var admin_root = '/admin_dev.php';  //FIXME get from PHP
-      var url = '/subject/ajax/remove/er_id/' + row.er_id + '/subject_id/'
-                + subject_id;
-      row.setAjaxOnRemove( admin_root + url );
+      var url = '/subject/ajax/remove/er_id/' + row.er_id
+                + '/subject_id/' + subject_id;
+      
+      row.setAjaxOnRemove( url );
 
       if ( row.isFeatured() ) {
         row.setSorter( featured_sorter );
@@ -269,12 +274,7 @@ $(document).ready(function(){
 
     $('#admin-featured-databases tr tr').each( function() {
       var row = new FRSubjectRow( this, 'EResources' );
-      
-      // FIXME: admin root
-      var url = '/admin.php/database/ajax/unfeature/id/' + row.er_id;
-      
-      row.setAjaxOnRemove( url );
-      
+      row.setAjaxOnRemove( '/database/ajax/unfeature/id/' + row.er_id );
       sorter.add( row );
     });
     
