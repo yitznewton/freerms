@@ -558,6 +558,14 @@ propel:
       foreignReference: id
       onDelete: RESTRICT
       onUpdate: CASCADE
+    is_featured:
+      type: BOOLEAN
+      required: true
+      default: 0
+    featured_weight:
+      type: INTEGER
+      required: true
+      default: 0
 #    process_id: 
 #      type: INTEGER
 #      foreignTable: processes

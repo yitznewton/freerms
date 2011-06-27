@@ -67,6 +67,15 @@ class EResourcePeer extends BaseEResourcePeer
     
     return EResourcePeer::doSelect( $c );
   }
+  
+  public static function retrieveHomeFeatured()
+  {
+    $c = new Criteria();
+    $c->add( EResourcePeer::IS_FEATURED, 1 );
+    $c->addAscendingOrderByColumn( EResourcePeer::FEATURED_WEIGHT );
+    
+    return EResourcePeer::doSelect( $c );
+  }
 
   public static function doCount(Criteria $criteria, $distinct = false, PropelPDO $con = null)
   {
