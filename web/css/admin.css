@@ -206,6 +206,11 @@ ul.database-list li{
   float: left;
   margin-right: 0.3em;
 }
+.ui-icon-close{
+  float: right;
+  margin: 0;
+  cursor: pointer;
+}
 form#login-form div{
   clear:both;
   padding:0.25em 0;

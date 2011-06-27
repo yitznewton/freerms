@@ -2,6 +2,7 @@ function FRSubjectRow( tr, prefix )
 {
   this.er_id;
   this.title;
+  this.sorter;
   
   this.tr     = tr;
   this.prefix = prefix;
@@ -27,6 +28,8 @@ function FRSubjectRow( tr, prefix )
   }
 
   this.title = title_matches[1];
+  
+  this.init();
 }
 
 FRSubjectRow.prototype.isFeatured = function() {
@@ -39,42 +42,73 @@ FRSubjectRow.prototype.isFeatured = function() {
   return ( weight_input_el.value != -1 );
 }
 
+FRSubjectRow.prototype.setSorter = function( sorter ) {
+  this.sorter = sorter;
+}
+
 FRSubjectRow.prototype._getWeightInputEl = function() {
   var weight_input_id = this.prefix + '_' + this.er_id + '_featured_weight';
 
   return FR.$$( weight_input_id );
 }
 
-FRSubjectRow.prototype.getItem = function() {
-  return {title: this.title, weight_input_el: this._getWeightInputEl()};
+FRSubjectRow.prototype.init = function() {
+  this.weight_input_el = this._getWeightInputEl();
+}
+
+FRSubjectRow.prototype.remove = function() {
+  console.log(this.er_id, this.sorter.getSubjectId());
+  // DO: ajax remove
+  this.weight_input_el.parentNode.removeChild( this.weight_input_el );
 }
   
-function FRSubjectSorter( id )
+function FRSubjectSorter( id, subject_id )
 {
   this.ul           = document.createElement('ul');
   this.ul.id        = id;
   this.ul.className = 'sortable';
   this.items        = [];
   this.connections  = [];
+  this.subject_id   = subject_id;
 }
 
 FRSubjectSorter.prototype.add = function( item ) {
   this.items.push( item );
 }
 
+FRSubjectSorter.prototype.getSubjectId = function() {
+  return this.subject_id;
+}
+
 FRSubjectSorter.prototype.render = function() {
   var i;
   
   for ( i = 0; i < this.items.length; i++ ) {
-    var li = document.createElement('li');
+    var li   = document.createElement('li');
+    var item = this.items[i];
 
     li.className       = 'ui-state-default';
-    li.innerHTML       = this.items[i].title;
-    li.weight_input_el = this.items[i].weight_input_el;
+    li.innerHTML       = item.title;
+    li.weight_input_el = item.weight_input_el;
 
     var span_arrow = document.createElement('span');
     span_arrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
     li.appendChild( span_arrow );
+    
+    var span_close = document.createElement('span');
+    span_close.className = 'ui-icon ui-icon-close';
+    
+    span_close.onclick = function( s, li, item ) {
+      return function() {
+        item.remove();
+        
+        $(li).fadeOut( 400, function() {
+          this.parentNode.removeChild( this );
+        });
+      }
+    }(span_close, li, item)
+    
+    li.appendChild( span_close );
 
     this.ul.appendChild( li );
   }
@@ -184,17 +218,24 @@ $(document).ready(function(){
   updateIpRegFields();
   
   if ( FR.$$('admin-subject-databases') ) {
-    var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
-    var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
+    var subject_id = FR.$$('db_subject_id').value;
+    
+    var nonfeatured_sorter = new FRSubjectSorter(
+      'databases-nonfeatured', subject_id );
+    
+    var featured_sorter = new FRSubjectSorterFeatured(
+      'databases-featured', subject_id );
     
     $('#admin-subject-databases tr').each( function() {
       var row = new FRSubjectRow( this, 'db_subject_EResourceDbSubjectAssocs' );
 
       if ( row.isFeatured() ) {
-        featured_sorter.add( row.getItem() );
+        row.setSorter( featured_sorter );
+        featured_sorter.add( row );
       }
       else {
-        nonfeatured_sorter.add( row.getItem() );
+        row.setSorter( nonfeatured_sorter );
+        nonfeatured_sorter.add( row );
       }
     });
     
@@ -219,7 +260,7 @@ $(document).ready(function(){
 
     $('#admin-featured-databases tr tr').each( function() {
       var row = new FRSubjectRow( this, 'EResources' );
-      sorter.add( row.getItem() );
+      sorter.add( row );
     });
     
     var $subject_container = $('#admin-featured-databases');
