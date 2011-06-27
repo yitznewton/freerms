@@ -29,9 +29,9 @@ homepage:
   url:   /
   param: { module: database, action: index }
 
-featured:
-  url: /featured
-  param: { module: featured, action: edit }
+database_featured:
+  url:   /featured
+  param: { module: database, action: featured }
 
 default_index:
   url:   /:module
