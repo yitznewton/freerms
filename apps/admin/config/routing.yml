@@ -33,6 +33,10 @@ database_featured:
   url:   /featured
   param: { module: database, action: featured }
 
+ajax_er_db_subject_remove:
+  url:   /subject/ajax/remove/*
+  param: { module: subject, action: ajaxEResourceDelete }
+
 default_index:
   url:   /:module
   param: { action: index }

@@ -57,8 +57,14 @@ FRSubjectRow.prototype.init = function() {
 }
 
 FRSubjectRow.prototype.remove = function() {
-  console.log(this.er_id, this.sorter.getSubjectId());
-  // DO: ajax remove
+  var url = '/subject/ajax/remove/er_id/' + this.er_id + '/subject_id/'
+            + this.sorter.getSubjectId();
+          
+  var admin_root = '/admin_dev.php';  //FIXME get from PHP
+  $.ajax({
+    url: admin_root + url
+  });
+          
   this.weight_input_el.parentNode.removeChild( this.weight_input_el );
 }
   
@@ -156,9 +162,9 @@ FRSubjectSorterFeatured.prototype.sort = function() {
   });
 }
 
-function FRSubjectSorterFeatured( id )
+function FRSubjectSorterFeatured( id, subject_id )
 {
-  FRSubjectSorter.prototype.constructor.call( this, id );
+  FRSubjectSorter.prototype.constructor.call( this, id, subject_id );
 }
 
 function clearAll( select_el )
