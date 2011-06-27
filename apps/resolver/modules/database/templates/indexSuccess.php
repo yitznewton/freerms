@@ -29,8 +29,10 @@
 </ul>
 <?php endif; ?>
 
-<?php if ( $featured_dbs ): ?>
+<?php if ( $subject && $featured_dbs ): ?>
 <h2>All databases in this subject:</h2>
+<?php elseif ( $featured_dbs ): ?>
+<h2>All databases:</h2>
 <?php endif; ?>
 
 <?php include_partial('list', array('databases' => $databases)) ?>
