@@ -32,7 +32,7 @@ class databaseActions extends sfActions
         $affiliation->get(), $this->subject, true );
     }
     else {
-      $this->featured_dbs = array();
+      $this->featured_dbs = EResourcePeer::retrieveHomeFeatured();
     }
 
     $this->subject_default = $subject_slug;

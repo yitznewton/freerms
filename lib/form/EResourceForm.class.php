@@ -14,6 +14,7 @@ class EResourceForm extends BaseEResourceForm
   {
     unset(
       $this['sort_title'],
+      $this['featured_weight'],
       $this['access_info_id'],
       $this['acq_id'],
       $this['admin_info_id'],
@@ -25,6 +26,7 @@ class EResourceForm extends BaseEResourceForm
     $this->widgetSchema['alt_id']->setLabel('Alternate ID');
     $this->widgetSchema['alt_title']->setLabel('Alternate title');
     $this->widgetSchema['suppression']->setLabel('Suppress display');
+    $this->widgetSchema['is_featured']->setLabel('Feature on homepage');
     $this->widgetSchema['e_resource_db_subject_assoc_list']
       ->setLabel('Subjects')
       ->setOption('expanded', true);

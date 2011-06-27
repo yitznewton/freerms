@@ -1,9 +1,10 @@
-function FRSubjectRow( tr )
+function FRSubjectRow( tr, prefix )
 {
   this.er_id;
   this.title;
   
-  this.tr = tr;
+  this.tr     = tr;
+  this.prefix = prefix;
   
   var $label = $('th label', tr);
 
@@ -11,8 +12,7 @@ function FRSubjectRow( tr )
     throw new Error('Label not found');
   }
 
-  var for_matches = $label.attr('for')
-    .match(/db_subject_EResourceDbSubjectAssocs_(\d+)_featured_weight/);
+  var for_matches = $label.attr('for').match(/(\d+)_featured_weight/);
 
   if ( ! for_matches ) {
     throw new Error('Could not match er_id');
@@ -40,8 +40,7 @@ FRSubjectRow.prototype.isFeatured = function() {
 }
 
 FRSubjectRow.prototype._getWeightInputEl = function() {
-  var weight_input_id = 'db_subject_EResourceDbSubjectAssocs_'
-                        + this.er_id + '_featured_weight';
+  var weight_input_id = this.prefix + '_' + this.er_id + '_featured_weight';
 
   return FR.$$( weight_input_id );
 }
@@ -187,9 +186,9 @@ $(document).ready(function(){
   if ( FR.$$('admin-subject-databases') ) {
     var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
     var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
-
+    
     $('#admin-subject-databases tr').each( function() {
-      var row = new FRSubjectRow( this );
+      var row = new FRSubjectRow( this, 'db_subject_EResourceDbSubjectAssocs' );
 
       if ( row.isFeatured() ) {
         featured_sorter.add( row.getItem() );
@@ -212,6 +211,25 @@ $(document).ready(function(){
     $('#admin-form-subject').submit( function() {
       featured_sorter.bind();
       nonfeatured_sorter.bind();
+    });
+  }
+  
+  if ( FR.$$('admin-featured-databases') ) {
+    var sorter = new FRSubjectSorterFeatured( 'home-featured-databases' );
+
+    $('#admin-featured-databases tr tr').each( function() {
+      var row = new FRSubjectRow( this, 'EResources' );
+      sorter.add( row.getItem() );
+    });
+    
+    var $subject_container = $('#admin-featured-databases');
+    
+    sorter.render().appendTo( $subject_container );
+
+    $('table', $subject_container).hide();
+
+    $('#admin-form-featured').submit( function() {
+      sorter.bind();
     });
   }
 

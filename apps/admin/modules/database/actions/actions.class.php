@@ -13,4 +13,21 @@ require_once dirname(__FILE__).'/../lib/databaseGeneratorHelper.class.php';
  */
 class databaseActions extends autoDatabaseActions
 {
+  public function executeFeatured( sfWebRequest $request )
+  {
+    $er_params_all = $request->getParameter('EResources');
+    
+    if ( $er_params_all ) {
+      foreach ( $er_params_all as $er_params ) {
+        $er = EResourcePeer::retrieveByPK( $er_params['id'] );
+        
+        $this->forward404Unless( $er );
+        
+        $er->setFeaturedWeight( $er_params['featured_weight'] );
+        $er->save();
+      }
+    }
+    
+    $this->form = new FeaturedDbForm();
+  }
 }
