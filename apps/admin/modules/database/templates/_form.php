@@ -56,8 +56,7 @@
     </div>
 
     <div id="libraries">
-      <?php echo $form['Acquisition']->renderError() ?>
-      <?php echo $form['Acquisition']['acq_lib_assoc_list']->renderRow() ?>
+      <?php echo $form['Acquisition']['acq_lib_assoc_list'] ?>
     </div>
   </div>
 </form>
