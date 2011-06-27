@@ -62,6 +62,8 @@ class AcquisitionForm extends BaseAcquisitionForm
       'choices' => array_keys($orgs),
       'required' => false
     ));
+    
+    $this->validatorSchema['acq_lib_assoc_list']->setOption('model', 'Library');
 
     $decorator = new freermsWidgetFormatterDiv($this->widgetSchema); 
     $decorator->setRowFormat(
