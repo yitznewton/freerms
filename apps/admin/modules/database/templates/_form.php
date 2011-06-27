@@ -37,6 +37,7 @@
           <?php echo $form['Acquisition']['vendor_org_id']->renderRow() ?>
           <?php echo $form['subscription_number']->renderRow() ?>
           <?php echo $form['language']->renderRow() ?>
+          <?php echo $form['is_featured']->renderRow() ?>
           <?php echo $form['description']->renderRow() ?>
         </tbody>
       </table>
@@ -55,8 +56,7 @@
     </div>
 
     <div id="libraries">
-      <?php echo $form['Acquisition']->renderError() ?>
-      <?php echo $form['Acquisition']['acq_lib_assoc_list']->renderRow() ?>
+      <?php echo $form['Acquisition']['acq_lib_assoc_list'] ?>
     </div>
   </div>
 </form>
