@@ -3,6 +3,7 @@ function FRSubjectRow( tr, prefix )
   this.er_id;
   this.title;
   this.sorter;
+  this.ajax_on_remove;
   
   this.tr     = tr;
   this.prefix = prefix;
@@ -46,6 +47,10 @@ FRSubjectRow.prototype.setSorter = function( sorter ) {
   this.sorter = sorter;
 }
 
+FRSubjectRow.prototype.setAjaxOnRemove = function( url ) {
+  this.ajax_on_remove = url;
+}
+
 FRSubjectRow.prototype._getWeightInputEl = function() {
   var weight_input_id = this.prefix + '_' + this.er_id + '_featured_weight';
 
@@ -57,25 +62,20 @@ FRSubjectRow.prototype.init = function() {
 }
 
 FRSubjectRow.prototype.remove = function() {
-  var url = '/subject/ajax/remove/er_id/' + this.er_id + '/subject_id/'
-            + this.sorter.getSubjectId();
-          
-  var admin_root = '/admin_dev.php';  //FIXME get from PHP
-  $.ajax({
-    url: admin_root + url
-  });
+  if ( this.ajax_on_remove ) {
+    $.ajax( this.ajax_on_remove );
+  }
           
   this.weight_input_el.parentNode.removeChild( this.weight_input_el );
 }
   
-function FRSubjectSorter( id, subject_id )
+function FRSubjectSorter( id )
 {
   this.ul           = document.createElement('ul');
   this.ul.id        = id;
   this.ul.className = 'sortable';
   this.items        = [];
   this.connections  = [];
-  this.subject_id   = subject_id;
 }
 
 FRSubjectSorter.prototype.add = function( item ) {
@@ -91,11 +91,11 @@ FRSubjectSorter.prototype.render = function() {
   
   for ( i = 0; i < this.items.length; i++ ) {
     var li   = document.createElement('li');
-    var item = this.items[i];
+    var row  = this.items[i];
 
     li.className       = 'ui-state-default';
-    li.innerHTML       = item.title;
-    li.weight_input_el = item.weight_input_el;
+    li.innerHTML       = row.title;
+    li.weight_input_el = row.weight_input_el;
 
     var span_arrow = document.createElement('span');
     span_arrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
@@ -104,15 +104,15 @@ FRSubjectSorter.prototype.render = function() {
     var span_close = document.createElement('span');
     span_close.className = 'ui-icon ui-icon-close';
     
-    span_close.onclick = function( s, li, item ) {
+    span_close.onclick = function( s, li, row ) {
       return function() {
-        item.remove();
+        row.remove();
         
         $(li).fadeOut( 400, function() {
           this.parentNode.removeChild( this );
         });
       }
-    }(span_close, li, item)
+    }(span_close, li, row)
     
     li.appendChild( span_close );
 
@@ -162,9 +162,9 @@ FRSubjectSorterFeatured.prototype.sort = function() {
   });
 }
 
-function FRSubjectSorterFeatured( id, subject_id )
+function FRSubjectSorterFeatured( id )
 {
-  FRSubjectSorter.prototype.constructor.call( this, id, subject_id );
+  FRSubjectSorter.prototype.constructor.call( this, id );
 }
 
 function clearAll( select_el )
@@ -224,16 +224,19 @@ $(document).ready(function(){
   updateIpRegFields();
   
   if ( FR.$$('admin-subject-databases') ) {
+    var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
+    var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
+    
     var subject_id = FR.$$('db_subject_id').value;
-    
-    var nonfeatured_sorter = new FRSubjectSorter(
-      'databases-nonfeatured', subject_id );
-    
-    var featured_sorter = new FRSubjectSorterFeatured(
-      'databases-featured', subject_id );
     
     $('#admin-subject-databases tr').each( function() {
       var row = new FRSubjectRow( this, 'db_subject_EResourceDbSubjectAssocs' );
+
+      // FIXME: get base url from PHP
+      var admin_root = '/admin_dev.php';  //FIXME get from PHP
+      var url = '/subject/ajax/remove/er_id/' + row.er_id + '/subject_id/'
+                + subject_id;
+      row.setAjaxOnRemove( admin_root + url );
 
       if ( row.isFeatured() ) {
         row.setSorter( featured_sorter );
@@ -266,6 +269,12 @@ $(document).ready(function(){
 
     $('#admin-featured-databases tr tr').each( function() {
       var row = new FRSubjectRow( this, 'EResources' );
+      
+      // FIXME: admin root
+      var url = '/admin.php/database/ajax/unfeature/id/' + row.er_id;
+      
+      row.setAjaxOnRemove( url );
+      
       sorter.add( row );
     });
     

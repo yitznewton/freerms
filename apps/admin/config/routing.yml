@@ -37,6 +37,10 @@ ajax_er_db_subject_remove:
   url:   /subject/ajax/remove/*
   param: { module: subject, action: ajaxEResourceDelete }
 
+ajax_database_unfeature:
+  url:   /database/ajax/unfeature/*
+  param: { module: database, action: ajaxUnfeature }
+
 default_index:
   url:   /:module
   param: { action: index }

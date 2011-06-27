@@ -30,4 +30,25 @@ class databaseActions extends autoDatabaseActions
     
     $this->form = new FeaturedDbForm();
   }
+  
+  public function executeAjaxUnfeature( sfWebRequest $request )
+  {
+    if ( ! $request->isXmlHttpRequest() ) {
+      exit();
+    }
+
+    $er = EResourcePeer::retrieveByPK( $request->getParameter('id') );
+
+    if ( $er ) {
+      $er->setIsFeatured( false );
+      $er->save();
+    }
+    
+    $this->getResponse()
+      ->setContentType('application/json; charset=utf-8');
+
+    $this->renderText('{}');
+
+    return sfView::NONE;
+  }
 }
