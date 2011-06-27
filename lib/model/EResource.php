@@ -9,6 +9,14 @@ class EResource extends BaseEResource
     
     return public_path( '/database/' . $this->getId(), true );
   }
+  
+  public function setIsFeatured($v) {
+    if ( ! $v && $this->getIsFeatured() ) {
+      $this->setFeaturedWeight( 999 );
+    }
+    
+    parent::setIsFeatured($v);
+  }
 
   public function delete(PropelPDO $con = null)
   {
