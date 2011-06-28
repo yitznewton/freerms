@@ -17,22 +17,39 @@ Installation
   `config/databases.yml`
 
 * Add missing directories:
-    /home/fred/freerms$ mkdir log
+
+        /home/fred/freerms$ mkdir log
 
 * Install sfGuardPlugin and publish plugin assets:
-    /home/fred/freerms$ ./symfony plugin:install sfGuardPlugin
-    /home/fred/freerms$ ./symfony plugin:publish-assets
+
+        /home/fred/freerms$ ./symfony plugin:install sfGuardPlugin
+        /home/fred/freerms$ ./symfony plugin:publish-assets
 
 * Run a Propel build. The first command will initialize and prepopulate
   your database with basic settings; the others will rebuild data classes,
   leaving the database unchanged:
-    /home/fred/freerms$ ./symfony propel:build-all-load
-    # or
-    /home/fred/freerms$ ./symfony propel:build-model
-    /home/fred/freerms$ ./symfony propel:build-forms
-    /home/fred/freerms$ ./symfony propel:build-filters
+
+        /home/fred/freerms$ ./symfony propel:build-all-load
+        # or
+        /home/fred/freerms$ ./symfony propel:build-model
+        /home/fred/freerms$ ./symfony propel:build-forms
+        /home/fred/freerms$ ./symfony propel:build-filters
 
 * Create a superuser:
-    /home/fred/freerms$ ./symfony guard:create-user jimbo mypassword
-    /home/fred/freerms$ ./symfony guard:promote jimbo
 
+        /home/fred/freerms$ ./symfony guard:create-user jimbo mypassword
+        /home/fred/freerms$ ./symfony guard:promote jimbo
+
+At this point, you will be able to set your web server's document root to
+symfony's `web` directory, and connect to the `/admin` app with the user
+you have just created. In order to use the resolver (i.e. public-facing)
+app, you will need to associate your user with one or more libraries, by
+adding rows to the sf_guard_user_group table. You can modify user data
+via scripts or directly in the database, or create an admin module within
+symfony.
+
+Extending FreERMS
+-----------------
+
+It is not difficult to modify FreERMS, for example, to use an alternate user
+backend. (Explain how.)
