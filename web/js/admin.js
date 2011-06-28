@@ -52,8 +52,6 @@ FREResourceSorterRow.prototype.render = function() {
 
   li.appendChild( span_close );
   
-  li.row = this;
-  
   return li;
 }
 
@@ -188,7 +186,7 @@ FREResourceSorter.prototype.bind = function() {
     
     var li = this.ul.childNodes[i];
     
-    this.isWeighted ? li.row.bind( i ) : li.row.bind( -1 );
+    this.isWeighted ? li.sorter_row.bind( i ) : li.sorter_row.bind( -1 );
   }
 }
 
@@ -300,7 +298,7 @@ $(document).ready(function(){
 
     $('#admin-featured-databases tr tr').each( function() {
       var row = FREResourceSorterRow.fromTR( this, 'EResources' );
-      row.setAjaxOnRemove( '/database/ajax/unfeature/id/' + row.er_id );
+      row.setAjaxOnRemove( '/database/ajax/unfeature/id/' + row.getErId() );
       sorter.addRow( row );
     });
     
