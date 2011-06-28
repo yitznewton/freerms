@@ -31,6 +31,33 @@ class databaseActions extends autoDatabaseActions
     $this->form = new FeaturedDbForm();
   }
   
+  public function executeAjaxSearch( sfWebRequest $request )
+  {
+    if ( ! $request->isXmlHttpRequest() ) {
+      exit();
+    }
+
+    $this->forward404Unless(
+      $query = $request->getParameter('q') );
+    
+    $c = new Criteria();
+    $c->add( EResourcePeer::TITLE, "%$query%", Criteria::LIKE );
+    $c->addAscendingOrderByColumn( EResourcePeer::TITLE );
+    
+    $data = array();
+    
+    foreach ( EResourcePeer::doSelect( $c ) as $er ) {
+      $data[ $er->getId() ] = $er->getTitle();
+    }
+    
+    $this->getResponse()
+      ->setContentType('application/json; charset=utf-8');
+    
+    $this->renderText( json_encode( $data ) );
+    
+    return sfView::NONE;
+  }
+  
   public function executeAjaxUnfeature( sfWebRequest $request )
   {
     if ( ! $request->isXmlHttpRequest() ) {
