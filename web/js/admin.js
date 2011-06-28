@@ -1,176 +1,186 @@
-function FRSubjectRow( tr, prefix )
+function FREResourceSorterRow( title, weight_input_el )
 {
-  this.er_id;
+  this.ajaxOnRemove;
   this.title;
-  this.sorter;
-  this.ajax_on_remove;
+  this.weightInputEl;
   
-  this.tr     = tr;
-  this.prefix = prefix;
+  this.title = title;
+  this.weightInputEl = weight_input_el;
+}
+
+FREResourceSorterRow.prototype.getWeight = function() {
+  if ( this.weightInputEl ) {
+    return this.weightInputEl.value;
+  }
+  else {
+    throw new Error( 'Weight input not found' );
+  }
+}
+
+FREResourceSorterRow.prototype.bind = function( index ) {
+  this.weightInputEl.value = index;
+}
+
+FREResourceSorterRow.prototype.render = function() {
+  var li   = document.createElement('li');
+
+  li.className  = 'ui-state-default';
+  li.innerHTML  = this.title;
+  li.sorter_row = this;  // needed for binding
+
+  var span_arrow = document.createElement('span');
+  span_arrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
+  li.appendChild( span_arrow );
+
+  var span_close = document.createElement('span');
+  span_close.className = 'ui-icon ui-icon-close';
+
+  span_close.onclick = function( s, li, row ) {
+    return function() {
+      row.remove();
+
+      $(li).fadeOut( 400, function() {
+        this.parentNode.removeChild( this );
+      });
+    }
+  }( span_close, li, this )
+
+  li.appendChild( span_close );
   
-  var $label = $('th label', tr);
-
-  if ( ! $label.length ) {
-    throw new Error('Label not found');
-  }
-
-  var for_matches = $label.attr('for').match(/(\d+)_featured_weight/);
-
-  if ( ! for_matches ) {
-    throw new Error('Could not match er_id');
-  }
-
-  this.er_id = for_matches[1];
-
-  var title_matches = $label.text().match(/Weight for (.+)/);
-
-  if ( ! title_matches ) {
-    throw new Error('Could not match title');
-  }
-
-  this.title = title_matches[1];
-  
-  this.init();
+  return li;
 }
 
-FRSubjectRow.prototype.isFeatured = function() {
-  var weight_input_el = this._getWeightInputEl();
-
-  if ( ! weight_input_el ) {
-    throw new Error('Could not retrieve weight input for ' + er_id);
-  }
-    
-  return ( weight_input_el.value != -1 );
+FREResourceSorterRow.prototype.setAjaxOnRemove = function( url ) {
+  this.ajaxOnRemove = url;
 }
 
-FRSubjectRow.prototype.setSorter = function( sorter ) {
-  this.sorter = sorter;
-}
-
-FRSubjectRow.prototype.setAjaxOnRemove = function( url ) {
-  this.ajax_on_remove = url;
-}
-
-FRSubjectRow.prototype._getWeightInputEl = function() {
-  var weight_input_id = this.prefix + '_' + this.er_id + '_featured_weight';
-
-  return FR.$$( weight_input_id );
-}
-
-FRSubjectRow.prototype.init = function() {
-  this.weight_input_el = this._getWeightInputEl();
-}
-
-FRSubjectRow.prototype.remove = function() {
-  if ( this.ajax_on_remove ) {
+FREResourceSorterRow.prototype.remove = function() {
+  if ( this.ajaxOnRemove ) {
     var url_matches = window.location.href.match(/^.+admin[^\.]*\.php/);
     
     if ( ! url_matches ) {
       return false;
     }
     
-    $.ajax( url_matches[0] + this.ajax_on_remove );
+    $.ajax( url_matches[0] + this.ajaxOnRemove );
   }
           
-  this.weight_input_el.parentNode.removeChild( this.weight_input_el );
-}
-  
-function FRSubjectSorter( id )
-{
-  this.ul           = document.createElement('ul');
-  this.ul.id        = id;
-  this.ul.className = 'sortable';
-  this.items        = [];
-  this.connections  = [];
+  this.weightInputEl.parentNode.removeChild( this.weightInputEl );
 }
 
-FRSubjectSorter.prototype.add = function( item ) {
-  this.items.push( item );
-}
+FREResourceSorterRow.fromTR = function( tr, prefix ) {
+  var $label = $('th label', tr);
 
-FRSubjectSorter.prototype.getSubjectId = function() {
-  return this.subject_id;
-}
-
-FRSubjectSorter.prototype.render = function() {
-  var i;
-  
-  for ( i = 0; i < this.items.length; i++ ) {
-    var li   = document.createElement('li');
-    var row  = this.items[i];
-
-    li.className       = 'ui-state-default';
-    li.innerHTML       = row.title;
-    li.weight_input_el = row.weight_input_el;
-
-    var span_arrow = document.createElement('span');
-    span_arrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
-    li.appendChild( span_arrow );
-    
-    var span_close = document.createElement('span');
-    span_close.className = 'ui-icon ui-icon-close';
-    
-    span_close.onclick = function( s, li, row ) {
-      return function() {
-        row.remove();
-        
-        $(li).fadeOut( 400, function() {
-          this.parentNode.removeChild( this );
-        });
-      }
-    }(span_close, li, row)
-    
-    li.appendChild( span_close );
-
-    this.ul.appendChild( li );
+  if ( ! $label.length ) {
+    throw new Error( 'Label not found' );
   }
+
+  var title_matches = $label.text().match(/Weight for (.+)/);
+
+  if ( ! title_matches ) {
+    throw new Error( 'Could not match title' );
+  }
+
+  var title = title_matches[1];
+  
+  var for_matches = $label.attr('for').match(/(\d+)_featured_weight/);
+
+  if ( ! for_matches ) {
+    throw new Error( 'Could not match er_id' );
+  }
+
+  var er_id = for_matches[1];
+
+  var weight_input_id = prefix + '_' + er_id + '_featured_weight';
+  
+  var weight_input = FR.$$( weight_input_id );
+  
+  if ( ! weight_input ) {
+    throw new Error( 'Could not retrieve weight input element' );
+  }
+  
+  return new FREResourceSorterRow( title, weight_input );
+}
+  
+function FREResourceSorter( id )
+{
+  this.id;
+  this.ul;
+  this.connections  = [];
+  this.isWeighted   = true;
+  this.isRendered   = false;
+  this.rows         = [];
+  this.rowsToRender = [];
+
+  this.id = id;
+  this.init();
+}
+
+FREResourceSorter.prototype.addRow = function( row ) {
+  this.rows.push( row );
+  
+  if ( this.isRendered ) {
+    this.ul.appendChild( row.render() );
+  }
+  else {
+    this.rowsToRender.push( row );
+  }
+}
+
+FREResourceSorter.prototype.init = function() {
+  this.ul           = document.createElement('ul');
+  this.ul.id        = this.id;
+  this.ul.className = 'sortable';
+}
+
+FREResourceSorter.prototype.render = function() {
+  if ( this.isRendered ) {
+    throw new Error( 'Already rendered' );
+  }
+  
+  if ( this.isWeighted ) {
+    this.sortByWeight();
+  }
+  
+  for ( var i = 0; i < this.rowsToRender.length; i++ ) {
+    this.ul.appendChild( this.rowsToRender[i].render() );
+  }
+  
+  this.isRendered   = true;
+  this.rowsToRender = [];
   
   var $this_ul = $(this.ul);
   
-  $this_ul.sortable({
-    connectWith: this.connections,
-    placeholder: 'ui-state-highlight'
-  });
+  var sortable_options = { placeholder: 'ui-state-highlight' };
+  
+  if ( this.connections ) {
+    sortable_options.connectWith = this.connections;
+  }
+  
+  $this_ul.sortable( sortable_options );
   
   return $this_ul;
 }
 
-FRSubjectSorter.prototype.setConnections = function( connections ) {
+FREResourceSorter.prototype.setConnections = function( connections ) {
   this.connections = connections;
 }
 
-FRSubjectSorter.prototype.bind = function() {
-  var i;
-  var li;
-  
-  for ( i = 0; i < this.ul.childNodes.length; i++ ) {
-    if ( this.ul.childNodes[i].tagName != 'LI' ) {
-      continue;
-    }
-    
-    var value_to_bind = (this instanceof FRSubjectSorterFeatured) ? i : -1;
-    
-    this.ul.childNodes[i].weight_input_el.value = value_to_bind;
+FREResourceSorter.prototype.setWeighted = function( value ) {
+  this.isWeighted = value;
+}
+
+FREResourceSorter.prototype.bindInputs = function() {
+  for ( var i = 0; i < this.rows.length; i++ ) {
+    console.log(i);
+    this.isWeighted ? this.rows[i].bind( i ) : this.rows[i].bind( -1 );
   }
 }
 
-FRSubjectSorterFeatured.prototype = new FRSubjectSorter();
-
-FRSubjectSorterFeatured.prototype.render = function() {
-  this.sort();
-  
-  return FRSubjectSorter.prototype.render.call( this );
-}
-
-FRSubjectSorterFeatured.prototype.sort = function() {
-  this.items.sort( function(a, b) {
-    return a.weight_input_el.value - b.weight_input_el.value;
+FREResourceSorter.prototype.sortByWeight = function() {
+  this.rowsToRender.sort( function(a, b) {
+    return a.getWeight() - b.getWeight();
   });
-}
-
-function FRSubjectSorterFeatured( id )
-{
-  FRSubjectSorter.prototype.constructor.call( this, id );
 }
 
 function clearAll( select_el )
@@ -230,26 +240,26 @@ $(document).ready(function(){
   updateIpRegFields();
   
   if ( FR.$$('admin-subject-databases') ) {
-    var nonfeatured_sorter = new FRSubjectSorter( 'databases-nonfeatured' );
-    var featured_sorter = new FRSubjectSorterFeatured( 'databases-featured' );
+    var nonfeatured_sorter = new FREResourceSorter( 'databases-nonfeatured' );
+    var featured_sorter = new FREResourceSorter( 'databases-featured' );
+    
+    nonfeatured_sorter.setWeighted( false );
     
     var subject_id = FR.$$('db_subject_id').value;
     
     $('#admin-subject-databases tr').each( function() {
-      var row = new FRSubjectRow( this, 'db_subject_EResourceDbSubjectAssocs' );
+      var row = new FREResourceSorterRow( this, 'db_subject_EResourceDbSubjectAssocs' );
 
       var url = '/subject/ajax/remove/er_id/' + row.er_id
                 + '/subject_id/' + subject_id;
       
       row.setAjaxOnRemove( url );
 
-      if ( row.isFeatured() ) {
-        row.setSorter( featured_sorter );
-        featured_sorter.add( row );
+      if ( row.getWeight() == -1 ) {
+        nonfeatured_sorter.add( row );
       }
       else {
-        row.setSorter( nonfeatured_sorter );
-        nonfeatured_sorter.add( row );
+        featured_sorter.add( row );
       }
     });
     
@@ -270,12 +280,12 @@ $(document).ready(function(){
   }
   
   if ( FR.$$('admin-featured-databases') ) {
-    var sorter = new FRSubjectSorterFeatured( 'home-featured-databases' );
+    var sorter = new FREResourceSorter( 'home-featured-databases' );
 
     $('#admin-featured-databases tr tr').each( function() {
-      var row = new FRSubjectRow( this, 'EResources' );
+      var row = FREResourceSorterRow.fromTR( this, 'EResources' );
       row.setAjaxOnRemove( '/database/ajax/unfeature/id/' + row.er_id );
-      sorter.add( row );
+      sorter.addRow( row );
     });
     
     var $subject_container = $('#admin-featured-databases');
@@ -284,9 +294,9 @@ $(document).ready(function(){
 
     $('table', $subject_container).hide();
 
-    $('#admin-form-featured').submit( function() {
-      sorter.bind();
-    });
+    FR.$$('admin-form-featured').onsubmit = function() {
+      sorter.bindInputs();
+    };
   }
 
   $('#organization_ip_reg_method_id').change( function() {
