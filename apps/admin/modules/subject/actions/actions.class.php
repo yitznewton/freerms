@@ -60,6 +60,26 @@ class subjectActions extends sfActions
 
     $this->redirect('subject/index');
   }
+  
+  public function executeAjaxEResourceDelete( sfWebRequest $request )
+  {
+    if ( ! $request->isXmlHttpRequest() ) {
+      exit();
+    }
+
+    $c = new Criteria();
+    $c->add( EResourceDbSubjectAssocPeer::ER_ID, $request->getParameter('er_id') );
+    $c->add( EResourceDbSubjectAssocPeer::DB_SUBJECT_ID, $request->getParameter('subject_id') );
+    
+    EResourceDbSubjectAssocPeer::doDelete( $c );
+    
+    $this->getResponse()
+      ->setContentType('application/json; charset=utf-8');
+
+    $this->renderText('{}');
+
+    return sfView::NONE;
+  }
 
   protected function processForm(sfWebRequest $request, sfForm $form)
   {

@@ -33,8 +33,6 @@
   </div>
 
   <div id="admin-subject-databases">
-    <p>To remove a database, click on it to edit.</p>
-
     <?php foreach ( $form['EResourceDbSubjectAssocs'] as $er_form ): ?>
       <?php echo $er_form ?>
     <?php endforeach; ?>
