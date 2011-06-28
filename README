@@ -1,0 +1,18 @@
+FreERMS
+=======
+
+FreERMS is an electronic resource management system for libraries. It is
+written in PHP using the symfony framework (1.4). It has been tested on
+a Linux system with PHP 5.3.
+
+Installation
+------------
+
+* Clone the git repo
+
+* Add missing directories:
+    /home/fred/freerms$ mkdir cache log
+
+* Install sfGuardPlugin and publish plugin assets:
+    /home/fred/freerms$ ./symfony plugin:install sfGuardPlugin
+    /home/fred/freerms$ ./symfony plugin:publish-assets
