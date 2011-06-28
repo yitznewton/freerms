@@ -282,7 +282,9 @@ $(document).ready(function(){
     
     var $subject_container = $('#admin-subject-databases');
     
+    $('<h3>Featured databases</h3>').appendTo( $subject_container );
     featured_sorter.render().appendTo( $subject_container );
+    $('<h3>Non-featured databases</h3>').appendTo( $subject_container );
     nonfeatured_sorter.render().appendTo( $subject_container );
 
     $('table', $subject_container).hide();
