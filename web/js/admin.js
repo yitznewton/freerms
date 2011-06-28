@@ -1,11 +1,16 @@
 function FREResourceSorterRow( title, weight_input_el )
 {
   this.ajaxOnRemove;
+  this.erId;
   this.title;
   this.weightInputEl;
   
   this.title = title;
   this.weightInputEl = weight_input_el;
+}
+
+FREResourceSorterRow.prototype.getErId = function() {
+  return this.erId;
 }
 
 FREResourceSorterRow.prototype.getWeight = function() {
@@ -46,6 +51,8 @@ FREResourceSorterRow.prototype.render = function() {
   }( span_close, li, this )
 
   li.appendChild( span_close );
+  
+  li.row = this;
   
   return li;
 }
@@ -99,7 +106,10 @@ FREResourceSorterRow.fromTR = function( tr, prefix ) {
     throw new Error( 'Could not retrieve weight input element' );
   }
   
-  return new FREResourceSorterRow( title, weight_input );
+  var obj  = new FREResourceSorterRow( title, weight_input );
+  obj.erId = er_id;
+  
+  return obj;
 }
   
 function FREResourceSorter( id )
@@ -151,7 +161,7 @@ FREResourceSorter.prototype.render = function() {
   
   var $this_ul = $(this.ul);
   
-  var sortable_options = { placeholder: 'ui-state-highlight' };
+  var sortable_options = {placeholder: 'ui-state-highlight'};
   
   if ( this.connections ) {
     sortable_options.connectWith = this.connections;
@@ -170,10 +180,15 @@ FREResourceSorter.prototype.setWeighted = function( value ) {
   this.isWeighted = value;
 }
 
-FREResourceSorter.prototype.bindInputs = function() {
-  for ( var i = 0; i < this.rows.length; i++ ) {
-    console.log(i);
-    this.isWeighted ? this.rows[i].bind( i ) : this.rows[i].bind( -1 );
+FREResourceSorter.prototype.bind = function() {
+  for ( var i = 0; i < this.ul.childNodes.length; i++ ) {
+    if ( this.ul.childNodes[i].tagName != 'LI' ) {
+      continue;
+    }
+    
+    var li = this.ul.childNodes[i];
+    
+    this.isWeighted ? li.row.bind( i ) : li.row.bind( -1 );
   }
 }
 
@@ -248,18 +263,19 @@ $(document).ready(function(){
     var subject_id = FR.$$('db_subject_id').value;
     
     $('#admin-subject-databases tr').each( function() {
-      var row = new FREResourceSorterRow( this, 'db_subject_EResourceDbSubjectAssocs' );
+      var row = FREResourceSorterRow.fromTR(
+        this, 'db_subject_EResourceDbSubjectAssocs' );
 
-      var url = '/subject/ajax/remove/er_id/' + row.er_id
+      var url = '/subject/ajax/remove/er_id/' + row.getErId()
                 + '/subject_id/' + subject_id;
-      
+
       row.setAjaxOnRemove( url );
 
       if ( row.getWeight() == -1 ) {
-        nonfeatured_sorter.add( row );
+        nonfeatured_sorter.addRow( row );
       }
       else {
-        featured_sorter.add( row );
+        featured_sorter.addRow( row );
       }
     });
     
@@ -273,10 +289,10 @@ $(document).ready(function(){
 
     $('table', $subject_container).hide();
 
-    $('#admin-form-subject').submit( function() {
+    FR.$$('admin-form-subject').onsubmit = function() {
       featured_sorter.bind();
       nonfeatured_sorter.bind();
-    });
+    };
   }
   
   if ( FR.$$('admin-featured-databases') ) {
@@ -295,7 +311,7 @@ $(document).ready(function(){
     $('table', $subject_container).hide();
 
     FR.$$('admin-form-featured').onsubmit = function() {
-      sorter.bindInputs();
+      sorter.bind();
     };
   }
 
