@@ -12,7 +12,7 @@ AccessInfo:
   BHB_acc:
     OnsiteAccessUri: http://www.example.com/bib-hebrew-book
     OffsiteAccessUri: http://www.example.com/bib-hebrew-book
-    onsite_access_handler: ScriptAccessHandler
+    onsite_access_handler: BaseAccessHandler
     offsite_access_handler: RefererAccessHandler
 
 AdminInfo:
@@ -44,28 +44,23 @@ EResource:
     acq_id: BHB_acq
     
 Library:
-  TCNY:
-    Name: Touro College New York
-    Code: TCNY
+  Library_WMU:
+    Name: Wassamatta University Library
+    Code: WMU
     Address: |
-      33 West 23rd Street
+      123 Main Street
       New York, NY 10010
-    EzproxyHost: lb-proxy8
-  TCS:
-    Name: Touro College South
-    Code: TCS
-    Address: |
-      1703 Washington Avenue
-      Miami Beach, FL 33139
-    EzproxyHost: lb-proxy10
+    EzproxyHost: proxy.wmu.example.org
     
 AcqLibAssoc:
-  ASC_TCNY:
-    lib_id: TCNY
+  ASC_WMU:
+    lib_id: Library_WMU
     acq_id: ASC_acq
-  ASC_TCS:
-    lib_id: TCS
-    acq_id: ASC_acq
-  BHB_TCNY:
-    lib_id: TCNY
+  BHB_WMU:
+    lib_id: Library_WMU
     acq_id: BHB_acq
+
+sfGuardPermission:
+  sfGP:
+    name: admin
+    
