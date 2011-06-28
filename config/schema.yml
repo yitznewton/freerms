@@ -619,6 +619,7 @@ propel:
       type: VARCHAR
       size: 100
       index: unique
+      required: true
   general_statuses: 
     _attributes: 
       phpName: GeneralStatus
