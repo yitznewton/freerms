@@ -206,6 +206,11 @@ ul.database-list li{
   float: left;
   margin-right: 0.3em;
 }
+.ui-icon-close{
+  float: right;
+  margin: 0;
+  cursor: pointer;
+}
 form#login-form div{
   clear:both;
   padding:0.25em 0;
@@ -229,15 +234,15 @@ form#login-form label{
   padding: 0;
 }
 #admin-subject-databases h3{
-  margin: 1.2em 0 0.6em;
+  margin: 0 0 0.8em;
 }
 #admin-subject-databases ul{
-  margin: 0 0 0.4em;
+  margin: 0 0 1em;
 }
 ul.sortable{
   background: #aaa;
   min-height: 6px;
-  margin: 0 0 1.4em;
+  margin: 0 0 1.6em;
   padding: 0;
   width: 500px;
 }
