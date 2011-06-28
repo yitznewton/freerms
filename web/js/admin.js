@@ -1,3 +1,16 @@
+var FRAdmin = {
+  rootUrl: function() {
+    var url_matches = window.location.href.match(/^.+admin[^\.]*\.php/);
+    
+    if ( url_matches ) {
+      return url_matches[0];
+    }
+    else {
+      throw new Error( 'Could not parse URL' );
+    }
+  }
+};
+
 function FREResourceSorterRow( title, weight_input_el )
 {
   this.ajaxOnRemove;
@@ -61,13 +74,7 @@ FREResourceSorterRow.prototype.setAjaxOnRemove = function( url ) {
 
 FREResourceSorterRow.prototype.remove = function() {
   if ( this.ajaxOnRemove ) {
-    var url_matches = window.location.href.match(/^.+admin[^\.]*\.php/);
-    
-    if ( ! url_matches ) {
-      return false;
-    }
-    
-    $.ajax( url_matches[0] + this.ajaxOnRemove );
+    $.ajax( FRAdmin.rootUrl() + this.ajaxOnRemove );
   }
           
   this.weightInputEl.parentNode.removeChild( this.weightInputEl );
@@ -280,12 +287,23 @@ $(document).ready(function(){
     nonfeatured_sorter.setConnections( ['#databases-featured'] );
     featured_sorter.setConnections( ['#databases-nonfeatured'] );
     
+//    var $ajax_input = $('<input type="text" class="admin-ajax-search" value="Add">');
+//    
+//    $ajax_input.focus( function() {
+//      this.value = '';
+//    }).autocomplete( FRAdmin.rootUrl() + '/database/ajax/search', {
+//      
+//    });
+    
     var $subject_container = $('#admin-subject-databases');
     
-    $('<h3>Featured databases</h3>').appendTo( $subject_container );
-    featured_sorter.render().appendTo( $subject_container );
-    $('<h3>Non-featured databases</h3>').appendTo( $subject_container );
-    nonfeatured_sorter.render().appendTo( $subject_container );
+    $subject_container
+      .append( $('<h3>Featured databases</h3>') )
+      .append( featured_sorter.render() )
+      .append( $('<h3>Non-featured databases</h3>') )
+      .append( nonfeatured_sorter.render() )
+      //.append( $ajax_input )
+      ;
 
     $('table', $subject_container).hide();
 
