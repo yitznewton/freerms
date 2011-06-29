@@ -2,6 +2,7 @@ prod:
   .settings:
     no_script_name:         true
     logging_enabled:        false
+#    cache:                  true
 
 dev:
   .settings:

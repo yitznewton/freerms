@@ -48,6 +48,18 @@ adding rows to the sf_guard_user_group table. You can modify user data
 via scripts or directly in the database, or create an admin module within
 symfony.
 
+Caching frontend pages
+----------------------
+
+The frontend database listing pages are relatively expensive to the
+database. To enable the frontend cache:
+
+* Uncomment the `index` setting in
+  `apps/resolver/modules/database/config/cache.yml`
+
+* Uncomment the `cache: true` setting in
+  `apps/resolver/modules/database/config/settings.yml`
+
 Extending FreERMS
 -----------------
 
