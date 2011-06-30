@@ -28,6 +28,10 @@ var FRResolver = {
 };
 
 $(document).ready( function() {
+  if ( FR.$$('signin_username') ) {
+    FR.$$('signin_username').focus();
+  }
+  
   FRResolver.refer( FR.$$('referral-link'), FR.$$('referral-note') );
   
   $('.description-full').hide();

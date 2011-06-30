@@ -46,7 +46,7 @@ FRSubjectRow.prototype._getWeightInputEl = function() {
 }
 
 FRSubjectRow.prototype.getItem = function() {
-  return { title: this.title, weight_input_el: this._getWeightInputEl() };
+  return {title: this.title, weight_input_el: this._getWeightInputEl()};
 }
   
 function FRSubjectSorter( id )
@@ -167,6 +167,10 @@ function getSubform( type, index )
 }
 
 $(document).ready(function(){
+  if ( FR.$$('signin_username') ) {
+    FR.$$('signin_username').focus();
+  }
+  
   var admin_tabset = $('#tab-container > ul').tabs({
     cookie: {}
   });
@@ -254,6 +258,24 @@ $(document).ready(function(){
 
     return false;
   });
+  
+  // db_subject auto-slugger
+  var subject_label = FR.$$('db_subject_label');
+  var subject_slug  = FR.$$('db_subject_slug');
+  
+  if ( subject_label && subject_slug ) {
+    var subject_label_init_value;
+    
+    subject_label.onfocus = function() {
+      subject_label_init_value = this.value;
+    }
+    
+    subject_label.onblur = function() {
+      if ( this.value != subject_label_init_value ) {
+        subject_slug.value = FR.slugify( this.value );
+      }
+    }
+  }
 
   $('#phone-container .input-link-add').click( function() {
     var subform = getSubform('ContactPhone', phone_count);
