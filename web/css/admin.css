@@ -80,6 +80,10 @@ ul#breadcrumbs li a:visited{
 li.ui-tabs-nav-item a{
   font-weight: bold;
 }
+.form-help{
+  font-size: 0.8em;
+  margin: 0 0 0 1em;
+}
 .form-row{
   clear: both;
   padding: 4px 0;
