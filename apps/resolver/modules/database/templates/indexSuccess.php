@@ -1,15 +1,8 @@
 <h1>Available Databases</h1>
 
-<form class="form-subject">
-  <?php echo $subject_widget->render(
-    'subject',
-    $subject_default,
-    array('id' => 'select-subject')
-  ) ?>
-  
-  <input type="submit" value="Submit" />
-</form>
-  
+<?php include_partial( 'subjectWidget', array(
+  'widget' => $subject_widget, 'default' => $subject_default )) ?>
+
 <?php if ( $featured_dbs ): ?>
 <h2>Featured databases:</h2>
 <ul id="featured">
