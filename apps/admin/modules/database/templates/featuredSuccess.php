@@ -3,8 +3,8 @@
   <li>Edit featured databases</li>
 </ul>
 
-<p>The current page is for homepage featured databases. Add/remove from the
-  list on each database's edit page. For featured databases
+<p>The current page is for homepage featured databases. To add a database
+  to the list, use the database's edit page. For featured databases
   by subject, use
 <?php echo link_to('the subjects page', 'subject/index') ?>.</p>
 
