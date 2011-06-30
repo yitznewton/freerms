@@ -23,6 +23,6 @@ class freermsWidgetFormatterDiv extends sfWidgetFormSchemaFormatter
     $errorRowFormat  = "<div>\n%errors%</div>\n",       
     $errorListFormatInARow = "%errors%", 
     $errorRowFormatInARow = '<div class="ui-widget"><div class="ui-state-error ui-corner-all"><p><span class="ui-icon ui-icon-alert"></span><strong>Error: </strong>%error%<p></div></div>',    
-    $helpFormat      = '<br />%help%',
+    $helpFormat      = '<span class="form-help">%help%</span>',
     $decoratorFormat = '%content%';
 }
