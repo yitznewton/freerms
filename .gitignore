@@ -1,0 +1,10 @@
+cache
+data/sql
+lib/filter/base
+lib/form/base
+lib/model/map
+lib/model/om
+log
+plugins
+web/sfPropelPlugin
+
