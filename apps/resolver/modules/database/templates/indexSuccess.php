@@ -2,15 +2,8 @@
 
 <h2>Select subject area:</h2>
 
-<form class="form-subject">
-  <?php echo $subject_widget->render(
-    'subject',
-    $subject_default,
-    array('id' => 'select-subject')
-  ) ?>
-  
-  <input type="submit" value="Submit" />
-</form>
+<?php include_partial( 'subjectWidget', array(
+  'widget' => $subject_widget, 'default' => $subject_default )) ?>
 
 <div class="database-index-intro">
   <p>The following subscribed resources are restricted to the Touro community.

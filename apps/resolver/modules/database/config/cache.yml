@@ -1,6 +1,6 @@
 # caching logic is handled by freermsResolverCacheFilter
-#index:
-#  enabled: true
+index:
+  enabled: true
 
 all:
   with_layout: false

@@ -27,6 +27,16 @@ class AccessInfoForm extends BaseAccessInfoForm
     $this->widgetSchema['onsite_access_handler'] = new sfWidgetFormChoice (
       array( 'choices' => $onsite_handlers, )
     );
+    
+    if ( $this->getObject()->getAccessHandlerClass() ) {
+      $this->widgetSchema->setHelp( 'onsite_access_handler',
+        'AccessHandler subclass is '
+        . $this->getObject()->getAccessHandlerClass() );
+      
+      $this->widgetSchema->setHelp( 'offsite_access_handler',
+        'AccessHandler subclass is '
+        . $this->getObject()->getAccessHandlerClass() );
+    }
 
     if ( $this->getObject()->getOnsiteAccessHandler() ) {
       $this->widgetSchema['onsite_access_handler']->setDefault(
@@ -84,16 +94,14 @@ class AccessInfoForm extends BaseAccessInfoForm
     }
     
     if ( $this->getObject() ) {
-      $id = $this->getObject()->getId();
-      
-      $custom_class_name = 'AccessInfo' . $id . 'AccessHandler';
+      $custom_class_name = $this->getObject()->getAccessHandlerClass();
 
       if (
-        class_exists( $custom_class_name )
+        $custom_class_name
+        && class_exists( $custom_class_name )
         &&  (( $site == 'offsite' && $custom_class_name::IS_VALID_OFFSITE )
             || ( $site == 'onsite' && $custom_class_name::IS_VALID_ONSITE ))
       ) {
-        $class = 'AccessInfo' . $id . 'AccessHandler';
         $access_handlers[ $custom_class_name ] = 'Custom';
       }
     }

@@ -15,7 +15,11 @@ class freermsResolverCacheFilter extends sfFilter
   {
     // TODO: get this to read lifetime from config instead of hardcoded
     
-    $this->getContext()->getViewCacheManager()
-      ->addCache( 'database', 'index', array('lifeTime' => 300) );
+    $cache_manager = $this->getContext()->getViewCacheManager();
+    
+    if ( $cache_manager instanceof freermsResolverCacheManager ) {
+      $cache_manager->addCache(
+        'database', 'index', array('lifeTime' => 300) );
+    }
   }
 }
