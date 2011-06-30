@@ -12,4 +12,19 @@ class AccessInfo extends BaseAccessInfo
     $this->setDeletedAt( time() );
     $this->save( $con );
   }
+  
+  /**
+   * Returns the name of the custom AccessHandler class corresponding to the
+   * current AccessInfo 
+   *
+   * @return type string
+   */
+  public function getAccessHandlerClass()
+  {
+    if ( $this->isNew() ) {
+      return null;
+    }
+    
+    return 'AccessInfo' . $this->getId() . 'AccessHandler';
+  }
 }
