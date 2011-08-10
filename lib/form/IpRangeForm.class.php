@@ -46,6 +46,8 @@ class IpRangeForm extends BaseIpRangeForm
     $this->setValidator( 'start_ip', new freermsValidatorIpAddress() );
     $this->setValidator( 'end_ip',   new freermsValidatorIpAddress() );
 
+    $this->getValidator('lib_id')->setOption('model', 'Library');
+
     $this->validatorSchema->setPostValidator( new freermsValidatorIpRange() );
   }
 }
