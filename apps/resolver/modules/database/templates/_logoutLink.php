@@ -1,1 +1,1 @@
-<?php echo link_to('Logout', 'user/logout') ?>
+<?php echo link_to('Logout', 'sfGuardAuth/signout') ?>
