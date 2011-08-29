@@ -27,7 +27,8 @@ class EZproxyAccessHandler extends BaseAccessHandler
     }
     
     if ( ! $this->getLibrary() ) {
-      throw new RuntimeException( 'Unable to retrieve Library for user' );
+      $msg = 'Unable to retrieve Library for this user and EResource';
+      throw new RuntimeException( $msg );
     }
     
     $proxy_uri = EZproxyAccessHandler::composeTicketUrl(
@@ -58,9 +59,11 @@ class EZproxyAccessHandler extends BaseAccessHandler
     if ( $this->library ) {
       return $this->library;
     }
+    
+    $this->library = LibraryPeer::retrieveOneForEResourceAndAffiliation(
+      $this->er, $this->affiliation );
 
-    return $this->library = LibraryPeer::retrieveOneForAffiliation(
-      $this->affiliation );
+    return $this->library;
   }
   
   static public function composeTicketUrl(
