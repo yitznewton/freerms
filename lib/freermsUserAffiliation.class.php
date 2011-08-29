@@ -42,6 +42,7 @@ class freermsUserAffiliation
   
   /**
    * @param freermsUserInterface $user 
+   * @param sfContext $context
    */
   public function __construct( freermsUserInterface $user, sfContext $context )
   {
