@@ -10,7 +10,7 @@
   <div id="container">
   	<div id="header">
   	  <a href="<?php echo url_for('homepage')?>">
-        <img id="logo" src="/images/freerms.png" alt="FreERMS logo" />
+        <?php echo image_tag('freerms.png', array('alt'=>'FreERMS logo', 'id' => 'logo')) ?>
       </a>
       <div id="logo-localization">
         for <?php echo sfConfig::get('app_institution-name') ?>

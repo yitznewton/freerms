@@ -74,6 +74,23 @@ class LibraryPeer extends BaseLibraryPeer
     return null;
   }
   
+  public static function retrieveOneForEResourceAndAffiliation(
+    EResource $er, freermsUserAffiliation $affiliation)
+  {
+    $er_lib_ids   = $er->getLibraryIds();
+    $user_lib_ids = $affiliation->get();
+    
+    // array_values() to reset keys
+    $common = array_values( array_intersect( $er_lib_ids, $user_lib_ids ));
+    
+    if ( $common && $library = LibraryPeer::retrieveByPK( $common[0] )) {
+      return $library;
+    }
+    else {
+      return null;
+    }
+  }
+  
   /**
    * Returns whether ShowFeaturedSubjects is set on any of the Librarys with
    * the given ids
