@@ -3,7 +3,7 @@ FreERMS
 
 FreERMS is an electronic resource management system for libraries. It is
 written in PHP using the symfony framework (1.4). It requires PHP 5.3, and
-has been tested on Ubuntu and CentOS Linux systems.
+has been tested on Ubuntu Linux systems.
 
 symfony is very well documented; the project homepage is
 http://www.symfony-project.org/
