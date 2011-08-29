@@ -16,20 +16,6 @@ class userActions extends sfActions
       $this->redirect('@homepage');
     }
 
-    if ( $this->getUser()->getFlash( 'force_login' ) === true ) {
-      // renew this flash attribute
-      $this->forced = '1';
-    }
-    elseif ( $request->getParameter('forced') ) {
-      // bypass site recognition
-    }
-    elseif ( $this->getUser()->getOnsiteLibraryId() ) {
-      $this->getUser()->setAuthenticated(true);
-      $this->getUser()->setAttribute('userLibraryIds',
-        array($this->getUser()->getOnsiteLibraryId()));
-      $this->redirect($request->getUri());
-    }
-    
     $username = $request->getParameter('username');
     $password = $request->getParameter('password');
 

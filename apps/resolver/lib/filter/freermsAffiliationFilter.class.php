@@ -41,11 +41,20 @@ class freermsAffiliationFilter extends sfFilter
     
     $this->getContext()->setAffiliation( $affiliation );
     
+    if ( $this->isForceLogin() && ! $this->user->isAuthenticated() ) {
+      $this->forwardToLoginAction();
+    }
+    
     if ( ! $affiliation->isOnsite() && ! $this->user->isAuthenticated() ) {
       $this->forwardToLoginAction();
     }
     
     // TODO: whatif isAuthenticated but has no affiliation?
+  }
+  
+  protected function isForceLogin()
+  {
+    return $this->getContext()->getRequest()->hasParameter('force-login');
   }
   
   protected function forwardToLoginAction()
