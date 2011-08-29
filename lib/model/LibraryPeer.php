@@ -80,10 +80,11 @@ class LibraryPeer extends BaseLibraryPeer
     $er_lib_ids   = $er->getLibraryIds();
     $user_lib_ids = $affiliation->get();
     
-    $common = array_intersect( $er_lib_ids, $user_lib_ids );
+    // array_values() to reset keys
+    $common = array_values( array_intersect( $er_lib_ids, $user_lib_ids ));
     
-    if ( $common ) {
-      return $common[0];
+    if ( $common && $library = LibraryPeer::retrieveByPK( $common[0] )) {
+      return $library;
     }
     else {
       return null;

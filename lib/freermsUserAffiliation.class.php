@@ -24,13 +24,17 @@ class freermsUserAffiliation
    */
   protected $user;
   /**
+   * @var sfContext
+   */
+  protected $context;
+  /**
    * @var array int[]
    */
   protected $libraryIds;
   /**
    * @var bool
    */
-  protected $isOnsite;
+  protected $isForceLogin;
   /**
    * @var int
    */
@@ -39,9 +43,10 @@ class freermsUserAffiliation
   /**
    * @param freermsUserInterface $user 
    */
-  public function __construct( freermsUserInterface $user )
+  public function __construct( freermsUserInterface $user, sfContext $context )
   {
-    $this->user = $user;
+    $this->user    = $user;
+    $this->context = $context;
   }
   
   /**
@@ -85,22 +90,43 @@ class freermsUserAffiliation
    */
   public function isOnsite()
   {
-    if ( ! isset( $this->isOnsite ) ) {
-      $this->getOnsiteLibraryId();
+    return (bool) $this->getOnsiteLibraryId();
+  }
+  
+  /**
+   * @return bool
+   */
+  public function isForceLogin()
+  {
+    if ( isset( $this->isForceLogin )) {
+      return $this->isForceLogin;
     }
     
-    return $this->isOnsite;
+    // needs to be namespaced for sfGuardPlugin to cleanup on logout
+    if ( $this->user->getAttribute('force-login', null, 'sfGuardSecurityUser')) {
+      return $this->isForceLogin = true;
+    }
+    
+    $value = $this->context->getRequest()->hasParameter('force-login');
+    
+    $this->user->setAttribute( 'force-login', $value, 'sfGuardSecurityUser' );
+    
+    return $value;
   }
   
   /**
    * Returns the id of the onsite Library, if any, as matched by client IP
    * address
    *
-   * @return int
+   * @return int|bool
    */
   protected function getOnsiteLibraryId()
   {
-    if ( isset( $this->isOnsite )) {
+    if ( $this->isForceLogin() ) {
+      return false;
+    }
+    
+    if ( isset( $this->onsiteLibraryId )) {
       return $this->onsiteLibraryId;
     }
     
@@ -113,18 +139,15 @@ class freermsUserAffiliation
     }
     
     if ( in_array( $ip, $offsite_ips )) {
-      $this->isOnsite = false;
-      return null;
+      return $this->onsiteLibraryId = false;
     }
     elseif (
       $onsite_library = LibraryPeer::retrieveByIp( $ip )
     ) {
-      $this->isOnsite = true;
       return $this->onsiteLibraryId = $onsite_library->getId();
     }
     else {
-      $this->isOnsite = false;
-      return null;
+      return $this->onsiteLibraryId = false;
     }
   }
 }
