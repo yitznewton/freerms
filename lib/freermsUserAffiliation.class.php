@@ -123,10 +123,6 @@ class freermsUserAffiliation
    */
   protected function getOnsiteLibraryId()
   {
-    if ( $this->isForceLogin() ) {
-      return false;
-    }
-    
     if ( isset( $this->onsiteLibraryId )) {
       return $this->onsiteLibraryId;
     }
