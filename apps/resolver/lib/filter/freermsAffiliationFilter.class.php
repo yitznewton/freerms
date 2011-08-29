@@ -37,9 +37,14 @@ class freermsAffiliationFilter extends sfFilter
   
   protected function doExecute()
   {
-    $affiliation = new freermsUserAffiliation( $this->user );
+    $affiliation = new freermsUserAffiliation(
+      $this->user, $this->getContext() );
     
     $this->getContext()->setAffiliation( $affiliation );
+    
+    if ( $affiliation->isForceLogin() && ! $this->user->isAuthenticated() ) {
+      $this->forwardToLoginAction();
+    }
     
     if ( ! $affiliation->isOnsite() && ! $this->user->isAuthenticated() ) {
       $this->forwardToLoginAction();
