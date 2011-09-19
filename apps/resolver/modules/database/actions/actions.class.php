@@ -70,8 +70,7 @@ class databaseActions extends sfActions
     }
 
     if ( $this->er->getProductUnavailable() ) {
-      $this->er->recordUsageAttempt(
-        $affiliation->getOne(), false, 'unavailable' );
+      $this->er->recordUsageAttempt( $affiliation, false, 'unavailable' );
       
       $this->setTemplate('unavailable');
 
@@ -85,7 +84,7 @@ class databaseActions extends sfActions
     try {
       // FIXME: what about recording attempt when access fails in
       // AccessHandler?
-      $this->er->recordUsageAttempt( $affiliation->getOne(), true );
+      $this->er->recordUsageAttempt( $affiliation, true );
       $access_handler->execute( $this );
     }
     catch ( freermsUnauthorizedException $e ) {
