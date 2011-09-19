@@ -1042,6 +1042,9 @@ propel:
       foreignReference: id
       onDelete: SET NULL
       onUpdate: CASCADE
+    is_onsite:
+      type: BOOLEAN
+      required: true
     phpsessid:
       type: VARCHAR
       size: 8

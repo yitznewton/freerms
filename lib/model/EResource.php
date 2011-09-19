@@ -125,7 +125,8 @@ class EResource extends BaseEResource
       $usage = new UsageAttempt();
       $usage->setErId( $this->getId() );
       $usage->setPhpsessid( $session );
-      $usage->setLibId( $user_affiliation );
+      $usage->setIsOnsite( $user_affiliation->isOnsite() );
+      $usage->setLibId( $user_affiliation->getOne() );
       if ($ip_trunc) $usage->setIp($ip_trunc);
       $usage->setDate( time() );
       $usage->setAuthSuccessful($result);
