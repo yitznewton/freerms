@@ -15,7 +15,7 @@
 
 <?php if ( $featured_dbs ): ?>
 <h2>Featured databases:</h2>
-<ul id="featured">
+<ul id="featured" class="databases-list databases-featured">
   <?php foreach ( $featured_dbs as $er ): ?>
   <?php include_partial('listElement', array('er' => $er)) ?>
   <?php endforeach; ?>
@@ -28,4 +28,8 @@
 <h2>All databases:</h2>
 <?php endif; ?>
 
-<?php include_partial('list', array('databases' => $databases)) ?>
+<ul class="databases-list databases-nonfeatured">
+  <?php foreach ( $databases as $er ): ?>
+  <?php include_partial('listElementNonfeatured', array('er' => $er)) ?>
+  <?php endforeach; ?>
+</ul>

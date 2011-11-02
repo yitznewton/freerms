@@ -21,8 +21,4 @@
   <?php if ( $er->getPublicNote() ): ?>
   <div class="product-note"><?php echo $er->getPublicNote() ?></div>
   <?php endif; ?>
-
-  <?php if ( $er->getProductUnavailable() ): ?>
-  <div class="product-unavailable"><?php echo $er->getProductUnavailable() ?></div>
-  <?php endif; ?>
 </li>
