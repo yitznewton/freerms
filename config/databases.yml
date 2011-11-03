@@ -15,7 +15,7 @@ all:
       classname:  PropelPDO
       dsn:        mysql:dbname=freerms_live;host=localhost
       username:   freerms
-      password:   
+      password:    
       encoding:   utf8
       persistent: true
       pooling:    true

@@ -1,8 +1,8 @@
 all:
-  institution-name: Wassamatta University Libraries
-  local-erms-name:  WU-ERM
-  admin-email:      admin@example.com
-  support-email:    help@example.com
+  institution-name: Touro College Libraries
+  local-erms-name:  the system
+  admin-email:      systems.library@touro.edu
+  support-email:    systems.library@touro.edu
   
   user-api:
     url-mask:           http://users.example.com/api?username=%s&password=%s

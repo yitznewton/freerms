@@ -40,13 +40,38 @@ ul.nav-links li{
   clear: both;
 }
 
+.databases-list{
+  margin-left: 1.5em;
+}
+
+.databases-list li{
+  list-style: none;
+}
+
 .database-index-intro{
   border-bottom: 2px solid gray;
 }
 
-.description-short{
+.description-text{
   display: none;
+  z-index: 25;
+  background: #fff;
+  position: absolute;
+  border: 1px solid #000;
+  padding: 0.4em 0.8em;
+  width: 30em;
 }
+
+.description-container:hover .description-text{
+  display: block;
+}
+
+.description-icon{
+  margin: 0 0 0 0.2em;
+  position: relative;
+  top: 2px;
+}
+
 .product-note{
   margin: 0.2em 0 1.2em;
   font-style: italic;

@@ -35,15 +35,7 @@ class BaseAccessHandler
       return;
     }
     
-    if ( $this->isOnsite ) {
-      $method = 'getOnsiteAccessUri';
-    }
-    else {
-      $method = 'getOffsiteAccessUri';
-    }
-
-    $action->redirect(
-      $this->er->getAccessInfo()->$method() );
+    $action->redirect( $this->getAccessUri() );
 
     return;
   }
