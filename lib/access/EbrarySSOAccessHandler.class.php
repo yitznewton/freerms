@@ -17,6 +17,10 @@ class EbrarySSOAccessHandler extends EZproxyAccessHandler
   
   protected function getAccessUri()
   {
+    if ( $this->isOnsite ) {
+      return $this->er->getAccessInfo()->getOnsiteAccessUri();
+    }
+    
     $ebrary_site = sfConfig::get('app_ebrary-site');
     
     if ( ! is_string( $ebrary_site ) ) {
