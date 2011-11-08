@@ -6,7 +6,7 @@ class DbSubjectWidgetFormChoice extends sfWidgetFormPropelChoice
   {
     parent::configure( $options, $attributes );
 
-    $this->setOption( 'add_empty', true );   
+    $this->setOption( 'add_empty', 'ALL SUBJECTS' );   
     $this->setOption( 'model', 'DbSubject' );   
     $this->setOption( 'key_method', 'getSlug' );
     
