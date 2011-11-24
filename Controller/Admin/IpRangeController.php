@@ -2,20 +2,20 @@
 
 namespace Yitznewton\FreermsBundle\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
  * @Route("/ip")
  */
-class IpRangeController extends Controller
+class IpRangeController extends CRUDController
 {
     /**
-     * @Route("/{name}")
+     * @Route("/")
      * @Template()
      */
-    public function indexAction($name)
+    public function indexAction()
     {
         return array('name' => $name);
     }
