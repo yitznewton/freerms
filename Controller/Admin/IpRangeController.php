@@ -4,20 +4,24 @@ namespace Yitznewton\FreermsBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Yitznewton\FreermsBundle\Admin\IpRangeAdmin;
 
 /**
  * @Route("/ip")
  */
-class IpRangeController extends CRUDController
+class IpRangeController extends Controller
 {
     /**
      * @Route("/")
      * @Template()
      */
-    public function indexAction()
+    public function listAction()
     {
-        return array('name' => $name);
+        $view = 'YitznewtonFreermsBundle:Admin/IpRange:list.html.twig';
+        $content = $this->renderView($view);
+        return new Response($content);
     }
 }
 

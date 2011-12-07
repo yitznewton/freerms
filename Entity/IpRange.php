@@ -110,7 +110,7 @@ class IpRange
      * @param integer $startIpInt
      * @return IpRange
      */
-    public function setStartIpInt($startIpInt)
+    protected function setStartIpInt($startIpInt)
     {
         $this->StartIpInt = $startIpInt;
         return $this;
@@ -121,7 +121,7 @@ class IpRange
      *
      * @return integer 
      */
-    public function getStartIpInt()
+    protected function getStartIpInt()
     {
         return $this->StartIpInt;
     }
@@ -132,7 +132,7 @@ class IpRange
      * @param integer $endIpInt
      * @return IpRange
      */
-    public function setEndIpInt($endIpInt)
+    protected function setEndIpInt($endIpInt)
     {
         $this->EndIpInt = $endIpInt;
         return $this;
@@ -143,8 +143,9 @@ class IpRange
      *
      * @return integer 
      */
-    public function getEndIpInt()
+    protected function getEndIpInt()
     {
         return $this->EndIpInt;
     }
 }
+
