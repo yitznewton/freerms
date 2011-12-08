@@ -66,7 +66,15 @@ class IpRange
      */
     public function setStartIp($startIp)
     {
-        $this->startIp = $startIp;
+        $int = @ip2long($startIp);
+
+        if (!$int) {
+            throw new InvalidArgumentException("Invalid IP $startIp");
+        }
+
+        // work around signed integer issue with 32-bit architecture
+        $this->startIpInt = sprintf('%u', $int);
+        $this->startIp    = $startIp;
     }
 
     /**
@@ -86,7 +94,15 @@ class IpRange
      */
     public function setEndIp($endIp)
     {
-        $this->endIp = $endIp;
+        $int = @ip2long($endIp);
+
+        if (!$int) {
+            throw new InvalidArgumentException("Invalid IP $endIp");
+        }
+
+        // work around signed integer issue with 32-bit architecture
+        $this->endIpInt = sprintf('%u', $int);
+        $this->endIp    = $endIp;
     }
 
     /**
@@ -104,7 +120,7 @@ class IpRange
      *
      * @param integer $startIpInt
      */
-    public function setStartIpInt($startIpInt)
+    protected function setStartIpInt($startIpInt)
     {
         $this->startIpInt = $startIpInt;
     }
@@ -124,7 +140,7 @@ class IpRange
      *
      * @param integer $endIpInt
      */
-    public function setEndIpInt($endIpInt)
+    protected function setEndIpInt($endIpInt)
     {
         $this->endIpInt = $endIpInt;
     }
