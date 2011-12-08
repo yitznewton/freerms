@@ -7,48 +7,47 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Yitznewton\FreermsBundle\Entity\IpRange
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="Yitznewton\FreermsBundle\Entity\IpRangeRepository")
+ * @ORM\Table(name="ip_range")
+ * @ORM\Entity
  */
 class IpRange
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string $StartIp
+     * @var string $start_ip
      *
-     * @ORM\Column(name="StartIp", type="string", length=15)
+     * @ORM\Column(name="start_ip",type="string", length=15)
      */
-    private $StartIp;
+    protected $startIp;
 
     /**
-     * @var string $EndIp
+     * @var string $end_ip
      *
-     * @ORM\Column(name="EndIp", type="string", length=15)
+     * @ORM\Column(name="end_ip",type="string", length=15)
      */
-    private $EndIp;
+    protected $endIp;
 
     /**
-     * @var integer $StartIpInt
+     * @var integer $start_ip_int
      *
-     * @ORM\Column(name="StartIpInt", type="integer")
+     * @ORM\Column(name="start_ip_int",type="integer")
      */
-    private $StartIpInt;
+    protected $startIpInt;
 
     /**
-     * @var integer $EndIpInt
+     * @var integer $end_ip_int
      *
-     * @ORM\Column(name="EndIpInt", type="integer")
+     * @ORM\Column(name="end_ip_int",type="integer")
      */
-    private $EndIpInt;
-
+    protected $endIpInt;
 
     /**
      * Get id
@@ -61,91 +60,83 @@ class IpRange
     }
 
     /**
-     * Set StartIp
+     * Set startIp
      *
      * @param string $startIp
-     * @return IpRange
      */
     public function setStartIp($startIp)
     {
-        $this->StartIp = $startIp;
-        return $this;
+        $this->startIp = $startIp;
     }
 
     /**
-     * Get StartIp
+     * Get startIp
      *
      * @return string 
      */
     public function getStartIp()
     {
-        return $this->StartIp;
+        return $this->startIp;
     }
 
     /**
-     * Set EndIp
+     * Set endIp
      *
      * @param string $endIp
-     * @return IpRange
      */
     public function setEndIp($endIp)
     {
-        $this->EndIp = $endIp;
-        return $this;
+        $this->endIp = $endIp;
     }
 
     /**
-     * Get EndIp
+     * Get endIp
      *
      * @return string 
      */
     public function getEndIp()
     {
-        return $this->EndIp;
+        return $this->endIp;
     }
 
     /**
-     * Set StartIpInt
+     * Set startIpInt
      *
      * @param integer $startIpInt
-     * @return IpRange
      */
-    protected function setStartIpInt($startIpInt)
+    public function setStartIpInt($startIpInt)
     {
-        $this->StartIpInt = $startIpInt;
-        return $this;
+        $this->startIpInt = $startIpInt;
     }
 
     /**
-     * Get StartIpInt
+     * Get startIpInt
      *
      * @return integer 
      */
-    protected function getStartIpInt()
+    public function getStartIpInt()
     {
-        return $this->StartIpInt;
+        return $this->startIpInt;
     }
 
     /**
-     * Set EndIpInt
+     * Set endIpInt
      *
      * @param integer $endIpInt
-     * @return IpRange
      */
-    protected function setEndIpInt($endIpInt)
+    public function setEndIpInt($endIpInt)
     {
-        $this->EndIpInt = $endIpInt;
-        return $this;
+        $this->endIpInt = $endIpInt;
     }
 
     /**
-     * Get EndIpInt
+     * Get endIpInt
      *
      * @return integer 
      */
-    protected function getEndIpInt()
+    public function getEndIpInt()
     {
-        return $this->EndIpInt;
+        return $this->endIpInt;
     }
 }
 

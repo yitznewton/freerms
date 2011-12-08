@@ -1,6 +1,14 @@
 {% extends 'YitznewtonFreermsBundle:Admin:base.html.twig' %}
 
+{% block title %}IP Ranges{% endblock %}
+
 {% block body %}
-sup ther e {{ name }}
+<h2>IP Ranges</h2>
+
+<ul>
+    {% for ipRange in ipRanges %}
+        <li>{{ ipRange.startIp }}</li>
+    {% endfor %}
+</ul>
 {% endblock %}
 
