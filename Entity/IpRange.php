@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="ip_range")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class IpRange
 {
@@ -36,18 +37,18 @@ class IpRange
     protected $endIp;
 
     /**
-     * @var integer $start_ip_int
+     * @var string $start_ip_sort
      *
-     * @ORM\Column(name="start_ip_int",type="integer")
+     * @ORM\Column(name="start_ip_sort",type="string", length=12)
      */
-    protected $startIpInt;
+    protected $startIpSort;
 
     /**
-     * @var integer $end_ip_int
+     * @var integer $end_ip_sort
      *
-     * @ORM\Column(name="end_ip_int",type="integer")
+     * @ORM\Column(name="end_ip_sort",type="string", length=12)
      */
-    protected $endIpInt;
+    protected $endIpSort;
 
     /**
      * Get id
@@ -66,15 +67,12 @@ class IpRange
      */
     public function setStartIp($startIp)
     {
-        $int = @ip2long($startIp);
-
-        if (!$int) {
-            throw new InvalidArgumentException("Invalid IP $startIp");
+        if (!@ip2long($startIp)) {
+            throw new \InvalidArgumentException("Invalid IP $startIp");
         }
 
-        // work around signed integer issue with 32-bit architecture
-        $this->startIpInt = sprintf('%u', $int);
-        $this->startIp    = $startIp;
+        $this->startIpSort = IpRange::createSortString($startIp);
+        $this->startIp     = $startIp;
     }
 
     /**
@@ -94,15 +92,12 @@ class IpRange
      */
     public function setEndIp($endIp)
     {
-        $int = @ip2long($endIp);
-
-        if (!$int) {
-            throw new InvalidArgumentException("Invalid IP $endIp");
+        if (!@ip2long($endIp)) {
+            throw new \InvalidArgumentException("Invalid IP $endIp");
         }
 
-        // work around signed integer issue with 32-bit architecture
-        $this->endIpInt = sprintf('%u', $int);
-        $this->endIp    = $endIp;
+        $this->endIpSort = IpRange::createSortString($endIp);
+        $this->endIp     = $endIp;
     }
 
     /**
@@ -116,43 +111,47 @@ class IpRange
     }
 
     /**
-     * Set startIpInt
-     *
-     * @param integer $startIpInt
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * needs to be public for Doctrine lifecycle events
      */
-    protected function setStartIpInt($startIpInt)
+    public function setEndIpForSingle()
     {
-        $this->startIpInt = $startIpInt;
+        if (isset($this->startIp) && !isset($this->endIp)) {
+            $this->setEndIp($this->startIp);
+        }
     }
 
     /**
-     * Get startIpInt
+     * Get startIpSort
      *
-     * @return integer 
+     * @return string 
      */
-    public function getStartIpInt()
+    public function getStartIpSort()
     {
-        return $this->startIpInt;
+        return $this->startIpSort;
     }
 
     /**
-     * Set endIpInt
+     * Get endIpSort
      *
-     * @param integer $endIpInt
+     * @return string 
      */
-    protected function setEndIpInt($endIpInt)
+    public function getEndIpSort()
     {
-        $this->endIpInt = $endIpInt;
+        return $this->endIpSort;
     }
 
     /**
-     * Get endIpInt
-     *
-     * @return integer 
+     * @param string $ip
+     * @returns string
      */
-    public function getEndIpInt()
+    protected static function createSortString($ip)
     {
-        return $this->endIpInt;
+        $segments = array_map(function($v) {
+            return sprintf('%03d', $v);
+        }, explode('.', $ip));
+
+        return implode('', $segments);
     }
 }
-
