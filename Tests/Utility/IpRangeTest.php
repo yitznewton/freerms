@@ -35,7 +35,7 @@ class IpRangeTest extends OrmTestCase
     {
         $ipRange = new IpRange();
         $ipRange->setStartIp('92.245.1.1');
-        $this->assertEquals('092245001001', $ipRange->getStartIpSort(),
+        $this->assertAttributeEquals('092245001001', 'startIpSort', $ipRange,
             'IpRange::setStartIp() sets startIpSort correctly');
     }
 
@@ -43,7 +43,7 @@ class IpRangeTest extends OrmTestCase
     {
         $ipRange = new IpRange();
         $ipRange->setEndIp('92.245.1.1');
-        $this->assertEquals('092245001001', $ipRange->getEndIpSort(),
+        $this->assertAttributeEquals('092245001001', 'endIpSort', $ipRange,
             'IpRange::setEndIp() sets endIpSort correctly');
     }
 

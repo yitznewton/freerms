@@ -3,6 +3,7 @@
 namespace Yitznewton\FreermsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * Yitznewton\FreermsBundle\Entity\IpRange
@@ -25,28 +26,34 @@ class IpRange
     /**
      * @var string $start_ip
      *
-     * @ORM\Column(name="start_ip",type="string", length=15)
+     * @ORM\Column(name="start_ip",type="string",length=15,nullable=false)
+     *
+     * @Constraints\NotNull
+     * @Constraints\Ip
      */
     protected $startIp;
 
     /**
      * @var string $end_ip
      *
-     * @ORM\Column(name="end_ip",type="string", length=15)
+     * @ORM\Column(name="end_ip",type="string",length=15,nullable=false)
+     *
+     * @Constraints\NotNull
+     * @Constraints\Ip
      */
     protected $endIp;
 
     /**
      * @var string $start_ip_sort
      *
-     * @ORM\Column(name="start_ip_sort",type="string", length=12)
+     * @ORM\Column(name="start_ip_sort",type="string",length=12,nullable=false)
      */
     protected $startIpSort;
 
     /**
      * @var integer $end_ip_sort
      *
-     * @ORM\Column(name="end_ip_sort",type="string", length=12)
+     * @ORM\Column(name="end_ip_sort",type="string",length=12,nullable=false)
      */
     protected $endIpSort;
 
@@ -120,26 +127,6 @@ class IpRange
         if (isset($this->startIp) && !isset($this->endIp)) {
             $this->setEndIp($this->startIp);
         }
-    }
-
-    /**
-     * Get startIpSort
-     *
-     * @return string 
-     */
-    public function getStartIpSort()
-    {
-        return $this->startIpSort;
-    }
-
-    /**
-     * Get endIpSort
-     *
-     * @return string 
-     */
-    public function getEndIpSort()
-    {
-        return $this->endIpSort;
     }
 
     /**
