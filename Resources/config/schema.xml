@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="Yitznewton\FreermsBundle\Model"
+    defaultIdMethod="native" tablePrefix="freerms_">
+
+    <table name="ip_range" phpName="IpRange">
+        <column name="id" type="integer" required="true" primaryKey="true"
+                autoIncrement="true" />
+        <column name="start_ip" type="varchar" size="15" required="true" />
+        <column name="end_ip" type="varchar" size="15" required="true" />
+        <column name="start_ip_sort" type="varchar" size="12"
+                required="true" />
+        <column name="end_ip_sort" type="varchar" size="12" required="true" />
+    </table>
+</database>
+
