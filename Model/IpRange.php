@@ -26,6 +26,19 @@ class IpRange extends BaseIpRange {
     }
 
     /**
+     * @param \PropelPDO $con
+     * @return boolean
+     */
+    public function preSave(\PropelPDO $con = null)
+    {
+        if ($this->getStartIp() && !$this->getEndIp()) {
+            $this->setEndIp($this->getStartIp());
+        }
+
+        return true;
+    }
+
+    /**
      * @param string $ip
      * @returns string
      */
