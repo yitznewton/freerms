@@ -1,0 +1,33 @@
+<?php
+
+$vendorDir = __DIR__.'/../../../..';
+require_once $vendorDir.'/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
+$loader->registerNamespaces(array(
+    'Symfony'                               => array($vendorDir.'/symfony/src'),
+    'Sensio\\Bundle\\FrameworkExtraBundle'  => array($vendorDir),
+    'Yitznewton'                            => $vendorDir.'/bundles',
+    'Propel'                                => $vendorDir.'/bundles',
+));
+$loader->register();
+
+set_include_path(get_include_path() . PATH_SEPARATOR . $vendorDir.'/phing/classes');
+
+spl_autoload_register(function($class) {
+    if (0 === strpos($class, 'Propel\\PropelBundle\\')) {
+        $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';
+        if (!stream_resolve_include_path($path)) {
+            return false;
+        }
+        require_once $path;
+
+        return true;
+    }
+});
+
+// Propel runtime autoload
+require $vendorDir.'/propel/runtime/lib/Propel.php';
+
