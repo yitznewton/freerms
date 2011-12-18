@@ -5,57 +5,43 @@ namespace Yitznewton\FreermsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints;
 
-/**
- * Yitznewton\FreermsBundle\Entity\IpRange
- *
- * @ORM\Table(name="ip_range")
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
- */
 class IpRange
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $start_ip
      *
-     * @ORM\Column(name="start_ip",type="string",length=15,nullable=false)
-     *
      * @Constraints\NotNull
      * @Constraints\Ip
      */
-    protected $startIp;
+    protected $start_ip;
 
     /**
      * @var string $end_ip
      *
-     * @ORM\Column(name="end_ip",type="string",length=15,nullable=false)
-     *
      * @Constraints\NotNull
      * @Constraints\Ip
      */
-    protected $endIp;
+    protected $end_ip;
 
     /**
      * @var string $start_ip_sort
-     *
-     * @ORM\Column(name="start_ip_sort",type="string",length=12,nullable=false)
      */
-    protected $startIpSort;
+    protected $start_ip_sort;
 
     /**
      * @var integer $end_ip_sort
-     *
-     * @ORM\Column(name="end_ip_sort",type="string",length=12,nullable=false)
      */
-    protected $endIpSort;
+    protected $end_ip_sort;
+
+    /**
+     * @var boolean $is_active
+     */
+    protected $is_active;
 
     /**
      * Get id
@@ -118,8 +104,6 @@ class IpRange
     }
 
     /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
      * needs to be public for Doctrine lifecycle events
      */
     public function setEndIpForSingle()
@@ -142,3 +126,4 @@ class IpRange
         return implode('', $segments);
     }
 }
+

@@ -12,4 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class IpRangeRepository extends EntityRepository
 {
+    public function findIntersecting(IpRange $testIpRange)
+    {
+    }
 }

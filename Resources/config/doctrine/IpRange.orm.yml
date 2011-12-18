@@ -1,0 +1,27 @@
+Yitznewton\FreermsBundle\Entity\IpRange:
+    type: entity
+    table: ip_range
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        start_ip:
+            type: string
+            length: 15
+        end_ip:
+            type: string
+            length: 15
+        start_ip_sort:
+            type: string
+            length: 12
+        end_ip_sort:
+            type: string
+            length: 12
+        is_active:
+            type: boolean
+            default: true
+    lifecycleCallbacks:
+        prePersist: [ setEndIpForSingle ]
+        preUpdate: [ setEndIpForSingle ]
+
