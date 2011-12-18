@@ -1,8 +1,8 @@
 <?php
 
-namespace Yitznewton\FreermsBundle\Tests\Model;
+namespace Yitznewton\FreermsBundle\Tests\Repository;
 
-use Yitznewton\FreermsBundle\Model\IpRange;
+use Yitznewton\FreermsBundle\Entity\IpRange;
 
 class IpRangeTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,9 +44,9 @@ class IpRangeTest extends \PHPUnit_Framework_TestCase
     {
         $ipRange = new IpRange();
         $ipRange->setStartIp('192.245.1.1');
-        $ipRange->save();
+        $ipRange->setEndIpForSingle();
 
-        $this->assertEquals('192.245.1.1', $ipRange->getEndIp(),
+        $this->assertAttributeEquals('192.245.1.1', 'end_ip', $ipRange,
             'IpRange::endIp set on save of single IP address');
     }
 
@@ -56,10 +56,9 @@ class IpRangeTest extends \PHPUnit_Framework_TestCase
         $ipRange = new IpRange();
         $ipRange->setStartIp('192.245.1.1');
         $ipRange->setEndIp('192.245.1.2');
+        $ipRange->setEndIpForSingle();
 
-        $this->_em->persist($ipRange);
-
-        $this->assertEquals('192.245.1.2', $ipRange->getEndIp(),
+        $this->assertAttributeEquals('192.245.1.2', 'end_ip', $ipRange,
             'IpRange::endIp not set on persist of IP address range');
     }
 }

@@ -41,7 +41,7 @@ class IpRange
     /**
      * @var boolean $is_active
      */
-    protected $is_active;
+    protected $is_active = true;
 
     /**
      * Get id
@@ -64,8 +64,8 @@ class IpRange
             throw new \InvalidArgumentException("Invalid IP $startIp");
         }
 
-        $this->startIpSort = IpRange::createSortString($startIp);
-        $this->startIp     = $startIp;
+        $this->start_ip_sort = IpRange::createSortString($startIp);
+        $this->start_ip      = $startIp;
     }
 
     /**
@@ -75,7 +75,7 @@ class IpRange
      */
     public function getStartIp()
     {
-        return $this->startIp;
+        return $this->start_ip;
     }
 
     /**
@@ -89,8 +89,8 @@ class IpRange
             throw new \InvalidArgumentException("Invalid IP $endIp");
         }
 
-        $this->endIpSort = IpRange::createSortString($endIp);
-        $this->endIp     = $endIp;
+        $this->end_ip_sort = IpRange::createSortString($endIp);
+        $this->end_ip      = $endIp;
     }
 
     /**
@@ -100,7 +100,7 @@ class IpRange
      */
     public function getEndIp()
     {
-        return $this->endIp;
+        return $this->end_ip;
     }
 
     /**
@@ -108,8 +108,8 @@ class IpRange
      */
     public function setEndIpForSingle()
     {
-        if (isset($this->startIp) && !isset($this->endIp)) {
-            $this->setEndIp($this->startIp);
+        if (isset($this->start_ip) && !isset($this->end_ip)) {
+            $this->setEndIp($this->start_ip);
         }
     }
 
@@ -125,5 +125,24 @@ class IpRange
 
         return implode('', $segments);
     }
-}
 
+    /**
+     * Set is_active
+     *
+     * @param boolean $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->is_active = $isActive;
+    }
+
+    /**
+     * Get is_active
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->is_active;
+    }
+}

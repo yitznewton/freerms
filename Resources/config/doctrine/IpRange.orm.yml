@@ -1,6 +1,7 @@
 Yitznewton\FreermsBundle\Entity\IpRange:
     type: entity
     table: ip_range
+    repositoryClass: Yitznewton\FreermsBundle\Entity\IpRangeRepository
     id:
         id:
             type: integer
