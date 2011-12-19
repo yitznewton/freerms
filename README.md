@@ -6,11 +6,13 @@ the symfony web framework. It is focused on providing access at the database
 level in a multi-library or consortial environment. It comes packaged with
 several AccessHandler classes, which represent different ways that users
 may connect to resources from on- or off-campus; for example, Referer Url,
-EZproxy, or direct HTTP access. Custom authentication simply requires
-writing a new AccessHandler class.
+[EZproxy](http://www.oclc.org/ezproxy/), or direct HTTP access.
+Custom authentication simply requires writing a new AccessHandler class.
 
 Installation
 ------------
+
+* [Install symfony](http://symfony.com/download)
 
 * Add to your `deps` file:
 
