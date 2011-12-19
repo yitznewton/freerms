@@ -145,4 +145,21 @@ class IpRange
     {
         return $this->is_active;
     }
+
+    /**
+     * @return string
+     */
+    public function getStartIpSort()
+    {
+        return $this->start_ip_sort;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndIpSort()
+    {
+        return $this->end_ip_sort;
+    }
 }
+
