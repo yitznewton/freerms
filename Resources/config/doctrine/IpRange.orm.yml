@@ -19,9 +19,10 @@ Yitznewton\FreermsBundle\Entity\IpRange:
         end_ip_sort:
             type: string
             length: 12
+        is_excluded:
+            type: boolean
         is_active:
             type: boolean
-            default: true
     lifecycleCallbacks:
         prePersist: [ setEndIpForSingle ]
         preUpdate: [ setEndIpForSingle ]

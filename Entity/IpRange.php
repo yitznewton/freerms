@@ -39,6 +39,13 @@ class IpRange
     protected $end_ip_sort;
 
     /**
+     * Whether to exclude this range (e.g. for offsite simulation)
+     *
+     * @var boolean $is_excluded
+     */
+    protected $is_excluded = false;
+
+    /**
      * @var boolean $is_active
      */
     protected $is_active = true;
@@ -160,6 +167,26 @@ class IpRange
     public function getEndIpSort()
     {
         return $this->end_ip_sort;
+    }
+
+    /**
+     * Set is_excluded
+     *
+     * @param boolean $isExcluded
+     */
+    public function setIsExcluded($isExcluded)
+    {
+        $this->is_excluded = $isExcluded;
+    }
+
+    /**
+     * Get is_excluded
+     *
+     * @return boolean 
+     */
+    public function getIsExcluded()
+    {
+        return $this->is_excluded;
     }
 }
 
