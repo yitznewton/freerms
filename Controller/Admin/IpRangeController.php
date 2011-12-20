@@ -2,17 +2,18 @@
 
 namespace Yitznewton\FreermsBundle\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
-class IpRangeController extends Controller
+class IpRangeController extends ContainerAware
 {
     public function indexAction()
     {
-        $ipRanges = $this->getDoctrine()->getEntityManager()
+        $ipRanges = $this->container->get('doctrine')->getEntityManager()
             ->getRepository('FreermsBundle:IpRange')->findAll();
 
-        return $this->render('FreermsBundle:Admin/IpRange:index.html.twig',
-            array('ipRanges' => $ipRanges));
+        return $this->container->get('templating')
+            ->renderResponse('FreermsBundle:Admin/IpRange:index.html.twig',
+                             array('ipRanges' => $ipRanges));
     }
 }
 
