@@ -7,14 +7,22 @@ IpRange:
       autoincrement: true
     start_ip:
       type: string(15)
+      notnull: true
     end_ip:
       type: string(15)
+      notnull: true
     start_ip_sort:
       type: string(12)
+      notnull: true
     end_ip_sort:
       type: string(12)
+      notnull: true
     is_active:
       type: boolean
+      notnull: true
+      default: true
     is_excluded:
       type: boolean
+      notnull: true
+      default: false
 

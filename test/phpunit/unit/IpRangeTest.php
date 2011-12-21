@@ -8,7 +8,6 @@ class unit_IpRangeTest extends sfPHPUnitBaseTestCase
     new sfDatabaseManager(
       ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
 
-//    Doctrine_Query::create()->delete('IpRange i')->execute();
     Doctrine_Core::getTable('IpRange')->createQuery()->delete()->execute();
 
     $ipRange = new IpRange();
@@ -57,7 +56,7 @@ class unit_IpRangeTest extends sfPHPUnitBaseTestCase
     $ipRange->setStartIp('192.245.1.1');
     $ipRange->save();
 
-    $this->assertAttributeEquals('192.245.1.1', 'end_ip', $ipRange,
+    $this->assertEquals('192.245.1.1', $ipRange->getEndIp(),
       'IpRange::endIp set on save of single IP address');
   }
 
@@ -68,7 +67,7 @@ class unit_IpRangeTest extends sfPHPUnitBaseTestCase
     $ipRange->setEndIp('192.245.1.2');
     $ipRange->save();
 
-    $this->assertAttributeEquals('192.245.1.2', 'end_ip', $ipRange,
+    $this->assertEquals('192.245.1.2', $ipRange->getEndIp(),
       'IpRange::endIp not set on persist of IP address range');
   }
 }

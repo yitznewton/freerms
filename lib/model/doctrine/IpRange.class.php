@@ -18,8 +18,8 @@ class IpRange extends BaseIpRange
       throw new InvalidArgumentException("Invalid IP $v");
     }
     
-    $this->start_ip_sort = IpRange::createSortString($v);
-    $this->start_ip      = $v;
+    $this->_set('start_ip_sort', IpRange::createSortString($v));
+    $this->_set('start_ip', $v);
   }
 
   public function setEndIp($v)
@@ -28,8 +28,8 @@ class IpRange extends BaseIpRange
       throw new InvalidArgumentException("Invalid IP $v");
     }
     
-    $this->end_ip_sort = IpRange::createSortString($v);
-    $this->end_ip      = $v;
+    $this->_set('end_ip_sort', IpRange::createSortString($v));
+    $this->_set('end_ip', $v);
   }
 
   public function preSave($event)
@@ -48,3 +48,4 @@ class IpRange extends BaseIpRange
     return implode('', $segments);
   }
 }
+
