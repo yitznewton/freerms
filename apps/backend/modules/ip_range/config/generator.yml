@@ -1,0 +1,25 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           IpRange
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          ip_range
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:
+        is_excluded:
+          help: |
+            e.g. internal IP address used for testing, or to override
+              autodetected library affiliation
+      list:    ~
+      filter:  ~
+      form:    ~
+      edit:    ~
+      new:     ~

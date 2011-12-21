@@ -17,6 +17,8 @@ IpRange:
     end_ip_sort:
       type: string(12)
       notnull: true
+    note:
+      type: clob
     is_active:
       type: boolean
       notnull: true
