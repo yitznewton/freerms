@@ -1,0 +1,20 @@
+IpRange:
+  tableName: ip_range
+  columns:
+    id:
+      type: integer
+      primary: true
+      autoincrement: true
+    start_ip:
+      type: string(15)
+    end_ip:
+      type: string(15)
+    start_ip_sort:
+      type: string(12)
+    end_ip_sort:
+      type: string(12)
+    is_active:
+      type: boolean
+    is_excluded:
+      type: boolean
+

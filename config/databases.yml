@@ -1,21 +1,16 @@
-dev:
-  propel:
-    param:
-      classname:  DebugPDO
-
-test:
-  propel:
-    param:
-      classname:  DebugPDO
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/07-Databases
 
 all:
-  propel:
-    class:        sfPropelDatabase
+  doctrine:
+    class: sfDoctrineDatabase
     param:
-      classname:  PropelPDO
-      dsn:        mysql:dbname=freerms;host=localhost
-      username:   freerms
-      password:   
-      encoding:   utf8
-      persistent: true
-      pooling:    true
+      dsn:      sqlite:%SF_DATA_DIR%/sqlite/freerms.sqlite
+      username: root
+      password: 
+
+test:
+  doctrine:
+    param:
+      dsn:      sqlite:%SF_DATA_DIR%/sqlite/test.sqlite
+

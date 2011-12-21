@@ -1,9 +1,8 @@
 cache
-data/sql
+data/sqlite
 lib/filter/base
 lib/form/base
-lib/model/map
-lib/model/om
+lib/model/doctrine/base
 log
 plugins
 web/sfPropelPlugin
