@@ -14,7 +14,12 @@ generator:
     config:
       actions: ~
       fields:  ~
-      list:    ~
+      list:
+        title: Subjects
+        display: [=name]
+        sort: [name, asc]
+        object_actions:
+          _delete: ~
       filter:
         class: false
       form:    ~

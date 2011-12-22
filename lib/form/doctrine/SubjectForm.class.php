@@ -12,6 +12,33 @@ class SubjectForm extends BaseSubjectForm
 {
   public function configure()
   {
-    unset($this['slug']);
+    unset(
+      $this['slug'],
+      $this['databases_list']
+    );
+
+    if ($this->getObject()->isNew()) {
+      return;
+    }
+
+    $containerForm = new sfForm();
+
+    $databaseSubjects = Doctrine_Core::getTable('DatabaseSubject')
+      ->createQuery('ds')
+      ->leftJoin('ds.Database d')
+      ->where('ds.subject_id = ?', $this->getObject()->getId())
+      ->orderBy('d.sort_title')
+      ->execute()
+      ;
+    
+    foreach ($this->getObject()->getDatabaseSubject() as $ds) {
+      $containerForm->embedForm($ds->getDatabaseId(),
+        new DatabaseSubjectForm($ds));
+    }
+
+    $this->embedForm('DatabaseSubject', $containerForm);
+
+    $this->widgetSchema['DatabaseSubject']->setLabel('Database weight');
   }
 }
+

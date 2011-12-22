@@ -30,6 +30,8 @@ generator:
         title: Databases
         display: [=title]
         sort: [title, asc]
+        object_actions:
+          _delete: ~
       filter:
         display: [title, is_hidden, is_unavailable, is_featured]
       form:    ~
