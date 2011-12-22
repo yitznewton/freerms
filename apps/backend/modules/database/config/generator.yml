@@ -1,0 +1,37 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Database
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          database
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:
+        alt_id:
+          help: Can be used to link to database
+        public_note:
+          help: Displayed in database listings
+        referral_note:
+          help: Displayed when a user is redirected using Referer URL
+        is_hidden:
+          help: Do not display in listings
+        is_unavailable:
+          help: Prevent user from linking to database
+        is_featured:
+          help: Place at top of subject listings
+      list:
+        title: Databases
+        display: [=title]
+        sort: [title, asc]
+      filter:
+        display: [title, is_hidden, is_unavailable, is_featured]
+      form:    ~
+      edit:    ~
+      new:     ~

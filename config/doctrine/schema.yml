@@ -1,10 +1,69 @@
+Database:
+  tableName: database
+  actAs: [Timestampable]
+  columns:
+    alt_id:
+      type: string(10)
+      unique: true
+    title:
+      type: string(255)
+      notnull: true
+    sort_title:
+      type: string(255)
+      notnull: true
+    access_url_onsite:
+      type: string(255)
+    access_url_offsite:
+      type: string(255)
+    access_handler_onsite:
+      type: string(255)
+    access_handler_offsite:
+      type: string(255)
+    description:
+      type: clob
+    public_note:
+      type: clob
+    referral_note:
+      type: clob
+    is_hidden:
+      type: boolean
+      notnull: true
+      default: false
+    is_unavailable:
+      type: boolean
+      notnull: true
+      default: false
+    is_featured:
+      type: boolean
+      notnull: true
+      default: false
+    featured_weight:
+      type: integer
+      notnull: true
+      default: 0
+    note:
+      type: clob
+  relations:
+    Libraries:
+      class: Library
+      refClass: DatabaseLibrary
+      local: database_id
+      foreign: library_id
+      foreignAlias: Databases
+
+DatabaseLibrary:
+  columns:
+    database_id: { type: integer, primary: true }
+    library_id: { type: integer, primary: true }
+  relations:
+    Database:
+      onDelete: CASCADE
+    Library:
+      onDelete: CASCADE
+
 IpRange:
   tableName: ip_range
   columns:
-    id:
-      type: integer
-      primary: true
-      autoincrement: true
     start_ip:
       type: string(15)
       notnull: true
@@ -38,10 +97,6 @@ IpRange:
 Library:
   tableName: library
   columns:
-    id:
-      type: integer
-      primary: true
-      autoincrement: true
     name:
       type: string(255)
       notnull: true

@@ -1,3 +1,12 @@
+database:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Database
+    module:               database
+    prefix_path:          /databases
+    column:               id
+    with_wildcard_routes: true
+
 library:
   class: sfDoctrineRouteCollection
   options:

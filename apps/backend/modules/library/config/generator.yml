@@ -13,7 +13,9 @@ generator:
 
     config:
       actions: ~
-      fields:  ~
+      fields:
+        ezproxy_host:
+          help: e.g. proxy.library.wassamatta.edu
       list:
         title: Libraries
         display: [=name]
