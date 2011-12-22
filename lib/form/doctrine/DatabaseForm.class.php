@@ -13,6 +13,7 @@ class DatabaseForm extends BaseDatabaseForm
   public function configure()
   {
     unset(
+      $this['featured_weight'],
       $this['created_at'],
       $this['updated_at']
     );
@@ -23,12 +24,15 @@ class DatabaseForm extends BaseDatabaseForm
     $this->widgetSchema['is_hidden']->setLabel('Hidden');
     $this->widgetSchema['is_unavailable']->setLabel('Unavailable');
     $this->widgetSchema['is_featured']->setLabel('Featured');
-    $this->widgetSchema['libraries_list']->setLabel('Libraries');
  
     $this->widgetSchema['access_handler_onsite']
       ->setLabel('Onsite access handler');
 
     $this->widgetSchema['access_handler_offsite']
       ->setLabel('Offsite access handler');
+ 
+    $this->widgetSchema['libraries_list']
+      ->setLabel('Libraries')
+      ->setOption('expanded', true);
   }
 }
