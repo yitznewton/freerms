@@ -12,26 +12,28 @@ class freermsValidatorIpRange extends sfValidatorBase
 
   protected function doClean( $values )
   {
-    $start = sprintf( '%u', @ip2long( $values['start_ip'] ) );
-    $end   = sprintf( '%u', @ip2long( $values['end_ip'] ) );
+    if (empty($values['end_ip'])) {
+      $values['end_ip'] = $values['start_ip'];
+    }
 
-    if ( $end < $start ) {
-      throw new sfValidatorError( $this, 'inverted' );
+    $start = IpRange::createSortString($values['start_ip']);
+    $end   = IpRange::createSortString($values['end_ip']);
+
+    if ($end < $start) {
+      throw new sfValidatorError($this, 'inverted');
     }
 
     $test_ip_range = new IpRange();
-    $test_ip_range->setId( $values['id'] );
-    $test_ip_range->setActiveIndicator( $values['active_indicator'] );
-    $test_ip_range->setStartIp( $values['start_ip'] );
-    $test_ip_range->setEndIp( $values['end_ip'] );
+    $test_ip_range->fromArray($values);
 
-    $conflict_ranges = IpRangePeer::retrieveOverlapping( $test_ip_range );
+    $conflict_ranges = Doctrine_Core::getTable('IpRange')
+      ->findIntersecting($test_ip_range);
 
-    if ( $conflict_ranges && count( $conflict_ranges ) > 1 ) {
+    if ( $conflict_ranges->count() > 1 ) {
       $this->setMessage( 'conflicting', 'Range conflicts with multiple existing ranges' );
       throw new sfValidatorError( $this, 'conflicting' );
     }
-    elseif ( $conflict_ranges ) {
+    elseif ( $conflict_ranges->count() == 1 ) {
       $this->setMessage( 'conflicting', 'Range conflicts with existing range ' . $conflict_ranges[0] );
       throw new sfValidatorError( $this, 'conflicting' );
     }
