@@ -25,7 +25,13 @@ class IpRangeTable extends Doctrine_Table
     $q = IpRangeTable::getInstance()->createQuery('i')
       ->where('i.start_ip_sort <= ?', $ipRange->getEndIpSort())
       ->andWhere('i.end_ip_sort >= ?', $ipRange->getStartIpSort())
+      ->orderBy('i.start_ip_sort ASC')
+      ->addOrderBy('i.end_ip_sort ASC')
       ;
+
+    if ($ipRange->getId()) {
+      $q->andWhere('i.id != ?', $ipRange->getId());
+    }
 
     if (
       !isset($options['include_inactive'])
@@ -33,6 +39,27 @@ class IpRangeTable extends Doctrine_Table
     ) {
       $q->andWhere('i.is_active = true');
     }
+
+    return $q->execute();
+  }
+
+  /**
+   * Finds IpRanges based on initial segment; e.g. '192.168'
+   *
+   * @param string $segment
+   * @return Doctrine_Collection
+   */
+  public function findByIpSegment($segment)
+  {
+    $sortString   = IpRange::createSortString($segment);
+    $stringLength = strlen($sortString);
+
+    $q = IpRangeTable::getInstance()->createQuery('i')
+      ->where("SUBSTRING(i.start_ip_sort, 1, $stringLength) <= ?", $sortString)
+      ->andWhere("SUBSTRING(i.end_ip_sort, 1, $stringLength) >= ?", $sortString)
+      ->orderBy('i.start_ip_sort ASC')
+      ->addOrderBy('i.end_ip_sort ASC')
+      ;
 
     return $q->execute();
   }

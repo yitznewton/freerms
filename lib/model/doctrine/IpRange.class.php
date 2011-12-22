@@ -20,6 +20,10 @@ class IpRange extends BaseIpRange
     
     $this->_set('start_ip_sort', IpRange::createSortString($v));
     $this->_set('start_ip', $v);
+
+    if (is_null($this->end_ip)) {
+      $this->setEndIp($v);
+    }
   }
 
   public function setEndIp($v)
@@ -32,14 +36,7 @@ class IpRange extends BaseIpRange
     $this->_set('end_ip', $v);
   }
 
-  public function preSave($event)
-  {
-    if (is_null($this->end_ip)) {
-      $this->setEndIp($this->start_ip);
-    }
-  }
-
-  protected static function createSortString($ip)
+  public static function createSortString($ip)
   {
     $segments = array_map(function($v) {
       return sprintf('%03d', $v);

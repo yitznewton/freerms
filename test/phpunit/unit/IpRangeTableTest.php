@@ -7,7 +7,10 @@ class unit_IpRangeTableTest extends sfPHPUnitBaseTestCase
   {
     new sfDatabaseManager(
       ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
+  }
 
+  public function setUp()
+  {
     Doctrine_Core::getTable('IpRange')->createQuery()->delete()->execute();
 
     $ipRange = new IpRange();
@@ -19,6 +22,29 @@ class unit_IpRangeTableTest extends sfPHPUnitBaseTestCase
   protected function getTable()
   {
     return Doctrine_Core::getTable('IpRange');
+  }
+
+  public function testFindIntersecting_MatchesTwo_CorrectOrder()
+  {
+    $ipRange = new IpRange();
+    $ipRange->setStartIp('192.167.100.1');
+    $ipRange->setEndIp('192.167.199.255');
+    $ipRange->save();
+
+    $ipRange = new IpRange();
+    $ipRange->setStartIp('192.167.1.1');
+    $ipRange->setEndIp('192.168.200.1');
+
+    $this->assertEquals('192.167.100.1', $this->getTable()
+      ->findIntersecting($ipRange)->getFirst()->getStartIp());
+  }
+
+  public function testFindIntersecting_Existing_NotMatchSelf()
+  {
+    $ipRange = Doctrine_Core::getTable('IpRange')->findAll()->getFirst();
+
+    $this->assertEquals(0, $this->getTable()
+      ->findIntersecting($ipRange)->count());
   }
 
   public function testFindIntersecting_RangeWithin_ReturnsIpRange()
@@ -79,6 +105,18 @@ class unit_IpRangeTableTest extends sfPHPUnitBaseTestCase
 
     $this->assertEquals(1, $this->getTable()
       ->findIntersecting($ipRange)->count());
+  }
+
+  public function testFindByIpSegment_IncludedSegment_ReturnsIpRange()
+  {
+    $this->assertEquals(1, $this->getTable()
+      ->findByIpSegment('192.168')->count());
+  }
+
+  public function testFindByIpSegment_NotIncludedSegment_ReturnsEmpty()
+  {
+    $this->assertEquals(0, $this->getTable()
+      ->findByIpSegment('192.245')->count());
   }
 }
 

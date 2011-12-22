@@ -1,25 +1,61 @@
 <?php
 
-/**
- * IpRange filter form.
- *
- * @package    freerms
- * @subpackage filter
- * @author     Your name here
- * @version    SVN: $Id: sfDoctrineFormFilterTemplate.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
- */
-class IpRangeFormFilter extends BaseIpRangeFormFilter
+class IpRangeFormFilter extends BaseFormFilterDoctrine
 {
-  public function configure()
+  public function setup()
   {
-    unset(
-      $this['start_ip_sort'],
-      $this['end_ip_sort']
-    );
+    $this->setWidgets(array(
+      'ip'          => new sfWidgetFormFilterInput(array(
+      'with_empty' => false,
+      'label' => 'IP Segment')),
 
-    $this->widgetSchema['start_ip']->setLabel('Start IP');
-    $this->widgetSchema['end_ip']->setLabel('End IP');
-    $this->widgetSchema['is_active']->setLabel('Active');
-    $this->widgetSchema['is_excluded']->setLabel('Excluded');
+      'is_active'   => new sfWidgetFormChoice(array(
+        'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'),
+        'label' => 'Active')),
+
+      'is_excluded' => new sfWidgetFormChoice(array(
+        'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'),
+        'label' => 'Excluded')),
+    ));
+
+    $this->setValidators(array(
+      'ip'   => new sfValidatorPass(array('required' => false)),
+      'is_active'     => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'is_excluded'   => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+    ));
+
+    $this->widgetSchema->setNameFormat('ip_range_filters[%s]');
+
+    $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
+
+    $this->setupInheritance();
+
+    parent::setup();
+  }
+
+  public function getModelName()
+  {
+    return 'IpRange';
+  }
+
+  public function getFields()
+  {
+    return array(
+      'ip'          => 'Text',
+      'is_active'   => 'Boolean',
+      'is_excluded' => 'Boolean',
+    );
+  }
+
+  protected function addIpColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    $sortString   = IpRange::createSortString($values['text']);
+    $stringLength = strlen($sortString);
+
+    $query
+      ->andWhere("SUBSTRING(r.start_ip_sort, 1, $stringLength) <= ?", $sortString)
+      ->andWhere("SUBSTRING(r.end_ip_sort, 1, $stringLength) >= ?", $sortString)
+      ;
   }
 }
+

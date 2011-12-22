@@ -3,19 +3,6 @@ require_once dirname(__FILE__).'/../bootstrap/unit.php';
 
 class unit_IpRangeTest extends sfPHPUnitBaseTestCase
 {
-  protected function setUp()
-  {
-    new sfDatabaseManager(
-      ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
-
-    Doctrine_Core::getTable('IpRange')->createQuery()->delete()->execute();
-
-    $ipRange = new IpRange();
-    $ipRange->setStartIp('192.168.100.1');
-    $ipRange->setEndIp('192.168.199.255');
-    $ipRange->save();
-  }
-
   public function testSetStartIp_ValidIp_SetsStartIpSort()
   {
     $ipRange = new IpRange();
@@ -54,7 +41,6 @@ class unit_IpRangeTest extends sfPHPUnitBaseTestCase
   {
     $ipRange = new IpRange();
     $ipRange->setStartIp('192.245.1.1');
-    $ipRange->save();
 
     $this->assertEquals('192.245.1.1', $ipRange->getEndIp(),
       'IpRange::endIp set on save of single IP address');
@@ -65,7 +51,6 @@ class unit_IpRangeTest extends sfPHPUnitBaseTestCase
     $ipRange = new IpRange();
     $ipRange->setStartIp('192.245.1.1');
     $ipRange->setEndIp('192.245.1.2');
-    $ipRange->save();
 
     $this->assertEquals('192.245.1.2', $ipRange->getEndIp(),
       'IpRange::endIp not set on persist of IP address range');

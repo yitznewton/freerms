@@ -17,7 +17,7 @@ generator:
       list:
         title: IP Ranges
       filter:
-        display: [start_ip, end_ip, is_active, is_excluded]
+        display: [ip, is_active, is_excluded]
       form:
         fields:
           is_excluded:
