@@ -16,23 +16,6 @@ class unit_freermsValidatorIpRangeTest extends sfPHPUnitBaseTestCase
     $ipRange->save();
   }
 
-  public function testClean_EmptyEndIp_SetsEndIp()
-  {
-    $validator = new freermsValidatorIpRange();
-
-    $values = array(
-      'start_ip' => '192.168.56.56',
-      'end_ip'   => '',
-      'is_active' => '1',
-      'is_excluded' => '',
-      'note' => '',
-    );
-
-    $cleanValues = $validator->clean($values);
-
-    $this->assertEquals('192.168.56.56', $cleanValues['end_ip']);
-  }
-
   public function testClean_InvertedRange_Throws()
   {
     $validator = new freermsValidatorIpRange();
@@ -73,6 +56,23 @@ class unit_freermsValidatorIpRangeTest extends sfPHPUnitBaseTestCase
     }
 
     $this->assertEquals('conflicting', $e->getCode());
+  }
+
+  public function testClean_EmptyEndIp_SetsEndIp()
+  {
+    $validator = new freermsValidatorIpRange();
+
+    $values = array(
+      'start_ip' => '192.168.56.56',
+      'end_ip'   => '',
+      'is_active' => '1',
+      'is_excluded' => '',
+      'note' => '',
+    );
+
+    $cleanValues = $validator->clean($values);
+
+    $this->assertEquals('192.168.56.56', $cleanValues['end_ip']);
   }
 }
 

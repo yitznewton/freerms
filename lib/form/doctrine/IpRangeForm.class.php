@@ -23,7 +23,9 @@ class IpRangeForm extends BaseIpRangeForm
     $this->widgetSchema['is_excluded']->setLabel('Excluded');
 
     $this->validatorSchema['start_ip'] = new freermsValidatorIpAddress();
-    $this->validatorSchema['end_ip'] = new freermsValidatorIpAddress();
+    $this->validatorSchema['end_ip'] = new freermsValidatorIpAddress(array(
+      'required' => false,
+    ));
 
     $this->validatorSchema->setPostValidator(new freermsValidatorIpRange());
   }

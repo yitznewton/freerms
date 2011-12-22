@@ -41,3 +41,4 @@ class freermsValidatorIpRange extends sfValidatorBase
     return $values;
   }
 }
+
