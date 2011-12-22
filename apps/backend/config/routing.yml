@@ -1,3 +1,12 @@
+subject:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Subject
+    module:               subject
+    prefix_path:          /subjects
+    column:               id
+    with_wildcard_routes: true
+
 database:
   class: sfDoctrineRouteCollection
   options:

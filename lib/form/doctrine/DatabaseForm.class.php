@@ -13,7 +13,6 @@ class DatabaseForm extends BaseDatabaseForm
   public function configure()
   {
     unset(
-      $this['featured_weight'],
       $this['created_at'],
       $this['updated_at']
     );
@@ -34,5 +33,15 @@ class DatabaseForm extends BaseDatabaseForm
     $this->widgetSchema['libraries_list']
       ->setLabel('Libraries')
       ->setOption('expanded', true);
+ 
+    $this->widgetSchema['subjects_list']
+      ->setLabel('Subjects')
+      ->setOption('expanded', true);
+
+    $this->validatorSchema['sort_title']->setOption('required', false);
+
+    $this->validatorSchema->setPostValidator(
+      new freermsValidatorDatabaseSortTitle());
   }
 }
+

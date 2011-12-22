@@ -37,10 +37,6 @@ Database:
       type: boolean
       notnull: true
       default: false
-    featured_weight:
-      type: integer
-      notnull: true
-      default: 0
     note:
       type: clob
   relations:
@@ -49,6 +45,12 @@ Database:
       refClass: DatabaseLibrary
       local: database_id
       foreign: library_id
+      foreignAlias: Databases
+    Subjects:
+      class: Subject
+      refClass: DatabaseSubject
+      local: database_id
+      foreign: subject_id
       foreignAlias: Databases
 
 DatabaseLibrary:
@@ -59,6 +61,20 @@ DatabaseLibrary:
     Database:
       onDelete: CASCADE
     Library:
+      onDelete: CASCADE
+
+DatabaseSubject:
+  columns:
+    database_id: { type: integer, primary: true }
+    subject_id: { type: integer, primary: true }
+    featured_weight:
+      type: integer
+      notnull: true
+      default: -1
+  relations:
+    Database:
+      onDelete: CASCADE
+    Subject:
       onDelete: CASCADE
 
 IpRange:
@@ -114,4 +130,16 @@ Library:
       type: string(255)
     note:
       type: clob
+
+Subject:
+  actAs:
+    Sluggable:
+      unique: true
+      fields: [name]
+      canUpdate: true
+  tableName: subject
+  columns:
+    name:
+      type: string(255)
+      notnull: true
 
