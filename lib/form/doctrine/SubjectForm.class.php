@@ -21,8 +21,6 @@ class SubjectForm extends BaseSubjectForm
       return;
     }
 
-    $containerForm = new sfForm();
-
     $databaseSubjects = Doctrine_Core::getTable('DatabaseSubject')
       ->createQuery('ds')
       ->leftJoin('ds.Database d')
@@ -30,7 +28,13 @@ class SubjectForm extends BaseSubjectForm
       ->orderBy('d.sort_title')
       ->execute()
       ;
+
+    if ($databaseSubjects->count() === 0) {
+      return;
+    }
     
+    $containerForm = new sfForm();
+
     foreach ($this->getObject()->getDatabaseSubject() as $ds) {
       $containerForm->embedForm($ds->getDatabaseId(),
         new DatabaseSubjectForm($ds));
