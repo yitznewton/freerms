@@ -58,6 +58,36 @@ class unit_freermsValidatorIpRangeTest extends sfPHPUnitBaseTestCase
     $this->assertEquals('conflicting', $e->getCode());
   }
 
+  public function testClean_InactiveIntersectingRange_NotThrows()
+  {
+    $validator = new freermsValidatorIpRange();
+
+    $values = array(
+      'start_ip' => '192.168.100.1',
+      'end_ip' => '192.168.100.1',
+      'is_active' => '0',
+      'is_excluded' => '0',
+      'note' => '',
+    );
+
+    $this->assertEquals($values, $validator->clean($values));
+  }
+
+  public function testClean_ExcludedIntersectingRange_NotThrows()
+  {
+    $validator = new freermsValidatorIpRange();
+
+    $values = array(
+      'start_ip' => '192.168.100.1',
+      'end_ip' => '192.168.100.1',
+      'is_active' => '1',
+      'is_excluded' => '1',
+      'note' => '',
+    );
+
+    $this->assertEquals($values, $validator->clean($values));
+  }
+
   public function testClean_EmptyEndIp_SetsEndIp()
   {
     $validator = new freermsValidatorIpRange();

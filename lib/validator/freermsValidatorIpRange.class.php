@@ -23,6 +23,15 @@ class freermsValidatorIpRange extends sfValidatorBase
       throw new sfValidatorError($this, 'inverted');
     }
 
+    if ($values['is_active'] && !$values['is_excluded']) {
+      $this->doTestIntersecting($values);
+    }
+
+    return $values;
+  }
+
+  protected function doTestIntersecting(array $values)
+  {
     $test_ip_range = new IpRange();
     $test_ip_range->fromArray($values);
 
@@ -37,8 +46,6 @@ class freermsValidatorIpRange extends sfValidatorBase
       $this->setMessage( 'conflicting', 'Range conflicts with existing range ' . $conflict_ranges[0] );
       throw new sfValidatorError( $this, 'conflicting' );
     }
-
-    return $values;
   }
 }
 

@@ -12,6 +12,17 @@
  */
 class IpRange extends BaseIpRange
 {
+  public function __toString()
+  {
+    $ret = $this->getStartIp();
+
+    if ($this->getEndIp() && $this->getEndIp() != $this->getStartIp()) {
+      $ret .= '-' . $this->getEndIp();
+    }
+
+    return $ret;
+  }
+
   public function setStartIp($v)
   {
     if (!@ip2long($v)) {
