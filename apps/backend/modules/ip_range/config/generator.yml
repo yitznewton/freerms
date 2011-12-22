@@ -13,9 +13,19 @@ generator:
 
     config:
       actions: ~
-      fields:  ~
+      fields:
+        start_ip:
+          label: Start IP
+        end_ip:
+          label: End IP
+        is_active:
+          label: Active
+        is_excluded:
+          label: Excluded
       list:
         title: IP Ranges
+        display: [=start_ip, =end_ip, is_active, is_excluded]
+        sort: [start_ip_sort, asc]
       filter:
         display: [ip, is_active, is_excluded]
       form:

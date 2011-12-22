@@ -49,6 +49,10 @@ class IpRangeFormFilter extends BaseFormFilterDoctrine
 
   protected function addIpColumnQuery(Doctrine_Query $query, $field, $values)
   {
+    if ($values['text'] === '') {
+      return;
+    }
+
     $sortString   = IpRange::createSortString($values['text']);
     $stringLength = strlen($sortString);
 
