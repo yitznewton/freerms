@@ -27,7 +27,7 @@ generator:
         display: [=start_ip, =end_ip, is_active, is_excluded]
         sort: [start_ip_sort, asc]
       filter:
-        display: [ip, is_active, is_excluded]
+        display: [ip, is_active, is_excluded, library_id]
       form:
         fields:
           is_excluded:

@@ -27,4 +27,32 @@ IpRange:
       type: boolean
       notnull: true
       default: false
+    library_id:
+      type: integer
+      notnull: true
+  relations:
+    Library:
+      onDelete: RESTRICT
+      foreignAlias: IpRanges
+
+Library:
+  tableName: library
+  columns:
+    id:
+      type: integer
+      primary: true
+      autoincrement: true
+    name:
+      type: string
+      notnull: true
+    code:
+      type: string(10)
+      notnull: true
+      unique: true
+    show_featured_subjects:
+      type: boolean
+      notnull: true
+      default: true
+    note:
+      type: clob
 

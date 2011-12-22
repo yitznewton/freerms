@@ -6,8 +6,8 @@ class IpRangeFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'ip'          => new sfWidgetFormFilterInput(array(
-      'with_empty' => false,
-      'label' => 'IP Segment')),
+        'with_empty' => false,
+        'label' => 'IP Segment')),
 
       'is_active'   => new sfWidgetFormChoice(array(
         'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'),
@@ -16,12 +16,27 @@ class IpRangeFormFilter extends BaseFormFilterDoctrine
       'is_excluded' => new sfWidgetFormChoice(array(
         'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'),
         'label' => 'Excluded')),
+
+      'library_id'    => new sfWidgetFormDoctrineChoice(array(
+        'model' => $this->getRelatedModelName('Library'),
+        'add_empty' => true)),
     ));
 
     $this->setValidators(array(
       'ip'   => new sfValidatorPass(array('required' => false)),
-      'is_active'     => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
-      'is_excluded'   => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+
+      'is_active'     => new sfValidatorChoice(array(
+        'required' => false,
+        'choices' => array('', 1, 0))),
+
+      'is_excluded'   => new sfValidatorChoice(array(
+        'required' => false,
+        'choices' => array('', 1, 0))),
+
+      'library_id'    => new sfValidatorDoctrineChoice(array(
+        'required' => false,
+        'model' => $this->getRelatedModelName('Library'),
+        'column' => 'id')),
     ));
 
     $this->widgetSchema->setNameFormat('ip_range_filters[%s]');
@@ -44,6 +59,7 @@ class IpRangeFormFilter extends BaseFormFilterDoctrine
       'ip'          => 'Text',
       'is_active'   => 'Boolean',
       'is_excluded' => 'Boolean',
+      'library_id'    => 'ForeignKey',
     );
   }
 

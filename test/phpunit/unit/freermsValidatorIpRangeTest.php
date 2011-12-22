@@ -8,12 +8,11 @@ class unit_freermsValidatorIpRangeTest extends sfPHPUnitBaseTestCase
     new sfDatabaseManager(
       ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
 
-    Doctrine_Core::getTable('IpRange')->createQuery()->delete()->execute();
+    $doctrineInsert = new sfDoctrineDataLoadTask(
+      ProjectConfiguration::getActive()->getEventDispatcher(),
+      new sfAnsiColorFormatter());
 
-    $ipRange = new IpRange();
-    $ipRange->setStartIp('192.168.100.1');
-    $ipRange->setEndIp('192.168.199.255');
-    $ipRange->save();
+    $doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
   }
 
   public function testClean_InvertedRange_Throws()
