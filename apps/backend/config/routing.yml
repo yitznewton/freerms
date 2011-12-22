@@ -1,9 +1,18 @@
+library:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Library
+    module:               library
+    prefix_path:          /libraries
+    column:               id
+    with_wildcard_routes: true
+
 ip_range:
   class: sfDoctrineRouteCollection
   options:
     model:                IpRange
     module:               ip_range
-    prefix_path:          /ip
+    prefix_path:          /ip-ranges
     column:               id
     with_wildcard_routes: true
 

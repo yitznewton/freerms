@@ -1,0 +1,26 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Library
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          library
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  ~
+      list:
+        title: Libraries
+        display: [=name]
+        object_actions:
+          _delete: ~
+      filter:
+        display: [name, code]
+      form:    ~
+      edit:    ~
+      new:     ~

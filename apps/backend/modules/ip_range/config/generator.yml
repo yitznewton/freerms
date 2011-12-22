@@ -25,7 +25,7 @@ generator:
       list:
         title: IP Ranges
         display: [=start_ip, =end_ip, is_active, is_excluded]
-        sort: [start_ip_sort, asc]
+        sort: [start_ip, asc]
       filter:
         display: [ip, is_active, is_excluded, library_id]
       form:

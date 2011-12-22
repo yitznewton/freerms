@@ -43,16 +43,20 @@ Library:
       primary: true
       autoincrement: true
     name:
-      type: string
+      type: string(255)
       notnull: true
     code:
       type: string(10)
       notnull: true
       unique: true
-    show_featured_subjects:
+    show_featured:
       type: boolean
       notnull: true
       default: true
+    ezproxy_host:
+      type: string(255)
+    ezproxy_key:
+      type: string(255)
     note:
       type: clob
 
