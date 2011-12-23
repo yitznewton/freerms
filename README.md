@@ -33,15 +33,12 @@ Installation
         /home/fred/freerms$ ./symfony plugin:install sfGuardPlugin
         /home/fred/freerms$ ./symfony plugin:publish-assets
 
-* Run a Propel build. The first command will initialize and prepopulate
-  your database with basic settings; the others will rebuild data classes,
-  leaving the database unchanged:
+* Run a Doctrine build. Use a custom form generator to avoid a symfony
+  bug/feature:
 
-        /home/fred/freerms$ ./symfony propel:build-all-load
-        # or
-        /home/fred/freerms$ ./symfony propel:build-model
-        /home/fred/freerms$ ./symfony propel:build-forms
-        /home/fred/freerms$ ./symfony propel:build-filters
+        /home/fred/freerms$ ./symfony doctrine:build --all
+        /home/fred/freerms$ ./symfony doctrine:build-forms \
+          --generator-class=freermsDoctrineFormGenerator
 
 * Clear symfony's internal cache (incidentally, always a good idea if
   something looks inexplicably broken during installation or update):

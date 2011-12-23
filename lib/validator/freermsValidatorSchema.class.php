@@ -1,6 +1,6 @@
 <?php
 
-class freermsValidatorSchemaFixedPost extends sfValidatorSchema
+class freermsValidatorSchema extends sfValidatorSchema
 {
   /**
    * This causes the validation to halt if prevalidation or main validation
