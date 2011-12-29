@@ -17,3 +17,8 @@ IpRange:
     start_ip: 192.167.100.1
     end_ip: 192.167.199.255
 
+SfGuardGroup:
+  TCLA:
+    Name: TCLA
+    Description: Touro College Los Angeles
+

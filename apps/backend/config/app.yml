@@ -3,3 +3,11 @@
 
 # default values
 #all:
+
+all:
+  .settings:
+    library-doctrine-listener:
+      # Class to notify when a Library is saved;
+      # extends Doctrine_Record_Listener
+      class: LibrarySfGuardListener
+
