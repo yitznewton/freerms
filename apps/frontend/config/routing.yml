@@ -1,0 +1,16 @@
+database_index:
+  url: /
+  params: { module: database, action: index }
+
+database_access:
+  url: /database/:id
+  params: { module: database, action: access }
+  requirements:
+    id: \d+
+
+proxy_url:
+  url: /url/:url
+  params: { module: database, action: directUrl }
+  requirements:
+    url: http.+
+
