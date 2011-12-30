@@ -30,7 +30,7 @@ class freermsUserAffiliation
   /**
    * @var bool
    */
-  protected $isForceLogin;
+  protected $isOnsite;
   /**
    * @var int
    */
@@ -72,54 +72,38 @@ class freermsUserAffiliation
    */
   public function isOnsite()
   {
-    return (bool) $this->getOnsiteLibraryId();
-  }
-  
-  /**
-   * @return bool
-   */
-  public function isForceLogin()
-  {
-    if (isset($this->isForceLogin)) {
-      return $this->isForceLogin;
+    if (isset($this->isOnsite)) {
+      return $this->isOnsite; 
     }
+
+    $this->getOnsiteLibraryId();
     
-    // needs to be namespaced for sfGuardPlugin to cleanup on logout
-    if (
-      $this->context->getUser()
-        ->getAttribute('force-login', null, 'sfGuardSecurityUser')
-    ) {
-      return $this->isForceLogin = true;
-    }
-    
-    $value = $this->context->getRequest()->hasParameter('login');
-    
-    $this->context->getUser()->setAttribute('force-login',
-      $value, 'sfGuardSecurityUser');
-    
-    return $value;
+    return $this->isOnsite;
   }
   
   /**
    * Returns the id of the onsite Library, if any, as matched by client IP
    * address
    *
-   * @return int|bool
+   * @return int
    */
   protected function getOnsiteLibraryId()
   {
-    if (isset($this->onsiteLibraryId)) {
+    if ($this->onsiteLibraryId) {
       return $this->onsiteLibraryId;
     }
     
     $onsiteLibrary = Doctrine_Core::getTable('Library')
-      ->findOneByIpAddress($this->context->getRequest()->getRemoteAddress());
+      ->findOneByIpAddress(
+        $this->context->getRequest()->getRemoteAddress());
 
     if ($onsiteLibrary) {
+      $this->isOnsite = true;
       return $this->onsiteLibraryId = $onsiteLibrary->getId();
     }
 
-    return $this->onsiteLibraryId = false;
+    $this->isOnsite = false;
+    return null;
   }
 }
 
