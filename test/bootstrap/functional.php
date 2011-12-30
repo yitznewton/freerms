@@ -24,3 +24,13 @@ sfContext::createInstance($configuration);
 
 // remove all cache
 sfToolkit::clearDirectory(sfConfig::get('sf_app_cache_dir'));
+
+new sfDatabaseManager(
+  ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
+
+$doctrineInsert = new sfDoctrineDataLoadTask(
+  ProjectConfiguration::getActive()->getEventDispatcher(),
+  new sfAnsiColorFormatter());
+
+$doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
+
