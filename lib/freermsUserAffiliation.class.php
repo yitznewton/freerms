@@ -20,10 +20,6 @@
 class freermsUserAffiliation
 {
   /**
-   * @var freermsUserInterface
-   */
-  protected $user;
-  /**
    * @var sfContext
    */
   protected $context;
@@ -41,49 +37,34 @@ class freermsUserAffiliation
   protected $onsiteLibraryId;
   
   /**
-   * @param freermsUserInterface $user 
    * @param sfContext $context
    */
-  public function __construct( freermsUserInterface $user, sfContext $context )
+  public function __construct(sfContext $context)
   {
-    $this->user    = $user;
+    if (!($context->getUser() instanceof freermsSecurityUser)) {
+      $msg = 'user class must implement freermsSecurityUser';
+      throw new RuntimeException($msg);
+    }
+    
     $this->context = $context;
   }
   
   /**
    * @return array int[]
    */
-  public function get()
+  public function getLibraryIds()
   {
-    if ( isset( $this->libraryIds )) {
+    if (isset($this->libraryIds)) {
       return $this->libraryIds;
     }
     
-    $this->library_ids = array();
+    $this->libraryIds = $this->context->getUser()->getLibraryIds();
     
-    if ( $onsite_library_id = $this->getOnsiteLibraryId() ) {
-      $this->library_ids[] = $onsite_library_id;
+    if ($this->getOnsiteLibraryId()) {
+      array_unshift($this->libraryIds, $this->getOnsiteLibraryId());
     }
-    
-    $this->libraryIds = array_merge(
-      $this->library_ids, $this->user->getLibraryIds() );
-    
+
     return $this->libraryIds;
-  }
-  
-  /**
-   * Returns an arbitrary single affiliated Library id, if applicable
-   *
-   * @return int
-   */
-  public function getOne()
-  {
-    if ( $ids = $this->get() ) {
-      return $ids[0];
-    }
-    else {
-      return null;
-    }
   }
   
   /**
@@ -99,18 +80,22 @@ class freermsUserAffiliation
    */
   public function isForceLogin()
   {
-    if ( isset( $this->isForceLogin )) {
+    if (isset($this->isForceLogin)) {
       return $this->isForceLogin;
     }
     
     // needs to be namespaced for sfGuardPlugin to cleanup on logout
-    if ( $this->user->getAttribute('force-login', null, 'sfGuardSecurityUser')) {
+    if (
+      $this->context->getUser()
+        ->getAttribute('force-login', null, 'sfGuardSecurityUser')
+    ) {
       return $this->isForceLogin = true;
     }
     
-    $value = $this->context->getRequest()->hasParameter('force-login');
+    $value = $this->context->getRequest()->hasParameter('login');
     
-    $this->user->setAttribute( 'force-login', $value, 'sfGuardSecurityUser' );
+    $this->context->getUser()->setAttribute('force-login',
+      $value, 'sfGuardSecurityUser');
     
     return $value;
   }
@@ -123,28 +108,18 @@ class freermsUserAffiliation
    */
   protected function getOnsiteLibraryId()
   {
-    if ( isset( $this->onsiteLibraryId )) {
+    if (isset($this->onsiteLibraryId)) {
       return $this->onsiteLibraryId;
     }
     
-    $ip = $_SERVER['REMOTE_ADDR'];
-    
-    $offsite_ips = sfConfig::get('app_offsite-testing-ip-addresses');
-    
-    if ( ! is_array( $offsite_ips )) {
-      $offsite_ips = array( $offsite_ips );
+    $onsiteLibrary = Doctrine_Core::getTable('Library')
+      ->findOneByIpAddress($this->context->getRequest()->getRemoteAddress());
+
+    if ($onsiteLibrary) {
+      return $this->onsiteLibraryId = $onsiteLibrary->getId();
     }
-    
-    if ( in_array( $ip, $offsite_ips )) {
-      return $this->onsiteLibraryId = false;
-    }
-    elseif (
-      $onsite_library = LibraryPeer::retrieveByIp( $ip )
-    ) {
-      return $this->onsiteLibraryId = $onsite_library->getId();
-    }
-    else {
-      return $this->onsiteLibraryId = false;
-    }
+
+    return $this->onsiteLibraryId = false;
   }
 }
+
