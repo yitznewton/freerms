@@ -20,9 +20,13 @@
 class freermsUserAffiliation
 {
   /**
-   * @var sfContext
+   * @var freermsSecurityUser
    */
-  protected $context;
+  protected $user;
+  /**
+   * @var sfWebRequest
+   */
+  protected $request;
   /**
    * @var array int[]
    */
@@ -37,16 +41,12 @@ class freermsUserAffiliation
   protected $onsiteLibraryId;
   
   /**
-   * @param sfContext $context
+   * @param freermsSecurityUser
    */
-  public function __construct(sfContext $context)
+  public function __construct(freermsSecurityUser $user, sfWebRequest $request)
   {
-    if (!($context->getUser() instanceof freermsSecurityUser)) {
-      $msg = 'user class must implement freermsSecurityUser';
-      throw new RuntimeException($msg);
-    }
-    
-    $this->context = $context;
+    $this->user    = $user;
+    $this->request = $request;
   }
   
   /**
@@ -58,11 +58,12 @@ class freermsUserAffiliation
       return $this->libraryIds;
     }
     
-    $this->libraryIds = $this->context->getUser()->getLibraryIds();
+    $this->libraryIds = $this->user->getLibraryIds();
     
     if ($this->getOnsiteLibraryId()) {
       array_unshift($this->libraryIds, $this->getOnsiteLibraryId());
     }
+    var_dump($this->libraryIds);exit;
 
     return $this->libraryIds;
   }
@@ -95,7 +96,7 @@ class freermsUserAffiliation
     
     $onsiteLibrary = Doctrine_Core::getTable('Library')
       ->findOneByIpAddress(
-        $this->context->getRequest()->getRemoteAddress());
+        $this->request->getRemoteAddress());
 
     if ($onsiteLibrary) {
       $this->isOnsite = true;

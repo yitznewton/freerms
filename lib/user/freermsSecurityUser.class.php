@@ -20,7 +20,7 @@
  * @package user
  * @copyright  Copyright (c) 2011 Benjamin Schaffer (http://yitznewton.org/)
  */
-interface freermsUserInterface
+interface freermsSecurityUser
 {
   /**
    * @return array int[]

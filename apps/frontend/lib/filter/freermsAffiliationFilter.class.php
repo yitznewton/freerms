@@ -22,43 +22,15 @@
  */
 class freermsAffiliationFilter extends sfFilter
 {
-  public function execute( $filterChain )
+  public function execute($filterChain)
   {
     if ($this->isFirstCall()) {
-      $this->doExecute();
+      $this->context->setAffiliation(
+        new freermsUserAffiliation(
+          $this->context->getUser(), $this->context->getRequest()));
     }
     
     $filterChain->execute();
-  }
-  
-  protected function doExecute()
-  {
-    $affiliation = new freermsUserAffiliation($this->getContext());
-    
-    $this->getContext()->setAffiliation($affiliation);
-
-    $user = $this->getContext()->getUser();
-    
-    if (
-      $this->getContext()->getRequest()->isForceLogin()
-      && !$user->isAuthenticated()
-    ) {
-      $this->forwardToLoginAction();
-    }
-    
-    if (!$affiliation->isOnsite() && !$user->isAuthenticated()) {
-      $this->forwardToLoginAction();
-    }
-    
-    // TODO: whatif isAuthenticated but has no affiliation?
-  }
-  
-  protected function forwardToLoginAction()
-  {
-    $this->getContext()->getController()->forward(
-      sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action'));
-    
-    throw new sfStopException();
   }
 }
 

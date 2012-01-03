@@ -19,24 +19,32 @@
  * @package user
  * @copyright  Copyright (c) 2011 Benjamin Schaffer (http://yitznewton.org/)
  */
-class freermsSfGuardUser extends sfGuardSecurityUser implements freermsUserInterface
+class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityUser
 {
   public function getLibraryIds()
   {
-    if ( ! $this->isAuthenticated() ) {
+    if (!$this->isAuthenticated()) {
       return array();
     }
     
-    $con = Propel::getConnection();
-    
-    $q = 'SELECT l.id FROM libraries l '
-         . 'JOIN sf_guard_group g ON l.code = g.name '
-         . 'JOIN sf_guard_user_group ug ON g.id = ug.group_id '
-         . 'WHERE ug.user_id = ?';
-    
-    $st = $con->prepare( $q );
-    $st->execute( array( $this->getGuardUser()->getId() ));
+    $q = new Doctrine_RawSql();
 
-    return $st->fetchAll( PDO::FETCH_COLUMN );
+    $q->select('l.id')
+      ->from('library l, sf_guard_group g, sf_guard_user_group ug '
+             . 'WHERE l.code = g.name '
+             . 'AND g.id = ug.group_id '
+             . 'AND ug.user_id = ?')
+      ->addComponent('l', 'Library')
+      ;
+
+    $result = $q->execute(
+      $this->getGuardUser()->getId(),
+      Doctrine_Core::HYDRATE_NONE
+      );
+
+    // flatten array of array of ID into array of IDs
+    return array_map(function($v) {
+      return $v[0];
+    }, $result);
   }
 }

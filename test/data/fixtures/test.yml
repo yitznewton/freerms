@@ -33,8 +33,30 @@ IpRange:
     StartIp: 192.167.100.1
     EndIp: 192.167.199.255
 
-SfGuardGroup:
-  TCLA:
-    Name: TCLA
-    Description: Touro College Los Angeles
+sfGuardGroup:
+  TCS:
+    Name: TCS
+  TCNY:
+    Name: TCNY
+  TUNPA:
+    Name: P_TUNPA
+    Description: Touro Univ Nevada PA program
+
+sfGuardUser:
+  has_two_libraries:
+    email_address: yitznewton1@example.com
+    username: haslibrariestcstcny
+    Groups:
+      - TCS
+      - TCNY
+
+  has_library:
+    email_address: yitznewton@example.com
+    username: haslibrarytcs
+    Groups:
+      - TCS
+
+  not_has_group:
+    email_address: yitznewton0@example.com
+    username: nolibrary
 

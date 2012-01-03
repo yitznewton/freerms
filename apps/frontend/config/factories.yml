@@ -41,6 +41,8 @@ all:
       cache_key_use_vary_headers: true
       cache_key_use_host_name:    true
 
-request:
-  class: frontendWebRequest
+  user:
+    class: freermsSfGuardUser
+    param:
+      timeout:         600
 
