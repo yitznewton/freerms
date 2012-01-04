@@ -13,13 +13,12 @@ Installation
 
 * Clone the git repo
 
+* Symlink or install symfony-1.4 as `vendor/symfony-1.4`
+
 * Add a symlink in `/web` pointing to the symfony assets directory, or copy
   it, e.g.:
 
-        /home/fred/freerms$ ln -s /path/to/symfony/data/web/sf web/
-
-* Specify the location of the symfony libraries in
-  `config/ProjectConfiguration.class.php`
+        /home/fred/freerms/web$ ln -s ../vendor/symfony-1.4/data/web/sf
 
 * Specify your database connection in
   `config/databases.yml`

@@ -4,10 +4,6 @@ all:
   admin-email:      admin@example.com
   support-email:    help@example.com
   
-  user-api:
-    url-mask:           http://users.example.com/api?username=%s&password=%s
-    credential-prefix:  freerms
-  
   access:
     default-handler-onsite: BaseAccessHandler
     default-handler-offsite: RefererAccessHandler
