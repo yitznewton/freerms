@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__).'/../DoctrineTestCase.php';
+require_once dirname(__FILE__).'/../../../../apps/frontend/lib/user/freermsUserAffiliation.class.php';
 
 class unit_freermsUserAffiliationTest extends DoctrineTestCase
 {
