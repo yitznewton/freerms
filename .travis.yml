@@ -1,0 +1,10 @@
+language: php
+phps:
+  - 5.3
+  - 5.4
+
+before_script:
+  - git clone git://github.com/symfony/symfony1.git vendor/symfony-1.4
+
+script: phpunit test/phpunit
+
