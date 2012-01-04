@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../bootstrap/unit.php';
+require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 
 class unit_freermsValidatorDatabaseSortTitleTest extends sfPHPUnitBaseTestCase
 {

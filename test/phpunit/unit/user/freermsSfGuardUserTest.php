@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/DoctrineTableTestCase.php';
+require_once dirname(__FILE__).'/../model/DoctrineTableTestCase.php';
 
 class unit_freermsSfGuardUserTest extends DoctrineTableTestCase
 {

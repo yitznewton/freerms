@@ -63,7 +63,6 @@ class freermsUserAffiliation
     if ($this->getOnsiteLibraryId()) {
       array_unshift($this->libraryIds, $this->getOnsiteLibraryId());
     }
-    var_dump($this->libraryIds);exit;
 
     return $this->libraryIds;
   }
