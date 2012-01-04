@@ -1,9 +1,14 @@
-cache
-data/sqlite
-lib/filter/base
-lib/form/base
-lib/model/doctrine/base
-log
-plugins
-web/sfPropelPlugin
+cache/
+base/
+/data/sql/
+/data/sqlite/
+log/
+plugins/
+/vendor/
+/web/sf
+/web/sfDoctrinePlugin
+
+*.swp
+*~
+.vimrc
 
