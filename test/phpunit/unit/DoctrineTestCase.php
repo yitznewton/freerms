@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 
-class DoctrineTableTestCase extends sfPHPUnitBaseTestCase
+class DoctrineTestCase extends sfPHPUnitBaseTestCase
 {
   public static function setUpBeforeClass()
   {

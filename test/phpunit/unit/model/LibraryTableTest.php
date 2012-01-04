@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/DoctrineTableTestCase.php';
+require_once dirname(__FILE__).'/../DoctrineTestCase.php';
 
-class unit_LibraryTableTest extends DoctrineTableTestCase
+class unit_LibraryTableTest extends DoctrineTestCase
 {
   public function testfindOneByIpAddress_Exists_ReturnsLibrary()
   {

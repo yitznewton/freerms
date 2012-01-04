@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/DoctrineTableTestCase.php';
+require_once dirname(__FILE__).'/../DoctrineTestCase.php';
 
-class unit_sfGuardGroupTableTest extends DoctrineTableTestCase
+class unit_sfGuardGroupTableTest extends DoctrineTestCase
 {
   public static function setUpBeforeClass()
   {
