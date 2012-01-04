@@ -10,6 +10,14 @@ class unit_LibraryTableTest extends DoctrineTestCase
       ->findOneByIpAddress('192.168.100.100'));
   }
 
+  public function testfindOneByIpAddress_Exists_ReturnsLibraryWithId()
+  {
+    $this->assertInternalType('string',
+      Doctrine_Core::getTable('Library')
+      ->findOneByIpAddress('192.168.100.100')
+      ->getId());
+  }
+
   public function testfindOneByIpAddress_NotExists_ReturnsNull()
   {
     $this->assertNull(Doctrine_Core::getTable('Library')

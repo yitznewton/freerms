@@ -24,12 +24,12 @@ Library:
     
 IpRange:
   1:
-    library_id: TCNY
+    Library: TCNY
     StartIp: 192.168.100.1
     EndIp: 192.168.199.255
   
   2:
-    library_id: TCS
+    Library: TCS
     StartIp: 192.167.100.1
     EndIp: 192.167.199.255
 
