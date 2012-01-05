@@ -34,7 +34,7 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     return new sfTestFunctional($browser, $this->getTest());
   }
 
-  public function testDefault_NoArgsOnsite_GetsIndex()
+  public function testIndex_NoArgsOnsite_GetsIndex()
   {
     $this->getTester('192.168.100.100')->
       get('/')->
@@ -51,7 +51,7 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     ;
   }
 
-  public function testDefault_NoArgsOffsite_Gets401()
+  public function testIndex_NoArgsOffsite_Gets401()
   {
     $this->getTester('192.168.1.1')->
       get('/')->
@@ -67,7 +67,7 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     ;
   }
 
-  public function testDefault_WithSubjectOnsite_GetsRightDatabase()
+  public function testIndex_WithSubjectOnsite_GetsRightDatabase()
   {
     $this->getTester('192.168.100.100')->
       get('/?subject=health-sciences')->
@@ -84,7 +84,7 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     ;
   }
 
-  public function testDefault_WithUnfeaturedSubjectOnsite_NotDisplayFeatured()
+  public function testIndex_WithUnfeaturedSubjectOnsite_NotDisplayFeatured()
   {
     $this->getTester('192.168.100.100')->
       get('/?subject=doesnt-exist')->
