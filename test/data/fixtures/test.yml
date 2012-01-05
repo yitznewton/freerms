@@ -7,8 +7,14 @@ Subject:
 Database:
   ebsco:
     Title: EBSCO
-    sort_title: EBSCO
+    sort_title: ebsco
     Subjects: [psychology]
+    Libraries: [TCS]
+  hidden:
+    title: hidden
+    sort_title: hidden
+    is_hidden: true
+    Libraries: [TCNY]
   pubmed:
     Title: Pubmed
     sort_title: Pubmed
@@ -25,6 +31,10 @@ Database:
     Title: Unfeatured Medical
     sort_title: Unfeatured Medical
     Libraries: [TCNY]
+  sorter:
+    title: A Sorter
+    sort_title: Sorter
+    Libraries: [TCS]
 
 DatabaseSubject:
   proquest_health-sciences:
