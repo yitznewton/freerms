@@ -36,5 +36,7 @@ all:
 
     enabled_modules: [sfGuardAuth]
 
+    standard_helpers: [Partial, Frontend]
+
     login_module: sfGuardAuth
     login_action: signin

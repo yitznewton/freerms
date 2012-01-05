@@ -28,13 +28,14 @@ class databaseActions extends sfActions
     }
 
     if ($this->subject) {
-      $this->featuredDbs = Doctrine_Core::getTable('Database')
+      $this->featuredDatabases = Doctrine_Core::getTable('Database')
         ->findFeaturedByLibraryIdsAndSubject(
           $this->getContext()->getAffiliation()->getLibraryIds(), 
           $this->subject);
     }
     else {
-      // TODO: general featured dbs
+      // TODO: general (non-subject) featured dbs
+      $this->featuredDatabases = array();
     }
 
     $this->subjectDefault = $subjectSlug;

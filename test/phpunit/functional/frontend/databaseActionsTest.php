@@ -27,12 +27,16 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     return 'frontend';
   }
 
+  protected function getTester($ip)
+  {
+    $browser = new sfBrowser(null, $ip);
+
+    return new sfTestFunctional($browser, $this->getTest());
+  }
+
   public function testDefault_NoArgsOnsite_GetsIndex()
   {
-    $browser = new sfBrowser(null, '192.168.100.100');
-    $test = new sfTestFunctional($browser, $this->getTest());
-
-    $test->
+    $this->getTester('192.168.100.100')->
       get('/')->
 
       with('request')->begin()->
@@ -47,12 +51,25 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     ;
   }
 
+  public function testDefault_NoArgsOffsite_Gets401()
+  {
+    $this->getTester('192.168.1.1')->
+      get('/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(401)->
+      end()
+    ;
+  }
+
   public function testDefault_WithSubjectOnsite_GetsRightDatabase()
   {
-    $browser = new sfBrowser(null, '192.168.100.100');
-    $test = new sfTestFunctional($browser, $this->getTest());
-
-    $test->
+    $this->getTester('192.168.100.100')->
       get('/?subject=health-sciences')->
 
       with('request')->begin()->
@@ -62,7 +79,24 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('h2', '/Databases/')->
+        checkElement('ul.featured', '/ProQuest/')->
+      end()
+    ;
+  }
+
+  public function testDefault_WithUnfeaturedSubjectOnsite_NotDisplayFeatured()
+  {
+    $this->getTester('192.168.100.100')->
+      get('/?subject=doesnt-exist')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('ul.featured', false)->
       end()
     ;
   }
