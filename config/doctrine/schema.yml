@@ -69,13 +69,15 @@ DatabaseSubject:
     subject_id: { type: integer, primary: true }
     featured_weight:
       type: integer
-      notnull: true
       default: -1
+      primary: true
   relations:
     Database:
       onDelete: CASCADE
+      foreignAlias: DatabaseSubjects
     Subject:
       onDelete: CASCADE
+      foreignAlias: DatabaseSubjects
 
 IpRange:
   tableName: ip_range

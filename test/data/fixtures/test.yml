@@ -9,10 +9,40 @@ Database:
     Title: EBSCO
     sort_title: EBSCO
     Subjects: [psychology]
+  pubmed:
+    Title: Pubmed
+    sort_title: Pubmed
+    Libraries: [TCNY]
   proquest:
     Title: ProQuest
     sort_title: ProQuest
-    Subjects: [health-sciences]
+    Libraries: [TCNY]
+  medline:
+    Title: Medline
+    sort_title: Medline
+    Libraries: [TCNY]
+  unfeatured_medical:
+    Title: Unfeatured Medical
+    sort_title: Unfeatured Medical
+    Libraries: [TCNY]
+
+DatabaseSubject:
+  proquest_health-sciences:
+    Database: proquest
+    Subject: health-sciences
+    featured_weight: 4
+  medline_health-sciences:
+    Database: medline
+    Subject: health-sciences
+    featured_weight: 5
+  pubmed_health-sciences:
+    Database: medline
+    Subject: health-sciences
+    featured_weight: 4
+  unfeatured_health-sciences:
+    Database: unfeatured_medical
+    Subject: health-sciences
+    featured_weight: -1
 
 Library:
   TCNY:
