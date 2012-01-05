@@ -3,25 +3,25 @@ require_once dirname(__FILE__).'/../DoctrineTestCase.php';
 
 class unit_DatabaseTableTest extends DoctrineTestCase
 {
-  public function testFindByLibrary_ReturnsExpectedFirst()
+  public function testFindByLibraryIds_ReturnsExpectedFirst()
   {
     $table = Doctrine_Core::getTable('Database');
 
     $library = Doctrine_Core::getTable('Library')
       ->findOneByCode('TCS');
 
-    $this->assertEquals('EBSCO', $table->findByLibrary($library)
-      ->getFirst()->getTitle());
+    $this->assertEquals('EBSCO', $table->findByLibraryIds(
+      array($library->getId()))->getFirst()->getTitle());
   }
 
-  public function testFindByLibrary_NotReturnsHidden()
+  public function testFindByLibraryIds_NotReturnsHidden()
   {
     $table = Doctrine_Core::getTable('Database');
 
     $library = Doctrine_Core::getTable('Library')
       ->findOneByCode('TCNY');
 
-    $databases = $table->findByLibrary($library);
+    $databases = $table->findByLibraryIds(array($library->getId()));
 
     foreach ($databases as $database) {
       if ($database->getIsHidden()) {

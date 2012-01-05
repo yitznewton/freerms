@@ -8,14 +8,14 @@
 class DatabaseTable extends Doctrine_Table
 {
   /**
-   * @param Library $library
+   * @param array int[] $libraryIds
    * @return Doctrine_Collection
    */
-  public static function findByLibrary(Library $library)
+  public static function findByLibraryIds(array $libraryIds)
   {
     $q = self::getInstance()->createQuery('d')
       ->leftJoin('d.Libraries l')
-      ->where('l.id = ?', $library->getId())
+      ->where('l.id IN ?', $libraryIds)
       ->andWhere('d.is_hidden = false')
       ->orderBy('LOWER(d.sort_title)')
       ;

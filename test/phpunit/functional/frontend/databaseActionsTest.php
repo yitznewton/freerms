@@ -84,6 +84,23 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     ;
   }
 
+  public function testIndex_Onsite_GetsCorrectDatabaseCount()
+  {
+    $this->getTester('192.168.100.100')->
+      get('/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('ul.databases li', true, array('count' => 4))->
+      end()
+    ;
+  }
+
   public function testIndex_WithUnfeaturedSubjectOnsite_NotDisplayFeatured()
   {
     $this->getTester('192.168.100.100')->

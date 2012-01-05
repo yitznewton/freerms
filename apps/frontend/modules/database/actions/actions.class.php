@@ -27,11 +27,13 @@ class databaseActions extends sfActions
       $this->subject = null;
     }
 
+    $libraryIds = $this->getContext()->getAffiliation()->getLibraryIds();
+
+    $databaseTable = Doctrine_Core::getTable('Database');
+
     if ($this->subject) {
-      $this->featuredDatabases = Doctrine_Core::getTable('Database')
-        ->findFeaturedByLibraryIdsAndSubject(
-          $this->getContext()->getAffiliation()->getLibraryIds(), 
-          $this->subject);
+      $this->featuredDatabases = $databaseTable
+        ->findFeaturedByLibraryIdsAndSubject($libraryIds, $this->subject);
     }
     else {
       // TODO: general (non-subject) featured dbs
@@ -40,6 +42,8 @@ class databaseActions extends sfActions
 
     $this->subjectDefault = $subjectSlug;
     $this->subjectWidget  = new SubjectWidgetFormChoice();
+
+    $this->databases = $databaseTable->findByLibraryIds($libraryIds);
 
     return sfView::SUCCESS;
   }
