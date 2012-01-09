@@ -22,7 +22,7 @@ class DatabaseForm extends BaseDatabaseForm
     $this->widgetSchema['access_url_offsite']->setLabel('Offsite URL');
     $this->widgetSchema['is_hidden']->setLabel('Hidden');
     $this->widgetSchema['is_unavailable']->setLabel('Unavailable');
-    $this->widgetSchema['is_featured']->setLabel('Featured');
+    $this->widgetSchema['is_featured']->setLabel('Feature on homepage');
  
     $this->widgetSchema['access_handler_onsite']
       ->setLabel('Onsite access handler');

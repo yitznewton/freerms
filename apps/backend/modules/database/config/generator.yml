@@ -24,8 +24,6 @@ generator:
           help: Do not display in listings
         is_unavailable:
           help: Prevent user from linking to database
-        is_featured:
-          help: Place at top of subject listings
       list:
         title: Databases
         display: [=title]

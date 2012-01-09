@@ -36,9 +36,11 @@ class databaseActions extends sfActions
 
         $this->subject = $subject;
       }
-      else {
-        // TODO: general (non-subject) featured dbs
-      }
+    }
+
+    if (!$this->subject) {
+      $this->featuredDatabases = $databaseTable
+        ->findGeneralFeaturedByLibraryIds($libraryIds);
     }
 
     $this->subjectDefault = $subjectSlug;

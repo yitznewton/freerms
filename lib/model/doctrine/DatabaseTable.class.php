@@ -52,6 +52,23 @@ class DatabaseTable extends Doctrine_Table
   }
 
   /**
+   * @param array int[] $libraryIds
+   * @return Doctrine_Collection
+   */
+  public function findGeneralFeaturedByLibraryIds(array $libraryIds)
+  {
+    $q = self::getInstance()->createQuery('d')
+      ->leftJoin('d.Libraries l')
+      ->where('l.id IN ?', $libraryIds)
+      ->andWhere('d.is_featured = true')
+      ->andWhere('d.is_hidden = false')
+      ->orderBy('d.featured_weight', 'LOWER(d.sort_title)')
+      ;
+
+    return $q->execute();
+  }
+
+  /**
    * Returns an instance of this class.
    *
    * @return object DatabaseTable

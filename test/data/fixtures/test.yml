@@ -18,10 +18,14 @@ Database:
   pubmed:
     Title: Pubmed
     sort_title: Pubmed
+    is_featured: 1
+    featured_weight: 0
     Libraries: [TCNY]
   proquest:
     Title: ProQuest
     sort_title: ProQuest
+    is_featured: 1
+    featured_weight: 1
     Libraries: [TCNY]
   medline:
     Title: Medline

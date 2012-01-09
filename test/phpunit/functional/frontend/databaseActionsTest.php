@@ -118,9 +118,26 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     ;
   }
 
-  public function testIndex_WithUnfeaturedSubjectOnsite_NotDisplayFeatured()
+  public function testIndex_NoFeaturedSubject_DisplayGeneralFeatured()
   {
     $this->getTester('192.168.100.100')->
+      get('/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('ul.featured li', true, array('count' => 2))->
+      end()
+    ;
+  }
+
+  public function testIndex_WithUnfeaturedSubjectOnsite_NotDisplayFeatured()
+  {
+    $this->getTester('192.167.100.100')->
       get('/?subject=doesnt-exist')->
 
       with('request')->begin()->

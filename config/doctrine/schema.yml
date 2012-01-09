@@ -37,6 +37,10 @@ Database:
       type: boolean
       notnull: true
       default: false
+    featured_weight:
+      type: integer
+      notnull: true
+      default: 0
     note:
       type: clob
   relations:

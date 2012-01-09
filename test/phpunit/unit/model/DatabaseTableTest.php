@@ -114,5 +114,24 @@ class unit_DatabaseTableTest extends DoctrineTestCase
       }
     }
   }
+
+  public function testFindGeneralFeatured_ReturnsExpectedCount()
+  {
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $this->assertEquals(2, Doctrine_Core::getTable('Database')
+      ->findGeneralFeaturedByLibraryIds(array($library->getId()))->count());
+  }
+
+  public function testFindGeneralFeatured_ReturnsExpectedOrder()
+  {
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $this->assertEquals('Pubmed', Doctrine_Core::getTable('Database')
+      ->findGeneralFeaturedByLibraryIds(array($library->getId()))
+      ->getFirst()->getTitle());
+  }
 }
 
