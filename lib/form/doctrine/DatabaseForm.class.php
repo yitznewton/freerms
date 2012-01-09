@@ -18,8 +18,7 @@ class DatabaseForm extends BaseDatabaseForm
     );
 
     $this->widgetSchema['alt_id']->setLabel('Alternate ID');
-    $this->widgetSchema['access_url_onsite']->setLabel('Onsite URL');
-    $this->widgetSchema['access_url_offsite']->setLabel('Offsite URL');
+    $this->widgetSchema['access_url']->setLabel('URL');
     $this->widgetSchema['is_hidden']->setLabel('Hidden');
     $this->widgetSchema['is_unavailable']->setLabel('Unavailable');
     $this->widgetSchema['is_featured']->setLabel('Feature on homepage');

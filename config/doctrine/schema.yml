@@ -11,9 +11,7 @@ Database:
     sort_title:
       type: string(255)
       notnull: true
-    access_url_onsite:
-      type: string(255)
-    access_url_offsite:
+    access_url:
       type: string(255)
     access_handler_onsite:
       type: string(255)
