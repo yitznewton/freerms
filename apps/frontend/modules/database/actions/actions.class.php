@@ -17,33 +17,35 @@ class databaseActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $subjectSlug = $request->getParameter('subject');
-
-    if ($subjectSlug) {
-      $this->subject = Doctrine_Core::getTable('Subject')
-        ->findOneBySlug($subjectSlug);
-    }
-    else {
-      $this->subject = null;
-    }
-
     $libraryIds = $this->getContext()->getAffiliation()->getLibraryIds();
 
     $databaseTable = Doctrine_Core::getTable('Database');
 
-    if ($this->subject) {
-      $this->featuredDatabases = $databaseTable
-        ->findFeaturedByLibraryIdsAndSubject($libraryIds, $this->subject);
-    }
-    else {
-      // TODO: general (non-subject) featured dbs
-      $this->featuredDatabases = array();
+    $this->subject           = null;
+    $this->featuredDatabases = array();
+
+    $subjectSlug = $request->getParameter('subject');
+
+    if ($subjectSlug) {
+      $subject = Doctrine_Core::getTable('Subject')
+        ->findOneBySlug($subjectSlug);
+
+      if ($subject) {
+        $this->featuredDatabases = $databaseTable
+          ->findFeaturedByLibraryIdsAndSubject($libraryIds, $subject);
+
+        $this->subject = $subject;
+      }
+      else {
+        // TODO: general (non-subject) featured dbs
+      }
     }
 
     $this->subjectDefault = $subjectSlug;
     $this->subjectWidget  = new SubjectWidgetFormChoice();
 
-    $this->databases = $databaseTable->findByLibraryIds($libraryIds);
+    $this->databases = $databaseTable->findByLibraryIdsAndSubject(
+      $libraryIds, $this->subject);
 
     return sfView::SUCCESS;
   }

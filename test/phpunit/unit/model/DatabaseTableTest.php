@@ -3,31 +3,45 @@ require_once dirname(__FILE__).'/../DoctrineTestCase.php';
 
 class unit_DatabaseTableTest extends DoctrineTestCase
 {
-  public function testFindByLibraryIds_ReturnsExpectedFirst()
+  public function testFindByLibraryIdsAndSubject_ReturnsExpectedFirst()
   {
     $table = Doctrine_Core::getTable('Database');
 
     $library = Doctrine_Core::getTable('Library')
       ->findOneByCode('TCS');
 
-    $this->assertEquals('EBSCO', $table->findByLibraryIds(
+    $this->assertEquals('EBSCO', $table->findByLibraryIdsAndSubject(
       array($library->getId()))->getFirst()->getTitle());
   }
 
-  public function testFindByLibraryIds_NotReturnsHidden()
+  public function testFindByLibraryIdsAndSubject_NotReturnsHidden()
   {
     $table = Doctrine_Core::getTable('Database');
 
     $library = Doctrine_Core::getTable('Library')
       ->findOneByCode('TCNY');
 
-    $databases = $table->findByLibraryIds(array($library->getId()));
+    $databases = $table->findByLibraryIdsAndSubject(array($library->getId()));
 
     foreach ($databases as $database) {
       if ($database->getIsHidden()) {
         $this->fail();
       }
     }
+  }
+
+  public function testFindByLibraryIdsAndSubject_Subject_ReturnsExpectedCount()
+  {
+    $table = Doctrine_Core::getTable('Database');
+
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCS');
+
+    $subject = Doctrine_Core::getTable('Subject')
+      ->findOneBySlug('psychology');
+
+    $this->assertEquals(1, $table->findByLibraryIdsAndSubject(
+      array($library->getId()), $subject)->count());
   }
 
   public function testFindFeatured_NotReturnsHidden()

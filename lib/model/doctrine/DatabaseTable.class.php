@@ -11,7 +11,8 @@ class DatabaseTable extends Doctrine_Table
    * @param array int[] $libraryIds
    * @return Doctrine_Collection
    */
-  public static function findByLibraryIds(array $libraryIds)
+  public static function findByLibraryIdsAndSubject(
+    array $libraryIds, Subject $subject = null)
   {
     $q = self::getInstance()->createQuery('d')
       ->leftJoin('d.Libraries l')
@@ -19,6 +20,12 @@ class DatabaseTable extends Doctrine_Table
       ->andWhere('d.is_hidden = false')
       ->orderBy('LOWER(d.sort_title)')
       ;
+
+    if ($subject) {
+      $q->leftJoin('d.DatabaseSubjects ds')
+        ->andWhere('ds.subject_id = ?', $subject->getId())
+        ;
+    }
 
     return $q->execute();
   }
@@ -38,7 +45,7 @@ class DatabaseTable extends Doctrine_Table
       ->andWhere('ds.subject_id = ?', $subject->getId())
       ->andWhere('ds.featured_weight != -1')
       ->andWhere('d.is_hidden = false')
-      ->orderBy('ds.featured_weight', 'd.sort_title')
+      ->orderBy('ds.featured_weight', 'LOWER(d.sort_title)')
       ;
 
     return $q->execute();
