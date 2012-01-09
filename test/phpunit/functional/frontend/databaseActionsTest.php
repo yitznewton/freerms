@@ -101,6 +101,23 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
     ;
   }
 
+  public function testIndex_Onsite_SubjectWidgetCorrectCount()
+  {
+    $this->getTester('192.167.100.100')->
+      get('/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('#subject-select option', true, array('count' => 2))->
+      end()
+    ;
+  }
+
   public function testIndex_WithUnfeaturedSubjectOnsite_NotDisplayFeatured()
   {
     $this->getTester('192.168.100.100')->

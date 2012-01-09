@@ -42,7 +42,8 @@ class databaseActions extends sfActions
     }
 
     $this->subjectDefault = $subjectSlug;
-    $this->subjectWidget  = new SubjectWidgetFormChoice();
+    $this->subjectWidget  = new WidgetFormChoiceSubject(
+      array('library_ids' => $libraryIds));
 
     $this->databases = $databaseTable->findByLibraryIdsAndSubject(
       $libraryIds, $this->subject);
