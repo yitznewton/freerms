@@ -2,7 +2,7 @@
 
 <ul class="featured">
 <?php foreach ($databases as $database): ?>
-  <li><?php echo link_to($database->getTitle(), 'http://www.google.com/') ?></li>
+  <li><?php echo link_to_database($database->getRawValue()) ?></li>
 <?php endforeach; ?>
 </ul>
 

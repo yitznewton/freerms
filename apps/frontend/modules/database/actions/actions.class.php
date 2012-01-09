@@ -10,11 +10,9 @@
  */
 class databaseActions extends sfActions
 {
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
+  /**
+   * @param sfRequest $request A request object
+   */
   public function executeIndex(sfWebRequest $request)
   {
     $libraryIds = $this->getContext()->getAffiliation()->getLibraryIds();
@@ -51,6 +49,37 @@ class databaseActions extends sfActions
       $libraryIds, $this->subject);
 
     return sfView::SUCCESS;
+  }
+
+  /**
+   * @param sfRequest $request A request object
+   */
+  public function executeAccess(sfWebRequest $request)
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->find($request->getParameter('id'));
+
+    $this->forward404Unless($database);
+
+    if ($this->getContext()->getAffiliation()->isOnsite()) {
+      $action = $database->getAccessHandlerOnsite();
+    }
+    else {
+      $action = $database->getAccessHandlerOffsite();
+    }
+
+    if (!$action) {
+      $action = 'base';
+    }
+
+    if (!$this->getController()->actionExists('access', $action)){
+      throw new Exception('handle me');
+    }
+
+    $this->getUser()->setFlash('database_library_ids', $database->getLibraryIds());
+    $this->getUser()->setFlash('database_url', $database->getAccessUrl());
+
+    $this->forward('access', $action);
   }
 }
 

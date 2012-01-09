@@ -39,6 +39,9 @@ Database:
     title: A Sorter
     sort_title: Sorter
     Libraries: [TCS]
+  unaffiliated:
+    title: Loner
+    sort_title: loner
 
 DatabaseSubject:
   proquest_health-sciences:
