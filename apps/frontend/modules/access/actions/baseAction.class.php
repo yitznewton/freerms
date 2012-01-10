@@ -5,23 +5,28 @@ class baseAction extends sfAction
   const IS_VALID_ONSITE   = true;
   const IS_VALID_OFFSITE  = true;
   const DESCRIPTION       = 'IP-based';
-  const FORCE_AUTH_ONSITE = false;
 
   /**
    * @param sfWebRequest $request
    */
   public function execute($request)
   {
-    if (!$this->isSubscriber()) {
+    if (!$this->isSubscribed()) {
       throw new accessUnauthorizedException();
     }
 
-    if (static::FORCE_AUTH_ONSITE && !$this->getUser()->isAuthenticated()) {
+    $this->redirect($this->getUser()->getFlash('database_url'));
+  }
+
+  /**
+   * Force the user to login even if isSubscribed
+   */
+  protected function forceLogin()
+  {
+    if (!$this->getUser()->isAuthenticated()) {
       $this->forward(sfConfig::get('sf_login_module'),
         sfConfig::get('sf_login_action') );
     }
-
-    $this->redirect($this->getUser()->getFlash('database_url'));
   }
 
   /**
@@ -30,17 +35,12 @@ class baseAction extends sfAction
    *
    * @return bool
    */
-  protected function isSubscriber()
+  protected function isSubscribed()
   {
-    if (!array_intersect(
+    return (bool) array_intersect(
       $this->getContext()->getAffiliation()->getLibraryIds(),
       $this->getUser()->getFlash('database_library_ids')
-    )) {
-      return false;
-    }
-    else {
-      return true;
-    }
+    );
   }
 }
 

@@ -11,7 +11,7 @@
 class databaseActions extends sfActions
 {
   /**
-   * @param sfRequest $request A request object
+   * @param sfWebRequest $request A request object
    */
   public function executeIndex(sfWebRequest $request)
   {
@@ -52,7 +52,7 @@ class databaseActions extends sfActions
   }
 
   /**
-   * @param sfRequest $request A request object
+   * @param sfWebRequest $request A request object
    */
   public function executeAccess(sfWebRequest $request)
   {

@@ -38,7 +38,7 @@ Database:
   sorter:
     title: A Sorter
     sort_title: Sorter
-    Libraries: [TCS]
+    Libraries: [TCNY, TCS]
   unaffiliated:
     title: Loner
     sort_title: loner

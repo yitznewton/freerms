@@ -1,39 +1,8 @@
 <?php
-require_once dirname(__FILE__).'/../../bootstrap/functional.php';
+require_once dirname(__FILE__).'/FrontendFunctionalTestCase.php';
 
-class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTestCase
+class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 {
-  public static function setUpBeforeClass()
-  {
-    parent::setUpBeforeClass();
-
-    new sfDatabaseManager(
-      ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
-  }
-
-  public function setUp()
-  {
-    parent::setUp();
-
-    $doctrineInsert = new sfDoctrineDataLoadTask(
-      ProjectConfiguration::getActive()->getEventDispatcher(),
-      new sfAnsiColorFormatter());
-
-    $doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
-  }
-
-  protected function getApplication()
-  {
-    return 'frontend';
-  }
-
-  protected function getTester($ip)
-  {
-    $browser = new sfBrowser(null, $ip);
-
-    return new sfTestFunctional($browser, $this->getTest());
-  }
-
   public function testIndex_NoArgsOnsite_GetsIndex()
   {
     $this->getTester('192.168.100.100')->
@@ -96,7 +65,7 @@ class functional_frontend_databaseActionsTest extends sfPHPUnitBaseFunctionalTes
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.databases li', true, array('count' => 4))->
+        checkElement('ul.databases li', true, array('count' => 5))->
       end()
     ;
   }
