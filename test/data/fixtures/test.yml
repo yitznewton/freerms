@@ -10,38 +10,48 @@ Database:
     sort_title: ebsco
     Subjects: [psychology]
     Libraries: [TCS]
+    access_url: http://ebsco.example.org/
+    access_action_onsite: base
+    access_action_offsite: base
   hidden:
     title: hidden
     sort_title: hidden
     is_hidden: true
     Libraries: [TCNY]
+    access_url: http://hidden.example.org/
   pubmed:
     Title: Pubmed
     sort_title: Pubmed
     is_featured: 1
     featured_weight: 0
     Libraries: [TCNY]
+    access_url: http://pubmed.example.org/
   proquest:
     Title: ProQuest
     sort_title: ProQuest
     is_featured: 1
     featured_weight: 1
     Libraries: [TCNY]
+    access_url: http://proquest.example.org/
   medline:
     Title: Medline
     sort_title: Medline
     Libraries: [TCNY]
+    access_url: http://medline.example.org/
   unfeatured_medical:
     Title: Unfeatured Medical
     sort_title: Unfeatured Medical
     Libraries: [TCNY]
+    access_url: http://unfeatured.example.org/
   sorter:
     title: A Sorter
     sort_title: Sorter
     Libraries: [TCNY, TCS]
+    access_url: http://sorter.example.org/
   unaffiliated:
     title: Loner
     sort_title: loner
+    access_url: http://unaffiliated.example.org/
 
 DatabaseSubject:
   proquest_health-sciences:

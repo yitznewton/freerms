@@ -13,10 +13,15 @@ Database:
       notnull: true
     access_url:
       type: string(255)
-    access_handler_onsite:
+      notnull: true
+    access_action_onsite:
       type: string(255)
-    access_handler_offsite:
+      notnull: true
+      default: base
+    access_action_offsite:
       type: string(255)
+      notnull: true
+      default: base
     description:
       type: clob
     public_note:

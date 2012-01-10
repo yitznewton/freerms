@@ -62,23 +62,16 @@ class databaseActions extends sfActions
     $this->forward404Unless($database);
 
     if ($this->getContext()->getAffiliation()->isOnsite()) {
-      $action = $database->getAccessHandlerOnsite();
+      $action = $database->getAccessActionOnsite();
     }
     else {
-      $action = $database->getAccessHandlerOffsite();
-    }
-
-    if (!$action) {
-      $action = 'base';
-    }
-
-    if (!$this->getController()->actionExists('access', $action)){
-      throw new Exception('handle me');
+      $action = $database->getAccessActionOffsite();
     }
 
     $this->getUser()->setFlash('database_library_ids', $database->getLibraryIds());
     $this->getUser()->setFlash('database_url', $database->getAccessUrl());
 
+    // symfony handles nonexistent actions
     $this->forward('access', $action);
   }
 }

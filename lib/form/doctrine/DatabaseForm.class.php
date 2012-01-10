@@ -23,11 +23,11 @@ class DatabaseForm extends BaseDatabaseForm
     $this->widgetSchema['is_unavailable']->setLabel('Unavailable');
     $this->widgetSchema['is_featured']->setLabel('Feature on homepage');
  
-    $this->widgetSchema['access_handler_onsite']
-      ->setLabel('Onsite access handler');
+    $this->widgetSchema['access_action_onsite']
+      ->setLabel('Onsite access action');
 
-    $this->widgetSchema['access_handler_offsite']
-      ->setLabel('Offsite access handler');
+    $this->widgetSchema['access_action_offsite']
+      ->setLabel('Offsite access action');
  
     $this->widgetSchema['libraries_list']
       ->setLabel('Libraries')
