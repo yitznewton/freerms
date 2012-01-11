@@ -25,5 +25,23 @@ class Database extends BaseDatabase
 
     return $ids;
   }
+
+  /**
+   * Returns a copy of the Database with certain unique elements unset
+   *
+   * @param bool $deep whether to copy relations
+   * @return Database
+   */
+  public function copy($deep = false)
+  {
+    $copy = parent::copy($deep);
+
+    $copy->setLibraries($this->getLibraries());
+    $copy->setSubjects($this->getSubjects());
+
+    $copy->setAltId(null);
+
+    return $copy;
+  }
 }
 

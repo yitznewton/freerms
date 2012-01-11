@@ -12,5 +12,5 @@ all:
 test:
   doctrine:
     param:
-      dsn:      sqlite:%SF_DATA_DIR%/sqlite/test.sqlite
+      dsn:      sqlite::memory:
 

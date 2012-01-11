@@ -42,5 +42,64 @@ class unit_DatabaseTest extends DoctrineTestCase
       
     $this->assertEmpty($database->getLibraryIds()); 
   }
+
+  /**
+   * @expectsException RuntimeException
+   */
+  public function testCopy_CalledOnNew_ThrowsException()
+  {
+    $database = new Database();
+    $database->copy(true);
+  }
+
+  public function testCopy_HasLibraries()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('A Sorter');
+      
+    $copy = $database->copy();
+
+    $this->assertEquals($database->getLibraries(), $copy->getLibraries());
+  }
+
+  public function testCopy_HasSubjects()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('ProQuest');
+      
+    $copy = $database->copy();
+
+    $this->assertEquals($database->getSubjects(), $copy->getSubjects());
+  }
+
+  public function testCopy_SetsIsNew()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('ProQuest');
+      
+    $copy = $database->copy();
+
+    $this->assertTrue($copy->isNew());
+  }
+
+  public function testCopy_UnsetsId()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('ProQuest');
+      
+    $copy = $database->copy();
+
+    $this->assertNull($copy->getId());
+  }
+
+  public function testCopy_UnsetsAltId()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('ProQuest');
+      
+    $copy = $database->copy();
+
+    $this->assertNull($copy->getAltId());
+  }
 }
 

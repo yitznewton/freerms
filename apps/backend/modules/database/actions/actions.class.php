@@ -13,4 +13,19 @@ require_once dirname(__FILE__).'/../lib/databaseGeneratorHelper.class.php';
  */
 class databaseActions extends autoDatabaseActions
 {
+  public function executeClone(sfWebRequest $request)
+  {
+    if ($clone_from_id = $request->getParameter('clone_from_id')) {
+      $parent_database = Doctrine_Core::getTable('Database')
+        ->find($clone_from_id);
+
+      $this->forward404Unless($parent_database);
+    }
+
+    $this->database = $parent_database->copy();
+    $this->form     = new DatabaseForm($this->database);
+
+    $this->setTemplate('new');
+  }
 }
+

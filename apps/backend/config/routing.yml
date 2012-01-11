@@ -34,6 +34,10 @@ ip_range:
     column:               id
     with_wildcard_routes: true
 
+database_clone:
+  url:   /database/:clone_from_id/clone
+  param: { module: database, action: clone }
+
 # You can find more information about this file on the symfony website:
 # http://www.symfony-project.org/reference/1_4/en/10-Routing
 
