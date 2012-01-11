@@ -120,5 +120,25 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       end()
     ;
   }
+
+  public function testAccess_Subscribed_RedirectsToExpected()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('EBSCO');
+
+    $this->getTester('192.167.100.100')->
+      get('/database/' . $database->getId())->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'access')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(302)->
+        isHeader('Location', 'http://ebsco.example.org/')->
+      end()
+    ;
+  }
 }
 
