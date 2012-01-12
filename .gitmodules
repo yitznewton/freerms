@@ -1,0 +1,6 @@
+[submodule "vendor/symfony-1.4"]
+	path = vendor/symfony-1.4
+	url = http://github.com/symfony/symfony1
+[submodule "vendor/dependency-injection"]
+	path = vendor/dependency-injection
+	url = http://github.com/fabpot/dependency-injection.git

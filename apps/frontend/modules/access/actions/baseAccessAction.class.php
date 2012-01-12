@@ -1,6 +1,6 @@
 <?php
 
-class baseAction extends sfAction
+class baseAccessAction extends sfAction
 {
   const IS_VALID_ONSITE   = true;
   const IS_VALID_OFFSITE  = true;
@@ -37,10 +37,21 @@ class baseAction extends sfAction
    */
   protected function isSubscribed()
   {
-    return (bool) array_intersect(
+    return (bool) $this->getUserLibraryIds();
+  }
+
+  /**
+   * Returns an array of IDs of all Libraries shared by the user and the
+   * database
+   *
+   * @return array int[]
+   */
+  protected function getUserLibraryIds()
+  {
+    return array_values(array_intersect(
       $this->getContext()->getAffiliation()->getLibraryIds(),
       $this->getUser()->getFlash('database_library_ids')
-    );
+    ));
   }
 }
 

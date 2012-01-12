@@ -7,8 +7,18 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
   {
     parent::setUpBeforeClass();
 
-    new sfDatabaseManager(
-      ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
+    $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true);
+
+    new sfDatabaseManager($configuration);
+
+    $doctrineDrop = new sfDoctrineDropDbTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
+    $doctrineDrop->run(array(), array("--no-confirmation","--env=test"));
+
+    $doctrineBuild = new sfDoctrineBuildDbTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
+    $doctrineBuild->run(array(), array("--env=test"));
+
+    $doctrineInsert = new sfDoctrineInsertSqlTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
+    $doctrineInsert->run(array(), array("--env=test"));
   }
 
   public function setUp()

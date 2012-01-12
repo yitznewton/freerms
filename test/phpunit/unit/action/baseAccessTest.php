@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 require_once __DIR__.'/AccessTestCase.php';
-require_once __DIR__.'/../../../../apps/frontend/modules/access/actions/baseAction.class.php';
+require_once __DIR__.'/../../../../apps/frontend/modules/access/actions/baseAccessAction.class.php';
 
 class unit_baseAccessTest extends AccessTestCase
 {
@@ -22,7 +22,7 @@ class unit_baseAccessTest extends AccessTestCase
     $context->setRequest($request);
     $context->getUser()->setFlash('database_library_ids', array(1));
 
-    $action = new baseAction($context, 'access', 'base');
+    $action = new baseAccessAction($context, 'access', 'base');
     $action->execute($request);
   }
 
@@ -44,7 +44,7 @@ class unit_baseAccessTest extends AccessTestCase
     $context->getUser()->setFlash('database_library_ids', array(1));
     $context->getUser()->setFlash('database_url', 'http://www.example.org');
 
-    $action = $this->getMock('baseAction', null,
+    $action = $this->getMock('baseAccessAction', null,
       array($context, 'access', 'base'));
 
     // why doesn't this work?
@@ -73,7 +73,7 @@ class unit_baseAccessTest extends AccessTestCase
     $context->getUser()->setFlash('database_library_ids', array(1));
     $context->getUser()->setFlash('database_url', 'http://www.example.org');
 
-    $action = $this->getMock('baseAction', null,
+    $action = $this->getMock('baseAccessAction', null,
       array($context, 'access', 'base'));
 
     $action->execute($request);
@@ -97,10 +97,34 @@ class unit_baseAccessTest extends AccessTestCase
     $context->getUser()->setFlash('database_library_ids', array(1,2));
     $context->getUser()->setFlash('database_url', 'http://www.example.org');
 
-    $action = $this->getMock('baseAction', null,
+    $action = $this->getMock('baseAccessAction', null,
       array($context, 'access', 'base'));
 
     $action->execute($request);
+  }
+
+  public function testGetUserLibraryIds_UserAndLibraryHaveAddl_ReturnsCorrect()
+  {
+    $this->affiliation
+      ->expects($this->any())
+      ->method('getLibraryIds')
+      ->will($this->returnValue(array(1,2)));
+
+    $request = new sfWebRequest(new sfEventDispatcher());
+
+    $context = sfContext::createInstance($this->configuration);
+    $context->setAffiliation($this->affiliation);
+    $context->setRequest($request);
+    $context->getUser()->setFlash('database_library_ids', array(2,3));
+    $context->getUser()->setFlash('database_url', 'http://www.example.org');
+    
+    $action = $this->getMock('baseAccessAction', null,
+      array($context, 'access', 'base'));
+
+    $method = new ReflectionMethod('baseAccessAction', 'getUserLibraryIds');
+    $method->setAccessible(true);
+
+    $this->assertEquals(array(2), $method->invoke($action));
   }
 }
 

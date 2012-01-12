@@ -11,8 +11,8 @@ Database:
     Subjects: [psychology]
     Libraries: [TCS]
     access_url: http://ebsco.example.org/
-    access_action_onsite: base
-    access_action_offsite: base
+    access_action_onsite: baseAccess
+    access_action_offsite: baseAccess
   hidden:
     title: hidden
     sort_title: hidden
