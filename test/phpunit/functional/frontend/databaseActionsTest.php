@@ -140,5 +140,32 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       end()
     ;
   }
+
+  public function testAccess_EzproxySubscribed_RedirectHasProxyHost()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('EZproxy database');
+
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCS');
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->
+      get('/database/' . $database->getId())->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'access')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(302)->
+      end()
+    ;
+
+    $tester->test()->like($tester->getResponse()
+      ->getHttpHeader('Location'), "/{$library->getEzproxyHost()}/");
+  }
 }
 

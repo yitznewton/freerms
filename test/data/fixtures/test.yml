@@ -13,6 +13,13 @@ Database:
     access_url: http://ebsco.example.org/
     access_action_onsite: baseAccess
     access_action_offsite: baseAccess
+  ezproxy_database:
+    title: EZproxy database
+    sort_title: ezproxy
+    Libraries: [TCS]
+    access_url: http://ezproxy.example.org/
+    access_action_onsite: baseAccess
+    access_action_offsite: ezproxyAccess
   hidden:
     title: hidden
     sort_title: hidden
@@ -75,6 +82,9 @@ Library:
   TCNY:
     Name: Touro College New York
     Code: TCNY
+    ezproxy_host: ezproxy.example.org
+    ezproxy_key: s3cret
+    ezproxy_algorithm: md5
   TCS:
     Name: Touro College South
     Code: TCS
