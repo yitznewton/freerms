@@ -17,7 +17,7 @@ Database:
     title: EZproxy database
     sort_title: ezproxy
     Libraries: [TCS]
-    access_url: http://ezproxy.example.org/
+    access_url: http://ezproxydb.example.org/
     access_action_onsite: baseAccess
     access_action_offsite: ezproxyAccess
   hidden:
@@ -88,6 +88,9 @@ Library:
   TCS:
     Name: Touro College South
     Code: TCS
+    ezproxy_host: ezproxy.example.org
+    ezproxy_key: s3cret
+    ezproxy_algorithm: md5
     
 IpRange:
   1:
@@ -120,6 +123,7 @@ sfGuardUser:
   has_library:
     email_address: yitznewton@example.com
     username: haslibrarytcs
+    password: jimbobjoe
     Groups:
       - TCS
 
