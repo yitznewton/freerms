@@ -294,5 +294,15 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     $tester->test()->like($tester->getResponse()
       ->getHttpHeader('Location'), "_{$url}_");
   }
+
+  public function testLogout_RedirectsToHome()
+  {
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->get('/logout');
+
+    $tester->test()->is($tester->getResponse()
+      ->getHttpHeader('Location'), 'http://localhost/index.php/');
+  }
 }
 

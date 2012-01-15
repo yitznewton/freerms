@@ -1,3 +1,7 @@
+homepage:
+  url: /
+  params: { module: database, action: index }
+
 database_index:
   url: /
   params: { module: database, action: index }
@@ -21,4 +25,8 @@ proxy_url:
   params: { module: database, action: directUrl }
   requirements:
     url: http.+
+
+sf_guard_signout:
+  url:   /logout
+  param: { module: sfGuardAuth, action: signout }
 
