@@ -14,7 +14,19 @@ class LibraryForm extends BaseLibraryForm
   {
     $this->widgetSchema['ezproxy_host']->setLabel('EZproxy host');
     $this->widgetSchema['ezproxy_key']->setLabel('EZproxy key');
+    $this->widgetSchema['ezproxy_algorithm'] = new sfWidgetFormChoice(array(
+      'choices' => array(
+        'md5' => 'MD5',
+        'sha1' => 'SHA1',
+      ),
+      'expanded' => true,
+    ));
     $this->widgetSchema['show_featured']
       ->setLabel('Show featured databases in subjects');
+
+    $this->validatorSchema['ezproxy_algorithm'] = new sfValidatorChoice(array(
+      'choices' => array('md5', 'sha1'),
+      'required' => false,
+    ));
   }
 }
