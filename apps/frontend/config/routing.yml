@@ -2,6 +2,14 @@ database_index:
   url: /
   params: { module: database, action: index }
 
+database_index_0:
+  url: /database
+  params: { module: database, action: index }
+
+database_index_1:
+  url: /database/
+  params: { module: database, action: index }
+
 database_access:
   url: /database/:id
   params: { module: database, action: access }

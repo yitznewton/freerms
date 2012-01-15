@@ -38,6 +38,30 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     ;
   }
 
+  public function testIndex_DatabaseRoute_GetsIndex()
+  {
+    $this->getTester('192.168.100.100')->
+      get('/database')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()
+    ;
+  }
+
+  public function testIndex_DatabaseRouteSlash_GetsIndex()
+  {
+    $this->getTester('192.168.100.100')->
+      get('/database/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()
+    ;
+  }
+
   public function testIndex_NoArgsOffsite_Gets401()
   {
     $this->getTester('192.168.1.1')->
