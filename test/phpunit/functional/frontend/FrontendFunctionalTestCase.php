@@ -43,5 +43,23 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
 
     return new sfTestFunctional($browser, $this->getTest());
   }
+
+  protected function login(sfTestFunctional $tester, $username, $password)
+  {
+    $csrf = $tester->getResponseDom()->getElementById('signin__csrf_token')
+      ->getAttribute('value');
+
+    $tester->post('/guard/login', array('signin' => array(
+      'username' => $username,
+      'password' => $password,
+      '_csrf_token' => $csrf,
+    )));
+
+    $tester->test()->is($tester->getResponse()->getStatusCode(), 302);
+
+    $tester->followRedirect();
+
+    return $tester;
+  }
 }
 

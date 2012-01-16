@@ -3,24 +3,6 @@ require_once dirname(__FILE__).'/FrontendFunctionalTestCase.php';
 
 class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 {
-  protected function login(sfTestFunctional $tester, $username, $password)
-  {
-    $csrf = $tester->getResponseDom()->getElementById('signin__csrf_token')
-      ->getAttribute('value');
-
-    $tester->post('/guard/login', array('signin' => array(
-      'username' => $username,
-      'password' => $password,
-      '_csrf_token' => $csrf,
-    )));
-
-    $tester->test()->is($tester->getResponse()->getStatusCode(), 302);
-
-    $tester->followRedirect();
-
-    return $tester;
-  }
-
   public function testIndex_NoArgsOnsite_GetsIndex()
   {
     $this->getTester('192.168.100.100')->
@@ -219,7 +201,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     $tester->test()->is($tester->getResponse()->getStatusCode(), 302);
 
     $tester->test()->like($tester->getResponse()
-      ->getHttpHeader('Location'), "`http://{$library->getEzproxyHost()}`");
+      ->getHttpHeader('Location'), "`^http://{$library->getEzproxyHost()}`");
   }
 
   public function testAccess_Ezproxy_RedirectHasUsername()
@@ -266,33 +248,6 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
     $tester->test()->like($tester->getResponse()
       ->getHttpHeader('Location'), "`url={$database->getAccessUrl()}`");
-  }
-
-  public function testAccess_EzproxyUrl_InvalidUrlThrows404()
-  {
-    $this->markTestSkipped();
-  }
-
-  public function testAccess_EzproxyUrl_RedirectHasUrl()
-  {
-    $this->markTestSkipped();
-    $tester = $this->getTester('192.167.100.100');
-
-    $url = 'http://www.example.org/';
-
-    $tester->get("/url/$url")->
-      with('request')->begin()->
-        isParameter('module', 'access')->
-        isParameter('action', 'ezproxyUrlAccess')->
-      end()->
-
-      with('response')->begin()->
-        isStatusCode(302)->
-      end()
-    ;
-
-    $tester->test()->like($tester->getResponse()
-      ->getHttpHeader('Location'), "_{$url}_");
   }
 
   public function testLogout_RedirectsToHome()

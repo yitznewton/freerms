@@ -18,9 +18,6 @@ class baseAccessAction extends sfAction
     $this->redirect($this->getUser()->getFlash('database_url'));
   }
 
-  /**
-   * Force the user to login even if isSubscribed
-   */
   protected function forceLogin()
   {
     if (!$this->getUser()->isAuthenticated()) {
@@ -37,7 +34,7 @@ class baseAccessAction extends sfAction
    */
   protected function isSubscribed()
   {
-    return (bool) $this->getUserLibraryIds();
+    return (bool) $this->getUserDatabaseLibraryIds();
   }
 
   /**
@@ -46,7 +43,7 @@ class baseAccessAction extends sfAction
    *
    * @return array int[]
    */
-  protected function getUserLibraryIds()
+  protected function getUserDatabaseLibraryIds()
   {
     return array_values(array_intersect(
       $this->getContext()->getAffiliation()->getLibraryIds(),

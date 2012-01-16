@@ -16,7 +16,7 @@ class ezproxyAccessAction extends baseAccessAction
       throw new accessUnauthorizedException();
     }
 
-    $library_ids = $this->getUserLibraryIds();
+    $library_ids = $this->getUserDatabaseLibraryIds();
 
     $library = Doctrine_Core::getTable('Library')
       ->find($library_ids[0]);

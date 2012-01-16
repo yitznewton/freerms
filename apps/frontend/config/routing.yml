@@ -21,10 +21,9 @@ database_access:
     id: \d+
 
 proxy_url:
-  url: /url/:url
-  params: { module: database, action: directUrl }
-  requirements:
-    url: http.+
+  # needs to be wildcard to match slashes in URL
+  url: /url/*
+  params: { module: access, action: ezproxyUrlAccess }
 
 sf_guard_signout:
   url:   /logout
