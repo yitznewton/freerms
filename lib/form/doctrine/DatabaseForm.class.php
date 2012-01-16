@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Database form.
  *
@@ -26,9 +25,19 @@ class DatabaseForm extends BaseDatabaseForm
     $this->widgetSchema['access_action_onsite']
       ->setLabel('Onsite access action');
 
-    $this->widgetSchema['access_action_offsite']
-      ->setLabel('Offsite access action');
- 
+    $lister = new freermsAccessActionLister(
+      sfConfig::get('sf_apps_dir') . '/frontend/modules/access/actions');
+
+    $this->widgetSchema['access_action_onsite'] = new sfWidgetFormChoice(array(
+      'label' => 'Onsite access action',
+      'choices' => $lister->retrieve(freermsAccessActionLister::ONSITE),
+    ));
+
+    $this->widgetSchema['access_action_offsite'] = new sfWidgetFormChoice(array(
+      'label' => 'Onsite access action',
+      'choices' => $lister->retrieve(freermsAccessActionLister::OFFSITE),
+    ));
+
     $this->widgetSchema['libraries_list']
       ->setLabel('Libraries')
       ->setOption('expanded', true);
