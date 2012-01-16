@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/FrontendFunctionalTestCase.php';
 
-class functional_frontend_accessActionsTest extends FrontendFunctionalTestCase
+class functional_frontend_ezproxyUrlAccessActionTest extends FrontendFunctionalTestCase
 {
   public function testAccess_EzproxyUrl_InvalidUrlThrows404()
   {
