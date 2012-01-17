@@ -15,13 +15,13 @@ class refererAccessAction extends baseAccessAction
 
     $user = $this->getUser();
 
-    $this->title         = $user->getFlash('database_title');
-    $this->database_url  = $user->getFlash('database_url');
-    $this->referral_note = $user->getFlash('referral_note');
+    $this->databaseTitle = $user->getFlash('database_title');
+    $this->databaseUrl   = $user->getFlash('database_url');
+    $this->referralNote  = $user->getFlash('referral_note');
 
-    if ($this->referral_note) {
-      $this->getResponse()->addMeta('Refresh',
-        '0;url=' . $this->database_url);
+    if (!$this->referralNote) {
+      $this->getResponse()->addHttpMeta('Refresh',
+        '0;url=' . $this->databaseUrl);
     }
 
     return sfView::SUCCESS;

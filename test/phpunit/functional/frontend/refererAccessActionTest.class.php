@@ -34,7 +34,6 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
 
   public function testAccess_OffsiteNoReferralNote_ExternalRedirects()
   {
-    $this->markTestSkipped();
     $database = Doctrine_Core::getTable('Database')
       ->findOneByTitle('ProQuest');
 
@@ -49,13 +48,12 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
     $css = new sfDomCssSelector($tester->getResponseDom());
 
     $tester->test()->is(count($css->matchAll(
-      'meta[http-equiv="refresh"][content="0; url='
+      'meta[http-equiv="Refresh"][content="0;url='
       . $database->getAccessUrl() . '"]')), 1);
   }
 
   public function testAccess_OffsiteReferralNote_InternalRedirects()
   {
-    $this->markTestSkipped();
     $database = Doctrine_Core::getTable('Database')
       ->findOneByTitle('Referral Note Database');
 
@@ -66,14 +64,14 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
     $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
 
     $tester->test()->is($tester->getResponse()->getStatusCode(), 302);
-    $tester->test()->matches($tester->getHttpHeader('Location'), '/refer$');
+    $tester->test()->like($tester->getResponse()
+      ->getHttpHeader('Location'), '_/refer$_');
   }
 
   public function testAccess_OffsiteReferralNote_NotExternalRedirect()
   {
-    $this->markTestSkipped();
     $database = Doctrine_Core::getTable('Database')
-      ->findOneByTitle('ProQuest');
+      ->findOneByTitle('Referral Note Database');
 
     $tester = $this->getTester('192.1.1.1');
 
@@ -86,14 +84,13 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
     $css = new sfDomCssSelector($tester->getResponseDom());
 
     $tester->test()->is(count($css->matchAll(
-      'meta[http-equiv="refresh"]')), 0);
+      'meta[http-equiv="Refresh"]')), 0);
   }
 
-  public function testAccess_OffsiteReferralNote_DisplaysNote()
+  public function testAccess_OffsiteReferralNote_DisplaysNoteAndLink()
   {
-    $this->markTestSkipped();
     $database = Doctrine_Core::getTable('Database')
-      ->findOneByTitle('ProQuest');
+      ->findOneByTitle('Referral Note Database');
 
     $tester = $this->getTester('192.1.1.1');
 
@@ -104,31 +101,11 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
     $tester->followRedirect();
 
     $css = new sfDomCssSelector($tester->getResponseDom());
-
-    $tester->test()->is($css->getValues('.referral-note'),
-      array($database->getReferralNote()));
-  }
-
-  public function testAccess_OffsiteReferralNote_DisplaysExternalLink()
-  {
-    $this->markTestSkipped();
-    $database = Doctrine_Core::getTable('Database')
-      ->findOneByTitle('ProQuest');
-
-    $tester = $this->getTester('192.1.1.1');
-
-    $tester->get('/database/' . $database->getId());
-
-    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
-
-    $tester->followRedirect();
-
-    $css = new sfDomCssSelector($tester->getResponseDom());
-
-    $link = $css->matchSingle('.referral-link a')->getNode();
-
-    $tester->test()->is($link->getAttribute('href'),
-      $database->getAccessUrl());
+    
+    $tester->with('response')->begin()->
+      checkElement('.referral-note', $database->getReferralNote())->
+      checkElement('.referral-link', true)->
+    end();
   }
 }
 
