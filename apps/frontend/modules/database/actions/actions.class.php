@@ -68,8 +68,16 @@ class databaseActions extends sfActions
       $action = $database->getAccessActionOffsite();
     }
 
-    $this->getUser()->setFlash('database_library_ids', $database->getLibraryIds());
-    $this->getUser()->setFlash('database_url', $database->getAccessUrl());
+    $user = $this->getUser();
+
+    $user->setFlash('database_title', $database->getTitle());
+    $user->setFlash('database_library_ids', $database->getLibraryIds());
+    $user->setFlash('database_url', $database->getAccessUrl());
+    $user->setFlash('referral_note', $database->getReferralNote());
+
+    if ($action == 'refererAccess') {
+      $this->redirect('@access_refer');
+    }
 
     // symfony handles nonexistent actions
     $this->forward('access', $action);

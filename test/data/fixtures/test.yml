@@ -33,6 +33,14 @@ Database:
     featured_weight: 0
     Libraries: [TCNY]
     access_url: http://pubmed.example.org/
+    access_action_offsite: unrestrictedAccess
+  referral_note:
+    Title: Referral Note Database
+    sort_title: referral
+    Libraries: [TCNY]
+    access_url: http://referral.example.org/
+    access_action_offsite: refererAccess
+    referral_note: Display this note
   proquest:
     Title: ProQuest
     sort_title: ProQuest
@@ -40,6 +48,7 @@ Database:
     featured_weight: 1
     Libraries: [TCNY]
     access_url: http://proquest.example.org/
+    access_action_offsite: refererAccess
   medline:
     Title: Medline
     sort_title: Medline
@@ -116,6 +125,7 @@ sfGuardUser:
   has_two_libraries:
     email_address: yitznewton1@example.com
     username: haslibrariestcstcny
+    password: somesecret
     Groups:
       - TCS
       - TCNY

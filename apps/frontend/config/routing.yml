@@ -20,6 +20,10 @@ database_access:
   requirements:
     id: \d+
 
+access_refer:
+  url: /refer
+  params: { module: access, action: refererAccess }
+
 proxy_url:
   # needs to be wildcard to match slashes in URL
   url: /url/*
