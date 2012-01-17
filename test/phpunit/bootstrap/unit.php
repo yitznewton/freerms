@@ -36,6 +36,6 @@ $doctrineBuild->run(array(), array("--env=test"));
 $doctrineInsert = new sfDoctrineInsertSqlTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
 $doctrineInsert->run(array(), array("--env=test"));
 
-$doctrineInsert = new sfDoctrineDataLoadTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
-$doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
+$doctrineLoad = new sfDoctrineDataLoadTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
+$doctrineLoad->run(array('test/data/fixtures'), array("--env=test"));
 
