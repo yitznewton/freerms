@@ -103,7 +103,7 @@ class unit_baseAccessTest extends AccessTestCase
     $action->execute($request);
   }
 
-  public function testGetUserLibraryIds_UserAndLibraryHaveAddl_ReturnsCorrect()
+  public function testGetUserDatabaseLibraryIds_UserAndLibraryHaveAddl_ReturnsCorrect()
   {
     $this->affiliation
       ->expects($this->any())
@@ -121,7 +121,8 @@ class unit_baseAccessTest extends AccessTestCase
     $action = $this->getMock('baseAccessAction', null,
       array($context, 'access', 'base'));
 
-    $method = new ReflectionMethod('baseAccessAction', 'getUserLibraryIds');
+    $method = new ReflectionMethod('baseAccessAction',
+      'getUserDatabaseLibraryIds');
     $method->setAccessible(true);
 
     $this->assertEquals(array(2), $method->invoke($action));
