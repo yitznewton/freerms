@@ -167,6 +167,7 @@ class unit_freermsSecurityFilterTest extends sfPHPUnitBaseTestCase
   public function testExecute_NotLoggedInNoAffiliatedLibraries_Forwards()
   {
     $this->markTestIncomplete();
+
     $request = new sfWebRequest(new sfEventDispatcher());
 
     $controller = $this->getMockBuilder('sfController')
@@ -199,6 +200,8 @@ class unit_freermsSecurityFilterTest extends sfPHPUnitBaseTestCase
       ->method('getController')
       ->will($this->returnValue($controller));
 
+    // FIXME: after this, $context->getAffiliation() is returning
+    // the test object, not $affiliation
     $context->expects($this->any())
       ->method('getAffiliation')
       ->will($this->returnValue($affiliation));
