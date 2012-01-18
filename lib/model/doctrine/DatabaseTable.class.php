@@ -16,7 +16,7 @@ class DatabaseTable extends Doctrine_Table
   {
     $q = self::getInstance()->createQuery('d')
       ->leftJoin('d.Libraries l')
-      ->where('l.id IN ?', $libraryIds)
+      ->whereIn('l.id', $libraryIds)
       ->andWhere('d.is_hidden = false')
       ->orderBy('LOWER(d.sort_title)')
       ;
@@ -41,7 +41,7 @@ class DatabaseTable extends Doctrine_Table
     $q = self::getInstance()->createQuery('d')
       ->leftJoin('d.Libraries l')
       ->leftJoin('d.DatabaseSubjects ds')
-      ->where('l.id IN ?', $libraryIds)
+      ->whereIn('l.id', $libraryIds)
       ->andWhere('ds.subject_id = ?', $subject->getId())
       ->andWhere('ds.featured_weight != -1')
       ->andWhere('d.is_hidden = false')
@@ -59,7 +59,7 @@ class DatabaseTable extends Doctrine_Table
   {
     $q = self::getInstance()->createQuery('d')
       ->leftJoin('d.Libraries l')
-      ->where('l.id IN ?', $libraryIds)
+      ->whereIn('l.id', $libraryIds)
       ->andWhere('d.is_featured = true')
       ->andWhere('d.is_hidden = false')
       ->orderBy('d.featured_weight', 'LOWER(d.sort_title)')

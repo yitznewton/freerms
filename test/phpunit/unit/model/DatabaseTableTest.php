@@ -44,6 +44,25 @@ class unit_DatabaseTableTest extends DoctrineTestCase
       array($library->getId()), $subject)->count());
   }
 
+  public function testFindByLibraryIdsAndSubject_MultipleLibraries_ReturnsExpectedCount()
+  {
+    $table = Doctrine_Core::getTable('Database');
+
+    $library0 = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCS');
+
+    $library1 = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $libraryIds = array($library0->getId(), $library1->getId());
+
+    $subject = Doctrine_Core::getTable('Subject')
+      ->findOneBySlug('psychology');
+
+    $this->assertEquals(1, $table->findByLibraryIdsAndSubject(
+      $libraryIds, $subject)->count());
+  }
+
   public function testFindFeatured_NotReturnsHidden()
   {
     $table = Doctrine_Core::getTable('Database');
@@ -77,6 +96,25 @@ class unit_DatabaseTableTest extends DoctrineTestCase
     $this->assertInstanceOf('Doctrine_Collection',
       $table->findFeaturedByLibraryIdsAndSubject(
         array($library->getId()), $subject));
+  }
+
+  public function testFindFeatured_MultipleLibraries_ReturnsDoctrineCollection()
+  {
+    $table = Doctrine_Core::getTable('Database');
+
+    $library0 = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCS');
+
+    $library1 = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $libraryIds = array($library0->getId(), $library1->getId());
+
+    $subject = Doctrine_Core::getTable('Subject')
+      ->findOneBySlug('health-sciences');
+
+    $this->assertInstanceOf('Doctrine_Collection',
+      $table->findFeaturedByLibraryIdsAndSubject($libraryIds, $subject));
   }
 
   public function testFindFeatured_ReturnsExpectedDatabaseFirst()
@@ -122,6 +160,20 @@ class unit_DatabaseTableTest extends DoctrineTestCase
 
     $this->assertEquals(2, Doctrine_Core::getTable('Database')
       ->findGeneralFeaturedByLibraryIds(array($library->getId()))->count());
+  }
+
+  public function testFindGeneralFeatured_MultipleLibraries_ReturnsExpectedCount()
+  {
+    $library0 = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCS');
+
+    $library1 = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $libraryIds = array($library0->getId(), $library1->getId());
+
+    $this->assertEquals(2, Doctrine_Core::getTable('Database')
+      ->findGeneralFeaturedByLibraryIds($libraryIds)->count());
   }
 
   public function testFindGeneralFeatured_ReturnsExpectedOrder()
