@@ -13,6 +13,8 @@ class functional_frontend_unrestrictedAccessActionTest extends FrontendFunctiona
 
     $tester->get('/database/' . $database->getId());
 
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
     $tester->test()->is($tester->getResponse()->getHttpHeader('Location'),
       $database->getAccessUrl());
   }
