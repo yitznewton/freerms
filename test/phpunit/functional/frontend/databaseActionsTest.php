@@ -89,7 +89,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.databases li', true, array('count' => 6))->
+        checkElement('ul.databases li', true, array('count' => 7))->
       end()
     ;
   }

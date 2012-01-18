@@ -5,6 +5,13 @@ Subject:
     Name: Psychology
 
 Database:
+  ebrary:
+    Title: ebrary
+    sort_title: ebrary
+    Libraries: [TCNY]
+    access_url: http://site.ebrary.com/lib/touro
+    access_action_offsite: ebrarySSOAccess
+    access_action_onsite: ebrarySSOAccess
   ebsco:
     Title: EBSCO
     sort_title: ebsco

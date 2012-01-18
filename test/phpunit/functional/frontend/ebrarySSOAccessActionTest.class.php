@@ -16,6 +16,8 @@ class functional_frontend_ebrarySSOAccessActionTest extends FrontendFunctionalTe
 
     $tester->get('/database/' . $database->getId());
 
+    $tester->test()->is($tester->getResponse()->getStatusCode(), 302);
+
     $tester->test()->is($tester->getResponse()->getHttpHeader('Location'),
       $database->getAccessUrl());
   }
@@ -32,8 +34,12 @@ class functional_frontend_ebrarySSOAccessActionTest extends FrontendFunctionalTe
 
     $tester->get('/database/' . $database->getId() . '?signin');
 
-    $tester->test()->is($tester->getResponse()->getHttpHeader('Location'),
-      $this->getUrl($database, $library));
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $tester->test()->is($tester->getResponse()->getStatusCode(), 302);
+
+    $tester->test()->like($tester->getResponse()->getHttpHeader('Location'),
+      '`url=' . $this->getUrl($database, $library) . '`');
   }
 
   public function testExecute_Offsite_RedirectsEzproxyUnauthUrl()
@@ -48,8 +54,12 @@ class functional_frontend_ebrarySSOAccessActionTest extends FrontendFunctionalTe
 
     $tester->get('/database/' . $database->getId());
 
-    $tester->test()->is($tester->getResponse()->getHttpHeader('Location'),
-      $this->getUrl($database, $library));
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $tester->test()->is($tester->getResponse()->getStatusCode(), 302);
+
+    $tester->test()->like($tester->getResponse()->getHttpHeader('Location'),
+      '`url=' . $this->getUrl($database, $library) . '`');
   }
   
   protected function getUrl(Database $database, Library $library)
