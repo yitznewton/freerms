@@ -56,7 +56,7 @@ EOF
     $actions = $lister->retrieve(freermsAccessActionLister::ONSITE);
     $keys    = array_keys($actions);
 
-    $this->assertEquals('onOffsiteAccessAction', $keys[0]);
+    $this->assertEquals('onOffsiteAccess', $keys[0]);
   }
 }
 

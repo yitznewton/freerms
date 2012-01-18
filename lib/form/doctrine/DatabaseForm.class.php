@@ -33,10 +33,20 @@ class DatabaseForm extends BaseDatabaseForm
       'choices' => $lister->retrieve(freermsAccessActionLister::ONSITE),
     ));
 
+    $this->setDefault('access_action_onsite',
+      $this->getObject()->isNew()
+        ? 'baseAccessAction'
+        : $this->getObject()->getAccessActionOnsite());
+
     $this->widgetSchema['access_action_offsite'] = new sfWidgetFormChoice(array(
       'label' => 'Onsite access action',
       'choices' => $lister->retrieve(freermsAccessActionLister::OFFSITE),
     ));
+
+    $this->setDefault('access_action_offsite',
+      $this->getObject()->isNew()
+        ? 'ezproxyAccessAction'
+        : $this->getObject()->getAccessActionOffsite());
 
     $this->widgetSchema['libraries_list']
       ->setLabel('Libraries')
