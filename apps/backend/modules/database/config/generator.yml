@@ -24,6 +24,8 @@ generator:
           help: Do not display in listings
         is_unavailable:
           help: Prevent user from linking to database
+        libraries_list:
+          label: Libraries
       list:
         title: Databases
         display: [=title]
@@ -31,7 +33,7 @@ generator:
         object_actions:
           _delete: ~
       filter:
-        display: [title, is_hidden, is_unavailable, is_featured]
+        display: [title, libraries_list, is_hidden, is_unavailable, is_featured]
       form:    ~
       edit:    ~
       new:     ~
