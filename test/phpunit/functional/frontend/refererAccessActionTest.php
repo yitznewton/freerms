@@ -47,9 +47,7 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
 
     $css = new sfDomCssSelector($tester->getResponseDom());
 
-    $tester->test()->is(count($css->matchAll(
-      'meta[http-equiv="Refresh"][content="0;url='
-      . $database->getAccessUrl() . '"]')), 1);
+    $tester->test()->is(count($css->matchAll('#database-link-automatic')), 1);
   }
 
   public function testAccess_OffsiteReferralNote_InternalRedirects()
@@ -83,8 +81,7 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
 
     $css = new sfDomCssSelector($tester->getResponseDom());
 
-    $tester->test()->is(count($css->matchAll(
-      'meta[http-equiv="Refresh"]')), 0);
+    $tester->test()->is(count($css->matchAll('#database-link-automatic')), 0);
   }
 
   public function testAccess_OffsiteReferralNote_DisplaysNoteAndLink()
@@ -104,7 +101,7 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
     
     $tester->with('response')->begin()->
       checkElement('.referral-note', $database->getReferralNote())->
-      checkElement('.referral-link', true)->
+      checkElement('.database-link', true)->
     end();
   }
 }
