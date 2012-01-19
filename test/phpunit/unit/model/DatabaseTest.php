@@ -101,5 +101,31 @@ class unit_DatabaseTest extends DoctrineTestCase
 
     $this->assertNull($copy->getAltId());
   }
+
+  public function testGetAdditionalFieldsArray_InvalidYaml_ReturnsNull()
+  {
+    $database = new Database();
+
+    $database->setAdditionalFields(array('not valid yaml'));
+
+    $this->assertNull($database->getAdditionalFieldsArray());
+  }
+
+  public function testGetAdditionalFieldsArray_ValidYaml_ReturnsExpectedArray()
+  {
+    $database = new Database();
+
+    $database->setAdditionalFields('
+
+
+this is some:
+  - valid
+  - yaml, see
+    
+    ');
+
+    $this->assertEquals(array('this is some'),
+      array_keys($database->getAdditionalFieldsArray()));
+  }
 }
 

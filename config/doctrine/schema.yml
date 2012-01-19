@@ -46,6 +46,8 @@ Database:
       default: 0
     note:
       type: clob
+    additional_fields:
+      type: clob
   relations:
     Libraries:
       class: Library

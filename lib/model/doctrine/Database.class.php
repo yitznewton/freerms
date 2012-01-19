@@ -27,6 +27,20 @@ class Database extends BaseDatabase
   }
 
   /**
+   * @return array
+   */
+  public function getAdditionalFieldsArray()
+  {
+    if (!is_string($this->getAdditionalFields())) {
+      // TODO: evaluate whether this is really the best way of handling this
+      // edge case, which "should never happen" because of form validation
+      return null;
+    }
+
+    return sfYaml::load($this->getAdditionalFields());
+  }
+
+  /**
    * Returns a copy of the Database with certain unique elements unset
    *
    * @param bool $deep whether to copy relations
