@@ -26,7 +26,7 @@ class WidgetFormChoiceSubject extends sfWidgetFormDoctrineChoice
 
     if (isset($options['library_ids']) && $options['library_ids']) {
       $q->leftJoin('d.Libraries l')
-        ->andWhere('l.id IN ?', $options['library_ids'])
+        ->andWhereIn('l.id', $options['library_ids'])
         ;
     }
     
