@@ -10,12 +10,7 @@
  */
 
 require_once dirname(__FILE__).'/../../../config/ProjectConfiguration.class.php';
-require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
-
-// autoloading does not exist at this point yet, require base classes by hand
-$_phpunitPluginDir = dirname(__FILE__).'/../../../plugins/sfPHPUnit2Plugin';
-require_once $_phpunitPluginDir.'/lib/test/sfPHPUnitBaseTestCase.class.php';
-require_once $_phpunitPluginDir.'/lib/test/sfPHPUnitBaseSeleniumTestCase.class.php';
 
 // remove all cache
 sfToolkit::clearDirectory(sfConfig::get('sf_app_cache_dir'));
+
