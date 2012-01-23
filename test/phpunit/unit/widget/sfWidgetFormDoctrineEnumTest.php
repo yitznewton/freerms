@@ -8,6 +8,10 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
     $this->table = $this->getMockBuilder('Doctrine_Table')
       ->disableOriginalConstructor()
       ->getMock();
+
+    $this->table->expects($this->any())
+      ->method('getEnumValues')
+      ->will($this->returnValue(array('1', '2', '3')));
   }
 
   public function testGetChoices_NotNullTrue_ExpectedChoiceCount()
@@ -17,10 +21,6 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->will($this->returnValue(array(
         'notnull' => true, 
       )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
 
     $widget = new sfWidgetFormDoctrineEnum(array(
       'table' => $this->table,
@@ -38,10 +38,6 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
         'notnull' => true, 
       )));
 
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
-
     $widget = new sfWidgetFormDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
@@ -58,10 +54,6 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
         'notnull' => false,
       )));
 
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
-
     $widget = new sfWidgetFormDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
@@ -77,10 +69,6 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->will($this->returnValue(array(
         'notnull' => false,
       )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
 
     $widget = new sfWidgetFormDoctrineEnum(array(
       'table' => $this->table,
@@ -99,10 +87,6 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->will($this->returnValue(array(
       )));
 
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
-
     $widget = new sfWidgetFormDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
@@ -117,10 +101,6 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->method('getColumnDefinition')
       ->will($this->returnValue(array(
       )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
 
     $widget = new sfWidgetFormDoctrineEnum(array(
       'table' => $this->table,

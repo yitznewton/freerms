@@ -8,6 +8,10 @@ class unit_sfValidatorDoctrineEnumTest extends sfPHPUnitBaseTestCase
     $this->table = $this->getMockBuilder('Doctrine_Table')
       ->disableOriginalConstructor()
       ->getMock();
+
+    $this->table->expects($this->any())
+      ->method('getEnumValues')
+      ->will($this->returnValue(array('1', '2', '3')));
   }
 
   /**
@@ -19,10 +23,6 @@ class unit_sfValidatorDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->method('getColumnDefinition')
       ->will($this->returnValue(array(
       )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
 
     $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
@@ -38,10 +38,6 @@ class unit_sfValidatorDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->method('getColumnDefinition')
       ->will($this->returnValue(array(
       )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
 
     $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
@@ -62,10 +58,6 @@ class unit_sfValidatorDoctrineEnumTest extends sfPHPUnitBaseTestCase
         'notnull' => true,
       )));
 
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
-
     $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
@@ -82,10 +74,6 @@ class unit_sfValidatorDoctrineEnumTest extends sfPHPUnitBaseTestCase
         'notnull' => false,
       )));
 
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
-
     $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
@@ -100,10 +88,6 @@ class unit_sfValidatorDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->method('getColumnDefinition')
       ->will($this->returnValue(array(
       )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
 
     $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,

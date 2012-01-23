@@ -24,7 +24,7 @@ class sfValidatorDoctrineEnum extends sfValidatorChoice
    *
    * Available options:
    *
-   *  * model:        The model class (required)
+   *  * table:        The DoctrineTable object (required)
    *  * column:       The ENUM column of the model class (required)
    *
    * @see sfValidatorBase
