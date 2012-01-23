@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 
-class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
+class unit_sfValidatorDoctrineEnumTest extends sfPHPUnitBaseTestCase
 {
   public function setUp()
   {
@@ -10,47 +10,71 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->getMock();
   }
 
-  public function testGetChoices_NotNullTrue_ExpectedChoiceCount()
+  /**
+   * @expectedException sfValidatorError
+   */
+  public function testClean_InvalidOption_ThrowsException()
   {
     $this->table->expects($this->any())
       ->method('getColumnDefinition')
       ->will($this->returnValue(array(
-        'notnull' => true, 
       )));
 
     $this->table->expects($this->any())
       ->method('getEnumValues')
       ->will($this->returnValue(array('1', '2', '3')));
 
-    $widget = new sfWidgetFormDoctrineEnum(array(
+    $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
     ));
 
-    $this->assertCount(3, $widget->getChoices());
+    $validator->clean('4');
   }
 
-  public function testGetChoices_NotNullTrue_NoEmptyChoice()
+  public function testClean_ValidOption_ReturnsValue()
   {
     $this->table->expects($this->any())
       ->method('getColumnDefinition')
       ->will($this->returnValue(array(
-        'notnull' => true, 
       )));
 
     $this->table->expects($this->any())
       ->method('getEnumValues')
       ->will($this->returnValue(array('1', '2', '3')));
 
-    $widget = new sfWidgetFormDoctrineEnum(array(
+    $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
     ));
 
-    $this->assertFalse(array_search('', $widget->getChoices()));
+    $this->assertEquals('3', $validator->clean('3'));
   }
 
-  public function testGetChoices_NotNullFalse_ExpectedChoiceCount()
+  /**
+   * @expectedException sfValidatorError
+   */
+  public function testClean_EmptyStringNotNullTrue_ThrowsException()
+  {
+    $this->table->expects($this->any())
+      ->method('getColumnDefinition')
+      ->will($this->returnValue(array(
+        'notnull' => true,
+      )));
+
+    $this->table->expects($this->any())
+      ->method('getEnumValues')
+      ->will($this->returnValue(array('1', '2', '3')));
+
+    $validator = new sfValidatorDoctrineEnum(array(
+      'table' => $this->table,
+      'column' => 'column',
+    ));
+
+    $validator->clean('');
+  }
+
+  public function testClean_EmptyStringNotNullFalse_ReturnsValue()
   {
     $this->table->expects($this->any())
       ->method('getColumnDefinition')
@@ -62,37 +86,15 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->method('getEnumValues')
       ->will($this->returnValue(array('1', '2', '3')));
 
-    $widget = new sfWidgetFormDoctrineEnum(array(
+    $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
     ));
 
-    $this->assertCount(4, $widget->getChoices());
+    $this->assertEquals('', $validator->clean(''));
   }
 
-  public function testGetChoices_NotNullFalse_EmptyChoiceFirst()
-  {
-    $this->table->expects($this->any())
-      ->method('getColumnDefinition')
-      ->will($this->returnValue(array(
-        'notnull' => false,
-      )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
-
-    $widget = new sfWidgetFormDoctrineEnum(array(
-      'table' => $this->table,
-      'column' => 'column',
-    ));
-
-    $choices = $widget->getChoices();
-
-    $this->assertEquals('', array_shift($choices));
-  }
-
-  public function testGetChoices_NotNullUnspecified_ExpectedChoiceCount()
+  public function testClean_EmptyStringNotNullUnspecified_ReturnsValue()
   {
     $this->table->expects($this->any())
       ->method('getColumnDefinition')
@@ -103,33 +105,12 @@ class unit_sfWidgetFormDoctrineEnumTest extends sfPHPUnitBaseTestCase
       ->method('getEnumValues')
       ->will($this->returnValue(array('1', '2', '3')));
 
-    $widget = new sfWidgetFormDoctrineEnum(array(
+    $validator = new sfValidatorDoctrineEnum(array(
       'table' => $this->table,
       'column' => 'column',
     ));
 
-    $this->assertCount(4, $widget->getChoices());
-  }
-
-  public function testGetChoices_NotNullUnspecified_EmptyChoiceFirst()
-  {
-    $this->table->expects($this->any())
-      ->method('getColumnDefinition')
-      ->will($this->returnValue(array(
-      )));
-
-    $this->table->expects($this->any())
-      ->method('getEnumValues')
-      ->will($this->returnValue(array('1', '2', '3')));
-
-    $widget = new sfWidgetFormDoctrineEnum(array(
-      'table' => $this->table,
-      'column' => 'column',
-    ));
-
-    $choices = $widget->getChoices();
-
-    $this->assertEquals('', array_shift($choices));
+    $this->assertEquals('', $validator->clean(''));
   }
 }
 
