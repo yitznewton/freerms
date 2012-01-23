@@ -19,12 +19,12 @@ class LibraryForm extends BaseLibraryForm
 
     $this->widgetSchema['ezproxy_algorithm']
       = new sfWidgetFormDoctrineEnum(array(
-        'model' => 'Library',
+        'table' => Doctrine_Core::getTable('Library'),
         'column' => 'ezproxy_algorithm'));
 
     $this->validatorSchema['ezproxy_algorithm'] =
       new sfValidatorDoctrineEnum(array(
-        'model' => 'Library',
+        'table' => Doctrine_Core::getTable('Library'),
         'column' => 'ezproxy_algorithm'));
   }
 }

@@ -21,22 +21,14 @@ class sfWidgetFormDoctrineEnum extends sfWidgetFormChoice
   /**
    * Constructs the current widget.
    *
-   * Available options:
-   *
-   * Available options:
-   *
-   *  * model:        The model class (required)
-   *  * column:       The ENUM column of the model class (required)
-   *
    * @see sfWidget
    * @param array $options    An array of options
    * @param array $attributes   An array of error messages
    * @return VOID
    */
-  public function __construct(array $options = array(), array $attributes = array())
+  public function __construct($options = array(), $attributes = array())
   {
-    // inherited required option
-    $options['choices'] = array();
+    $options['choices'] = array();  // sfWidgetFormChoice requires to be set
 
     parent::__construct($options, $attributes);
   }
@@ -62,7 +54,7 @@ class sfWidgetFormDoctrineEnum extends sfWidgetFormChoice
     $this->addRequiredOption('table');
     $this->addRequiredOption('column');
     $this->addOption('remove_choices', array());
-
+    
     parent::configure($options, $attributes);
   }
 
