@@ -18,6 +18,26 @@ class baseAccessAction extends sfAction
     $this->redirect($this->getUser()->getFlash('database_url'));
   }
 
+  public function postExecute()
+  {
+    // FIXME make sure this is only called once after all forwards and
+    // redirects are handled
+    // FIXME alter this for ezproxyUrlAccess
+    $affiliation     = $this->context->getAffiliation();
+    $libraryIds      = $affiliation->getLibraryIds();
+    $userDataService = UserDataService::factory($this->getUser());
+
+    $usage = new DatabaseUsage();
+    $usage->setDatabaseId($this->getUser()->getFlash('database_id'));
+    $usage->setSessionid(substr(session_id(), 0, 8));
+    $usage->setLibraryId($libraryIds[0]);
+    $usage->setIsOnsite($affiliation->isOnsite());
+    $usage->setTimestamp(date());
+    $usage->setUserData($userDataService->toJson());
+
+    $usage->save();
+  }
+
   protected function forceLogin()
   {
     if (!$this->getUser()->isAuthenticated()) {

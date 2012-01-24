@@ -70,6 +70,7 @@ class databaseActions extends sfActions
 
     $user = $this->getUser();
 
+    $user->setFlash('database_id', $database->getId());
     $user->setFlash('database_title', $database->getTitle());
     $user->setFlash('database_library_ids', $database->getLibraryIds());
     $user->setFlash('database_url', $database->getAccessUrl());

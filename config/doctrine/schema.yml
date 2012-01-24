@@ -1,6 +1,8 @@
 Database:
   tableName: database
-  actAs: [Timestampable]
+  actAs:
+    - Timestampable
+    - SoftDelete  # the foo_usage tables reference this table
   columns:
     alt_id:
       type: string(10)
@@ -88,6 +90,31 @@ DatabaseSubject:
       onDelete: CASCADE
       foreignAlias: DatabaseSubjects
 
+DatabaseUsage:
+  columns:
+    sessionid:
+      type: string(8)
+      primary: true
+    database_id:
+      type: integer
+      primary: true
+    library_id:
+      type: integer
+      notnull: true
+    timestamp:
+      type: timestamp
+      notnull: true
+    is_onsite:
+      type: boolean
+      notnull: true
+    user_data:
+      type: string(255)
+  relations:
+    Database:
+      foreignAlias: DatabaseUsages
+    Library:
+      foreignAlias: DatabaseUsages
+
 IpRange:
   tableName: ip_range
   columns:
@@ -123,6 +150,9 @@ IpRange:
 
 Library:
   tableName: library
+  actAs:
+    - Timestampable
+    - SoftDelete  # the foo_usage tables reference this table
   columns:
     name:
       type: string(255)
