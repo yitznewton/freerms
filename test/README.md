@@ -12,6 +12,10 @@ The test harness is run by doing
 
     $ ./test/run_tests.sh
 
+You can also call tests individually, e.g.
+
+    $ phpunit test/phpunit/unit/widget/sfWidgetFormDoctrineEnumTest.php
+
 The test harness omits the Selenium tests by default. To run them, you must 
 specify your browser(s) and other settings in
 `test/phpunit/selenium/FreermsSeleniumTestCase.php`. Then do
