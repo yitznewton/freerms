@@ -8,14 +8,13 @@ sfPHPUnit2Plugin and vfsStream:
     $ pear channel-discover pear.php-tools.net
     $ pear install pat/vfsStream-beta
 
-The test harness assumes that you have Selenium set up. You must specify
-your browser(s) and other settings in
-`test/phpunit/selenium/FreermsSeleniumTestCase.php`.
-
-If you do not have Selenium, simply set the `$browsers` static property
-in `FreermsSeleniumTestCase` to `array()`.
-
-To run tests:
+The test harness is run by doing
 
     $ ./test/run_tests.sh
+
+The test harness omits the Selenium tests by default. To run them, you must 
+specify your browser(s) and other settings in
+`test/phpunit/selenium/FreermsSeleniumTestCase.php`. Then do
+
+    $ ./test/run_tests.sh --with-selenium
 
