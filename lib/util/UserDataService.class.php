@@ -17,12 +17,12 @@ class UserDataService
 
   /**
    * @param Doctrine_RawSql $query For dependency injection
-   * @return string
+   * @return array
    */
-  public function toJson(Doctrine_RawSql $query = null)
+  public function get(Doctrine_RawSql $query = null)
   {
     if (!$this->user->isAuthenticated()) {
-      return json_encode(array());
+      return array();
     }
 
     if (!$query) {
@@ -31,11 +31,13 @@ class UserDataService
 
     $data = array();
     
-    // standard non-fluent interface to ease stubbing
+    // avoid method chaining to simplify stubbing
     $query->select('g.id');
     $query->from('sf_guard_group g, sf_guard_user_group ug '
                  . 'WHERE g.id = ug.group_id '
-                 . 'AND ug.user_id = ?');
+                 . 'AND ug.user_id = ? '
+                 . 'AND NOT EXISTS (SELECT * FROM library l '
+                 . 'WHERE l.code = g.name)');
     $query->addComponent('g', 'sfGuardGroup');
 
     $result = $query->execute(
@@ -48,7 +50,7 @@ class UserDataService
       return $v[0];
     }, $result);
 
-    return json_encode(array('groups' => $ids));
+    return array('groups' => $ids);
   }
 
   /**

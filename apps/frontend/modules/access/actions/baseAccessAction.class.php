@@ -41,7 +41,7 @@ class baseAccessAction extends sfAction
     $usage->setLibraryId($libraryIds[0]);
     $usage->setIsOnsite($affiliation->isOnsite());
     $usage->setTimestamp(gmdate('Y-m-d\TH:i:s'));
-    $usage->setUserData($userDataService->toJson());
+    $usage->setAdditionalData($userDataService->get());
 
     $usage->log();
   }

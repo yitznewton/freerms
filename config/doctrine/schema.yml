@@ -107,7 +107,7 @@ DatabaseUsage:
     is_onsite:
       type: boolean
       notnull: true
-    user_data:
+    additional_data:
       type: string(255)
   relations:
     Database:

@@ -13,6 +13,22 @@
 class DatabaseUsage extends BaseDatabaseUsage
 {
   /**
+   * @return array
+   */
+  public function getAdditionalData()
+  {
+    return json_decode($this->_get('additional_data'), true);
+  }
+
+  /**
+   * @param array $v
+   */
+  public function setAdditionalData(array $v)
+  {
+    $this->_set('additional_data', json_encode($v));
+  }
+
+  /**
    * Convenience method bypassing the need to check for already-existing
    * records sharing the specified database_id and sessionid
    */

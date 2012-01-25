@@ -30,6 +30,9 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
       new sfAnsiColorFormatter());
 
     $doctrineLoad->run(array('test/data/fixtures'), array("--env=test"));
+
+    // seems that no fixtures means table untouched; delete manually
+    Doctrine_Core::getTable('DatabaseUsage')->findAll()->delete();
   }
 
   protected function getApplication()

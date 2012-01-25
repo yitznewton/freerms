@@ -13,7 +13,7 @@ class unit_UserDataServiceTest extends sfPHPUnitBaseTestCase
       get_class(UserDataService::factory($user)));
   }
 
-  public function testToJson_freermsSfGuardUser_ReturnsValidJson()
+  public function testGet_freermsSfGuardUser_ReturnsArray()
   {
     $user = $this->getMockBuilder('freermsSfGuardUser')
       ->disableOriginalConstructor()
@@ -21,10 +21,10 @@ class unit_UserDataServiceTest extends sfPHPUnitBaseTestCase
 
     $dataService = UserDataService::factory($user);
 
-    $this->assertInternalType('array', json_decode($dataService->toJson()));
+    $this->assertInternalType('array', $dataService->get());
   }
 
-  public function testToJson_freermsSfGuardUserNotAuthenticated_ReturnsEmpty()
+  public function testGet_freermsSfGuardUserNotAuthenticated_ReturnsEmpty()
   {
     $user = $this->getMockBuilder('freermsSfGuardUser')
       ->disableOriginalConstructor()
@@ -36,10 +36,10 @@ class unit_UserDataServiceTest extends sfPHPUnitBaseTestCase
 
     $dataService = UserDataService::factory($user);
 
-    $this->assertEquals(array(), json_decode($dataService->toJson()));
+    $this->assertEquals(array(), $dataService->get());
   }
 
-  public function testToJson_freermsSfGuardUser_ReturnIncludesExpectedGroups()
+  public function testGet_freermsSfGuardUser_ReturnIncludesExpectedGroups()
   {
     $guardUser = $this->getMockBuilder('sfGuardUser')
       ->disableOriginalConstructor()
@@ -72,7 +72,7 @@ class unit_UserDataServiceTest extends sfPHPUnitBaseTestCase
         array(2),
       )));
 
-    $data = json_decode(UserDataService::factory($user)->toJson($query), true);
+    $data = UserDataService::factory($user)->get($query);
 
     $this->assertArrayHasKey('groups', $data);
     $this->assertEquals(array(1,2), $data['groups']);
