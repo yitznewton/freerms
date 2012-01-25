@@ -90,5 +90,47 @@ class functional_frontend_ezproxyUrlAccessActionTest extends FrontendFunctionalT
     $tester->test()->like($tester->getResponse()
       ->getHttpHeader('Location'), "`$url`");
   }
+
+  public function testAccess_LogsUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('UrlUsage')
+      ->findAll()->count());
+
+    $url = 'http://www.example.org';
+
+    $user = Doctrine_Core::getTable('sfGuardUser')
+      ->findOneByUsername('haslibrarytcs');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get("/url/$url");
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $this->assertEquals(1, Doctrine_Core::getTable('UrlUsage')
+      ->findAll()->count());
+  }
+
+  public function testAccess_LogsUsageCorrectHost()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('UrlUsage')
+      ->findAll()->count());
+
+    $url = 'http://www.example.org';
+
+    $user = Doctrine_Core::getTable('sfGuardUser')
+      ->findOneByUsername('haslibrarytcs');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get("/url/$url");
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $usages = Doctrine_Core::getTable('UrlUsage')->findAll();
+
+    $this->assertEquals(1, $usages->count());
+    $this->assertEquals('www.example.org', $usages->getFirst()->getHost());
+  }
 }
 
