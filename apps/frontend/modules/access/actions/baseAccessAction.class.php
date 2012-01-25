@@ -29,8 +29,6 @@ class baseAccessAction extends sfAction
 
   protected function logUsage()
   {
-    // FIXME make sure this is only called once after all forwards and
-    // redirects are handled
     $affiliation     = $this->context->getAffiliation();
     $libraryIds      = $affiliation->getLibraryIds();
     $userDataService = UserDataService::factory($this->getUser());
