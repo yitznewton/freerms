@@ -15,7 +15,33 @@ class baseAccessAction extends sfAction
       throw new accessUnauthorizedException();
     }
 
-    $this->redirect($this->getUser()->getFlash('database_url'));
+    $this->logUsageAndRedirect($this->getUser()->getFlash('database_url'));
+  }
+
+  /**
+   * @param string $destination
+   */
+  protected function logUsageAndRedirect($destination)
+  {
+    $this->logUsage();
+    $this->redirect($destination);
+  }
+
+  protected function logUsage()
+  {
+    $affiliation     = $this->context->getAffiliation();
+    $libraryIds      = $affiliation->getLibraryIds();
+    $userDataService = UserDataService::factory($this->getUser());
+
+    $usage = new DatabaseUsage();
+    $usage->setDatabaseId($this->getUser()->getFlash('database_id'));
+    $usage->setSessionid(substr(session_id(), 0, 8));
+    $usage->setLibraryId($libraryIds[0]);
+    $usage->setIsOnsite($affiliation->isOnsite());
+    $usage->setTimestamp(gmdate('Y-m-d\TH:i:s'));
+    $usage->setAdditionalData($userDataService->get());
+
+    $usage->log();
   }
 
   protected function forceLogin()

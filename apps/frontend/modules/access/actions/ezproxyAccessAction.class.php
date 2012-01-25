@@ -39,7 +39,7 @@ class ezproxyAccessAction extends baseAccessAction
                 . urlencode($proxyBlob) . urlencode($proxyDate)
                 . '&url=' . $url;
 
-    $this->redirect($proxyUrl);
+    $this->logUsageAndRedirect($proxyUrl);
   }
 }
 

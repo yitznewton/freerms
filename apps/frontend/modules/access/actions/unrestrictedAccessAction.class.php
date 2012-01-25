@@ -9,7 +9,7 @@ class unrestrictedAccessAction extends baseAccessAction
   
   public function execute($request)
   {
-    $this->redirect($this->getUser()->getFlash('database_url'));
+    $this->logUsageAndRedirect($this->getUser()->getFlash('database_url'));
   }
 }
 

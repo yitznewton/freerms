@@ -1,6 +1,8 @@
 Database:
   tableName: database
-  actAs: [Timestampable]
+  actAs:
+    - Timestampable
+    - SoftDelete  # the foo_usage tables reference this table
   columns:
     alt_id:
       type: string(10)
@@ -88,6 +90,49 @@ DatabaseSubject:
       onDelete: CASCADE
       foreignAlias: DatabaseSubjects
 
+Usage:
+  # this will generate an empty table, deemed worth it for the elegance
+  # of inheritance
+  columns:
+    sessionid:
+      type: string(8)
+      primary: true
+    library_id:
+      type: integer
+      notnull: true
+    timestamp:
+      type: timestamp
+      notnull: true
+    is_onsite:
+      type: boolean
+      notnull: true
+    additional_data:
+      type: string(255)
+  relations:
+    Database:
+      foreignAlias: DatabaseUsages
+
+DatabaseUsage:
+  inheritance:
+    extends: Usage
+    type: concrete
+  columns:
+    database_id:
+      type: integer
+      primary: true
+  relations:
+    Database:
+      foreignAlias: DatabaseUsages
+
+UrlUsage:
+  inheritance:
+    extends: Usage
+    type: concrete
+  columns:
+    host:
+      type: string(255)
+      primary: true
+
 IpRange:
   tableName: ip_range
   columns:
@@ -123,6 +168,9 @@ IpRange:
 
 Library:
   tableName: library
+  actAs:
+    - Timestampable
+    - SoftDelete  # the foo_usage tables reference this table
   columns:
     name:
       type: string(255)

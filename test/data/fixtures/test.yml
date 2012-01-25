@@ -121,12 +121,18 @@ IpRange:
 
 sfGuardGroup:
   TCS:
-    Name: TCS
+    name: TCS
   TCNY:
-    Name: TCNY
-  TUNPA:
-    Name: P_TUNPA
-    Description: Touro Univ Nevada PA program
+    name: TCNY
+  TCPA:
+    name: P_TCPA
+    description: Touro College PA program
+  TCSCAS:
+    name: P_TCSCAS
+    description: Touro College SCAS
+  TCSTU:
+    name: S_TCSTU
+    description: student
 
 sfGuardUser:
   has_two_libraries:
@@ -136,6 +142,8 @@ sfGuardUser:
     Groups:
       - TCS
       - TCNY
+      - TCSTU
+      - TCSCAS
 
   has_library:
     email_address: yitznewton@example.com

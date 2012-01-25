@@ -88,5 +88,29 @@ class functional_frontend_ezproxyAccessActionTest extends FrontendFunctionalTest
     $tester->test()->like($tester->getResponse()
       ->getHttpHeader('Location'), "`url={$database->getAccessUrl()}`");
   }
+
+  public function testAccess_Ezproxy_LogsUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('EZproxy database');
+
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCS');
+
+    $user = Doctrine_Core::getTable('sfGuardUser')
+      ->findOneByUsername('haslibrarytcs');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $this->assertEquals(1, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+  }
 }
 

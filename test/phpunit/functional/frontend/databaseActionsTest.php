@@ -165,6 +165,84 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     ;
   }
 
+  public function testAccess_Database_RecordsSingleUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+
+    // unrestricted
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Pubmed');
+
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $user = Doctrine_Core::getTable('sfGuardUser')
+      ->findOneByUsername('haslibrariestcstcny');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $this->assertEquals(1, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+  }
+
+  public function testAccess_Database_UserDataServiceRecordsGroupsWithoutLibraries()
+  {
+    // unrestricted
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Pubmed');
+
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $user = Doctrine_Core::getTable('sfGuardUser')
+      ->findOneByUsername('haslibrariestcstcny');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $databaseUsage = Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->getFirst();
+
+    $additionalData = $databaseUsage->getAdditionalData();
+
+    $this->assertCount(2, $additionalData['groups']);
+  }
+
+  public function testAccess_Database_SecondAccessInSession_NotRecordsUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+
+    // unrestricted
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Pubmed');
+
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $user = Doctrine_Core::getTable('sfGuardUser')
+      ->findOneByUsername('haslibrariestcstcny');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $tester->get('/database/' . $database->getId());
+
+    $this->assertEquals(1, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+  }
+
   public function testLogout_RedirectsToHome()
   {
     $tester = $this->getTester('192.167.100.100');

@@ -61,6 +61,27 @@ class functional_frontend_ebrarySSOAccessActionTest extends FrontendFunctionalTe
     $tester->test()->like($tester->getResponse()->getHttpHeader('Location'),
       '`url=' . $this->getUrl($database, $library) . '`');
   }
+
+  public function testExecute_LogsUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('ebrary');
+
+    $library = Doctrine_Core::getTable('Library')
+      ->findOneByCode('TCNY');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $this->assertEquals(1, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+  }
   
   protected function getUrl(Database $database, Library $library)
   {

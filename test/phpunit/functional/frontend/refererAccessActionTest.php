@@ -104,5 +104,25 @@ class functional_frontend_refererAccessActionTest extends FrontendFunctionalTest
       checkElement('.database-link', true)->
     end();
   }
+
+  public function testAccess_LogsUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Referral Note Database');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+    
+    $tester->followRedirect();
+
+    $this->assertEquals(1, Doctrine_Core::getTable('DatabaseUsage')
+      ->findAll()->count());
+  }
 }
 
