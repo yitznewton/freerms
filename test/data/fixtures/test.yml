@@ -75,6 +75,14 @@ Database:
     title: Loner
     sort_title: loner
     access_url: http://unaffiliated.example.org/
+  unavailable:
+    title: Unavailable
+    sort_title: Unavailable
+    is_featured: 1
+    featured_weight: 1
+    access_url: http://unavailable.example.org/
+    is_unavailable: true
+    Libraries: [TCNY]
 
 DatabaseSubject:
   proquest_health-sciences:
@@ -93,6 +101,10 @@ DatabaseSubject:
     Database: unfeatured_medical
     Subject: health-sciences
     featured_weight: -1
+  unavailable_health-sciences:
+    Database: unavailable
+    Subject: health-sciences
+    featured_weight: 4
 
 Library:
   TCNY:

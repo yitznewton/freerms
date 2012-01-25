@@ -60,6 +60,7 @@ class databaseActions extends sfActions
       ->find($request->getParameter('id'));
 
     $this->forward404Unless($database);
+    $this->forward404If($database->getIsUnavailable());
 
     if ($this->getContext()->getAffiliation()->isOnsite()) {
       $action = $database->getAccessActionOnsite();
