@@ -111,6 +111,28 @@ class functional_frontend_ezproxyUrlAccessActionTest extends FrontendFunctionalT
       ->findAll()->count());
   }
 
+  public function testAccess_SecondAccessInSession_NotRecordsUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('UrlUsage')
+      ->findAll()->count());
+
+    $url = 'http://www.example.org';
+
+    $user = Doctrine_Core::getTable('sfGuardUser')
+      ->findOneByUsername('haslibrarytcs');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get("/url/$url");
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $tester->get("/url/$url");
+
+    $this->assertEquals(1, Doctrine_Core::getTable('UrlUsage')
+      ->findAll()->count());
+  }
+
   public function testAccess_LogsUsageCorrectHost()
   {
     $this->assertEquals(0, Doctrine_Core::getTable('UrlUsage')
