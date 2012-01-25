@@ -25,11 +25,11 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
   {
     parent::setUp();
 
-    $doctrineInsert = new sfDoctrineDataLoadTask(
+    $doctrineLoad = new sfDoctrineDataLoadTask(
       ProjectConfiguration::getActive()->getEventDispatcher(),
       new sfAnsiColorFormatter());
 
-    $doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
+    $doctrineLoad->run(array('test/data/fixtures'), array("--env=test"));
   }
 
   protected function getApplication()

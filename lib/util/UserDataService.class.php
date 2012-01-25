@@ -33,7 +33,7 @@ class UserDataService
     
     // standard non-fluent interface to ease stubbing
     $query->select('g.id');
-    $query->from('sf_guard_group g, sf_guard_user_group ug'
+    $query->from('sf_guard_group g, sf_guard_user_group ug '
                  . 'WHERE g.id = ug.group_id '
                  . 'AND ug.user_id = ?');
     $query->addComponent('g', 'sfGuardGroup');

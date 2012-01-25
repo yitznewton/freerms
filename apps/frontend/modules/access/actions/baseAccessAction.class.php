@@ -15,14 +15,22 @@ class baseAccessAction extends sfAction
       throw new accessUnauthorizedException();
     }
 
-    $this->redirect($this->getUser()->getFlash('database_url'));
+    $this->logUsageAndRedirect($this->getUser()->getFlash('database_url'));
   }
 
-  public function postExecute()
+  /**
+   * @param string $destination
+   */
+  protected function logUsageAndRedirect($destination)
+  {
+    $this->logUsage();
+    $this->redirect($destination);
+  }
+
+  protected function logUsage()
   {
     // FIXME make sure this is only called once after all forwards and
     // redirects are handled
-    // FIXME alter this for ezproxyUrlAccess
     $affiliation     = $this->context->getAffiliation();
     $libraryIds      = $affiliation->getLibraryIds();
     $userDataService = UserDataService::factory($this->getUser());
@@ -32,10 +40,10 @@ class baseAccessAction extends sfAction
     $usage->setSessionid(substr(session_id(), 0, 8));
     $usage->setLibraryId($libraryIds[0]);
     $usage->setIsOnsite($affiliation->isOnsite());
-    $usage->setTimestamp(date());
+    $usage->setTimestamp(gmdate('Y-m-d\TH:i:s'));
     $usage->setUserData($userDataService->toJson());
 
-    $usage->save();
+    $usage->log();
   }
 
   protected function forceLogin()

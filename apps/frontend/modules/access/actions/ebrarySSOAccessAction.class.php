@@ -28,7 +28,7 @@ class ebrarySSOAccessAction extends ezproxyAccessAction
         $library);
     }
 
-    $this->redirect($this->getUser()->getFlash('database_url'));
+    $this->logUsageAndRedirect($this->getUser()->getFlash('database_url'));
   }
 
   protected function mungeUrl($url, Library $library)

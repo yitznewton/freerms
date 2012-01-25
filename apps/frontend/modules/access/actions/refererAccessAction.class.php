@@ -24,6 +24,8 @@ class refererAccessAction extends baseAccessAction
     $this->databaseUrl   = $user->getFlash('database_url');
     $this->referralNote  = $user->getFlash('referral_note');
 
+    $this->logUsage();
+
     return sfView::SUCCESS;
   }
 }

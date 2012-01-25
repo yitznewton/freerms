@@ -36,6 +36,11 @@ class unit_baseAccessTest extends AccessTestCase
       ->method('getLibraryIds')
       ->will($this->returnValue(array(1)));
 
+    $this->affiliation
+      ->expects($this->any())
+      ->method('isOnsite')
+      ->will($this->returnValue(false));
+
     $request = new sfWebRequest(new sfEventDispatcher());
 
     $context = sfContext::createInstance($this->configuration);
@@ -65,6 +70,11 @@ class unit_baseAccessTest extends AccessTestCase
       ->method('getLibraryIds')
       ->will($this->returnValue(array(1,2)));
 
+    $this->affiliation
+      ->expects($this->any())
+      ->method('isOnsite')
+      ->will($this->returnValue(false));
+
     $request = new sfWebRequest(new sfEventDispatcher());
 
     $context = sfContext::createInstance($this->configuration);
@@ -88,6 +98,11 @@ class unit_baseAccessTest extends AccessTestCase
       ->expects($this->any())
       ->method('getLibraryIds')
       ->will($this->returnValue(array(1)));
+
+    $this->affiliation
+      ->expects($this->any())
+      ->method('isOnsite')
+      ->will($this->returnValue(false));
 
     $request = new sfWebRequest(new sfEventDispatcher());
 
