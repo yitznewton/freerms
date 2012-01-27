@@ -15,7 +15,10 @@ default:
   stylesheets:
     - frontend.css
 
-  javascripts:    []
+  javascripts:
+    - xui.js
+    - global.js
+    - frontend.js
 
   has_layout:     true
   layout:         layout
