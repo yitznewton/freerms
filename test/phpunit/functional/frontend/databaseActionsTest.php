@@ -87,16 +87,36 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
         isParameter('action', 'index')->
       end()->
 
+      // includes unavailable, omits hidden
+
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.databases li', true, array('count' => 7))->
+        checkElement('ul.databases li', true, array('count' => 8))->
+      end()
+    ;
+  }
+
+  public function testIndex_Unavailable_DisplaysWithoutLink()
+  {
+    $this->getTester('192.168.100.100')->
+      get('/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('ul.databases li:contains("Unavailable")', true)->
+        checkElement('ul.databases li:contains("Unavailable") a', false)->
       end()
     ;
   }
 
   public function testIndex_Onsite_SubjectWidgetCorrectCount()
   {
-    $this->getTester('192.167.100.100')->
+    $this->getTester('192.168.100.100')->
       get('/')->
 
       with('request')->begin()->
@@ -123,7 +143,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.featured li', true, array('count' => 2))->
+        checkElement('ul.featured li', true, array('count' => 3))->
       end()
     ;
   }
@@ -161,6 +181,25 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       with('response')->begin()->
         isStatusCode(302)->
         isHeader('Location', 'http://ebsco.example.org/')->
+      end()
+    ;
+  }
+
+  public function testAccess_Unavailable_Throws404()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Unavailable');
+
+    $this->getTester('192.168.100.100')->
+      get('/database/' . $database->getId())->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'access')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(404)->
       end()
     ;
   }

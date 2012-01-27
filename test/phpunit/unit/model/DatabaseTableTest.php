@@ -158,7 +158,7 @@ class unit_DatabaseTableTest extends DoctrineTestCase
     $library = Doctrine_Core::getTable('Library')
       ->findOneByCode('TCNY');
 
-    $this->assertEquals(2, Doctrine_Core::getTable('Database')
+    $this->assertEquals(3, Doctrine_Core::getTable('Database')
       ->findGeneralFeaturedByLibraryIds(array($library->getId()))->count());
   }
 
@@ -172,7 +172,7 @@ class unit_DatabaseTableTest extends DoctrineTestCase
 
     $libraryIds = array($library0->getId(), $library1->getId());
 
-    $this->assertEquals(2, Doctrine_Core::getTable('Database')
+    $this->assertEquals(3, Doctrine_Core::getTable('Database')
       ->findGeneralFeaturedByLibraryIds($libraryIds)->count());
   }
 
