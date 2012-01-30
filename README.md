@@ -11,9 +11,14 @@ http://www.symfony-project.org/
 Installation
 ------------
 
-* Clone the git repo
+* Clone the FreERMS git repo
 
-* Symlink or install symfony-1.4 as `vendor/symfony-1.4`
+* FreERMS requires a slightly modified version of symfony. It is registered as
+  a submodule of the FreERMS git repo; if you are installing manually,
+  the symfony 1.4 filesystem should be symlinked or added as
+  `vendor/symfony-1.4`
+
+  The modified repo is https://github.com/yitznewton/symfony1
 
 * Add a symlink in `/web` pointing to the symfony assets directory, or copy
   it, e.g.:
