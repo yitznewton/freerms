@@ -13,7 +13,8 @@ class DatabaseForm extends BaseDatabaseForm
   {
     unset(
       $this['created_at'],
-      $this['updated_at']
+      $this['updated_at'],
+      $this['deleted_at']
     );
 
     $this->widgetSchema['alt_id']->setLabel('Alternate ID');
@@ -57,6 +58,14 @@ class DatabaseForm extends BaseDatabaseForm
       ->setOption('expanded', true);
 
     $this->validatorSchema['sort_title']->setOption('required', false);
+
+    $this->validatorSchema['additional_fields'] = new freermsValidatorYaml(array(
+      'required' => false,
+    ));
+
+    $this->validatorSchema['access_control'] = new freermsValidatorYaml(array(
+      'required' => false,
+    ));
 
     $this->validatorSchema->setPostValidator(
       new freermsValidatorDatabaseSortTitle());

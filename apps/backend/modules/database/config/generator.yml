@@ -26,6 +26,14 @@ generator:
           help: Prevent user from linking to database
         libraries_list:
           label: Libraries
+        additional_fields:
+          help: Add more fields in YAML format
+        access_control:
+          help: |
+            Specify group access rules in 
+            <a href="http://www.symfony-project.org/gentle-introduction/1_4/en/06-Inside-the-Controller-Layer#chapter_06_sub_complex_credentials">symfony's 
+            credential format</a>; <strong>overrides</strong> Libraries 
+            selections
       list:
         title: Databases
         display: [=title]

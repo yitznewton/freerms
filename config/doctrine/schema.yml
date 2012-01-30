@@ -50,6 +50,8 @@ Database:
       type: clob
     additional_fields:
       type: clob
+    access_control:
+      type: clob
   relations:
     Libraries:
       class: Library
