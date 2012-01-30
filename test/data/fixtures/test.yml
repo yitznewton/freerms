@@ -8,6 +8,7 @@ Database:
   ebrary:
     Title: ebrary
     sort_title: ebrary
+    description: Lots of ebooks
     Libraries: [TCNY]
     access_url: http://site.ebrary.com/lib/touro
     access_action_offsite: ebrarySSOAccess

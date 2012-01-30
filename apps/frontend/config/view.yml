@@ -16,7 +16,8 @@ default:
     - frontend.css
 
   javascripts:
-    - xui.js
+    - xui.js: { condition: !IE }
+    - xui-ie.js: { condition: IE }
     - global.js
     - frontend.js
 
