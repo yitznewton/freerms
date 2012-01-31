@@ -13,7 +13,7 @@ class ezproxyAccessAction extends baseAccessAction
   public function execute($request)
   {
     if (!$this->isSubscribed()) {
-      throw new accessUnauthorizedException();
+      $this->forward403();
     }
 
     $library_ids = $this->getUserDatabaseLibraryIds();

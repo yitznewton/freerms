@@ -46,11 +46,11 @@ Database:
       type: integer
       notnull: true
       default: 0
+    access_control:
+      type: string(255)  # YAML string checked against user credentials
     note:
       type: clob
     additional_fields:
-      type: clob
-    access_control:
       type: clob
   relations:
     Libraries:

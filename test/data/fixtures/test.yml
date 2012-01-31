@@ -84,6 +84,30 @@ Database:
     access_url: http://unavailable.example.org/
     is_unavailable: true
     Libraries: [TCNY]
+  with_access_control_or:
+    title: Orred
+    sort_title: Orred
+    is_featured: 0
+    access_url: http://accesscontrolledor.example.org/
+    Libraries: [TCS, TCNY]
+    access_control: |
+      [[P_TCPA, P_TCSCAS]]
+  with_access_control_and:
+    title: Anded
+    sort_title: Anded
+    is_featured: 0
+    access_url: http://accesscontrolledand.example.org/
+    Libraries: [TCS, TCNY]
+    access_control: |
+      [P_TCPA, P_TCSCAS]
+  with_access_control_invalid:
+    title: Invalid Access
+    sort_title: Invalid Access
+    is_hidden: true
+    access_url: http://accessinvalid.example.org/
+    Libraries: [TCS]
+    access_control: |
+      [this not valid yaml}
 
 DatabaseSubject:
   proquest_health-sciences:
@@ -155,7 +179,7 @@ sfGuardUser:
     Groups:
       - TCS
       - TCNY
-      - TCSTU
+      - TCPA
       - TCSCAS
 
   has_library:
@@ -164,6 +188,7 @@ sfGuardUser:
     password: jimbobjoe
     Groups:
       - TCS
+      - TCSCAS
 
   not_has_group:
     email_address: yitznewton0@example.com

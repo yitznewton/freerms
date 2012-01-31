@@ -10,7 +10,7 @@ class unit_DatabaseTableTest extends DoctrineTestCase
     $library = Doctrine_Core::getTable('Library')
       ->findOneByCode('TCS');
 
-    $this->assertEquals('EBSCO', $table->findByLibraryIdsAndSubject(
+    $this->assertEquals('Anded', $table->findByLibraryIdsAndSubject(
       array($library->getId()))->getFirst()->getTitle());
   }
 

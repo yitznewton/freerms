@@ -6,27 +6,6 @@ require_once __DIR__.'/../../../../apps/frontend/modules/access/actions/baseAcce
 class unit_baseAccessTest extends AccessTestCase
 {
   /**
-   * @expectedException accessUnauthorizedException
-   */
-  public function testExecute_NotSubscribed_ThrowsException()
-  {
-    $this->affiliation
-      ->expects($this->any())
-      ->method('getLibraryIds')
-      ->will($this->returnValue(array()));
-
-    $request = new sfWebRequest(new sfEventDispatcher());
-
-    $context = sfContext::createInstance($this->configuration);
-    $context->setAffiliation($this->affiliation);
-    $context->setRequest($request);
-    $context->getUser()->setFlash('database_library_ids', array(1));
-
-    $action = new baseAccessAction($context, 'access', 'base');
-    $action->execute($request);
-  }
-
-  /**
    * @expectedException sfStopException
    */
   public function testExecute_DatabaseOneUserOneAffiliation_Redirects()
@@ -92,7 +71,7 @@ class unit_baseAccessTest extends AccessTestCase
   /**
    * @expectedException sfStopException
    */
-  public function testExecute_DatabaseManyUserOneAffiliations_Redirects()
+  public function testExecute_DatabaseManyUserOneAffiliation_Redirects()
   {
     $this->affiliation
       ->expects($this->any())

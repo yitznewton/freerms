@@ -75,6 +75,16 @@ class databaseActions extends sfActions
     $user->setFlash('database_title', $database->getTitle());
     $user->setFlash('database_library_ids', $database->getLibraryIds());
     $user->setFlash('database_url', $database->getAccessUrl());
+
+    try {
+      $user->setFlash('database_access_control',
+        $database->getAccessControlArray());
+    }
+    catch (InvalidArgumentException $e) {
+      // failed YAML parse: ignore, allowing access and logging an error
+      $this->logMessage($e->getMessage(), 'err');
+    }
+
     $user->setFlash('referral_note', $database->getReferralNote());
 
     if ($action == 'refererAccess') {

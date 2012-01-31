@@ -21,6 +21,14 @@
  */
 class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityUser
 {
+  public function initialize(sfEventDispatcher $dispatcher,
+    sfStorage $storage, $options = array())
+  {
+    parent::initialize($dispatcher, $storage, $options);
+
+    $this->credentials = $this->getGroupNames();
+  }
+
   public function getLibraryIds()
   {
     if (!$this->isAuthenticated()) {
@@ -47,4 +55,20 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
       return $v[0];
     }, $result);
   }
+
+  public function getGroupIds()
+  {
+    if (!$this->isAuthenticated()) {
+      return array();
+    }
+
+    $ids = array();
+    
+    foreach ($this->getGuardUser()->getGroups() as $group) {
+      $ids[] = $group->getId();
+    }
+
+    return $ids;
+  }
 }
+

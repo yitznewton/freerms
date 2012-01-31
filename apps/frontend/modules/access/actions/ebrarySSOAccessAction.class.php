@@ -10,7 +10,7 @@ class ebrarySSOAccessAction extends ezproxyAccessAction
   public function execute($request)
   {
     if (!$this->isSubscribed()) {
-      throw new accessUnauthorizedException();
+      $this->forward403();
     }
 
     if ($request->hasParameter('signin')) {

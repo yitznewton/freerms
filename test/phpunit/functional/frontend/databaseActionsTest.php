@@ -91,7 +91,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.databases li', true, array('count' => 8))->
+        checkElement('ul.databases li', true, array('count' => 10))->
       end()
     ;
   }
@@ -185,6 +185,25 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     ;
   }
 
+  public function testAccess_NotSubscribed_403()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('ebrary');
+
+    $this->getTester('192.167.100.100')->
+      get('/database/' . $database->getId())->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'access')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(403)->
+      end()
+    ;
+  }
+
   public function testAccess_Unavailable_Throws404()
   {
     $database = Doctrine_Core::getTable('Database')
@@ -229,17 +248,67 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       ->findAll()->count());
   }
 
+  public function testAccess_AccessControlNotValidYaml_Redirects()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Invalid Access');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $this->assertEquals(302, $tester->getResponse()->getStatusCode());
+  }
+  
+  public function testAccess_AccessControlHasOneOfTwoOrred_Redirects()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Orred');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $this->assertEquals(302, $tester->getResponse()->getStatusCode());
+  }
+
+  public function testAccess_AccessControlHasOneOfTwoAnded_Unauthorized()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Anded');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $this->assertEquals(403, $tester->getResponse()->getStatusCode());
+  }
+
+  public function testAccess_AccessControlHasTwoOfTwoAnded_Redirects()
+  {
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Anded');
+
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $this->assertEquals(302, $tester->getResponse()->getStatusCode());
+  }
+
   public function testAccess_Database_UserDataServiceRecordsGroupsWithoutLibraries()
   {
     // unrestricted
     $database = Doctrine_Core::getTable('Database')
       ->findOneByTitle('Pubmed');
-
-    $library = Doctrine_Core::getTable('Library')
-      ->findOneByCode('TCNY');
-
-    $user = Doctrine_Core::getTable('sfGuardUser')
-      ->findOneByUsername('haslibrariestcstcny');
 
     $tester = $this->getTester('192.1.1.1');
 

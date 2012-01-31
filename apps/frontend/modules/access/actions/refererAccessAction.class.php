@@ -17,7 +17,7 @@ class refererAccessAction extends baseAccessAction
     }
 
     if (!$this->isSubscribed()) {
-      throw new accessUnauthorizedException();
+      $this->forward403();
     }
 
     $this->databaseTitle = $user->getFlash('database_title');

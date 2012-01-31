@@ -12,7 +12,7 @@ class baseAccessAction extends sfAction
   public function execute($request)
   {
     if (!$this->isSubscribed()) {
-      throw new accessUnauthorizedException();
+      $this->forward403();
     }
 
     $this->logUsageAndRedirect($this->getUser()->getFlash('database_url'));
@@ -48,8 +48,14 @@ class baseAccessAction extends sfAction
   {
     if (!$this->getUser()->isAuthenticated()) {
       $this->forward(sfConfig::get('sf_login_module'),
-        sfConfig::get('sf_login_action') );
+        sfConfig::get('sf_login_action'));
     }
+  }
+  
+  protected function forward403()
+  {
+    $this->forward(sfConfig::get('sf_secure_module'),
+      sfConfig::get('sf_secure_action'));
   }
 
   /**
@@ -60,7 +66,18 @@ class baseAccessAction extends sfAction
    */
   protected function isSubscribed()
   {
-    return (bool) $this->getUserDatabaseLibraryIds();
+    if (!$this->getUserDatabaseLibraryIds()) {
+      return false;
+    }
+
+    $databaseAccessControl = $this->getUser()
+      ->getFlash('database_access_control');
+
+    if (!$databaseAccessControl) {
+      return true;
+    }
+
+    return $this->getUser()->hasCredential($databaseAccessControl);
   }
 
   /**

@@ -41,6 +41,21 @@ class Database extends BaseDatabase
   }
 
   /**
+   * @return array
+   */
+  public function getAccessControlArray()
+  {
+    $munged     = 'control: ' . trim($this->getAccessControl());
+    $yaml_array = sfYaml::load($munged);
+
+    if (!$yaml_array) {
+      return array();
+    }
+
+    return $yaml_array['control'];
+  }
+
+  /**
    * Returns a copy of the Database with certain unique elements unset
    *
    * @param bool $deep whether to copy relations

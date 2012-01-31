@@ -32,8 +32,7 @@ generator:
           help: |
             Specify group access rules in 
             <a href="http://www.symfony-project.org/gentle-introduction/1_4/en/06-Inside-the-Controller-Layer#chapter_06_sub_complex_credentials">symfony's 
-            credential format</a>; <strong>overrides</strong> Libraries 
-            selections
+            credential format</a>; applied after library test passes. e.g. [org_1, org_2]
       list:
         title: Databases
         display: [=title]
