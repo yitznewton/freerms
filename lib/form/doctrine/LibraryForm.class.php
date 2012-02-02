@@ -12,6 +12,12 @@ class LibraryForm extends BaseLibraryForm
 {
   public function configure()
   {
+    unset(
+      $this['created_at'],
+      $this['updated_at'],
+      $this['deleted_at']
+    );
+
     $this->widgetSchema['ezproxy_host']->setLabel('EZproxy host');
     $this->widgetSchema['ezproxy_key']->setLabel('EZproxy key');
     $this->widgetSchema['show_featured']
@@ -28,3 +34,4 @@ class LibraryForm extends BaseLibraryForm
         'column' => 'ezproxy_algorithm'));
   }
 }
+

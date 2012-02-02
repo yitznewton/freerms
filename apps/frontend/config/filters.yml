@@ -11,5 +11,8 @@ security:
 
 # insert your own filters here
 
+template:
+  class: freermsTemplateFilter
+
 cache:     ~
 execution: ~

@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', '150M');
 require_once dirname(__FILE__).'/FrontendFunctionalTestCase.php';
 
 class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
@@ -163,6 +164,82 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
         checkElement('ul.featured', false)->
       end()
     ;
+  }
+
+  public function testIndex_LayoutSiteParams_SetsLayoutForLayoutParam()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->get('/?layout=foo&site=bar');
+
+    $this->assertEquals('foo',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_SiteParam_SetsLayoutForSiteParam()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->get('/?site=bar');
+
+    $this->assertEquals('bar',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_TemplateSpecified_SessionMaintainsState()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->get('/?site=bar');
+
+    $this->assertEquals('bar',
+      sfConfig::get('symfony.view.database_index_layout'));
+
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester->get('/');
+
+    $this->assertEquals('bar',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_HostTemplateExists_SetsLayoutForHost()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $browser = new sfBrowser('foo.example.com', '192.167.100.100');
+    $browser->restart();
+
+    $tester = new sfTestFunctional($browser, $this->getTest());
+
+    $tester->get('/');
+
+    $this->assertEquals('foo',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_HostTemplateNotExists_SetsGenericLayout()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $browser = new sfBrowser('baz.example.com', '192.167.100.100');
+    $browser->restart();
+
+    $tester = new sfTestFunctional($browser, $this->getTest());
+
+    $tester->get('/');
+
+    $this->assertNull(sfConfig::get('symfony.view.database_index_layout'));
   }
 
   public function testAccess_Subscribed_RedirectsToExpected()
