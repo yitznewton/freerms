@@ -9,5 +9,8 @@ default:
   javascripts:
     - /jquery/js/jquery-1.7.1.min.js
     - /jquery/js/jquery-ui-1.8.17.custom.min.js
+    - global.js
     - backend.js
+    - FRSorter.js
+    - FRSorterRow.js
 
