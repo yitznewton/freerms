@@ -19,6 +19,17 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
 
     $doctrineInsert = new sfDoctrineInsertSqlTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
     $doctrineInsert->run(array(), array("--env=test"));
+
+    // frontend decorator templates for testing
+    touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
+    touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
+  }
+
+  public static function tearDownAfterClass()
+  {
+    // frontend decorator templates for testing
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
   }
 
   public function setUp()

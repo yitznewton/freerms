@@ -172,9 +172,9 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
     $tester = $this->getTester('192.167.100.100');
 
-    $tester->get('/?layout=foo&site=bar');
+    $tester->get('/?layout=test1&site=test2');
 
-    $this->assertEquals('foo',
+    $this->assertEquals('test1',
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
@@ -184,9 +184,9 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
     $tester = $this->getTester('192.167.100.100');
 
-    $tester->get('/?site=bar');
+    $tester->get('/?site=test2');
 
-    $this->assertEquals('bar',
+    $this->assertEquals('test2',
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
@@ -196,16 +196,16 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
     $tester = $this->getTester('192.167.100.100');
 
-    $tester->get('/?site=bar');
+    $tester->get('/?site=test2');
 
-    $this->assertEquals('bar',
+    $this->assertEquals('test2',
       sfConfig::get('symfony.view.database_index_layout'));
 
     sfConfig::set('symfony.view.database_index_layout', null);
 
     $tester->get('/');
 
-    $this->assertEquals('bar',
+    $this->assertEquals('test2',
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
@@ -215,14 +215,14 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
     $tester = $this->getTester('192.167.100.100');
 
-    $browser = new sfBrowser('foo.example.com', '192.167.100.100');
+    $browser = new sfBrowser('test1.example.com', '192.167.100.100');
     $browser->restart();
 
     $tester = new sfTestFunctional($browser, $this->getTest());
 
     $tester->get('/');
 
-    $this->assertEquals('foo',
+    $this->assertEquals('test1',
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
@@ -232,7 +232,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
     $tester = $this->getTester('192.167.100.100');
 
-    $browser = new sfBrowser('baz.example.com', '192.167.100.100');
+    $browser = new sfBrowser('foo.example.com', '192.167.100.100');
     $browser->restart();
 
     $tester = new sfTestFunctional($browser, $this->getTest());
