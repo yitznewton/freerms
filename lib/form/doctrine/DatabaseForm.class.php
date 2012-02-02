@@ -51,11 +51,13 @@ class DatabaseForm extends BaseDatabaseForm
 
     $this->widgetSchema['libraries_list']
       ->setLabel('Libraries')
-      ->setOption('expanded', true);
+      ->setOption('expanded', true)
+      ->setOption('order_by', array('name', 'asc'));
  
     $this->widgetSchema['subjects_list']
       ->setLabel('Subjects')
-      ->setOption('expanded', true);
+      ->setOption('expanded', true)
+      ->setOption('order_by', array('name', 'asc'));
 
     $this->validatorSchema['sort_title']->setOption('required', false);
 

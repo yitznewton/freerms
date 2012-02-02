@@ -35,7 +35,7 @@ class SubjectForm extends BaseSubjectForm
     
     $containerForm = new sfForm();
 
-    foreach ($this->getObject()->getDatabaseSubject() as $ds) {
+    foreach ($this->getObject()->getDatabaseSubjects() as $ds) {
       $containerForm->embedForm($ds->getDatabaseId(),
         new DatabaseSubjectForm($ds));
     }

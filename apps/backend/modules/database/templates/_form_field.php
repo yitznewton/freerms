@@ -13,6 +13,8 @@
       <?php if ($field->getConfig()->offsetExists('help')): ?>
         <div class="help"><?php echo $field->getConfig()->getRaw('help') ?></div>
       <?php endif; ?>
+
+      <div class="clear"></div>
     </div>
   </div>
 <?php endif; ?>

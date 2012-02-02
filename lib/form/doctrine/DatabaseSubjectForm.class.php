@@ -12,8 +12,9 @@ class DatabaseSubjectForm extends BaseDatabaseSubjectForm
 {
   public function configure()
   {
-    $this->widgetSchema['featured_weight']->setLabel(
-      'Weight for ' . $this->getObject()->getDatabase()->getTitle());
+    $this->widgetSchema['featured_weight'] = new sfWidgetFormInput(array(
+      'label' => $this->getObject()->getDatabase()->getTitle(),
+    ));
 
     $this->widgetSchema->setAttribute('class', 'DatabaseSubjectForm');
   }
