@@ -1,23 +1,23 @@
-var FreermsBackend = {
+var FRBackend = {
 };
 
 $(document).ready(function() {
   var forms = document.getElementsByTagName('FORM');
   var form = forms[0];
 
-  $(document.getElementsByTagName('INPUT')).each(function() {
+  $.each(document.getElementsByTagName('INPUT'), function() {
     this.onchange = function() {
       form.isDirty = true;
     };
   });
 
-  $(document.getElementsByTagName('SELECT')).each(function() {
+  $.each(document.getElementsByTagName('SELECT'), function() {
     this.onchange = function() {
       form.isDirty = true;
     };
   });
 
-  $(document.getElementsByTagName('TEXTAREA')).each(function() {
+  $.each(document.getElementsByTagName('TEXTAREA'), function() {
     this.onchange = function() {
       form.isDirty = true;
     };

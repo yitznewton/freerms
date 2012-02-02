@@ -1,0 +1,13 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/13-View
+
+default:
+  stylesheets:
+    - /jquery/css/ui-lightness/jquery-ui-1.8.17.custom.css
+    - backend.css
+
+  javascripts:
+    - /jquery/js/jquery-1.7.1.min.js
+    - /jquery/js/jquery-ui-1.8.17.custom.min.js
+    - backend.js
+

@@ -16,7 +16,7 @@ default:
     - backend.css
 
   javascripts:
-    - jquery.js
+    - /jquery/js/jquery-1.7.1.min.js
     - backend.js
 
   has_layout:     true
