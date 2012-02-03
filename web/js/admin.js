@@ -1,4 +1,6 @@
-var FRAdmin = {
+var FR = FR || {};
+
+FR.Admin = {
   rootUrl: function() {
     var url_matches = window.location.href.match(/^.+admin[^\.]*\.php/);
     
@@ -74,7 +76,7 @@ FREResourceSorterRow.prototype.setAjaxOnRemove = function( url ) {
 
 FREResourceSorterRow.prototype.remove = function() {
   if ( this.ajaxOnRemove ) {
-    $.ajax( FRAdmin.rootUrl() + this.ajaxOnRemove );
+    $.ajax( FR.Backend.rootUrl() + this.ajaxOnRemove );
   }
           
   this.weightInputEl.parentNode.removeChild( this.weightInputEl );

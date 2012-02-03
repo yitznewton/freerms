@@ -1,24 +1,11 @@
-var FRBackend = {
-  rootUrl: function() {
-    var url_matches = window.location.href.match(/^.+backend[^\.]*\.php/);
-    
-    if (url_matches) {
-      return url_matches[0];
-    }
-    else {
-      throw new Error('Could not parse URL');
-    }
-  }
-};
-
 $(document).ready(function() {
   // setup subject sorters
 
   var databaseFormContainer = FR.$$('sf_admin_form_field_DatabaseSubject');
 
   if (databaseFormContainer) {
-    var nonfeatured_sorter = new FRSorter('databases-nonfeatured');
-    var featured_sorter    = new FRSorter('databases-featured');
+    var nonfeatured_sorter = new FR.Backend.Sorter('databases-nonfeatured');
+    var featured_sorter    = new FR.Backend.Sorter('databases-featured');
 
     featured_sorter.setWeighted(true);
     featured_sorter.setConnections([nonfeatured_sorter]);
@@ -28,7 +15,7 @@ $(document).ready(function() {
     var subjectId = FR.$$('subject_id').value;
 
     $('input', databaseFormContainer).each( function() {
-      var row  = new FRSorterRow('sometitle', this);
+      var row  = new FR.Backend.SorterRow('sometitle', this);
       var erId = 'somemungedthing';
 
       //FIXME relative URL
