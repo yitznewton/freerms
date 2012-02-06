@@ -16,7 +16,8 @@ $(document).ready(function() {
 
     $('table table tr', databaseFormContainer).each( function() {
       var weightInputEl = $('.weight', this).get(0);
-      var row  = new FR.Backend.SorterRow('sometitle', weightInputEl);
+      var title = $('label', this).html();
+      var row  = new FR.Backend.SorterRow(title, weightInputEl);
 
       var databaseId = $('.database-id', this).val();
 
@@ -44,9 +45,9 @@ $(document).ready(function() {
     // FIXME do we have to wait til here to hide this?
     $('table', databaseFormContainer).hide();
 
-    $('#sf_admin_form form').submit( function() {
-      featured_sorter.bindInputs();
-      nonfeatured_sorter.bindInputs();
+    $('#sf_admin_content form').submit(function() {
+      featured_sorter.update();
+      nonfeatured_sorter.update();
     });
   }
 

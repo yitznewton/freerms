@@ -86,25 +86,6 @@ FR.Backend.Sorter.prototype.render = function() {
     throw new Error('Already rendered'); 
   }
 
-  var rowCount = this.rows.length;
-
-  for (var i = 0; i < rowCount; i++) {
-    this.ul.appendChild(this.rows[i].render());
-  }
-
-  var options = {};
-
-  if (this.connection) {
-    options.connectWith = '#' + this.connection.ul.id;
-  }
-  console.log(options);
-
-  FR.$(this.ul).sortable(options);
-
-  return this.ul;
-};
-
-FR.Backend.Sorter.prototype.bindInputs = function() {
   if (this.isWeighted) {
     this._sort();
   }
@@ -112,8 +93,33 @@ FR.Backend.Sorter.prototype.bindInputs = function() {
   var rowCount = this.rows.length;
 
   for (var i = 0; i < rowCount; i++) {
-    var row = this.rows[i];
-    this.isWeighted ? row.bindInput(i) : row.bindInput(-1);
+    this.ul.appendChild(this.rows[i].render());
+  }
+
+  var options = {placeholder: 'ui-state-highlight'};
+
+  if (this.connection) {
+    options.connectWith = '#' + this.connection.ul.id;
+  }
+
+  FR.$(this.ul).sortable(options);
+
+  return this.ul;
+};
+
+FR.Backend.Sorter.prototype.update = function() {
+  // because of trans-sorter migration via connections, we need to work
+  // directly with the LI elements
+  var ulChildCount = this.ul.childNodes.length;
+
+  for (var i = 0; i < ulChildCount; i++) {
+    if (this.ul.childNodes[i].tagName != 'LI') {
+      continue;
+    }
+
+    var liEl = this.ul.childNodes[i];
+
+    this.isWeighted ? liEl.sorterRow.setWeight(i) : liEl.sorterRow.setWeight(-1);
   }
 };
 

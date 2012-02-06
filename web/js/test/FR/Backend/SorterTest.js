@@ -48,24 +48,7 @@ SorterTest.prototype.testRender_ConnectionSet_HasExpectedConnection = function()
   assertEquals('#bar', FR.$('#foo').sortable('option', 'connectWith'));
 };
 
-SorterTest.prototype.testRender_Weighted_ExpectedOrder = function() {
-  var sorter = new FR.Backend.Sorter('foo');
-  var inputA = document.createElement('input');
-  var inputB = document.createElement('input');
-
-  inputA.value = 0;
-  inputB.value = 1;
-
-  sorter.pushRow(new FR.Backend.SorterRow('xyz', inputA));
-  sorter.pushRow(new FR.Backend.SorterRow('abc', inputB));
-
-  sorter.render();
-
-  //FIXME incomplete
-};
-
 SorterTest.prototype.testPushRow_InvalidArg_ThrowsError = function() {
-  //FIXME incomplete
   var sorter = new FR.Backend.Sorter('foo');
 
   assertException(function() {

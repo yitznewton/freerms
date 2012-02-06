@@ -35,7 +35,7 @@ FR.Backend.SorterRow.prototype.render = function() {
 
   li.className = 'ui-state-default';
   li.innerHTML = this.title;
-  li.sorterRow = this; // needed for binding
+  li.sorterRow = this;  // needed for binding
 
   // TODO: add arrow, close
 
@@ -46,6 +46,11 @@ FR.Backend.SorterRow.prototype.render = function() {
  * @param {int} weight
  */
 FR.Backend.SorterRow.prototype.setWeight = function(weight) {
+  if (weight.constructor != Number) {
+    throw new Error('weight must be a Number');
+  }
+
+  this.inputEl.value = weight;
 };
 
 /**
@@ -53,12 +58,6 @@ FR.Backend.SorterRow.prototype.setWeight = function(weight) {
  */
 FR.Backend.SorterRow.prototype.getWeight = function() {
   return parseInt(this.inputEl.value);
-};
-
-/**
- * @param {int} weight
- */
-FR.Backend.SorterRow.prototype.bindInput = function(v) {
 };
 
 /**
