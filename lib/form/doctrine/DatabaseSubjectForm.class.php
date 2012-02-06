@@ -14,9 +14,15 @@ class DatabaseSubjectForm extends BaseDatabaseSubjectForm
   {
     $this->widgetSchema['featured_weight'] = new sfWidgetFormInput(array(
       'label' => $this->getObject()->getDatabase()->getTitle(),
+    ), array(
+      'class' => 'weight',
     ));
 
+    $this->widgetSchema['database_id']->setAttribute('class', 'database-id');
+
     $this->widgetSchema->setAttribute('class', 'DatabaseSubjectForm');
+
+    $this->validatorSchema['featured_weight'] = new sfValidatorInteger();
   }
 }
 

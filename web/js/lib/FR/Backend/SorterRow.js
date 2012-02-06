@@ -15,6 +15,14 @@ FR.Backend.SorterRow = function(title, inputEl) {
    */
   this.inputEl;
 
+  if (title.constructor != String) {
+    throw new Error('title must be a string');
+  }
+
+  if (!(inputEl instanceof HTMLInputElement)) {
+    throw new Error('inputEl must be an HTMLInputElement');
+  }
+
   this.title   = title;
   this.inputEl = inputEl;
 };
@@ -25,12 +33,12 @@ FR.Backend.SorterRow = function(title, inputEl) {
 FR.Backend.SorterRow.prototype.render = function() {
   var li = document.createElement('li');
 
-  li.className = 'ui-state-default'; // TODO: test
-  li.innerHTML = this.title; // TODO test
+  li.className = 'ui-state-default';
+  li.innerHTML = this.title;
   li.sorterRow = this; // needed for binding
 
   // TODO: add arrow, close
-  //
+
   return li;
 };
 
@@ -44,6 +52,7 @@ FR.Backend.SorterRow.prototype.setWeight = function(weight) {
  * @returns {int}
  */
 FR.Backend.SorterRow.prototype.getWeight = function() {
+  return parseInt(this.inputEl.value);
 };
 
 /**

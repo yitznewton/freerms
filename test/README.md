@@ -23,3 +23,14 @@ specify your browser(s) and other settings in
 
     $ ./test/run_tests.sh --selenium
 
+JavaScript
+----------
+
+To use the JavaScript tests, you will need [js-test-driver](http://code.google.com/p/js-test-driver/).
+After downloading it:
+    
+    $ cd web/js
+    $ java -jar /path/to/JsTestDriver.jar --port 9876
+    # now navigate to http://my-server:9876 and capture your browser
+    $ java -jar /path/to/JsTestDriver.jar --tests all
+

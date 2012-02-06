@@ -3,14 +3,16 @@
 
 default:
   stylesheets:
-    - /jquery/css/ui-lightness/jquery-ui-1.8.17.custom.css
+    - /js/jquery/css/ui-lightness/jquery-ui-1.8.17.custom.css
     - backend.css
 
   javascripts:
-    - /jquery/js/jquery-1.7.1.min.js
-    - /jquery/js/jquery-ui-1.8.17.custom.min.js
+    - /js/jquery/js/jquery-1.7.1.min.js
+    - /js/jquery/js/jquery-ui-1.8.17.custom.min.js
     - global.js
     - backend.js
-    - FRSorter.js
-    - FRSorterRow.js
+    - /js/lib/FR.js
+    - /js/lib/FR/Backend.js
+    - /js/lib/FR/Backend/Sorter.js
+    - /js/lib/FR/Backend/SorterRow.js
 

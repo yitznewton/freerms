@@ -8,21 +8,23 @@ $(document).ready(function() {
     var featured_sorter    = new FR.Backend.Sorter('databases-featured');
 
     featured_sorter.setWeighted(true);
-    featured_sorter.setConnections([nonfeatured_sorter]);
+    featured_sorter.setConnection(nonfeatured_sorter);
     nonfeatured_sorter.setWeighted(false);
-    nonfeatured_sorter.setConnections([featured_sorter]);
+    nonfeatured_sorter.setConnection(featured_sorter);
     
     var subjectId = FR.$$('subject_id').value;
 
-    $('input', databaseFormContainer).each( function() {
-      var row  = new FR.Backend.SorterRow('sometitle', this);
-      var erId = 'somemungedthing';
+    $('table table tr', databaseFormContainer).each( function() {
+      var weightInputEl = $('.weight', this).get(0);
+      var row  = new FR.Backend.SorterRow('sometitle', weightInputEl);
 
-      //FIXME relative URL
-      var url = '/subject/ajax/remove/er_id/' + erId
-                + '/subject_id/' + subjectId;
+      var databaseId = $('.database-id', this).val();
 
-      row.setAjaxOnRemove(url);
+//       //FIXME relative URL
+//       var url = '/subject/ajax/remove/database_id/' + databaseId
+//                 + '/subject_id/' + subjectId;
+// 
+//       row.setAjaxOnRemove(url);
 
       if (row.getWeight() === -1) {
         nonfeatured_sorter.pushRow(row);
@@ -42,7 +44,7 @@ $(document).ready(function() {
     // FIXME do we have to wait til here to hide this?
     $('table', databaseFormContainer).hide();
 
-    $('#sf_admin_content form').submit( function() {
+    $('#sf_admin_form form').submit( function() {
       featured_sorter.bindInputs();
       nonfeatured_sorter.bindInputs();
     });

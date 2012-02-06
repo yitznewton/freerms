@@ -1,19 +1,15 @@
 SorterTest = TestCase('SorterTest');
 
 SorterTest.prototype.testConstructor_InvalidArg_ThrowsError = function() {
-  try {
+  assertException(function() {
     var sorter = new FR.Backend.Sorter(['jim']);
-    fail();
-  }
-  catch (e) {
-  }
+  });
 };
 
 SorterTest.prototype.testRender_ReturnsHTMLUListElement = function() {
   var sorter = new FR.Backend.Sorter('foo');
 
-  assertEquals('[object HTMLUListElement]',
-    Object.prototype.toString.call(sorter.render()));
+  assertTagName('UL', sorter.render());
 };
 
 SorterTest.prototype.testRender_ElementHasExpectedLiCount = function() {
@@ -35,21 +31,53 @@ SorterTest.prototype.testRender_ElementHasExpectedId = function() {
   assertEquals('foo', sorter.render().id); 
 };
 
-SorterTest.prototype.testRender_ElementHasExpectedClasses = function() {
-  var sorter = new FR.Backend.Sorter('foo');
+SorterTest.prototype.testRender_ConnectionSet_HasExpectedConnection = function() {
+  var sorterA = new FR.Backend.Sorter('foo');
+  var sorterB = new FR.Backend.Sorter('bar');
+  
+  sorterA.setConnection(sorterB);
 
-  assertEquals('sortable', sorter.render().className); 
-};
+  sorterA.pushRow(new FR.Backend.SorterRow(
+    'xyz', document.createElement('input')));
+  sorterB.pushRow(new FR.Backend.SorterRow(
+    'abs', document.createElement('input')));
 
-SorterTest.prototype.testRender_ConnectionsSet_HasExpectedConnection = function() {
+  document.body.appendChild(sorterB.render());
+  document.body.appendChild(sorterA.render());
+
+  assertEquals('#bar', FR.$('#foo').sortable('option', 'connectWith'));
 };
 
 SorterTest.prototype.testRender_Weighted_ExpectedOrder = function() {
+  var sorter = new FR.Backend.Sorter('foo');
+  var inputA = document.createElement('input');
+  var inputB = document.createElement('input');
+
+  inputA.value = 0;
+  inputB.value = 1;
+
+  sorter.pushRow(new FR.Backend.SorterRow('xyz', inputA));
+  sorter.pushRow(new FR.Backend.SorterRow('abc', inputB));
+
+  sorter.render();
+
+  //FIXME incomplete
 };
 
 SorterTest.prototype.testPushRow_InvalidArg_ThrowsError = function() {
+  //FIXME incomplete
+  var sorter = new FR.Backend.Sorter('foo');
+
+  assertException(function() {
+    sorter.pushRow('foo');
+  });
 };
 
-SorterTest.prototype.testSetConnections_InvalidArg_ThrowsError = function() {
+SorterTest.prototype.testSetConnection_InvalidArg_ThrowsError = function() {
+  var sorter = new FR.Backend.Sorter('foo');
+
+  assertException(function() {
+    sorter.setConnection('bar');
+  });
 };
 
