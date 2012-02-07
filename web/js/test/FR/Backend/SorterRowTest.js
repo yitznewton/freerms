@@ -35,15 +35,6 @@ SorterRowTest.prototype.testRender_ExpectedTitle = function() {
   assertEquals('foo', row.render().innerHTML.substr(0,3));
 };
 
-SorterRowTest.prototype.testSetOnRemove_Invalid_ThrowsError = function() {
-  var inputEl = document.createElement('input');
-  var row     = new FR.Backend.SorterRow('foo', inputEl);
-
-  assertException(function() {
-    row.setOnRemove('sdfd');
-  });
-};
-
 SorterRowTest.prototype.testRemove_EventFires_RemovesLi = function() {
   var inputEl = document.createElement('input');
   var row     = new FR.Backend.SorterRow('foo', inputEl);

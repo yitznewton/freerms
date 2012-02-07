@@ -38,6 +38,10 @@ database_clone:
   url:   /database/:clone_from_id/clone
   param: { module: database, action: clone }
 
+database_subject_dissociate:
+  url:  /database/:database_id/dissociate-subject/:subject_id
+  param: { module: database, action: dissociateSubject }
+
 # You can find more information about this file on the symfony website:
 # http://www.symfony-project.org/reference/1_4/en/10-Routing
 

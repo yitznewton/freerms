@@ -84,10 +84,6 @@ FR.Backend.SorterRow.prototype.render = function(options) {
  * @param {function} toFire
  */
 FR.Backend.SorterRow.prototype.setOnRemove = function(onRemove) {
-  if (onRemove.constructor != Function) {
-    throw new Error('onRemove must be a Function');
-  }
-
   this.onRemove = onRemove;
 };
 

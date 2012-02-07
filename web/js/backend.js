@@ -13,19 +13,24 @@ $(document).ready(function() {
     nonfeatured_sorter.setConnection(featured_sorter);
     
     var subjectId = FR.$$('subject_id').value;
+    var urlMaskEl = FR.$$('delete-url-mask');
 
     $('table table tr', databaseFormContainer).each( function() {
       var weightInputEl = $('.weight', this).get(0);
       var title = $('label', this).html();
       var row  = new FR.Backend.SorterRow(title, weightInputEl);
 
-      var databaseId = $('.database-id', this).val();
+      if (urlMaskEl) {
+        var databaseId = $('.database-id', this).val();
 
-//       //FIXME relative URL
-//       var url = '/subject/ajax/remove/database_id/' + databaseId
-//                 + '/subject_id/' + subjectId;
-// 
-//       row.setAjaxOnRemove(url);
+        // swap in database ID for placeholder in URL mask, and inject
+        // as listener via this closure
+        row.setOnRemove(function() {
+          return function(url) {
+            jQuery.ajax(url);
+          }(urlMaskEl.title.replace('%25', databaseId));
+        });
+      }
 
       if (row.getWeight() === -1) {
         nonfeatured_sorter.pushRow(row);
