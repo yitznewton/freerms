@@ -19,7 +19,7 @@ FR.Backend.SorterRow = function(title, inputEl) {
     throw new Error('title must be a string');
   }
 
-  if (!(inputEl instanceof HTMLInputElement)) {
+  if (inputEl.tagName != 'INPUT') {
     throw new Error('inputEl must be an HTMLInputElement');
   }
 

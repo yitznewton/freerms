@@ -6,6 +6,14 @@ SorterTest.prototype.testConstructor_InvalidArg_ThrowsError = function() {
   });
 };
 
+SorterTest.prototype.testSetWeighted_Invalid_ThrowsError = function() {
+  var sorter = new FR.Backend.Sorter('foo');
+
+  assertException(function() {
+    sorter.setWeighted('bar');
+  });
+};
+
 SorterTest.prototype.testRender_ReturnsHTMLUListElement = function() {
   var sorter = new FR.Backend.Sorter('foo');
 
@@ -22,7 +30,7 @@ SorterTest.prototype.testRender_ElementHasExpectedLiCount = function() {
 
   var ul = sorter.render();
 
-  assertEquals(2, $('li', ul).length);
+  assertEquals(2, jQuery('li', ul).length);
 };
 
 SorterTest.prototype.testRender_ElementHasExpectedId = function() {
@@ -45,7 +53,7 @@ SorterTest.prototype.testRender_ConnectionSet_HasExpectedConnection = function()
   document.body.appendChild(sorterB.render());
   document.body.appendChild(sorterA.render());
 
-  assertEquals('#bar', FR.$('#foo').sortable('option', 'connectWith'));
+  assertEquals('#bar', jQuery('#foo').sortable('option', 'connectWith'));
 };
 
 SorterTest.prototype.testPushRow_InvalidArg_ThrowsError = function() {

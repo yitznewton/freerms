@@ -28,10 +28,6 @@ FR.Backend.Sorter = function(id) {
    * @type Array
    */
   this.rows = [];
-  /**
-   * @type Array
-   */
-  this.rowsToRender = [];
 
   if (id.constructor != String) {
     throw new Error('id must be a string');
@@ -41,9 +37,13 @@ FR.Backend.Sorter = function(id) {
 };
 
 /**
- * @param {string} v
+ * @param {bool} isWeighted
  */
 FR.Backend.Sorter.prototype.setWeighted = function(isWeighted) {
+  if (isWeighted.constructor != Boolean) {
+    throw new Error('isWeighted must be Boolean');
+  }
+
   this.isWeighted = isWeighted;
 };
 
@@ -71,9 +71,6 @@ FR.Backend.Sorter.prototype.pushRow = function(row) {
   if (this.isRendered) {
     this.ul.appendChild(row.render());
   }
-  // else {
-  //   this.rowsToRender.push(row);
-  // }
   
   return this.ul;
 };
@@ -102,11 +99,16 @@ FR.Backend.Sorter.prototype.render = function() {
     options.connectWith = '#' + this.connection.ul.id;
   }
 
-  FR.$(this.ul).sortable(options);
+  jQuery(this.ul).sortable(options);
+
+  this.isRendered = true;
 
   return this.ul;
 };
 
+/**
+ * Adjusts input values based on current order of SorterRows
+ */
 FR.Backend.Sorter.prototype.update = function() {
   // because of trans-sorter migration via connections, we need to work
   // directly with the LI elements
@@ -119,7 +121,8 @@ FR.Backend.Sorter.prototype.update = function() {
 
     var liEl = this.ul.childNodes[i];
 
-    this.isWeighted ? liEl.sorterRow.setWeight(i) : liEl.sorterRow.setWeight(-1);
+    this.isWeighted ? liEl.sorterRow.setWeight(i)
+      : liEl.sorterRow.setWeight(-1);
   }
 };
 
@@ -128,8 +131,8 @@ FR.Backend.Sorter.prototype.update = function() {
  * @param {string} id
  */
 FR.Backend.Sorter.prototype._init = function(id) {
-  this.ul           = document.createElement('ul');
-  this.ul.id        = id;
+  this.ul    = document.createElement('ul');
+  this.ul.id = id;
 };
 
 /**

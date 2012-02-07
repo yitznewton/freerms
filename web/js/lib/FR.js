@@ -1,7 +1,5 @@
 var FR = FR || {};
 
-FR.$ = jQuery;
-
 FR.$$ = function(id) {
   return document.getElementById( id );
 };
