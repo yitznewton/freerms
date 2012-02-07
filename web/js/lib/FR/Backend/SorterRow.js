@@ -37,6 +37,10 @@ FR.Backend.SorterRow.prototype.render = function() {
   li.innerHTML = this.title;
   li.sorterRow = this;  // needed for binding
 
+  var span_arrow = document.createElement('span');
+  span_arrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
+  li.appendChild(span_arrow);
+
   // TODO: add arrow, close
 
   return li;
