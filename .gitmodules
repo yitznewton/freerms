@@ -1,3 +1,6 @@
 [submodule "vendor/symfony-1.4"]
 	path = vendor/symfony-1.4
 	url = https://github.com/yitznewton/symfony1.git
+[submodule "web/js/sinon"]
+	path = web/js/sinon
+	url = http://github.com/cjohansen/Sinon.JS.git
