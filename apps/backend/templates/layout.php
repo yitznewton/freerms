@@ -9,15 +9,52 @@
     <?php include_javascripts() ?>
   </head>
   <body>
-    <nav>
-      <ul>
-        <li><?php echo link_to('Databases', '@database') ?></li>
-        <li><?php echo link_to('Subjects', '@subject') ?></li>
-        <li><?php echo link_to('Libraries', '@library') ?></li>
-        <li><?php echo link_to('IP Ranges', '@ip_range') ?></li>
-      </ul>
-    </nav>
+    <header>
+      <?php echo image_tag('freerms.png', array('alt' => 'FreERMS logo')) ?>
+
+      <?php if ($sf_user->isAuthenticated()): ?>
+        <div class="logout">Logout</div>
+      <?php endif; ?>
+
+      <nav>
+        <ul>
+          <li class="<?php echo $sf_params->get('module') == 'database' ? 'active' : '' ?>">
+            <?php if ($sf_params->get('module') == 'database'
+              && $sf_params->get('action') == 'index'): ?>
+              Databases
+            <?php else: ?>
+              <?php echo link_to('Databases', '@database') ?>
+            <?php endif; ?>
+          </li>
+          <li class="<?php echo $sf_params->get('module') == 'subject' ? 'active' : '' ?>">
+            <?php if ($sf_params->get('module') == 'subject'
+              && $sf_params->get('action') == 'index'): ?>
+              Subjects
+            <?php else: ?>
+              <?php echo link_to('Subjects', '@subject') ?>
+            <?php endif; ?>
+          </li>
+          <li class="<?php echo $sf_params->get('module') == 'library' ? 'active' : '' ?>">
+            <?php if ($sf_params->get('module') == 'library'
+              && $sf_params->get('action') == 'index'): ?>
+              Libraries
+            <?php else: ?>
+              <?php echo link_to('Libraries', '@library') ?>
+            <?php endif; ?>
+          </li>
+          <li class="<?php echo $sf_params->get('module') == 'ip_range' ? 'active' : '' ?>">
+            <?php if ($sf_params->get('module') == 'ip_range'
+              && $sf_params->get('action') == 'index'): ?>
+              IP Ranges
+            <?php else: ?>
+              <?php echo link_to('IP Ranges', '@ip_range') ?>
+            <?php endif; ?>
+          </li>
+        </ul>
+      </nav>
+    </header>
     
     <?php echo $sf_content ?>
   </body>
 </html>
+
