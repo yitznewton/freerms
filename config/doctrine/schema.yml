@@ -83,7 +83,6 @@ DatabaseSubject:
     featured_weight:
       type: integer
       default: -1
-      primary: true
   relations:
     Database:
       onDelete: CASCADE

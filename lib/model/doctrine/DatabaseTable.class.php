@@ -35,7 +35,7 @@ class DatabaseTable extends Doctrine_Table
    * @param Subject $subject
    * @return Doctrine_Collection
    */
-  public static function findFeaturedByLibraryIdsAndSubject(
+  public function findFeaturedByLibraryIdsAndSubject(
     array $libraryIds, Subject $subject)
   {
     $q = self::getInstance()->createQuery('d')
@@ -45,7 +45,7 @@ class DatabaseTable extends Doctrine_Table
       ->andWhere('ds.subject_id = ?', $subject->getId())
       ->andWhere('ds.featured_weight != -1')
       ->andWhere('d.is_hidden = false')
-      ->orderBy('ds.featured_weight', 'LOWER(d.sort_title)')
+      ->orderBy('ds.featured_weight ASC, LOWER(d.sort_title) ASC')
       ;
 
     return $q->execute();
@@ -62,7 +62,7 @@ class DatabaseTable extends Doctrine_Table
       ->whereIn('l.id', $libraryIds)
       ->andWhere('d.is_featured = true')
       ->andWhere('d.is_hidden = false')
-      ->orderBy('d.featured_weight', 'LOWER(d.sort_title)')
+      ->orderBy('d.featured_weight ASC, LOWER(d.sort_title) ASC')
       ;
 
     return $q->execute();

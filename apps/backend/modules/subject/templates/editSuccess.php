@@ -5,7 +5,7 @@
   <h1><?php echo __('Edit Subject', array(), 'messages') ?></h1>
 
   <span class="metadata" id="delete-url-mask"
-    title="<?php echo url_for('@database_subject_dissociate?subject_id='.$subject->getId().'&database_id=%') ?>" />
+    title="<?php echo url_for('@database_remove_subject?subject_id='.$subject->getId().'&database_id=%') ?>" />
 
   <?php include_partial('subject/flashes') ?>
 

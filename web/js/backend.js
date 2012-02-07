@@ -1,6 +1,5 @@
 $(document).ready(function() {
   // setup subject sorters
-
   var databaseFormContainer = FR.$$('sf_admin_form_field_DatabaseSubject');
 
   if (databaseFormContainer) {
@@ -24,7 +23,7 @@ $(document).ready(function() {
         var databaseId = $('.database-id', this).val();
 
         // swap in database ID for placeholder in URL mask, and inject
-        // as listener via this closure
+        // AJAX as onRemove listener via this closure
         row.setOnRemove(function() {
           return function(url) {
             jQuery.ajax(url);

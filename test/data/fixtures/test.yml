@@ -119,7 +119,7 @@ DatabaseSubject:
     Subject: health-sciences
     featured_weight: 5
   pubmed_health-sciences:
-    Database: medline
+    Database: pubmed
     Subject: health-sciences
     featured_weight: 4
   unfeatured_health-sciences:

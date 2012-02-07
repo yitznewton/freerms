@@ -27,5 +27,23 @@ class databaseActions extends autoDatabaseActions
 
     $this->setTemplate('new');
   }
+
+  public function executeRemoveSubject(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest());
+
+    $ds = Doctrine_Core::getTable('DatabaseSubject')->find(
+      array($request->getParameter('database_id'),
+        $request->getParameter('subject_id')));
+
+    $this->forward404Unless($ds);
+
+    $ds->delete();
+
+    $this->getResponse()->setContentType('application/json');
+    $this->getResponse()->setContent('{}');
+
+    return sfView::NONE;
+  }
 }
 
