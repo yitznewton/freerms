@@ -10,7 +10,6 @@ default:
     - resolver.css: { media: all }
   
   javascripts:
-    - jquery.js
     - jquery.cookie.js
     - global.js
     - resolver.js
