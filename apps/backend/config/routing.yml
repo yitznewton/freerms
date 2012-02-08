@@ -42,6 +42,10 @@ database_remove_subject:
   url:  /database/:database_id/remove-subject/:subject_id
   param: { module: database, action: removeSubject }
 
+database_homepage_featured:
+  url: /databases/featured
+  param: { module: database, action: homepageFeatured }
+
 # You can find more information about this file on the symfony website:
 # http://www.symfony-project.org/reference/1_4/en/10-Routing
 

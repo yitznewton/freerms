@@ -27,6 +27,30 @@ class databaseActions extends autoDatabaseActions
 
     $this->setTemplate('new');
   }
+  
+  public function executeHomepageFeatured(sfWebRequest $request)
+  {
+    if ($request->hasParameter('Database')) {
+      foreach ($request->getParameter('Database') as $databaseValues) {
+        if (
+          !isset($databaseValues['id'])
+          || !isset($databaseValues['featured_weight'])
+        ) {
+          continue;
+        }
+
+        $database = Doctrine_Core::getTable('Database')
+          ->find($databaseValues['id']);
+
+        if ($database) {
+          $database->setFeaturedWeight($databaseValues['featured_weight']);
+          $database->save();
+        }
+      }
+    }
+
+    $this->form = new FeaturedDatabaseListForm();
+  }
 
   public function executeRemoveSubject(sfWebRequest $request)
   {
