@@ -13,3 +13,6 @@ all:
     default-handler-offsite: RefererAccessHandler
 
   sf_guard_plugin_signin_form: touroUsersSigninForm
+  #
+  # weirdness with http://foo:443 if this isn't set
+  sf_guard_plugin_success_signin_url: @homepage
