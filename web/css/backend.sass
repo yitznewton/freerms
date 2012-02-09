@@ -1,13 +1,28 @@
 $border: 1px solid #aaa
 
+@mixin sorter-row
+  > th
+    display: none
+
+  table
+    th
+      width: 16em
+
+    td input
+      width: 3em !important
+
 html
   background-color: #fff
 
 header
+  margin: 0 0 0.6em
+
   .logout
     float: right
 
   nav
+    margin: 0.4em 0 0
+
     ul
       width: 100%
       background: gray
@@ -16,7 +31,7 @@ header
 
     li
       display: inline
-      padding: 0 0.4em
+      padding: 0 0.8em
       font-size: 1.2em
         
       a
@@ -36,11 +51,16 @@ header
 .sf_admin_filter > form > table
   background-color: #eee
 
-#sf_admin_container .sf_admin_form_row
-  border-bottom: $border
+#sf_admin_container
+  padding: 0.4em 0.8em
 
-#sf_admin_container fieldset
-  border-color: #aaa
+  .sf_admin_form_row
+    border-bottom: $border
+
+  fieldset
+    border-color: #aaa
+
+
 
 #sf_admin_form_field_DatabaseSubject > div > div > table
   margin-bottom: 0
@@ -49,18 +69,14 @@ header
     border-left: 0 !important
     border-right: 0 !important
 
-    > th
-      display: none
-
     > td
       padding: 0
       border-width: 0 !important
 
-    table th
-      width: 16em
+    @include sorter-row
 
-    table td input
-      width: 3em !important
+.featured-databases > form > table > tbody > tr
+  @include sorter-row
 
 .ui-sortable
   background: #aaa

@@ -4,14 +4,17 @@
 <div id="sf_admin_container">
   <h1><?php echo __('Set order of homepage Featured Databases', array(), 'messages') ?></h1>
 
+  <p>You can add a database by selecting it in the
+  <?php echo link_to('Databases', '@database') ?> area
+  and checking the "Feature on homepage" box.</p>
+
   <?php include_partial('database/flashes') ?>
 
   <div id="sf_admin_header">
   </div>
 
-
   <div id="sf_admin_content">
-    <div class="sf_admin_form">
+    <div class="sf_admin_form featured-databases">
       <form action="<?php echo url_for('@database_homepage_featured') ?>"
             method="POST">
         <?php echo $form->renderHiddenFields(false) ?>

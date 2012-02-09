@@ -10,7 +10,9 @@
   </head>
   <body>
     <header>
-      <?php echo image_tag('freerms.png', array('alt' => 'FreERMS logo')) ?>
+      <?php echo link_to(
+        image_tag('freerms.png', array('alt' => 'FreERMS logo')),
+        '@homepage') ?>
 
       <?php if ($sf_user->isAuthenticated()): ?>
         <div class="logout">Logout</div>
