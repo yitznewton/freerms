@@ -57,24 +57,27 @@ FR.Backend.SorterRow.prototype.render = function(options) {
   spanArrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
   this.liEl.appendChild(spanArrow);
 
-  var spanClose = options.spanClose;
+  if (this.onRemove != undefined) {
+    var spanClose = options.spanClose;
 
-  if (!spanClose) {
-    spanClose = document.createElement('span');
-    spanClose.className = 'ui-icon ui-icon-close';
+    if (!spanClose) {
+      spanClose = document.createElement('span');
+      spanClose.className = 'ui-icon ui-icon-close';
+    }
+
+    spanClose.onclick = function(sorterRow) {
+      return function() {
+        if (sorterRow.onRemove) {
+          sorterRow.onRemove();
+        }
+
+        sorterRow.remove();
+      }
+    }(this)
+
+    this.liEl.appendChild(spanClose);
   }
 
-  spanClose.onclick = function(sorterRow) {
-    return function() {
-      if (sorterRow.onRemove) {
-        sorterRow.onRemove();
-      }
-
-      sorterRow.remove();
-    }
-  }(this)
-
-  this.liEl.appendChild(spanClose);
   this.isRendered = true;
 
   return this.liEl;
