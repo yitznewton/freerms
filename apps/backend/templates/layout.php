@@ -18,7 +18,8 @@
 
       <nav>
         <ul>
-          <li class="<?php echo $sf_params->get('module') == 'database' ? 'active' : '' ?>">
+          <li class="<?php echo $sf_params->get('module') == 'database'
+            && $sf_params->get('action') != 'homepageFeatured' ? 'active' : '' ?>">
             <?php if ($sf_params->get('module') == 'database'
               && $sf_params->get('action') == 'index'): ?>
               Databases
@@ -50,6 +51,11 @@
               <?php echo link_to('IP Ranges', '@ip_range') ?>
             <?php endif; ?>
           </li>
+          <?php if ($sf_params->get('module') == 'database' && $sf_params->get('action') == 'homepageFeatured'): ?>
+            <li class="active">Featured Databases</li>
+          <?php else: ?>
+            <li><?php echo link_to('Featured Databases', '@database_homepage_featured') ?></li>
+          <?php endif; ?>
         </ul>
       </nav>
     </header>
