@@ -75,8 +75,11 @@ header
 
     @include sorter-row
 
-.featured-databases > form > table > tbody > tr
+#featured-databases > form > table > tbody > tr
   @include sorter-row
+
+  > td > table > tbody > tr > th
+    display: none
 
 .ui-sortable
   background: #aaa

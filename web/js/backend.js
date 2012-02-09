@@ -3,6 +3,8 @@ $(document).ready(function() {
   var databaseFormContainer = FR.$$('sf_admin_form_field_DatabaseSubject');
 
   if (databaseFormContainer) {
+    $('table', databaseFormContainer).hide();
+
     var nonfeatured_sorter = new FR.Backend.Sorter('databases-nonfeatured');
     var featured_sorter    = new FR.Backend.Sorter('databases-featured');
 
@@ -11,13 +13,12 @@ $(document).ready(function() {
     nonfeatured_sorter.setWeighted(false);
     nonfeatured_sorter.setConnection(featured_sorter);
     
-    var subjectId = FR.$$('subject_id').value;
     var urlMaskEl = FR.$$('delete-url-mask');
 
     $('table table tr', databaseFormContainer).each( function() {
-      var weightInputEl = $('.weight', this).get(0);
-      var title = $('label', this).html();
-      var row  = new FR.Backend.SorterRow(title, weightInputEl);
+      var row = new FR.Backend.SorterRow(
+        $('label', this).html(),
+        $('.weight', this).get(0));
 
       if (urlMaskEl) {
         var databaseId = $('.database-id', this).val();
@@ -46,12 +47,47 @@ $(document).ready(function() {
       .append(nonfeatured_sorter.render())
       ;
 
-    // FIXME do we have to wait til here to hide this?
-    $('table', databaseFormContainer).hide();
-
     $('#sf_admin_content form').submit(function() {
       featured_sorter.update();
       nonfeatured_sorter.update();
+    });
+  }
+
+  var homepageFeaturedContainer = FR.$$('featured-databases');
+
+  if (homepageFeaturedContainer) {
+    $('table', homepageFeaturedContainer).hide();
+
+    var sorter = new FR.Backend.Sorter('featured-sorter');
+    sorter.setWeighted(true);
+    
+    //var urlMaskEl = FR.$$('delete-url-mask');
+    var urlMaskEl = null;
+
+    $('table table table tr', homepageFeaturedContainer).each( function() {
+      var row = new FR.Backend.SorterRow(
+        $('label', this).html(),
+        $('.weight', this).get(0));
+
+      if (urlMaskEl) {
+        var databaseId = $('.database-id', this).val();
+
+        // swap in database ID for placeholder in URL mask, and inject
+        // AJAX as onRemove listener via this closure
+        row.setOnRemove(function() {
+          return function(url) {
+            jQuery.ajax(url);
+          }(urlMaskEl.title.replace('%25', databaseId));
+        });
+      }
+
+      sorter.pushRow(row); 
+    });
+    
+    $(homepageFeaturedContainer).prepend(sorter.render());
+
+    $('#sf_admin_content form').submit(function() {
+      sorter.update();
     });
   }
 

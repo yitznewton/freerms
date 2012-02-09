@@ -14,7 +14,7 @@
   </div>
 
   <div id="sf_admin_content">
-    <div class="sf_admin_form featured-databases">
+    <div class="sf_admin_form" id="featured-databases">
       <form action="<?php echo url_for('@database_homepage_featured') ?>"
             method="POST">
         <?php echo $form->renderHiddenFields(false) ?>
@@ -23,7 +23,9 @@
           <?php echo $form->renderGlobalErrors() ?>
         <?php endif; ?>
 
+        <table>
         <?php echo $form->render() ?>
+        </table>
 
         <input type="submit" value="Save" />
       </form>

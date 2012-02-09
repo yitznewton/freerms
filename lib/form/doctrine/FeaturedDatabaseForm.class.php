@@ -8,6 +8,8 @@ class FeaturedDatabaseForm extends BaseDatabaseForm
       'id' => new sfWidgetFormInputHidden(),
       'featured_weight' => new sfWidgetFormInputText(array(
         'label' => $this->getObject()->getTitle(),
+      ), array(
+        'class' => 'weight',
       )),
     ));
 
