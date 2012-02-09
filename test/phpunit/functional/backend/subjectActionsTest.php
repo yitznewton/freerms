@@ -6,7 +6,8 @@ class functional_backend_subjectActionsTest extends BackendFunctionalTestCase
   public function testEdit_WeightSortsCorrectly()
   {
     $this->getTester('192.168.100.100')->
-      get('/subjects/2/edit')->
+      get('/subjects')->
+      click('Health Sciences')->
 
       with('request')->begin()->
         isParameter('module', 'subject')->
