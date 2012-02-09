@@ -60,20 +60,22 @@ header
   fieldset
     border-color: #aaa
 
+#sf_admin_form_field_DatabaseSubject
+  h3:first-of-type
+    margin-top: 0
 
+  > div > div > table
+    margin-bottom: 0
 
-#sf_admin_form_field_DatabaseSubject > div > div > table
-  margin-bottom: 0
+    > tbody > tr
+      border-left: 0 !important
+      border-right: 0 !important
 
-  > tbody > tr
-    border-left: 0 !important
-    border-right: 0 !important
+      > td
+        padding: 0
+        border-width: 0 !important
 
-    > td
-      padding: 0
-      border-width: 0 !important
-
-    @include sorter-row
+      @include sorter-row
 
 #featured-databases > form > table > tbody > tr
   @include sorter-row

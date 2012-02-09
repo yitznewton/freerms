@@ -23,7 +23,7 @@
           <?php echo $form->renderGlobalErrors() ?>
         <?php endif; ?>
 
-        <table>
+        <table id="featured-parent-table">
         <?php echo $form->render() ?>
         </table>
 

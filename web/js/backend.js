@@ -3,7 +3,9 @@ $(document).ready(function() {
   var databaseFormContainer = FR.$$('sf_admin_form_field_DatabaseSubject');
 
   if (databaseFormContainer) {
-    $('table', databaseFormContainer).hide();
+    var contentDiv = FR.$$('database-embedded-container');
+
+    $(contentDiv).children('table').hide();
 
     var nonfeatured_sorter = new FR.Backend.Sorter('databases-nonfeatured');
     var featured_sorter    = new FR.Backend.Sorter('databases-featured');
@@ -15,7 +17,7 @@ $(document).ready(function() {
     
     var urlMaskEl = FR.$$('delete-url-mask');
 
-    $('table table tr', databaseFormContainer).each( function() {
+    $('table table tr', contentDiv).each( function() {
       var row = new FR.Backend.SorterRow(
         $('label', this).html(),
         $('.weight', this).get(0));
@@ -40,31 +42,33 @@ $(document).ready(function() {
       }
     });
     
-    $(databaseFormContainer)
+    $(contentDiv)
       .append($('<h3>Featured databases</h3>'))
       .append(featured_sorter.render())
       .append($('<h3>Non-featured databases</h3>'))
       .append(nonfeatured_sorter.render())
       ;
 
-    $('#sf_admin_content form').submit(function() {
+    document.getElementsByTagName('FORM')[0].onsubmit = function() {
       featured_sorter.update();
       nonfeatured_sorter.update();
-    });
+    };
   }
 
   var homepageFeaturedContainer = FR.$$('featured-databases');
 
   if (homepageFeaturedContainer) {
-    $('table', homepageFeaturedContainer).hide();
+    var parentTable = FR.$$('featured-parent-table');
+    parentTable.style.display = 'none';
 
     var sorter = new FR.Backend.Sorter('featured-sorter');
     sorter.setWeighted(true);
     
     //var urlMaskEl = FR.$$('delete-url-mask');
+    // FIXME
     var urlMaskEl = null;
 
-    $('table table table tr', homepageFeaturedContainer).each( function() {
+    $('table table tr', parentTable).each( function() {
       var row = new FR.Backend.SorterRow(
         $('label', this).html(),
         $('.weight', this).get(0));
@@ -86,9 +90,9 @@ $(document).ready(function() {
     
     $(homepageFeaturedContainer).prepend(sorter.render());
 
-    $('#sf_admin_content form').submit(function() {
+    document.getElementsByTagName('FORM')[0].onsubmit = function() {
       sorter.update();
-    });
+    };
   }
 
   // setup form dirty detection

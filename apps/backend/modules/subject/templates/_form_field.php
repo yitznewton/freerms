@@ -8,7 +8,9 @@
     <div>
       <?php echo $form[$name]->renderLabel($label) ?>
 
-      <div class="content"><?php echo $form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes) ?></div>
+      <div class="content" id="<?php echo $name == 'DatabaseSubject' ? 'database-embedded-container' : '' ?>">
+        <?php echo $form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes) ?>
+      </div>
 
       <?php if ($help): ?>
         <div class="help"><?php echo __($help, array(), 'messages') ?></div>
