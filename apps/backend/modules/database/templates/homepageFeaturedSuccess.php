@@ -4,6 +4,9 @@
 <div id="sf_admin_container">
   <h1><?php echo __('Set order of homepage Featured Databases', array(), 'messages') ?></h1>
 
+  <span class="metadata" id="delete-url-mask"
+    title="<?php echo url_for('@database_unfeature?database_id=%') ?>"></span>
+
   <?php include_partial('database/flashes') ?>
 
   <p class="featured-help">You can add a database by selecting it in the

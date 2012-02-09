@@ -64,9 +64,7 @@ $(document).ready(function() {
     var sorter = new FR.Backend.Sorter('featured-sorter');
     sorter.setWeighted(true);
     
-    //var urlMaskEl = FR.$$('delete-url-mask');
-    // FIXME
-    var urlMaskEl = null;
+    var urlMaskEl = FR.$$('delete-url-mask');
 
     $('table', parentTable).find('table').find('tr').each( function() {
       var row = new FR.Backend.SorterRow(

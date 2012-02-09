@@ -55,9 +55,30 @@ class databaseActions extends autoDatabaseActions
     $this->form = new FeaturedDatabaseListForm();
   }
 
+  public function executeUnfeature(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest()
+      && $request->hasParameter('database_id'));
+
+    $database = Doctrine_Core::getTable('Database')->find(
+      $request->getParameter('database_id'));
+
+    $this->forward404Unless($database);
+
+    $database->setIsFeatured(false);
+    $database->save();
+
+    $this->getResponse()->setContentType('application/json');
+    $this->getResponse()->setContent('{}');
+
+    return sfView::NONE;
+  }
+
   public function executeRemoveSubject(sfWebRequest $request)
   {
-    $this->forward404Unless($request->isXmlHttpRequest());
+    $this->forward404Unless($request->isXmlHttpRequest()
+      && $request->hasParameter('database_id')
+      && $request->hasParameter('subject_id'));
 
     $ds = Doctrine_Core::getTable('DatabaseSubject')->find(
       array($request->getParameter('database_id'),
