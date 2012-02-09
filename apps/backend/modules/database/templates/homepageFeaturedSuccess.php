@@ -4,11 +4,11 @@
 <div id="sf_admin_container">
   <h1><?php echo __('Set order of homepage Featured Databases', array(), 'messages') ?></h1>
 
-  <p>You can add a database by selecting it in the
+  <?php include_partial('database/flashes') ?>
+
+  <p class="featured-help">You can add a database by selecting it in the
   <?php echo link_to('Databases', '@database') ?> area
   and checking the "Feature on homepage" box.</p>
-
-  <?php include_partial('database/flashes') ?>
 
   <div id="sf_admin_header">
   </div>

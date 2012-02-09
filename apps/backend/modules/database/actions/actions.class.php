@@ -47,6 +47,9 @@ class databaseActions extends autoDatabaseActions
           $database->save();
         }
       }
+      
+      $this->getUser()->setFlash('notice', 'Updated successfully.');
+      $this->redirect('@database_homepage_featured');
     }
 
     $this->form = new FeaturedDatabaseListForm();

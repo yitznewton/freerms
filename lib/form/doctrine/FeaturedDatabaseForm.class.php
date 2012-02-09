@@ -18,7 +18,7 @@ class FeaturedDatabaseForm extends BaseDatabaseForm
       'featured_weight' => new sfValidatorInteger(),
     ));
 
-    $this->widgetSchema['featured_weight']->setDefault('0');
+    $this->widgetSchema['featured_weight']->setDefault('999');
 
     $this->widgetSchema->setNameFormat('database[%s]');
     $this->widgetSchema->setLabel(false);

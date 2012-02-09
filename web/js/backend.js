@@ -17,7 +17,7 @@ $(document).ready(function() {
     
     var urlMaskEl = FR.$$('delete-url-mask');
 
-    $('table table tr', contentDiv).each( function() {
+    $('table', contentDiv).find('table').find('tr').each( function() {
       var row = new FR.Backend.SorterRow(
         $('label', this).html(),
         $('.weight', this).get(0));
@@ -68,7 +68,7 @@ $(document).ready(function() {
     // FIXME
     var urlMaskEl = null;
 
-    $('table table tr', parentTable).each( function() {
+    $('table', parentTable).find('table').find('tr').each( function() {
       var row = new FR.Backend.SorterRow(
         $('label', this).html(),
         $('.weight', this).get(0));
