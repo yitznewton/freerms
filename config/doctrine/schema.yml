@@ -45,7 +45,7 @@ Database:
     featured_weight:
       type: integer
       notnull: true
-      default: 0
+      default: 999
     access_control:
       type: string(255)  # YAML string checked against user credentials
     note:

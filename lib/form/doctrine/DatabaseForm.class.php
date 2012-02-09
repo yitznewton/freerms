@@ -12,6 +12,7 @@ class DatabaseForm extends BaseDatabaseForm
   public function configure()
   {
     unset(
+      $this['featured_weight'],
       $this['created_at'],
       $this['updated_at'],
       $this['deleted_at']

@@ -19,7 +19,6 @@ class FeaturedDatabaseForm extends BaseDatabaseForm
     ));
 
     $this->widgetSchema['id']->setAttribute('class', 'database-id');
-    $this->widgetSchema['featured_weight']->setDefault('999');
 
     $this->widgetSchema->setNameFormat('database[%s]');
     $this->widgetSchema->setLabel(false);
