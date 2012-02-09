@@ -88,7 +88,10 @@ class databaseActions extends sfActions
     $user->setFlash('referral_note', $database->getReferralNote());
 
     if ($action == 'refererAccess') {
-      $this->redirect('@access_refer');
+      $url = preg_replace('/^https/', 'http',
+        $this->getController()->genUrl('@access_refer', true));
+
+      $this->redirect($url);
     }
 
     // symfony handles nonexistent actions
