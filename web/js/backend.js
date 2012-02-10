@@ -16,24 +16,10 @@ $(document).ready(function() {
     nonfeatured_sorter.setConnection(featured_sorter);
     
     var urlMaskEl = FR.$$('delete-url-mask');
+    var urlMask = (urlMaskEl && urlMaskEl.title) || null;
 
     $('table', contentDiv).find('table').find('tr').each(function() {
-      var row = new FR.Backend.SorterRow(
-        $('label', this).html(),
-        $('.weight', this).get(0)
-      );
-
-      if (urlMaskEl) {
-        var databaseId = $('.database-id', this).val();
-
-        // swap in database ID for placeholder in URL mask, and inject
-        // AJAX as onRemove listener via this closure
-        row.setOnRemove(function() {
-          return function(url) {
-            $.ajax(url);
-          }(urlMaskEl.title.replace('%25', databaseId));
-        });
-      }
+      var row = FR.Backend.getSorterRow(this, urlMask);
 
       if (row.getWeight() === -1) {
         nonfeatured_sorter.pushRow(row);
@@ -64,27 +50,11 @@ $(document).ready(function() {
     var sorter = new FR.Backend.Sorter('featured-sorter');
     sorter.setWeighted(true);
     
-    urlMaskEl = FR.$$('delete-url-mask');
+    var urlMaskEl = FR.$$('delete-url-mask');
+    var urlMask = (urlMaskEl && urlMaskEl.title) || null;
 
     $('table', parentTable).find('table').find('tr').each(function() {
-      var row = new FR.Backend.SorterRow(
-        $('label', this).html(),
-        $('.weight', this).get(0)
-      );
-
-      if (urlMaskEl) {
-        var databaseId = $('.database-id', this).val();
-
-        // swap in database ID for placeholder in URL mask, and inject
-        // AJAX as onRemove listener via this closure
-        row.setOnRemove(function() {
-          return function(url) {
-            $.ajax(url);
-          }(urlMaskEl.title.replace('%25', databaseId));
-        });
-      }
-
-      sorter.pushRow(row); 
+      sorter.pushRow(FR.Backend.getSorterRow(this, urlMask)); 
     });
     
     $(homepageFeaturedContainer).prepend(sorter.render());
