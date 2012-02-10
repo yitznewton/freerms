@@ -17,4 +17,12 @@ DROP TABLE IF EXISTS ip_reg_events;
 DROP TABLE IF EXISTS usage_stats_formats;
 DROP TABLE IF EXISTS usage_stats_freqs;
 DROP TABLE IF EXISTS auth_methods;
+DROP TABLE IF EXISTS library;
+
+ALTER TABLE libraries RENAME library;
+ALTER TABLE ip_ranges RENAME ip_range;
+ALTER TABLE usage_attempts RENAME database_usage;
+ALTER TABLE eresources RENAME `database`;
+ALTER TABLE db_subjects RENAME subject;
+ALTER TABLE eresource_db_subject_assoc RENAME database_subject;
 
