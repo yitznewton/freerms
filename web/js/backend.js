@@ -17,10 +17,11 @@ $(document).ready(function() {
     
     var urlMaskEl = FR.$$('delete-url-mask');
 
-    $('table', contentDiv).find('table').find('tr').each( function() {
+    $('table', contentDiv).find('table').find('tr').each(function() {
       var row = new FR.Backend.SorterRow(
         $('label', this).html(),
-        $('.weight', this).get(0));
+        $('.weight', this).get(0)
+      );
 
       if (urlMaskEl) {
         var databaseId = $('.database-id', this).val();
@@ -29,7 +30,7 @@ $(document).ready(function() {
         // AJAX as onRemove listener via this closure
         row.setOnRemove(function() {
           return function(url) {
-            jQuery.ajax(url);
+            $.ajax(url);
           }(urlMaskEl.title.replace('%25', databaseId));
         });
       }
@@ -46,8 +47,7 @@ $(document).ready(function() {
       .append($('<h3>Featured databases</h3>'))
       .append(featured_sorter.render())
       .append($('<h3>Non-featured databases</h3>'))
-      .append(nonfeatured_sorter.render())
-      ;
+      .append(nonfeatured_sorter.render());
 
     document.getElementsByTagName('FORM')[0].onsubmit = function() {
       featured_sorter.update();
@@ -64,12 +64,13 @@ $(document).ready(function() {
     var sorter = new FR.Backend.Sorter('featured-sorter');
     sorter.setWeighted(true);
     
-    var urlMaskEl = FR.$$('delete-url-mask');
+    urlMaskEl = FR.$$('delete-url-mask');
 
-    $('table', parentTable).find('table').find('tr').each( function() {
+    $('table', parentTable).find('table').find('tr').each(function() {
       var row = new FR.Backend.SorterRow(
         $('label', this).html(),
-        $('.weight', this).get(0));
+        $('.weight', this).get(0)
+      );
 
       if (urlMaskEl) {
         var databaseId = $('.database-id', this).val();
@@ -78,7 +79,7 @@ $(document).ready(function() {
         // AJAX as onRemove listener via this closure
         row.setOnRemove(function() {
           return function(url) {
-            jQuery.ajax(url);
+            $.ajax(url);
           }(urlMaskEl.title.replace('%25', databaseId));
         });
       }
@@ -119,8 +120,8 @@ $(document).ready(function() {
 
   $('.link-clone').click(function() {
     if ($('form').get(0).isDirty) {
-      var a = confirm('You have unsaved changes; press OK to continue or '
-                    + 'Cancel to return to editing.');
+      var a = window.confirm('You have unsaved changes; press OK to continue '
+        + 'or Cancel to return to editing.');
 
       return a;
     }
