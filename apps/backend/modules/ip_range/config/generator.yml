@@ -23,7 +23,7 @@ generator:
         is_excluded:
           label: Excluded
       list:
-        title: IP Ranges
+        title: false
         display: [=start_ip, =end_ip, is_active, is_excluded]
         sort: [start_ip, asc]
       filter:
@@ -35,6 +35,6 @@ generator:
               e.g. internal IP address used for testing, or to override
                 autodetected library affiliation
       edit:
-        title: Edit IP Range
+        title: false
       new:
         title: New IP Range

@@ -34,7 +34,7 @@ generator:
             <a href="http://www.symfony-project.org/gentle-introduction/1_4/en/06-Inside-the-Controller-Layer#chapter_06_sub_complex_credentials">symfony's 
             credential format</a>; applied after library test passes. e.g. [org_1, org_2]
       list:
-        title: Databases
+        title: false
         display: [=title]
         sort: [LOWER(sort_title), asc]
         object_actions:
@@ -42,5 +42,6 @@ generator:
       filter:
         display: [title, libraries_list, is_hidden, is_unavailable, is_featured]
       form:    ~
-      edit:    ~
+      edit:
+        title: false
       new:     ~

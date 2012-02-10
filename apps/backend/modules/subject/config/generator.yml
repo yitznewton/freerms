@@ -15,7 +15,7 @@ generator:
       actions: ~
       fields:  ~
       list:
-        title: Subjects
+        title: false
         display: [=name]
         sort: [name, asc]
         object_actions:
@@ -23,5 +23,6 @@ generator:
       filter:
         class: false
       form:    ~
-      edit:    ~
+      edit:
+        title: false
       new:     ~

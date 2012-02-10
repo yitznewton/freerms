@@ -22,25 +22,27 @@ header
 
   nav
     margin: 0.4em 0 0
+    border: 0 !important
 
     ul
       width: 100%
-      background: gray
       margin: 0
-      padding: 0.4em 0.8em
+      padding: 0
 
     li
-      display: inline
-      padding: 0 0.8em
+      float: left
+      padding: 0.4em 0.8em
       font-size: 1.2em
-        
+      list-style: none
+
       a
         text-decoration: none
         color: white
-      
-    li.active, li.active a
-      color: yellow
 
+    li.ui-state-default
+      background: inherit !important
+      border: 0 !important
+      
 .clear
   clear: both
 
@@ -84,7 +86,7 @@ header
     display: none
 
 .featured-help
-  margin: 1em 0
+  margin: 1em 0 1.6em
 
 .ui-sortable
   background: #aaa

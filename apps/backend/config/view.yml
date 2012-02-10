@@ -13,7 +13,7 @@ default:
     #robots:       index, follow
 
   stylesheets:
-    - /js/jquery/css/ui-lightness/jquery-ui-1.8.17.custom.css
+    - /js/jquery/css/flick/jquery-ui-1.8.17.custom.css
     - backend.css
 
   javascripts:

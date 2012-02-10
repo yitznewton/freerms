@@ -17,12 +17,13 @@ generator:
         ezproxy_host:
           help: e.g. proxy.library.wassamatta.edu
       list:
-        title: Libraries
+        title: false
         display: [=name]
         object_actions:
           _delete: ~
       filter:
         display: [name, code]
       form:    ~
-      edit:    ~
+      edit:
+        title: false
       new:     ~
