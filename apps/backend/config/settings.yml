@@ -38,4 +38,5 @@ all:
       - default
       - sfGuardGroup
       - sfGuardUser
+      - sfGuardPermission
 

@@ -1,3 +1,5 @@
+<?php use_helper('Backend') ?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -20,44 +22,17 @@
 
       <nav class="ui-widget-header">
         <ul>
-          <li class="<?php echo $sf_params->get('module') == 'database'
-            && $sf_params->get('action') != 'homepageFeatured' ? 'ui-state-active' : 'ui-state-default' ?>">
-            <?php if ($sf_params->get('module') == 'database'
-              && $sf_params->get('action') == 'index'): ?>
-              Databases
-            <?php else: ?>
-              <?php echo link_to('Databases', '@database') ?>
-            <?php endif; ?>
-          </li>
-          <li class="<?php echo $sf_params->get('module') == 'subject' ? 'ui-state-active' : 'ui-state-default' ?>">
-            <?php if ($sf_params->get('module') == 'subject'
-              && $sf_params->get('action') == 'index'): ?>
-              Subjects
-            <?php else: ?>
-              <?php echo link_to('Subjects', '@subject') ?>
-            <?php endif; ?>
-          </li>
-          <li class="<?php echo $sf_params->get('module') == 'library' ? 'ui-state-active' : 'ui-state-default' ?>">
-            <?php if ($sf_params->get('module') == 'library'
-              && $sf_params->get('action') == 'index'): ?>
-              Libraries
-            <?php else: ?>
-              <?php echo link_to('Libraries', '@library') ?>
-            <?php endif; ?>
-          </li>
-          <li class="<?php echo $sf_params->get('module') == 'ip_range' ? 'ui-state-active' : 'ui-state-default' ?>">
-            <?php if ($sf_params->get('module') == 'ip_range'
-              && $sf_params->get('action') == 'index'): ?>
-              IP Ranges
-            <?php else: ?>
-              <?php echo link_to('IP Ranges', '@ip_range') ?>
-            <?php endif; ?>
-          </li>
+          <?php echo backend_menu_item($sf_params, 'Databases', '@database', 'database', 'homepageFeatured') ?>
+          <?php echo backend_menu_item($sf_params, 'Subjects', '@subject', 'subject') ?>
+          <?php echo backend_menu_item($sf_params, 'Libraries', '@library', 'library') ?>
+          <?php echo backend_menu_item($sf_params, 'IP Ranges', '@ip_range', 'ip_range') ?>
           <?php if ($sf_params->get('module') == 'database' && $sf_params->get('action') == 'homepageFeatured'): ?>
             <li class="ui-state-active">Featured Databases</li>
           <?php else: ?>
             <li class="ui-state-default"><?php echo link_to('Featured Databases', '@database_homepage_featured') ?></li>
           <?php endif; ?>
+          <?php echo backend_menu_item($sf_params, 'Users', '@sf_guard_user', 'sfGuardUser') ?>
+          <?php echo backend_menu_item($sf_params, 'Groups', '@sf_guard_group', 'sfGuardGroup') ?>
           <div class="clear"></div>
         </ul>
       </nav>
