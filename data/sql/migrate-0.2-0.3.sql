@@ -39,11 +39,14 @@ ALTER TABLE database_usage DROP KEY usage_attempts_FI_2;
 ALTER TABLE database_usage CHANGE COLUMN er_id database_id INT NOT NULL;
 ALTER TABLE database_usage CHANGE COLUMN lib_id library_id INT NOT NULL;
 ALTER TABLE database_usage CHANGE COLUMN phpsessid sessionid VARCHAR(8) NOT NULL;
-ALTER TABLE database_usage MODIFY COLUMN id INT NOT NULL;
+ALTER TABLE database_usage CHANGE COLUMN `date` timestamp DATETIME NOT NULL;
+ALTER TABLE database_usage MODIFY COLUMN is_onsite TINYINT(1) NOT NULL;
 DELETE FROM database_usage WHERE auth_successful != 1;
 ALTER TABLE database_usage DROP COLUMN auth_successful;
 ALTER TABLE database_usage CHANGE COLUMN additional_user_data additional_data VARCHAR(255) DEFAULT NULL;
+ALTER TABLE database_usage MODIFY COLUMN id INT;
 ALTER TABLE database_usage DROP PRIMARY KEY;
+ALTER TABLE database_usage DROP COLUMN id;
 ALTER TABLE database_usage ADD PRIMARY KEY (database_id, sessionid);
 ALTER TABLE database_usage ADD FOREIGN KEY (library_id) REFERENCES library (id);
 ALTER TABLE database_usage ADD FOREIGN KEY (database_id) REFERENCES `database` (id);
@@ -51,21 +54,30 @@ ALTER TABLE database_usage ADD FOREIGN KEY (database_id) REFERENCES `database` (
 CREATE TABLE url_usage (sessionid VARCHAR(8),
  library_id INTEGER NOT NULL,
  timestamp DATETIME NOT NULL,
- is_onsite INTEGER NOT NULL,
+ is_onsite TINYINT(1) NOT NULL,
  additional_data VARCHAR(255),
  host VARCHAR(255),
  PRIMARY KEY(sessionid,
  host));
 
+CREATE TABLE `usage` (sessionid VARCHAR(8),
+ library_id BIGINT NOT NULL,
+ timestamp DATETIME NOT NULL,
+ is_onsite TINYINT(1) NOT NULL,
+ additional_data VARCHAR(255),
+ PRIMARY KEY(sessionid)) ENGINE = INNODB;
+
 ALTER TABLE ip_range DROP COLUMN updated_at;
 ALTER TABLE ip_range DROP COLUMN deleted_at;
-ALTER TABLE ip_range MODIFY COLUMN note TEXT;
-ALTER TABLE ip_range CHANGE COLUMN active_indicator is_active TINYINT(4) NOT NULL DEFAULT 1;
+ALTER TABLE ip_range DROP COLUMN start_ip_int;
+ALTER TABLE ip_range DROP COLUMN end_ip_int;
+ALTER TABLE ip_range MODIFY COLUMN note LONGTEXT;
+ALTER TABLE ip_range CHANGE COLUMN active_indicator is_active TINYINT(1) NOT NULL DEFAULT 1;
 ALTER TABLE ip_range DROP FOREIGN KEY ip_ranges_FK_1;
 ALTER TABLE ip_range DROP KEY ip_ranges_FI_1;
 ALTER TABLE ip_range CHANGE COLUMN lib_id library_id INT(11) NOT NULL;
 ALTER TABLE ip_range ADD FOREIGN KEY (library_id) REFERENCES library (id);
-ALTER TABLE ip_range ADD COLUMN is_excluded TINYINT(4) NOT NULL DEFAULT 0;
+ALTER TABLE ip_range ADD COLUMN is_excluded TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE ip_range ADD COLUMN start_ip_sort VARCHAR(12) NOT NULL;
 ALTER TABLE ip_range ADD COLUMN end_ip_sort VARCHAR(12) NOT NULL;
 
@@ -74,15 +86,20 @@ ALTER TABLE library DROP COLUMN address;
 ALTER TABLE library DROP COLUMN cost_center_no;
 ALTER TABLE library DROP COLUMN fte;
 ALTER TABLE library ADD COLUMN ezproxy_algorithm VARCHAR(255);
-ALTER TABLE library CHANGE COLUMN show_featured_subjects show_featured TINYINT(4) NOT NULL DEFAULT 1;
+ALTER TABLE library ADD COLUMN created_at DATETIME NOT NULL;
+ALTER TABLE library ADD COLUMN deleted_at DATETIME;
+ALTER TABLE library CHANGE COLUMN show_featured_subjects show_featured TINYINT(1) NOT NULL DEFAULT 1;
+ALTER TABLE library MODIFY COLUMN name VARCHAR(255) NOT NULL;
+ALTER TABLE library MODIFY COLUMN ezproxy_host VARCHAR(255);
+ALTER TABLE library MODIFY COLUMN ezproxy_key VARCHAR(255);
 
 ALTER TABLE subject CHANGE COLUMN label name VARCHAR(255) NOT NULL;
 ALTER TABLE subject MODIFY COLUMN slug VARCHAR(255);
 
 ALTER TABLE `database` MODIFY COLUMN featured_weight INT NOT NULL DEFAULT 999;
 ALTER TABLE `database` MODIFY COLUMN alt_id VARCHAR(10);
-ALTER TABLE `database` CHANGE COLUMN suppression is_hidden TINYINT(4) NOT NULL DEFAULT 0;
-ALTER TABLE `database` CHANGE COLUMN product_unavailable is_unavailable TINYINT(4) NOT NULL DEFAULT 0;
+ALTER TABLE `database` CHANGE COLUMN suppression is_hidden TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE `database` CHANGE COLUMN product_unavailable is_unavailable TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE `database` ADD COLUMN access_action_onsite VARCHAR(255) DEFAULT 'baseAccess' NOT NULL;
 ALTER TABLE `database` ADD COLUMN access_action_offsite VARCHAR(255) DEFAULT 'baseAccess' NOT NULL;
 ALTER TABLE `database` ADD COLUMN access_url VARCHAR(255) NOT NULL;
