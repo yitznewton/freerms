@@ -11,5 +11,13 @@ x$.ready(function() {
       img.style.display = 'inline';
     }
   });
+
+  x$('.subject-widget select').each(function() {
+    this.onchange = function() {
+      this.parentNode.submit();
+    };
+  });
+
+  x$('.subject-widget input').setStyle('display', 'none');
 });
 
