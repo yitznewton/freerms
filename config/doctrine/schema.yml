@@ -83,6 +83,7 @@ DatabaseSubject:
     featured_weight:
       type: integer
       default: -1
+      notnull: true
   relations:
     Database:
       onDelete: CASCADE
@@ -109,9 +110,6 @@ Usage:
       notnull: true
     additional_data:
       type: string(255)
-  relations:
-    Database:
-      foreignAlias: DatabaseUsages
 
 DatabaseUsage:
   inheritance:
