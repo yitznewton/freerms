@@ -17,7 +17,7 @@ class EbrarySSOAccessHandler extends EZproxyAccessHandler
   
   protected function getAccessUri()
   {
-    if ( $this->isOnsite ) {
+    if ( $this->isOnsite && ! isset( $_GET['signin'] )) {
       return $this->er->getAccessInfo()->getOnsiteAccessUri();
     }
     
@@ -31,3 +31,4 @@ class EbrarySSOAccessHandler extends EZproxyAccessHandler
            . '/ebrary/' . $ebrary_site . '/unauthorized';
   }
 }
+
