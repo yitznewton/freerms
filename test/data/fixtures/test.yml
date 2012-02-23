@@ -156,6 +156,11 @@ IpRange:
     StartIp: 192.167.100.1
     EndIp: 192.167.199.255
 
+  3:
+    start_ip: 192.167.120.128
+    end_ip: 192.167.120.129
+    is_excluded: true
+
 sfGuardGroup:
   TCS:
     name: TCS

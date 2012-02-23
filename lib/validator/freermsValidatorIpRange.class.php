@@ -36,7 +36,8 @@ class freermsValidatorIpRange extends sfValidatorBase
     $test_ip_range->fromArray($values);
 
     $conflict_ranges = Doctrine_Core::getTable('IpRange')
-      ->findIntersecting($test_ip_range);
+      ->findIntersecting($test_ip_range,
+        array('is_active' => true, 'is_excluded' => false));
 
     if ( $conflict_ranges->count() > 1 ) {
       $this->setMessage( 'conflicting', 'Range conflicts with multiple existing ranges' );

@@ -11,8 +11,10 @@ class IpRangeTable extends Doctrine_Table
    * Find IpRanges that intersect with the given IpRange
    *
    * Available options:
-   *  * include_inactive: include IpRanges marked as inactive
-   *    (default false)
+   *  * is_active: specify IpRanges marked as active or inactive
+   *    (default null - no filtering)
+   *  * is_excluded: specify IpRanges marked as excluded or not
+   *    (default null - no filtering)
    *
    * @param IpRange $ipRange
    * @param array $options
@@ -34,10 +36,17 @@ class IpRangeTable extends Doctrine_Table
     }
 
     if (
-      !isset($options['include_inactive'])
-      || $options['include_inactive'] !== true
+      isset($options['is_active'])
+      && is_bool($options['is_active'])
     ) {
-      $q->andWhere('i.is_active = true');
+      $q->andWhere('i.is_active = ?', $options['is_active']);
+    }
+
+    if (
+      isset($options['is_excluded'])
+      && is_bool($options['is_excluded'])
+    ) {
+      $q->andWhere('i.is_excluded = ?', $options['is_excluded']);
     }
 
     return $q->execute();

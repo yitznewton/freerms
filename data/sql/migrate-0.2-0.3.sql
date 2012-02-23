@@ -75,7 +75,7 @@ ALTER TABLE ip_range MODIFY COLUMN note LONGTEXT;
 ALTER TABLE ip_range CHANGE COLUMN active_indicator is_active TINYINT(1) NOT NULL DEFAULT 1;
 ALTER TABLE ip_range DROP FOREIGN KEY ip_ranges_FK_1;
 ALTER TABLE ip_range DROP KEY ip_ranges_FI_1;
-ALTER TABLE ip_range CHANGE COLUMN lib_id library_id INT(11) NOT NULL;
+ALTER TABLE ip_range CHANGE COLUMN lib_id library_id INT(11);
 ALTER TABLE ip_range ADD FOREIGN KEY (library_id) REFERENCES library (id);
 ALTER TABLE ip_range ADD COLUMN is_excluded TINYINT(1) NOT NULL DEFAULT 0;
 ALTER TABLE ip_range ADD COLUMN start_ip_sort VARCHAR(12) NOT NULL;

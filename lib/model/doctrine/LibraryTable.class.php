@@ -19,7 +19,7 @@ class LibraryTable extends Doctrine_Table
     $foundIps = Doctrine_Core::getTable('IpRange')
       ->findIntersecting($testIp);
 
-    if ($foundIps->count()) {
+    if ($foundIps->count() && $foundIps[0]->getLibrary()) {
       return $foundIps[0]->getLibrary();
     }
     else {

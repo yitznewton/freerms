@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../../bootstrap/unit.php';
+require_once dirname(__FILE__).'/../DoctrineTestCase.php';
 
 class unit_freermsValidatorIpRangeTest extends DoctrineTestCase
 {

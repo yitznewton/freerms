@@ -160,7 +160,7 @@ IpRange:
       default: false
     library_id:
       type: integer
-      notnull: true
+      notnull: false
   relations:
     Library:
       onDelete: RESTRICT
