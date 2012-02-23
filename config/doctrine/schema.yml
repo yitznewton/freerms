@@ -1,5 +1,6 @@
 Database:
-  tableName: database
+  # `database` is reserved in MySQL and Doctrine does not escape with ``
+  tableName: freerms_database 
   actAs:
     - Timestampable
     - SoftDelete  # the foo_usage tables reference this table
