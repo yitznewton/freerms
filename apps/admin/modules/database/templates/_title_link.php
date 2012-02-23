@@ -1,1 +1,0 @@
-<?php echo link_to($e_resource->getSortTitle(), 'database/edit?id='.$e_resource->getId()) ?>  
