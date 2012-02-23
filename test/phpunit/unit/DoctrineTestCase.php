@@ -6,7 +6,7 @@ class DoctrineTestCase extends sfPHPUnitBaseTestCase
   public static function setUpBeforeClass()
   {
     new sfDatabaseManager(
-      ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
+      ProjectConfiguration::getApplicationConfiguration('backend', 'test', true));
   }
 
   public function setUp()

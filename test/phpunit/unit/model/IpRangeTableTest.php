@@ -3,21 +3,6 @@ require_once dirname(__FILE__).'/../DoctrineTestCase.php';
 
 class unit_IpRangeTableTest extends DoctrineTestCase
 {
-  public static function setUpBeforeClass()
-  {
-    new sfDatabaseManager(
-      ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
-  }
-
-  public function setUp()
-  {
-    $doctrineInsert = new sfDoctrineDataLoadTask(
-      ProjectConfiguration::getActive()->getEventDispatcher(),
-      new sfAnsiColorFormatter());
-
-    $doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
-  }
-
   protected function getTable()
   {
     return Doctrine_Core::getTable('IpRange');

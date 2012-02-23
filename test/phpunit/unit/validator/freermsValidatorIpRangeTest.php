@@ -1,20 +1,8 @@
 <?php
 require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 
-class unit_freermsValidatorIpRangeTest extends sfPHPUnitBaseTestCase
+class unit_freermsValidatorIpRangeTest extends DoctrineTestCase
 {
-  public static function setUpBeforeClass()
-  {
-    new sfDatabaseManager(
-      ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
-
-    $doctrineInsert = new sfDoctrineDataLoadTask(
-      ProjectConfiguration::getActive()->getEventDispatcher(),
-      new sfAnsiColorFormatter());
-
-    $doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
-  }
-
   public function testClean_InvertedRange_Throws()
   {
     $validator = new freermsValidatorIpRange();
