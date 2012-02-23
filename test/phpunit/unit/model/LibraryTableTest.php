@@ -12,6 +12,10 @@ class unit_LibraryTableTest extends DoctrineTestCase
 
   public function testFindOneByIpAddress_Exists_ReturnsLibraryWithId()
   {
+    $this->assertInstanceOf('Library',
+      Doctrine_Core::getTable('Library')
+      ->findOneByIpAddress('192.168.100.100'));
+
     $this->assertInternalType('string',
       Doctrine_Core::getTable('Library')
       ->findOneByIpAddress('192.168.100.100')
@@ -22,7 +26,7 @@ class unit_LibraryTableTest extends DoctrineTestCase
   {
     // for some reason this eats up 35M of RAM when using assertNull
     $this->assertEquals(null, Doctrine_Core::getTable('Library')
-      ->findOneByIpAddress('192.168.120.128'));
+      ->findOneByIpAddress('192.167.120.128'));
   }
 
   public function testFindOneByIpAddress_NotExists_ReturnsNull()
