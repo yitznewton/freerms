@@ -34,5 +34,19 @@ class unit_LibraryTableTest extends DoctrineTestCase
     $this->assertNull(Doctrine_Core::getTable('Library')
       ->findOneByIpAddress('192.100.100.100'));
   }
+
+  public function testGetCodesForIds_Exists_ReturnsExpected()
+  {
+    $id = Doctrine_Core::getTable('Library')->findOneByCode('TCNY')->getId();
+
+    $this->assertEquals(array('TCNY'),
+      Doctrine_Core::getTable('Library')->getCodesForIds(array($id)));
+  }
+
+  public function testGetCodesForIds_NotExists_ReturnsEmpty()
+  {
+    $this->assertEquals(array(),
+      Doctrine_Core::getTable('Library')->getCodesForIds(array(9876)));
+  }
 }
 

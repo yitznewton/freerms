@@ -34,6 +34,29 @@ class LibraryTable extends Doctrine_Table
   }
 
   /**
+   * @param array int[] $ids
+   * @return array string[]
+   */
+  public function getCodesForIds(array $ids)
+  {
+    $libraries = Doctrine_Core::getTable('Library')
+      ->createQuery('l')
+      ->whereIn('l.id', $ids)
+      ->execute()
+      ;
+    
+    if (!$libraries->count()) {
+      return array();
+    }
+
+    $librariesArray = $libraries->toArray();
+
+    return array_map(function($a) {
+      return $a['code'];
+    }, $librariesArray);
+  }
+
+  /**
    * Returns an instance of this class.
    *
    * @return object LibraryTable
