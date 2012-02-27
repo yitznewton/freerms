@@ -32,7 +32,7 @@ class ezproxyAccessAction extends baseAccessAction
     $algorithm = $library->getEzproxyAlgorithm();
 
     $proxyDate = '$c' . date('YmdHis');
-    $proxyBlob = $algorithm( $key . $user . $proxyDate );
+    $proxyBlob = $algorithm( $key . $username . $proxyDate );
 
     $proxyUrl = 'http://' . $library->getEzproxyHost() . '/login?user='
                 . $username . '&ticket='
