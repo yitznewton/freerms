@@ -8,13 +8,15 @@ class freermsTemplateFilter extends sfFilter
     // the next time called
 
     if ($this->isFirstCall()) {
-      if ($this->context->getUser()->hasAttribute('template')) {
-        $this->setTemplate($this->context->getUser()
-          ->getAttribute('template'));
+      $fromUser = $this->context->getUser()->getAttribute('template', null);
+      $fromRequest = $this->getTemplateFromRequest();
+
+      if ($this->templateExists($fromRequest)) {
+        $this->context->getUser()->setAttribute('template', $fromRequest);
+        $this->setTemplate($fromRequest);
       }
-      elseif ($template = $this->getTemplateFromRequest()) {
-        $this->context->getUser()->setAttribute('template', $template);
-        $this->setTemplate($template);
+      elseif ($this->templateExists($fromUser)) {
+        $this->setTemplate($fromUser);
       }
     }
 
@@ -49,16 +51,23 @@ class freermsTemplateFilter extends sfFilter
   }
 
   /**
-   * Sets decorator template, ignores if it does not exist
-   *
+   * @return bool
+   */
+  protected function templateExists($template)
+  {
+    return (bool) ProjectConfiguration::getActive()
+      ->getDecoratorDir($template.'.php');
+  }
+
+  /**
    * @param string $template
    */
   protected function setTemplate($template)
   {
-    if (ProjectConfiguration::getActive()->getDecoratorDir($template.'.php')) {
-      $this->context->getActionStack()->getLastEntry()
-        ->getActionInstance()->setLayout($template);
-    }
+    $this->context->getUser()->setAttribute('template', $template);
+
+    $this->context->getActionStack()->getLastEntry()
+      ->getActionInstance()->setLayout($template);
   }
 }
 

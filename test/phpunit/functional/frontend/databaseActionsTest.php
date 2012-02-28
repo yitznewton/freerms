@@ -209,6 +209,25 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
+  public function testIndex_TemplateChangedSecondRequest_LoadsNewTemplate()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->get('/?site=test2');
+
+    $this->assertEquals('test2',
+      sfConfig::get('symfony.view.database_index_layout'));
+
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester->get('/?site=test1');
+
+    $this->assertEquals('test1',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
   public function testIndex_HostTemplateExists_SetsLayoutForHost()
   {
     sfConfig::set('symfony.view.database_index_layout', null);
