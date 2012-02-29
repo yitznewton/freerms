@@ -25,9 +25,19 @@ FR.Backend = {
 
       // swap in database ID for placeholder in URL mask, and inject
       // AJAX as onRemove listener via this closure
-      row.setOnRemove(function() {
+      row.setOnRemove(function(onRemoveOptions) {
         return function(url) {
-          $.ajax(url);
+          var options = {url: url};
+
+          if (typeof onRemoveOptions.success !== 'undefined') {
+            options.success = onRemoveOptions.success;
+          }
+
+          if (typeof onRemoveOptions.error !== 'undefined') {
+            options.error = onRemoveOptions.error;
+          }
+
+          $.ajax(options);
         }(urlMask.replace('%25', databaseId));
       });
     }

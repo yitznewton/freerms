@@ -35,23 +35,6 @@ SorterRowTest.prototype.testRender_ExpectedTitle = function() {
   assertEquals('foo', row.render().innerHTML.substr(0,3));
 };
 
-SorterRowTest.prototype.testRemove_EventFires_RemovesLi = function() {
-  var inputEl = document.createElement('input');
-  var row     = new FR.Backend.SorterRow('foo', inputEl);
-
-  var spanClose = document.createElement('span');
-  spanClose.className = 'ui-icon ui-icon-close';
-
-  var ulEl = document.createElement('ul');
-  ulEl.appendChild(row.render({spanClose: spanClose}));
-
-  assertEquals(1, ulEl.childNodes.length);
-
-  jQuery(spanClose).click();
-
-  assertEquals(0, ulEl.childNodes.length);
-};
-
 SorterRowTest.prototype.testRemove_FiresOnRemove = function() {
   var inputEl = document.createElement('input');
   var row     = new FR.Backend.SorterRow('foo', inputEl);

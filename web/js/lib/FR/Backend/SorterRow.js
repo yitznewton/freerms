@@ -45,7 +45,7 @@ FR.Backend.SorterRow = function(title, inputEl) {
  * @returns {HTMLLIElement}
  */
 FR.Backend.SorterRow.prototype.render = function(options) {
-  if (options === undefined) {
+  if (typeof options === 'undefined') {
     options = {};
   }
 
@@ -57,7 +57,8 @@ FR.Backend.SorterRow.prototype.render = function(options) {
   spanArrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
   this.liEl.appendChild(spanArrow);
 
-  if (this.onRemove != undefined) {
+  if (typeof this.onRemove !== 'undefined') {
+    // event handler was passed, therefore we should add button
     var spanClose = options.spanClose;
 
     if (!spanClose) {
@@ -65,17 +66,39 @@ FR.Backend.SorterRow.prototype.render = function(options) {
       spanClose.className = 'ui-icon ui-icon-close';
     }
 
+    var spanSpinner = options.spanSpinner;
+
+    if (!spanSpinner) {
+      spanSpinner = document.createElement('span');
+      spanSpinner.className = 'ui-icon ui-spinner';
+    }
+
     spanClose.onclick = function(sorterRow) {
       return function() {
-        if (sorterRow.onRemove) {
-          sorterRow.onRemove();
+        if (!sorterRow.onRemove) {
+          sorterRow.remove();
+          return;
         }
 
-        sorterRow.remove();
+        spanClose.style.display = 'none';
+        spanSpinner.style.display = 'inline';
+
+        sorterRow.onRemove({
+          success: function() {
+            sorterRow.remove();
+          },
+
+          error: function() {
+            spanSpinner.style.display = 'none';
+            spanClose.style.display = 'inline';
+            alert('Action failed; please try again later.');
+          },
+        });
       }
     }(this)
 
     this.liEl.appendChild(spanClose);
+    this.liEl.appendChild(spanSpinner);
   }
 
   this.isRendered = true;
