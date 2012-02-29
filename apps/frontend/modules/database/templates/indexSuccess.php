@@ -3,13 +3,9 @@
 <?php include_partial('subjectWidget', array(
   'widget' => $subjectWidget, 'default' => $subjectDefault)) ?>
 
-<?php if ($featuredDatabases->count()): ?>
-<?php include_partial('featured', array('databases' => $featuredDatabases)) ?>
-<?php endif; ?>
+<?php include_component('database', 'featuredDatabases',
+  array('subject' => $subject, 'libraryIds' => $libraryIds)) ?>
 
-<ul class="databases">
-<?php foreach ($databases as $database): ?>
-  <?php include_partial('database', array('database' => $database)) ?>
-<?php endforeach; ?>
-</ul>
+<?php include_component('database', 'databases',
+  array('libraryIds' => $libraryIds)) ?>
 

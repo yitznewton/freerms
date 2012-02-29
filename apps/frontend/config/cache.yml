@@ -5,3 +5,10 @@ default:
   enabled:     false
   with_layout: false
   lifetime:    86400
+
+_databases:
+  enabled: true
+
+_featuredDatabases:
+  enabled: true
+

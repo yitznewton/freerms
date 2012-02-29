@@ -15,38 +15,23 @@ class databaseActions extends sfActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-    $libraryIds = $this->getContext()->getAffiliation()->getLibraryIds();
+    // queries for freerms_database delegated to components to simplify
+    // caching based on subject and library IDs
 
-    $databaseTable = Doctrine_Core::getTable('Database');
+    $this->libraryIds = $this->getContext()->getAffiliation()->getLibraryIds();
 
-    $this->subject           = null;
-    $this->featuredDatabases = array();
+    $this->subject = null;
 
     $subjectSlug = $request->getParameter('subject');
 
     if ($subjectSlug) {
-      $subject = Doctrine_Core::getTable('Subject')
+      $this->subject = Doctrine_Core::getTable('Subject')
         ->findOneBySlug($subjectSlug);
-
-      if ($subject) {
-        $this->featuredDatabases = $databaseTable
-          ->findFeaturedByLibraryIdsAndSubject($libraryIds, $subject);
-
-        $this->subject = $subject;
-      }
-    }
-
-    if (!$this->subject) {
-      $this->featuredDatabases = $databaseTable
-        ->findGeneralFeaturedByLibraryIds($libraryIds);
     }
 
     $this->subjectDefault = $subjectSlug;
     $this->subjectWidget  = new WidgetFormChoiceSubject(
-      array('library_ids' => $libraryIds));
-
-    $this->databases = $databaseTable->findByLibraryIdsAndSubject(
-      $libraryIds, $this->subject);
+      array('library_ids' => $this->libraryIds));
 
     return sfView::SUCCESS;
   }
