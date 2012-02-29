@@ -55,20 +55,5 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
       return $v[0];
     }, $result);
   }
-
-  public function getGroupIds()
-  {
-    if (!$this->isAuthenticated()) {
-      return array();
-    }
-
-    $ids = array();
-    
-    foreach ($this->getGuardUser()->getGroups() as $group) {
-      $ids[] = $group->getId();
-    }
-
-    return $ids;
-  }
 }
 

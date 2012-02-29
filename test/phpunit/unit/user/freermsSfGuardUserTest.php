@@ -72,31 +72,5 @@ class unit_freermsSfGuardUserTest extends DoctrineTestCase
 
     $this->assertEmpty($securityUser->getLibraryIds());
   }
-
-  public function testGetGroupIds_HasFourGroupAffiliations_ReturnsTwoIds()
-  {
-    $securityUser = new freermsSfGuardUser($this->dispatcher, $this->storage);
-    
-    $user = Doctrine_Core::getTable('sfGuardUser')
-      ->findOneByUsername('haslibrariestcstcny');
-
-    $securityUser->signIn($user);
-
-    $libraryIds = $securityUser->getGroupIds();
-
-    $this->assertCount(4, $securityUser->getGroupIds());
-  }
-
-  public function testGetGroupIds_NoGroupAffiliation_ReturnsEmpty()
-  {
-    $securityUser = new freermsSfGuardUser($this->dispatcher, $this->storage);
-    
-    $user = Doctrine_Core::getTable('sfGuardUser')
-      ->findOneByUsername('nolibrary');
-
-    $securityUser->signIn($user);
-
-    $this->assertEmpty($securityUser->getGroupIds());
-  }
 }
 

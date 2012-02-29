@@ -27,10 +27,6 @@ interface freermsSecurityUser
    */
   public function getLibraryIds();
   /**
-   * @return array int[]
-   */
-  public function getGroupIds();
-  /**
    * @return string
    */
   public function getUsername();
