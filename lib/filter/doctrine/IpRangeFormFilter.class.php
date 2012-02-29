@@ -7,7 +7,7 @@ class IpRangeFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'ip'          => new sfWidgetFormFilterInput(array(
         'with_empty' => false,
-        'label' => 'IP Segment')),
+        'label' => 'Beginning of IP')),
 
       'is_active'   => new sfWidgetFormChoice(array(
         'choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'),
