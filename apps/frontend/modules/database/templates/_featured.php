@@ -1,8 +1,8 @@
 <h3>Featured</h3>
 
-<ul class="featured">
+<ul class="databases featured">
 <?php foreach ($databases as $database): ?>
-  <li><?php echo link_to_database($database->getRawValue()) ?></li>
+  <?php include_partial('database', array('database' => $database)) ?>
 <?php endforeach; ?>
 </ul>
 

@@ -37,6 +37,7 @@ Database:
   pubmed:
     Title: Pubmed
     sort_title: Pubmed
+    description: Lots of medical stuff
     is_featured: 1
     featured_weight: 0
     Libraries: [TCNY]

@@ -92,7 +92,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.databases li', true, array('count' => 10))->
+        checkElement('ul.databases:nth-child(5) li', 10)->
       end()
     ;
   }
@@ -127,7 +127,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('#subject-select option', true, array('count' => 2))->
+        checkElement('#subject-select option', 2)->
       end()
     ;
   }
@@ -144,7 +144,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.featured li', true, array('count' => 3))->
+        checkElement('ul.featured li', 3)->
       end()
     ;
   }
@@ -259,6 +259,40 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     $tester->get('/');
 
     $this->assertNull(sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_ExpectedNumberOfDescriptions()
+  {
+    $this->getTester('192.168.100.100')->
+      get('/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('ul.databases:nth-child(5) .description', 2)->
+      end()
+    ;
+  }
+
+  public function testIndex_ExpectedNumberOfFeaturedDescriptions()
+  {
+    $this->getTester('192.168.100.100')->
+      get('/')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('ul.featured .description', 1)->
+      end()
+    ;
   }
 
   public function testAccess_Subscribed_RedirectsToExpected()

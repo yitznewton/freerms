@@ -1,5 +1,5 @@
 x$.ready(function() {
-  x$('.databases').each(function() {
+  x$('.databases li').each(function() {
     var description = x$('.description', this)[0];
 
     if (description) {
