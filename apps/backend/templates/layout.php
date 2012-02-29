@@ -36,6 +36,7 @@
           <?php endif; ?>
           <?php echo backend_menu_item($sf_params, 'Users', '@sf_guard_user', 'sfGuardUser') ?>
           <?php echo backend_menu_item($sf_params, 'Groups', '@sf_guard_group', 'sfGuardGroup') ?>
+          <?php echo backend_menu_item($sf_params, 'Permissions', '@sf_guard_permission', 'sfGuardPermission') ?>
           <div class="clear"></div>
         </ul>
       </nav>
