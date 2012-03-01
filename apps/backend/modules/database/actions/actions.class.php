@@ -45,6 +45,9 @@ class databaseActions extends autoDatabaseActions
         if ($database) {
           $database->setFeaturedWeight($databaseValues['featured_weight']);
           $database->save();
+
+          $this->dispatcher->notify(new sfEvent($this, 'admin.save_object',
+            array('object' => $database)));
         }
       }
       
@@ -68,6 +71,9 @@ class databaseActions extends autoDatabaseActions
     $database->setIsFeatured(false);
     $database->save();
 
+    $this->dispatcher->notify(new sfEvent($this, 'admin.save_object',
+      array('object' => $database)));
+
     $this->getResponse()->setContentType('application/json');
     $this->getResponse()->setContent('{}');
 
@@ -87,6 +93,9 @@ class databaseActions extends autoDatabaseActions
     $this->forward404Unless($ds);
 
     $ds->delete();
+
+    $this->dispatcher->notify(new sfEvent($this, 'admin.save_object',
+      array('object' => $ds->getSubject())));
 
     $this->getResponse()->setContentType('application/json');
     $this->getResponse()->setContent('{}');
