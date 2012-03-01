@@ -1,0 +1,6 @@
+- %SF_ROOT_DIR%/lib/user/freermsSecurityUser.class.php
+- %SF_APP_DIR%/lib/filter/freermsAffiliationFilter.class.php
+- %SF_APP_DIR%/lib/filter/freermsSecurityFilter.class.php
+- %SF_APP_DIR%/lib/filter/freermsTemplateFilter.class.php
+- %SF_APP_DIR%/lib/user/freermsUserAffiliation.class.php
+
