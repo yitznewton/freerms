@@ -1,3 +1,0 @@
-default:
-  # security for this app is done in freermsAffiliationFilter
-  is_secure: false

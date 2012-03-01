@@ -1,6 +1,0 @@
-all:
-  .options:
-    offsite-testing-ip-addresses:
-      - 127.0.0.1
-  
-  homepage-redirect-url: http://www.touro.edu/library/
