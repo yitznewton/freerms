@@ -16,3 +16,14 @@ function link_to_database(Database $database, array $options = array())
   }
 }
 
+/**
+ * @param sfOutputEscaperObjectDecorator $subject
+ * @param sfOutputEscaperArrayDecorator $libraryIds
+ * @return string
+ */
+function cache_key($subject, $libraryIds)
+{
+  return sprintf('%s-%s', $subject ? $subject->getId() : 'x',
+    implode(',', $libraryIds->getRawValue()));
+}
+
