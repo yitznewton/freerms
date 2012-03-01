@@ -27,6 +27,11 @@ class databaseActions extends sfActions
     if ($subjectSlug) {
       $this->subject = Doctrine_Core::getTable('Subject')
         ->findOneBySlug($subjectSlug);
+
+      if ($this->subject === false) {
+        // must be null or Subject; findOneBySlug() returns false if no match
+        $this->subject = null;
+      }
     }
 
     $this->subjectDefault = $subjectSlug;
