@@ -9,5 +9,9 @@
         <?php echo $database->getDescription() ?>
       </span>
     <?php endif; ?>
+
+    <?php if ($database->getPublicNote()): ?>
+      <div class="public-note"><?php echo $database->getPublicNote() ?></div>
+    <?php endif; ?>
   </li>
 
