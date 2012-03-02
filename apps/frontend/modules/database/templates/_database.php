@@ -13,5 +13,9 @@
     <?php if ($database->getPublicNote()): ?>
       <div class="public-note"><?php echo $database->getPublicNote() ?></div>
     <?php endif; ?>
+
+    <?php if ($database->getIsUnavailable()): ?>
+      <div class="unavailable-note">This database is currently unavailable.</div>
+    <?php endif; ?>
   </li>
 
