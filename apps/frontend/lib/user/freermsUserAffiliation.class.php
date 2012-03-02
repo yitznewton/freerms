@@ -28,6 +28,10 @@ class freermsUserAffiliation
    */
   protected $request;
   /**
+   * @var sfNamespacedParameterHolder
+   */
+  protected $paramHolder;
+  /**
    * @var array int[]
    */
   protected $libraryIds;
@@ -36,17 +40,23 @@ class freermsUserAffiliation
    */
   protected $isOnsite;
   /**
-   * @var int
+   * @var int|false
    */
   protected $onsiteLibraryId;
   
   /**
-   * @param freermsSecurityUser
+   * @param freermsSecurityUser $user
+   * @param sfWebRequest $request
+   * @param sfNamespacedParameterHolder $paramHolder
    */
-  public function __construct(freermsSecurityUser $user, sfWebRequest $request)
+  public function __construct(freermsSecurityUser $user, sfWebRequest $request,
+    sfNamespacedParameterHolder $paramHolder = null)
   {
     $this->user    = $user;
     $this->request = $request;
+
+    $this->paramHolder = $paramHolder ? $paramHolder
+      : $user->getAttributeHolder();
   }
   
   /**
@@ -76,34 +86,40 @@ class freermsUserAffiliation
       return $this->isOnsite; 
     }
 
-    $this->getOnsiteLibraryId();
-    
-    return $this->isOnsite;
+    if ($this->getOnsiteLibraryId()) {
+      return $this->isOnsite = true;
+    }
+    else {
+      return $this->isOnsite = false;
+    }
   }
   
   /**
    * Returns the id of the onsite Library, if any, as matched by client IP
    * address
    *
-   * @return int
+   * @return int|false
    */
   protected function getOnsiteLibraryId()
   {
-    if ($this->onsiteLibraryId) {
+    if (isset($this->onsiteLibraryId)) {
       return $this->onsiteLibraryId;
+    }
+
+    if ($this->paramHolder->has('onsiteLibraryId')) {
+      return $this->onsiteLibraryId
+        = $this->paramHolder->get('onsiteLibraryId');
     }
     
     $onsiteLibrary = Doctrine_Core::getTable('Library')
       ->findOneByIpAddress(
         $this->request->getRemoteAddress());
 
-    if ($onsiteLibrary) {
-      $this->isOnsite = true;
-      return $this->onsiteLibraryId = $onsiteLibrary->getId();
-    }
+    $this->onsiteLibraryId = $onsiteLibrary ? $onsiteLibrary->getId() : false;
 
-    $this->isOnsite = false;
-    return null;
+    $this->paramHolder->set('onsiteLibraryId', $this->onsiteLibraryId);
+
+    return $this->onsiteLibraryId;
   }
 }
 

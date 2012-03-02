@@ -21,6 +21,11 @@
  */
 class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityUser
 {
+  /**
+   * @var array int[]
+   */
+  protected $libraryIds;
+
   public function initialize(sfEventDispatcher $dispatcher,
     sfStorage $storage, $options = array())
   {
@@ -31,10 +36,14 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
 
   public function getLibraryIds()
   {
-    if (!$this->isAuthenticated()) {
-      return array();
+    if (isset($this->libraryIds)) {
+      return $this->libraryIds;
     }
     
+    if (!$this->isAuthenticated()) {
+      return $this->libraryIds = array();
+    }
+
     $q = new Doctrine_RawSql();
 
     $q->select('l.id')
@@ -51,7 +60,7 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
       );
 
     // flatten array of array of ID into array of IDs
-    return array_map(function($v) {
+    return $this->libraryIds = array_map(function($v) {
       return $v[0];
     }, $result);
   }

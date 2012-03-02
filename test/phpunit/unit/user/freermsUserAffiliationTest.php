@@ -30,7 +30,8 @@ class unit_freermsUserAffiliationTest extends DoctrineTestCase
     $library = Doctrine_Core::getTable('Library')
       ->findOneByIpAddress('192.168.100.100');
 
-    $affiliation = new freermsUserAffiliation($this->user, $this->request);
+    $affiliation = new freermsUserAffiliation($this->user, $this->request,
+      new sfNamespacedParameterHolder());
 
     $this->assertContains($library->getId(), $affiliation->getLibraryIds());
   }
@@ -47,7 +48,8 @@ class unit_freermsUserAffiliationTest extends DoctrineTestCase
       ->method('getRemoteAddress')
       ->will($this->returnValue('192.168.100.100'));
 
-    $affiliation = new freermsUserAffiliation($this->user, $this->request);
+    $affiliation = new freermsUserAffiliation($this->user, $this->request,
+      new sfNamespacedParameterHolder());
 
     $this->assertContains('1', $affiliation->getLibraryIds());
   }
@@ -64,7 +66,8 @@ class unit_freermsUserAffiliationTest extends DoctrineTestCase
       ->method('getRemoteAddress')
       ->will($this->returnValue('192.1.1.1'));
 
-    $affiliation = new freermsUserAffiliation($this->user, $this->request);
+    $affiliation = new freermsUserAffiliation($this->user, $this->request,
+      new sfNamespacedParameterHolder());
 
     $this->assertContains('1', $affiliation->getLibraryIds());
   }
@@ -81,7 +84,8 @@ class unit_freermsUserAffiliationTest extends DoctrineTestCase
       ->method('getRemoteAddress')
       ->will($this->returnValue('192.168.100.100'));
 
-    $affiliation = new freermsUserAffiliation($this->user, $this->request);
+    $affiliation = new freermsUserAffiliation($this->user, $this->request,
+      new sfNamespacedParameterHolder());
 
     $this->assertTrue($affiliation->isOnsite());
   }
@@ -98,7 +102,8 @@ class unit_freermsUserAffiliationTest extends DoctrineTestCase
       ->method('getRemoteAddress')
       ->will($this->returnValue('192.1.1.1'));
 
-    $affiliation = new freermsUserAffiliation($this->user, $this->request);
+    $affiliation = new freermsUserAffiliation($this->user, $this->request,
+      new sfNamespacedParameterHolder());
 
     $this->assertFalse($affiliation->isOnsite());
   }
