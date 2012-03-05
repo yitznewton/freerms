@@ -30,4 +30,8 @@ interface freermsSecurityUser
    * @return string
    */
   public function getUsername();
+  /**
+   * @return array string[]
+   */
+  public function getGroupNames();
 }

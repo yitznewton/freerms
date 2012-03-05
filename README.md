@@ -13,6 +13,8 @@ Installation
 
 * Clone the FreERMS git repo
 
+        /home/fred$ git clone https://github.com/yitznewton/freerms.git
+
 * FreERMS requires a slightly modified version of symfony. It is registered as
   a submodule of the FreERMS git repo; if you are installing manually,
   the symfony 1.4 filesystem should be symlinked or added as
@@ -30,19 +32,16 @@ Installation
 
 * Add missing directories:
 
-        /home/fred/freerms$ mkdir log
+        /home/fred/freerms$ mkdir cache log
 
 * Install sfGuardPlugin and publish plugin assets:
 
-        /home/fred/freerms$ ./symfony plugin:install sfGuardPlugin
+        /home/fred/freerms$ ./symfony plugin:install sfDoctrineGuardPlugin
         /home/fred/freerms$ ./symfony plugin:publish-assets
 
-* Run a Doctrine build. Use a custom form generator to avoid a symfony
-  bug/feature:
+* Run a Doctrine build. 
 
         /home/fred/freerms$ ./symfony doctrine:build --all
-        /home/fred/freerms$ ./symfony doctrine:build-forms \
-          --generator-class=freermsDoctrineFormGenerator
 
 * Clear symfony's internal cache (incidentally, always a good idea if
   something looks inexplicably broken during installation or update):
@@ -55,43 +54,63 @@ Installation
         /home/fred/freerms$ ./symfony guard:promote jimbo
 
 At this point, you will be able to set your web server's document root to
-symfony's `web` directory, and connect to the `/admin` app with the user
+symfony's `web` directory, and connect to the `/backend.php` app with the user
 you have just created. In order to use the resolver (i.e. public-facing)
 app, you will need to associate your user with one or more libraries, by
 adding rows to the sf_guard_user_group table. You can modify user data
 via scripts or directly in the database, or create an admin module within
 symfony.
 
-Access handlers
+sfDoctrineGuardPlugin documentation is available at
+http://www.symfony-project.org/plugins/sfDoctrineGuardPlugin
+
+Basic setup
+-----------
+
+After accessing the `/backend.php` admin area, you will need to define your
+libraries and IP ranges. You can then add databases. You must specify an on-
+and off-campus access action for each (see below).
+
+After selecting subject for each database, you can choose specific databases
+to feature on the homepage via `/backend.php/databases/featured`, or on subject
+pages via each subject's admin page.
+
+Access actions
 ---------------
 
 One of the main functions of FreERMS is acting as a link resolver to your
 institution's databases, which includes invoking a proxy server or Referer-
 based authentication as needed. Resources can be assigned the proper
-"access handler" to accomplish this: one for on-campus users, and another
-for off-campus users. A number of standard access handlers are included with
+"access action" to accomplish this: one for on-campus users, and another
+for off-campus users. A number of standard access actions are included with
 FreERMS, including one for ticket-based EZproxy authentication, and ebrary
 single sign-on. Inevitably, however, some resources will require
 local customization.
 
-To add a custom access handler, create a new PHP class at
-`/lib/access/custom/AccessInfoXYZAccessHandler.class.php`
-(the correct class name is indicated in the database form in the Access tab)
-which extends `BaseAccessHandler`. FreERMS will call the `execute()` method
-of the `AccessHandler` instance when a user requests the resource. A sample
-AccessHandler has been provided with FreERMS.
+To add a custom access action, create a new PHP class at
+`/apps/frontend/modules/access/actions/XYZAccessAction.class.php`
+which extends `baseAccessAction`. FreERMS will call the `execute()` method
+of the `AccessHandler` instance when a user requests the resource.
 
-Caching frontend pages
-----------------------
-
-The frontend database listing pages are relatively expensive to the
-database. To enable the frontend cache:
-
-* Uncomment the `cache: true` setting in
-  `apps/resolver/modules/database/config/settings.yml`
-
-Extending FreERMS
+Alternate authentication
 -----------------
 
-It is not difficult to modify FreERMS, for example, to use an alternate user
-backend. (Explain how.)
+To use an authentication system other than sfDoctrineGuardPlugin, you will
+need a customized class which implements `freermsSecurityUser`. In doing
+so, Touro College (the sponsor of FreERMS's development) extended the
+sfDoctrineGuardPlugin user class, overriding certain key methods.
+
+You may also want a customized DataService class to include local user data
+in the usage logs.
+
+Because of security concerns, Touro is not including their customizations in
+the main repository. Please contact yitznewton@hotmail.com if you wish to
+discuss the details.
+
+Usage logs
+----------
+
+Usage of databases and access of URLs are logged in the `database_usage` and
+`url_usage` tables of FreERMS's database. At present, these need to be queried
+by hand. A reporting module is planned.
+
