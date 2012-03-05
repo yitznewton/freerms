@@ -55,11 +55,14 @@ Installation
 
 At this point, you will be able to set your web server's document root to
 symfony's `web` directory, and connect to the `/backend.php` app with the user
-you have just created. In order to use the resolver (i.e. public-facing)
+you have just created.
+
+In order to use the resolver (i.e. public-facing)
 app, you will need to associate your user with one or more libraries, by
-adding rows to the sf_guard_user_group table. You can modify user data
-via scripts or directly in the database, or create an admin module within
-symfony.
+selecting them as "groups" in the user's record, which you can edit by
+clicking "Users" in the backend area. Libraries are added as groups
+when you create them. You can also add arbitrary groups (academic programs,
+for example) which are not libraries.
 
 sfDoctrineGuardPlugin documentation is available at
 http://www.symfony-project.org/plugins/sfDoctrineGuardPlugin
@@ -91,6 +94,17 @@ To add a custom access action, create a new PHP class at
 `/apps/frontend/modules/access/actions/XYZAccessAction.class.php`
 which extends `baseAccessAction`. FreERMS will call the `execute()` method
 of the `AccessHandler` instance when a user requests the resource.
+
+Fine-grained access control
+---------------------------
+
+In addition to the normal library-level filtering of access, you can impose
+additional requirements; for example, if a given database is licenced only for
+a specific acadmic program. Add this program as a group, and associate the
+relevant users. Then add this group's name in the database's `Access control`
+field. If you need to require multiple groups in AND or OR logic, use
+symfony's credential syntax, as described at
+http://www.symfony-project.org/gentle-introduction/1_4/en/06-Inside-the-Controller-Layer#chapter_06_sub_complex_credentials
 
 Alternate authentication
 -----------------

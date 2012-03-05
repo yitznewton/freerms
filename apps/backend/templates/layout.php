@@ -20,7 +20,9 @@
         '@homepage') ?>
 
       <?php if ($sf_user->isAuthenticated()): ?>
-        <div class="logout">Logout</div>
+      <div class="logout-link">
+        <?php echo link_to('Logout', '@sf_guard_signout') ?>
+      </div>
       <?php endif; ?>
 
       <nav class="ui-widget-header">

@@ -17,7 +17,7 @@ html
 header
   margin: 0 0 0.6em
 
-  .logout
+  .logout-link
     float: right
 
   nav
@@ -45,6 +45,14 @@ header
       
 .clear
   clear: both
+
+form[action$='guard/login']
+  th, tfoot td
+    text-align: left
+    padding: 0.5em 0.5em 0.5em 0
+
+  th, td
+    border: 0
 
 #sf_admin_bar
   margin-left: 0

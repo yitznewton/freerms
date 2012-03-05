@@ -13,13 +13,14 @@ default:
     #robots:       index, follow
 
   stylesheets:
+    - /sfDoctrinePlugin/css/global.css
+    - /sfDoctrinePlugin/css/default.css
     - /js/jquery/css/flick/jquery-ui-1.8.17.custom.css
     - backend.css
 
   javascripts:
     - /js/jquery/js/jquery-1.7.1.min.js
     - /js/jquery/js/jquery-ui-1.8.17.custom.min.js
-    - global.js
     - backend.js
     - /js/lib/FR.js
     - /js/lib/FR/Backend.js
