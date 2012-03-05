@@ -36,6 +36,7 @@ ALTER TABLE database_usage DROP FOREIGN KEY usage_attempts_FK_1;
 ALTER TABLE database_usage DROP FOREIGN KEY usage_attempts_FK_2;
 ALTER TABLE database_usage DROP KEY usage_attempts_FI_1;
 ALTER TABLE database_usage DROP KEY usage_attempts_FI_2;
+ALTER TABLE database_usage DROP KEY er_find_redundant;
 ALTER TABLE database_usage CHANGE COLUMN er_id database_id INT NOT NULL;
 ALTER TABLE database_usage CHANGE COLUMN lib_id library_id INT NOT NULL;
 ALTER TABLE database_usage CHANGE COLUMN phpsessid sessionid VARCHAR(8) NOT NULL;
@@ -47,6 +48,36 @@ ALTER TABLE database_usage CHANGE COLUMN additional_user_data additional_data VA
 ALTER TABLE database_usage MODIFY COLUMN id INT;
 ALTER TABLE database_usage DROP PRIMARY KEY;
 ALTER TABLE database_usage DROP COLUMN id;
+
+-- get rid of duplicates
+
+CREATE TEMPORARY TABLE temp_usage_key
+SELECT SQL_BIG_RESULT sessionid, database_id, library_id, count(*) as count
+FROM database_usage
+GROUP BY sessionid, database_id, library_id
+HAVING count > 1
+;
+
+CREATE TEMPORARY TABLE temp_usage_dups
+SELECT DISTINCT SQL_BIG_RESULT database_usage.* FROM database_usage, temp_usage_key
+WHERE database_usage.sessionid = temp_usage_key.sessionid
+AND database_usage.database_id = temp_usage_key.database_id
+AND database_usage.library_id  = temp_usage_key.library_id
+GROUP BY sessionid, database_id, library_id
+;
+
+DELETE database_usage FROM database_usage, temp_usage_key
+WHERE database_usage.sessionid = temp_usage_key.sessionid
+AND database_usage.database_id = temp_usage_key.database_id
+AND database_usage.library_id  = temp_usage_key.library_id
+;
+
+INSERT database_usage SELECT * FROM temp_usage_dups
+;
+
+DROP TABLE temp_usage_key;
+DROP TABLE temp_usage_dups;
+
 ALTER TABLE database_usage ADD PRIMARY KEY (database_id, sessionid);
 ALTER TABLE database_usage ADD FOREIGN KEY (library_id) REFERENCES library (id);
 ALTER TABLE database_usage ADD FOREIGN KEY (database_id) REFERENCES freerms_database (id);
@@ -93,6 +124,8 @@ ALTER TABLE library MODIFY COLUMN name VARCHAR(255) NOT NULL;
 ALTER TABLE library MODIFY COLUMN ezproxy_host VARCHAR(255);
 ALTER TABLE library MODIFY COLUMN ezproxy_key VARCHAR(255);
 
+UPDATE library SET ezproxy_algorithm = 'md5';
+
 ALTER TABLE subject CHANGE COLUMN label name VARCHAR(255) NOT NULL;
 ALTER TABLE subject MODIFY COLUMN slug VARCHAR(255);
 
@@ -119,10 +152,34 @@ UPDATE freerms_database d JOIN access_infos a ON d.access_info_id=a.id
  d.access_action_onsite=REPLACE(a.onsite_access_handler, 'Handler', ''),
  d.access_action_offsite=REPLACE(a.offsite_access_handler, 'Handler', '');
 
+UPDATE freerms_database
+ SET access_action_onsite = 'galeCDBAccess',
+     access_action_offsite = 'galeCDBAccess'
+ WHERE access_action_onsite = 'accessInfo266Access';
+
+UPDATE freerms_database
+ SET access_action_onsite = 'examMasterAccess',
+     access_action_offsite = 'examMasterAccess'
+ WHERE access_action_onsite = 'accessInfo299Access';
+
+UPDATE freerms_database
+ SET access_action_onsite = 'upToDateAccess',
+     access_action_offsite = 'upToDateAccess'
+ WHERE access_action_onsite = 'accessInfo440Access';
+
+UPDATE freerms_database
+ SET access_action_onsite = 'sbsAccess',
+     access_action_offsite = 'sbsAccess'
+ WHERE access_action_onsite = 'accessInfo507Access';
+
 UPDATE freerms_database SET access_action_onsite =
  CONCAT(LOWER(SUBSTR(access_action_onsite, 1, 1)), SUBSTR(access_action_onsite, 2));
 UPDATE freerms_database SET access_action_offsite =
  CONCAT(LOWER(SUBSTR(access_action_offsite, 1, 1)), SUBSTR(access_action_offsite, 2));
+
+UPDATE freerms_database
+ SET access_action_offsite = 'ezproxyAccess'
+ WHERE access_action_offsite = 'eZproxyAccess';
 
 UPDATE freerms_database SET access_info_id = NULL;
 DROP TABLE access_infos;
