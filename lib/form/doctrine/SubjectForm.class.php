@@ -13,7 +13,6 @@ class SubjectForm extends BaseSubjectForm
   public function configure()
   {
     unset(
-      $this['slug'],
       $this['databases_list']
     );
 
