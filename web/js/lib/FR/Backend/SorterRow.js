@@ -55,7 +55,7 @@ FR.Backend.SorterRow.prototype.render = function(options) {
 
   var spanArrow = document.createElement('span');
   spanArrow.className = 'ui-icon ui-icon-arrowthick-2-n-s';
-  this.liEl.appendChild(spanArrow);
+  this.liEl.insertBefore(spanArrow, this.liEl.childNodes[0]);
 
   if (typeof this.onRemove !== 'undefined') {
     // event handler was passed, therefore we should add button

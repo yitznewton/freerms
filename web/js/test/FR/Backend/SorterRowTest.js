@@ -32,7 +32,7 @@ SorterRowTest.prototype.testRender_ExpectedTitle = function() {
   var inputEl = document.createElement('input');
   var row     = new FR.Backend.SorterRow('foo', inputEl);
 
-  assertEquals('foo', row.render().innerHTML.substr(0,3));
+  assertEquals('foo', jQuery(row.render()).text().substr(0,3));
 };
 
 SorterRowTest.prototype.testRemove_FiresOnRemove = function() {
