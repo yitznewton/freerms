@@ -17,7 +17,10 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
     $doctrineBuild = new sfDoctrineBuildDbTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
     $doctrineBuild->run(array(), array("--env=test"));
 
-    $doctrineInsert = new sfDoctrineInsertSqlTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
+    $doctrineInsert = new sfDoctrineInsertSqlTask(
+      ProjectConfiguration::getActive()->getEventDispatcher(),
+      new sfAnsiColorFormatter());
+
     $doctrineInsert->run(array(), array("--env=test"));
 
     // frontend decorator templates for testing
@@ -35,6 +38,12 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
   public function setUp()
   {
     parent::setUp();
+
+    $doctrineCreateTables = new sfDoctrineCreateModelTables(
+      ProjectConfiguration::getActive()->getEventDispatcher(),
+      new sfAnsiColorFormatter());
+
+    $doctrineCreateTables->run(array('Library'), array("--env=test"));
 
     $doctrineLoad = new sfDoctrineDataLoadTask(
       ProjectConfiguration::getActive()->getEventDispatcher(),

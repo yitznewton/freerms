@@ -109,6 +109,12 @@ Database:
     Libraries: [TCS]
     access_control: |
       [this not valid yaml}
+  deleted:
+    title: Deleted
+    sort_title: Deleted
+    access_url: http://deleted.example.org/
+    deleted_at: 2000-01-01
+    Libraries: [TCNY]
 
 DatabaseSubject:
   proquest_health-sciences:

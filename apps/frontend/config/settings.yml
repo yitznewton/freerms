@@ -35,7 +35,7 @@ all:
     # Enable the database manager
     use_database:           true
 
-    enabled_modules: [sfGuardAuth]
+    enabled_modules: [default, sfGuardAuth]
 
     standard_helpers: [Partial, Frontend]
 

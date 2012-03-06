@@ -11,11 +11,23 @@ class DoctrineTestCase extends sfPHPUnitBaseTestCase
 
   public function setUp()
   {
-    $doctrineInsert = new sfDoctrineDataLoadTask(
+    $doctrineCreateTables = new sfDoctrineCreateModelTables(
       ProjectConfiguration::getActive()->getEventDispatcher(),
       new sfAnsiColorFormatter());
 
-    $doctrineInsert->run(array('test/data/fixtures'), array("--env=test"));
+    $doctrineCreateTables->run(array('Library'), array("--env=test"));
+
+    $doctrineInsert = new sfDoctrineInsertSqlTask(
+      ProjectConfiguration::getActive()->getEventDispatcher(),
+      new sfAnsiColorFormatter());
+
+    $doctrineInsert->run(array(), array("--env=test"));
+
+    $doctrineLoad = new sfDoctrineDataLoadTask(
+      ProjectConfiguration::getActive()->getEventDispatcher(),
+      new sfAnsiColorFormatter());
+
+    $doctrineLoad->run(array('test/data/fixtures'), array("--env=test"));
   }
 }
 

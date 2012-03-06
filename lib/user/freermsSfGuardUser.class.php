@@ -50,7 +50,8 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
       ->from('library l, sf_guard_group g, sf_guard_user_group ug '
              . 'WHERE l.code = g.name '
              . 'AND g.id = ug.group_id '
-             . 'AND ug.user_id = ?')
+             . 'AND ug.user_id = ?'
+             . 'AND l.deleted_at IS NULL')
       ->addComponent('l', 'Library')
       ;
 

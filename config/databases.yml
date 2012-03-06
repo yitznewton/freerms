@@ -8,9 +8,12 @@ all:
       dsn:      sqlite:%SF_DATA_DIR%/sqlite/freerms.sqlite
       username: root
       password: 
+      attributes:
+        use_dql_callbacks: true
 
 test:
   doctrine:
     param:
       dsn:      sqlite::memory:
+      # dsn:      sqlite:%SF_DATA_DIR%/sqlite/test.sqlite
 

@@ -36,8 +36,10 @@ class unit_freermsSfGuardUserTest extends DoctrineTestCase
       $this->fail();
     }
 
-    $this->assertEquals(array('TCS', 'TCNY'),
-      array_values(array($library0->getCode(), $library1->getCode())));
+    $values = array($library0->getCode(), $library1->getCode());
+    sort($values);
+
+    $this->assertEquals(array('TCNY', 'TCS'), $values);
   }
 
   public function testGetLibraryIds_HasLibraryAffiliation_ReturnsId()

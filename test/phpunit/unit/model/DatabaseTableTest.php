@@ -3,6 +3,17 @@ require_once dirname(__FILE__).'/../DoctrineTestCase.php';
 
 class unit_DatabaseTableTest extends DoctrineTestCase
 {
+  public function testFindAll_ReturnNotIncludesDeleted()
+  {
+    $table = Doctrine_Core::getTable('Database');
+
+    foreach ($table->findAll() as $database) {
+      if ($database->getDeletedAt()) {
+        $this->fail();
+      }
+    }
+  }
+
   public function testFindByLibraryIdsAndSubject_ReturnsExpectedFirst()
   {
     $table = Doctrine_Core::getTable('Database');
