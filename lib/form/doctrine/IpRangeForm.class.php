@@ -21,6 +21,8 @@ class IpRangeForm extends BaseIpRangeForm
     $this->widgetSchema['end_ip']->setLabel('End IP');
     $this->widgetSchema['is_active']->setLabel('Active');
     $this->widgetSchema['is_excluded']->setLabel('Excluded');
+    $this->widgetSchema['library_id']->setOption('order_by',
+      array('LOWER(name)', 'asc'));
 
     $this->validatorSchema['start_ip'] = new freermsValidatorIpAddress();
     $this->validatorSchema['end_ip'] = new freermsValidatorIpAddress(array(
