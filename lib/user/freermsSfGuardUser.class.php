@@ -65,5 +65,12 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
       return $v[0];
     }, $result);
   }
+
+  public function getReferer($default = null)
+  {
+    // sfDoctrineGuardPlugin method is buggy; bypass. See
+    // http://stackoverflow.com/questions/3346721/symfony-sfdoctrineguardplugin-doesnt-redirect-to-the-referer-page
+    return $default;
+  }
 }
 
