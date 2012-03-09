@@ -25,7 +25,12 @@ class Usage extends BaseUsage
    */
   public function setAdditionalData(array $v)
   {
-    $this->_set('additional_data', json_encode($v));
+    if (empty($v)) {
+      $this->_set('additional_data', null);
+    }
+    else {
+      $this->_set('additional_data', json_encode($v));
+    }
   }
 
   /**
