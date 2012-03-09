@@ -17,12 +17,11 @@ test:
     error_reporting:        <?php echo ((E_ALL | E_STRICT) ^ E_NOTICE)."\n" ?>
     cache:                  false
     web_debug:              false
-    no_script_name:         false
     etag:                   false
 
 all:
   .settings:
-    no_script_name:         true
+    no_script_name:         false
 
     # Form security secret (CSRF protection)
     csrf_secret:            2549e31630598502a7e833bc346eacc091f5fa32
