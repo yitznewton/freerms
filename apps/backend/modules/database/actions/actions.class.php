@@ -102,5 +102,9 @@ class databaseActions extends autoDatabaseActions
 
     return sfView::NONE;
   }
+
+  public function executeError404(sfWebRequest $request)
+  {
+  }
 }
 

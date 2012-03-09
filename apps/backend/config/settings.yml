@@ -39,6 +39,8 @@ all:
     secure_module: sfGuardAuth
     secure_action: secure
 
+    error_404_module: database
+
     enabled_modules:
       - default
       - sfGuardGroup

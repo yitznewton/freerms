@@ -87,5 +87,9 @@ class databaseActions extends sfActions
     // symfony handles nonexistent actions
     $this->forward('access', $action);
   }
+
+  public function executeError404(sfWebRequest $request)
+  {
+  }
 }
 
