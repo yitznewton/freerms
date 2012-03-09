@@ -24,6 +24,7 @@ class SubjectForm extends BaseSubjectForm
       ->createQuery('ds')
       ->leftJoin('ds.Database d')
       ->where('ds.subject_id = ?', $this->getObject()->getId())
+      ->andWhere('d.deleted_at is null')
       ->orderBy('d.sort_title')
       ->execute()
       ;
@@ -34,7 +35,7 @@ class SubjectForm extends BaseSubjectForm
     
     $containerForm = new sfForm();
 
-    foreach ($this->getObject()->getDatabaseSubjects() as $ds) {
+    foreach ($databaseSubjects as $ds) {
       $containerForm->embedForm($ds->getDatabaseId(),
         new DatabaseSubjectForm($ds));
     }
