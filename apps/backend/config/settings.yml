@@ -3,7 +3,6 @@
 
 prod:
   .settings:
-    no_script_name:         false
     logging_enabled:        false
 
 dev:
@@ -11,7 +10,6 @@ dev:
     error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
     web_debug:              true
     cache:                  false
-    no_script_name:         false
     etag:                   false
 
 test:
@@ -24,6 +22,8 @@ test:
 
 all:
   .settings:
+    no_script_name:         true
+
     # Form security secret (CSRF protection)
     csrf_secret:            2549e31630598502a7e833bc346eacc091f5fa32
 
