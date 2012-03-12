@@ -46,8 +46,14 @@ class databaseActions extends sfActions
    */
   public function executeAccess(sfWebRequest $request)
   {
-    $database = Doctrine_Core::getTable('Database')
-      ->find($request->getParameter('id'));
+    if ($request->hasParameter('alt_id')) {
+      $database = Doctrine_Core::getTable('Database')
+        ->findOneByAltId($request->getParameter('alt_id'));
+    }
+    else {
+      $database = Doctrine_Core::getTable('Database')
+        ->find($request->getParameter('id'));
+    }
 
     $this->forward404Unless($database);
     $this->forward404If($database->getIsUnavailable());

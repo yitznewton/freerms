@@ -20,6 +20,10 @@ database_access:
   requirements:
     id: \d+
 
+database_access_alt:
+  url: /database/alt/:alt_id
+  params: { module: database, action: access }
+
 access_refer:
   url: /refer
   params: { module: access, action: refererAccess }
