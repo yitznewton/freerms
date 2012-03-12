@@ -47,8 +47,10 @@ class databaseActions extends sfActions
   public function executeAccess(sfWebRequest $request)
   {
     if ($request->hasParameter('alt_id')) {
-      $database = Doctrine_Core::getTable('Database')
-        ->findOneByAltId($request->getParameter('alt_id'));
+      $database = Doctrine_Core::getTable('Database')->createQuery('d')
+        ->where('LOWER(d.alt_id) = ?',
+          strtolower($request->getParameter('alt_id')))
+        ->fetchOne();
     }
     else {
       $database = Doctrine_Core::getTable('Database')
