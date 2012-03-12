@@ -20,7 +20,6 @@ DROP TABLE IF EXISTS ip_reg_events;
 DROP TABLE IF EXISTS usage_stats_formats;
 DROP TABLE IF EXISTS usage_stats_freqs;
 DROP TABLE IF EXISTS auth_methods;
-DROP TABLE IF EXISTS library;
 DROP TABLE IF EXISTS admin_infos;
 
 ALTER TABLE libraries RENAME library;
@@ -77,6 +76,10 @@ INSERT database_usage SELECT * FROM temp_usage_dups
 
 DROP TABLE temp_usage_key;
 DROP TABLE temp_usage_dups;
+
+DELETE FROM database_usage WHERE NOT EXISTS
+(SELECT * FROM library WHERE library.id = database_usage.library_id)
+;
 
 ALTER TABLE database_usage ADD PRIMARY KEY (database_id, sessionid);
 ALTER TABLE database_usage ADD FOREIGN KEY (library_id) REFERENCES library (id);
