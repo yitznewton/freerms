@@ -72,5 +72,11 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
     // http://stackoverflow.com/questions/3346721/symfony-sfdoctrineguardplugin-doesnt-redirect-to-the-referer-page
     return $default;
   }
+
+  public function signOut()
+  {
+    parent::signOut();
+    $this->getAttributeHolder()->clear();
+  }
 }
 

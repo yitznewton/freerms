@@ -295,6 +295,23 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     ;
   }
 
+  public function testLogout_LoggedIn_ClearsAttributes()
+  {
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/');
+
+    $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+    
+    $tester->get('/');
+
+    $this->assertFalse($tester->getUser()->getAttribute('onsiteLibraryId'));
+
+    $tester->get('/logout');
+
+    $this->assertNull($tester->getUser()->getAttribute('onsiteLibraryId'));
+  }
+  
   public function testAccess_Subscribed_RedirectsToExpected()
   {
     $database = Doctrine_Core::getTable('Database')
