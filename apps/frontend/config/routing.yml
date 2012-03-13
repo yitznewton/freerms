@@ -33,6 +33,12 @@ proxy_url:
   url: /url/*
   params: { module: access, action: ezproxyUrlAccess }
 
+direct_refer_url:
+  # legacy links; insecure, so replacing with proxied links
+  # needs to be wildcard to match slashes in URL
+  url: /direct-refer/*
+  params: { module: access, action: ezproxyUrlAccess }
+
 sf_guard_signout:
   url:   /logout
   param: { module: sfGuardAuth, action: signout }
