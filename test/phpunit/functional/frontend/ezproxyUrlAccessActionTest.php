@@ -29,6 +29,21 @@ class functional_frontend_ezproxyUrlAccessActionTest extends FrontendFunctionalT
       $url);
   }
 
+  public function testAccess_DirectReferLegacyLink_RedirectsStraight()
+  {
+    $url = 'http://www.example.org';
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->get("/direct-refer/$url");
+
+    $tester->test()->is($tester->getResponse()->getStatusCode(),
+      302);
+
+    $tester->test()->is($tester->getResponse()->getHttpHeader('Location'),
+      $url);
+  }
+
   public function testAccess_EzproxyUrl_RedirectHasProxyHost()
   {
     $url = 'http://www.example.org';

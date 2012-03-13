@@ -36,8 +36,17 @@ class ezproxyUrlAccessAction extends ezproxyAccessAction
   protected function getUrl()
   {
     $raw_url = $this->getRequest()->getUri();
-    $url     = substr($raw_url, strrpos($raw_url, '/url/') + 5);
-    
+
+    if (strpos($raw_url, '/url/') !== false) {
+      $url = substr($raw_url, strrpos($raw_url, '/url/') + 5);
+    }
+    elseif (strpos($raw_url, '/direct-refer/') !== false) {
+      $url = substr($raw_url, strrpos($raw_url, '/direct-refer/') + 14);
+    }
+    else {
+      return null;
+    }
+
     if (substr($url, 0, 4) == 'http') {
       return $url;
     }
