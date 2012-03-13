@@ -67,11 +67,19 @@ class freermsUserAffiliation
     if (isset($this->libraryIds)) {
       return $this->libraryIds;
     }
+
+    if ($this->paramHolder->has('libraryIds')) {
+      return $this->libraryIds = $this->paramHolder->get('libraryIds');
+    }
     
     $this->libraryIds = $this->user->getLibraryIds();
     
     if ($this->getOnsiteLibraryId()) {
       array_unshift($this->libraryIds, $this->getOnsiteLibraryId());
+    }
+
+    if ($this->libraryIds) {
+      $this->paramHolder->set('libraryIds', $this->libraryIds);
     }
 
     return $this->libraryIds;
