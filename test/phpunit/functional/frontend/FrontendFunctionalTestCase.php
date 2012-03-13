@@ -43,7 +43,7 @@ class FrontendFunctionalTestCase extends sfPHPUnitBaseFunctionalTestCase
       ProjectConfiguration::getActive()->getEventDispatcher(),
       new sfAnsiColorFormatter());
 
-    $doctrineCreateTables->run(array('Library'), array("--env=test"));
+    $doctrineCreateTables->run(array('Library Database'), array("--env=test"));
 
     $doctrineLoad = new sfDoctrineDataLoadTask(
       ProjectConfiguration::getActive()->getEventDispatcher(),

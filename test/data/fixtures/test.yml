@@ -15,6 +15,7 @@ Database:
     access_action_onsite: ebrarySSOAccess
   ebsco:
     Title: EBSCO
+    alt_id: ebs
     sort_title: ebsco
     Subjects: [psychology]
     Libraries: [TCS]

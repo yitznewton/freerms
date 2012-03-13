@@ -15,7 +15,7 @@ class DoctrineTestCase extends sfPHPUnitBaseTestCase
       ProjectConfiguration::getActive()->getEventDispatcher(),
       new sfAnsiColorFormatter());
 
-    $doctrineCreateTables->run(array('Library'), array("--env=test"));
+    $doctrineCreateTables->run(array('Library Database'), array("--env=test"));
 
     $doctrineInsert = new sfDoctrineInsertSqlTask(
       ProjectConfiguration::getActive()->getEventDispatcher(),

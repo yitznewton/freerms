@@ -311,6 +311,23 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
     $this->assertNull($tester->getUser()->getAttribute('onsiteLibraryId'));
   }
+
+  public function testAccess_AltIdCaseChanged_RedirectsToExpected()
+  {
+    $this->getTester('192.167.100.100')->
+      get('/database/alt/EBS')->
+
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'access')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(302)->
+        isHeader('Location', 'http://ebsco.example.org/')->
+      end()
+    ;
+  }
   
   public function testAccess_Subscribed_RedirectsToExpected()
   {
