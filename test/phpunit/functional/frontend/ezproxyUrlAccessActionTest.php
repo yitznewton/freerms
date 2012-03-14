@@ -106,7 +106,7 @@ class functional_frontend_ezproxyUrlAccessActionTest extends FrontendFunctionalT
       ->getHttpHeader('Location'), "`$url`");
   }
 
-  public function testAccess_LogsUsage()
+  public function testAccess_LogsUsageOffsite()
   {
     $this->assertEquals(0, Doctrine_Core::getTable('UrlUsage')
       ->findAll()->count());
@@ -121,6 +121,21 @@ class functional_frontend_ezproxyUrlAccessActionTest extends FrontendFunctionalT
     $tester->get("/url/$url");
 
     $tester = $this->login($tester, 'haslibrarytcs', 'jimbobjoe');
+
+    $this->assertEquals(1, Doctrine_Core::getTable('UrlUsage')
+      ->findAll()->count());
+  }
+
+  public function testAccess_LogsUsageOnsite()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('UrlUsage')
+      ->findAll()->count());
+
+    $url = 'http://www.example.org';
+
+    $tester = $this->getTester('192.167.100.100');
+
+    $tester->get("/url/$url");
 
     $this->assertEquals(1, Doctrine_Core::getTable('UrlUsage')
       ->findAll()->count());

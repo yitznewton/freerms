@@ -12,6 +12,7 @@ class ezproxyUrlAccessAction extends ezproxyAccessAction
     $this->forward404Unless($this->getUrl());
 
     if ($this->getContext()->getAffiliation()->isOnsite()) {
+      $this->logUsage();
       $this->redirect($this->getUrl());
     }
 
