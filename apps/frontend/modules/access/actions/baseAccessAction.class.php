@@ -4,6 +4,7 @@ class baseAccessAction extends sfAction
 {
   const IS_VALID_ONSITE   = true;
   const IS_VALID_OFFSITE  = true;
+  const IS_CUSTOM         = false;
   const DESCRIPTION       = 'IP-based';
 
   /**

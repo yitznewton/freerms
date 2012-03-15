@@ -5,6 +5,7 @@ class ebrarySSOAccessAction extends ezproxyAccessAction
 {
   const IS_VALID_ONSITE   = true;
   const IS_VALID_OFFSITE  = true;
+  const IS_CUSTOM         = true;
   const DESCRIPTION       = 'ebrary SSO';
 
   public function execute($request)

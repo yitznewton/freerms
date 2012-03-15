@@ -13,6 +13,7 @@ class offsiteAccessAction
 {
   const IS_VALID_OFFSITE = true;
   const IS_VALID_ONSITE = false;
+  const IS_CUSTOM = false;
   const DESCRIPTION = 'Offsite';
 }
 EOF
@@ -23,6 +24,7 @@ class onOffsiteAccessAction
 {
   const IS_VALID_OFFSITE = true;
   const IS_VALID_ONSITE = true;
+  const IS_CUSTOM = true;
   const DESCRIPTION = 'A On and offsite';
 }
 EOF
@@ -40,6 +42,14 @@ EOF
 
     $this->assertCount(2,
       $lister->retrieve(freermsAccessActionLister::OFFSITE));
+  }
+
+  public function testRetrieve_CustomAndNoncustom_ReturnsGroups()
+  {
+    $lister = new freermsAccessActionLister(vfsStream::url('actions'));
+    $result = $lister->retrieve(freermsAccessActionLister::OFFSITE);
+
+    $this->assertEquals(array('Standard', 'Custom'), array_keys($result));
   }
 
   public function testRetrieve_Onsite_RetrievesCorrectNumber()

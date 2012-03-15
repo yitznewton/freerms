@@ -32,21 +32,28 @@ class freermsAccessActionLister
       $this->allActions = $this->requireAndGetActions();
     }
 
-    $ret = array();
+    $standard = array();
+    $custom   = array();
 
     foreach ($this->allActions as $action) {
       $classname = $action . 'Action';
 
       switch($site) {
         case self::ONSITE:
-          if ($classname::IS_VALID_ONSITE) {
-            $ret[$action] = $classname::DESCRIPTION;
+          if ($classname::IS_VALID_ONSITE && $classname::IS_CUSTOM) {
+            $custom[$action] = $classname::DESCRIPTION;
+          }
+          elseif ($classname::IS_VALID_ONSITE && !$classname::IS_CUSTOM) {
+            $standard[$action] = $classname::DESCRIPTION;
           }
           break;
 
         case self::OFFSITE:
-          if ($classname::IS_VALID_OFFSITE) {
-            $ret[$action] = $classname::DESCRIPTION;
+          if ($classname::IS_VALID_OFFSITE && $classname::IS_CUSTOM) {
+            $custom[$action] = $classname::DESCRIPTION;
+          }
+          elseif ($classname::IS_VALID_OFFSITE && !$classname::IS_CUSTOM) {
+            $standard[$action] = $classname::DESCRIPTION;
           }
           break;
 
@@ -56,9 +63,18 @@ class freermsAccessActionLister
       }
     }
 
-    asort($ret);
+    asort($standard);
+    asort($custom);
 
-    return $ret;
+    if ($standard && $custom) {
+      return array('Standard' => $standard, 'Custom' => $custom);
+    }
+    elseif ($custom) {
+      return $custom;
+    }
+    else {
+      return $standard;
+    }
   }
 
   /**
