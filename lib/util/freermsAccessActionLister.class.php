@@ -63,8 +63,8 @@ class freermsAccessActionLister
       }
     }
 
-    asort($standard);
-    asort($custom);
+    array_multisort(array_map('strtolower', $standard), $standard);
+    array_multisort(array_map('strtolower', $custom), $custom);
 
     if ($standard && $custom) {
       return array('Standard' => $standard, 'Custom' => $custom);
