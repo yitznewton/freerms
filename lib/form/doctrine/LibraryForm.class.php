@@ -13,6 +13,7 @@ class LibraryForm extends BaseLibraryForm
   public function configure()
   {
     unset(
+      $this['databases_list'],
       $this['created_at'],
       $this['updated_at'],
       $this['deleted_at']
