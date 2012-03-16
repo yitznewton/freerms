@@ -11,8 +11,10 @@ class freermsTemplateFilter extends sfFilter
       $fromUser = $this->context->getUser()->getAttribute('template', null);
       $fromRequest = $this->getTemplateFromRequest();
 
-      if ($this->templateExists($fromRequest)) {
-        $this->context->getUser()->setAttribute('template', $fromRequest);
+      if ($this->templateExists($fromRequest.'_mobile') && $this->isMobile()) {
+        $this->setTemplate($fromRequest.'_mobile');
+      }
+      elseif ($this->templateExists($fromRequest)) {
         $this->setTemplate($fromRequest);
       }
       elseif ($this->templateExists($fromUser)) {
@@ -57,6 +59,19 @@ class freermsTemplateFilter extends sfFilter
   {
     return (bool) ProjectConfiguration::getActive()
       ->getDecoratorDir($template.'.php');
+  }
+
+  /**
+   * @return book
+   */
+  protected function isMobile()
+  {
+    $browser_ptn = '/(android|blackberry|blazer|symbian|fennec|dorothy'
+                   . '|gobrowser|nokia|ipad|iphone|ipod|iemobile|mib|minimo'
+                   . '|opera mini|opera mobi|semc|skyfire|uzard)/i';
+
+    return (bool) preg_match($browser_ptn,
+      $this->context->getRequest()->getHTTPHeader('User-Agent'));
   }
 
   /**

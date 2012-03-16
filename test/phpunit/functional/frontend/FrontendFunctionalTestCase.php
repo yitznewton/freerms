@@ -11,6 +11,7 @@ class FrontendFunctionalTestCase extends FunctionalTestCase
 
     // frontend decorator templates for testing
     touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
+    touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test1_mobile.php');
     touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
   }
 
@@ -18,6 +19,7 @@ class FrontendFunctionalTestCase extends FunctionalTestCase
   {
     // frontend decorator templates for testing
     unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1_mobile.php');
     unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
   }
 
@@ -26,9 +28,13 @@ class FrontendFunctionalTestCase extends FunctionalTestCase
     return 'frontend';
   }
 
-  protected function getTester($ip)
+  protected function getTester($ip, $headers = array())
   {
     $browser = new sfBrowser(null, $ip);
+
+    foreach ($headers as $key => $value) {
+      $browser->setHttpHeader($key, $value);
+    }
 
     return new sfTestFunctional($browser, $this->getTest());
   }
