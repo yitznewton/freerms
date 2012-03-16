@@ -64,11 +64,27 @@ form[action$='guard/login']
 #sf_admin_container
   padding: 0.4em 0.8em
 
-  .sf_admin_form_row
-    border-bottom: $border
-
   fieldset
     border-color: #aaa
+
+.sf_admin_form_row
+  border-bottom: $border
+
+  > div
+    height: 1%
+    overflow: hidden
+
+.label
+  color: #666666
+  display: block
+  float: left
+  font-weight: normal !important
+  padding: 0 1em 3px 0
+  text-align: left
+  width: 8em
+
+input#database_title, input#database_sort_title, input#database_access_url
+  width: 30em
 
 #sf_admin_form_field_DatabaseSubject
   h3:first-of-type
