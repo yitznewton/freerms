@@ -20,6 +20,9 @@ class freermsTemplateFilter extends sfFilter
       elseif ($this->templateExists($fromUser)) {
         $this->setTemplate($fromUser);
       }
+      elseif ($this->templateExists('layout_mobile') && $this->isMobile()) {
+        $this->setTemplate('layout_mobile');
+      }
     }
 
     $filterChain->execute();
