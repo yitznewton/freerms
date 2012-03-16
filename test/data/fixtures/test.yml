@@ -3,6 +3,7 @@ Subject:
     Name: Health Sciences
   psychology:
     Name: Psychology
+    weight: 0
 
 Database:
   ebrary:

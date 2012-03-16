@@ -204,4 +204,8 @@ Subject:
     name:
       type: string(255)
       notnull: true
+    weight:
+      type: integer
+      notnull: true
+      default: 999
 

@@ -22,7 +22,7 @@ class WidgetFormChoiceSubject extends sfWidgetFormDoctrineChoice
       ->distinct()
       ->leftJoin('s.Databases d')
       ->where('d.is_hidden = false')
-      ->orderBy('s.name')
+      ->orderBy('s.weight, LOWER(s.name)')
       ;
 
     if (isset($options['library_ids']) && $options['library_ids']) {

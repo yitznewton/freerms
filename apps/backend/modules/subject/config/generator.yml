@@ -13,7 +13,11 @@ generator:
 
     config:
       actions: ~
-      fields:  ~
+      fields:
+        slug:
+          help: URL designation for this subject
+        weight:
+          help: Sort order of options in homepage subject dropdown
       list:
         title: false
         display: [=name]
@@ -22,7 +26,8 @@ generator:
           _delete: ~
       filter:
         class: false
-      form:    ~
+      form:
+        display: [name, slug, weight, DatabaseSubject]
       edit:
         title: false
       new:     ~

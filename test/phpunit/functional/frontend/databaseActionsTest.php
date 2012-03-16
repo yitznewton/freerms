@@ -132,6 +132,27 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     ;
   }
 
+  public function testIndex_Onsite_SubjectWidgetCorrectOrder()
+  {
+    $tester = $this->getTester('192.1.1.1');
+
+    $tester->get('/');
+
+    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+
+    $tester->get('/')->
+      with('request')->begin()->
+        isParameter('module', 'database')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('#subject-select option:nth-child(2)', 'Psychology')->
+      end()
+    ;
+  }
+
   public function testIndex_NoFeaturedSubject_DisplayGeneralFeatured()
   {
     $this->getTester('192.168.100.100')->
