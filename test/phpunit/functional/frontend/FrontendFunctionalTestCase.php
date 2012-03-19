@@ -19,10 +19,10 @@ class FrontendFunctionalTestCase extends FunctionalTestCase
   public static function tearDownAfterClass()
   {
     // frontend decorator templates for testing
-//    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/layout_mobile.php');
-//    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
-//    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1_mobile.php');
-//    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/layout_mobile.php');
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1_mobile.php');
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
   }
 
   protected function getApplication()
