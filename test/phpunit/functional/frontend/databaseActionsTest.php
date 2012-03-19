@@ -211,11 +211,108 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
-  public function testIndex_NoLayoutParam_SetsMobileLayout()
+  public function testIndex_Mobile_ForceNoMobFalse_LayoutParam_MobileLayout()
   {
     sfConfig::set('symfony.view.database_index_layout', null);
 
-    $tester = $this->getTester('192.167.100.100');
+    $tester = $this->getTester('192.167.100.100', array(
+      'User-Agent' => 'iphone',
+    ));
+
+    $tester->get('/?site=test1&force-no-mobile=0');
+
+    $this->assertEquals('test1_mobile',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_Mobile_ForceNoMobTrue_LayoutParam_NotMobileLayout()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100', array(
+      'User-Agent' => 'iphone',
+    ));
+
+    $tester->get('/?site=test1&force-no-mobile=1');
+
+    $this->assertEquals('test1',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_Mobile_RemembersForceNoMob_NotMobileLayout()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100', array(
+      'User-Agent' => 'iphone',
+    ));
+
+    $tester->get('/?site=test1&force-no-mobile=1');
+    $tester->get('/?site=test1');
+
+    $this->assertEquals('test1',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_Mobile_ForceNoMobFalse_UserLayout_MobileLayout()
+  {
+    $tester = $this->getTester('192.167.100.100', array(
+      'User-Agent' => 'iphone',
+    ));
+
+    $tester->get('/?layout=test1&force-no-mobile=1');
+    $tester->get('/?force-no-mobile=0');
+
+    $this->assertEquals('test1_mobile',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_Mobile_ForceNoMobTrue_UserLayout_NotMobileLayout()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100', array(
+      'User-Agent' => 'iphone',
+    ));
+
+    $tester->get('/?layout=test1');
+    $tester->get('/?force-no-mobile=1');
+
+    $this->assertEquals('test1',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_Mobile_ForceNoMobFalse_NoLayout_MobileLayout()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100', array(
+      'User-Agent' => 'iphone',
+    ));
+
+    $tester->get('/?force-no-mobile=0');
+
+    $this->assertEquals('layout_mobile',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_Mobile_ForceNoMobTrue_NoLayout_NotMobileLayout()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
+
+    $tester = $this->getTester('192.167.100.100', array(
+      'User-Agent' => 'iphone',
+    ));
+
+    $tester->get('/?force-no-mobile=1');
+
+    $this->assertEquals('layout',
+      sfConfig::get('symfony.view.database_index_layout'));
+  }
+
+  public function testIndex_Mobile_NoLayoutParam_SetsMobileLayout()
+  {
+    sfConfig::set('symfony.view.database_index_layout', null);
 
     $tester = $this->getTester('192.167.100.100', array(
       'User-Agent' => 'iphone',
@@ -227,7 +324,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
-  public function testIndex_LayoutParam_SetsMobileLayoutForLayoutParam()
+  public function testIndex_Mobile_LayoutParam_MobileLayoutForLayoutParam()
   {
     sfConfig::set('symfony.view.database_index_layout', null);
 
@@ -243,7 +340,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
       sfConfig::get('symfony.view.database_index_layout'));
   }
 
-  public function testIndex_LayoutParamMobileNotExists_SetsLayoutForLayoutParam()
+  public function testIndex_Mobile_LayoutParamMobileNotExists_LayoutForLayoutParam()
   {
     sfConfig::set('symfony.view.database_index_layout', null);
 

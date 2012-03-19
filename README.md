@@ -78,6 +78,25 @@ After selecting subject for each database, you can choose specific databases
 to feature on the homepage via `/backend.php/databases/featured`, or on subject
 pages via each subject's admin page.
 
+Theming
+-------
+
+You can support multiple templates for the frontend app ('layouts' in symfony
+terms) by adding them to `apps/frontend/templates/`. They can then be called
+by one of the following methods:
+
+* Passing the layout name in the URL as the `site` parameter
+* Passing the layout name in the URL as the `layout` parameter
+* Using the layout name as the most specific segment of the server host name,
+  e.g. `foo_layout_name.erms.example.com`
+
+If you supply a mobile layout with the suffix `_mobile`, e.g.
+`foo_mobile`, mobile users under that layout will be shown that template. You
+can allow them to select the non-mobile theme by sending them to a URL which
+has the `force-no-mobile` parameter set to a true value, e.g.
+`http://erms.example.com/?force-no-mobile=1`. It can then be reverted with e.g.
+`http://erms.example.com/?force-no-mobile=0`.
+
 Fine-grained access control
 ---------------------------
 

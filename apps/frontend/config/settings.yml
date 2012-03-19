@@ -12,6 +12,7 @@ dev:
     web_debug:              true
     cache:                  false
     etag:                   false
+    no_script_name:         false
 
 test:
   .settings:

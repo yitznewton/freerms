@@ -8,30 +8,50 @@ class freermsTemplateFilter extends sfFilter
     // the next time called
 
     if ($this->isFirstCall()) {
-      $fromUser = $this->context->getUser()->getAttribute('template', null);
-      $fromRequest = $this->getTemplateFromRequest();
+      $layout = $this->getLayout();
 
-      if ($this->templateExists($fromRequest.'_mobile') && $this->isMobile()) {
-        $this->setTemplate($fromRequest.'_mobile');
+      if ($this->layoutExists($layout.'_mobile') && $this->isMobile()) {
+        $this->setLayout($layout.'_mobile');
       }
-      elseif ($this->templateExists($fromRequest)) {
-        $this->setTemplate($fromRequest);
-      }
-      elseif ($this->templateExists($fromUser)) {
-        $this->setTemplate($fromUser);
-      }
-      elseif ($this->templateExists('layout_mobile') && $this->isMobile()) {
-        $this->setTemplate('layout_mobile');
+      elseif ($this->layoutExists($layout)) {
+        $this->setLayout($layout);
       }
     }
 
     $filterChain->execute();
   }
 
+  protected function getLayout()
+  {
+    $fromRequest = $this->getLayoutFromRequest();
+    $fromUser = $this->context->getUser()->getAttribute('template', null);
+
+    if ($this->layoutExists($fromRequest)) {
+      return preg_replace('/_mobile$/', '', $fromRequest);
+    }
+    elseif ($this->layoutExists($fromUser)) {
+      return preg_replace('/_mobile$/', '', $fromUser);
+    }
+    else {
+      return 'layout';
+    }
+  }
+
+  /**
+   * @param string $template
+   */
+  protected function setLayout($template)
+  {
+    $this->context->getUser()->setAttribute('template', $template);
+
+    $this->context->getActionStack()->getLastEntry()
+      ->getActionInstance()->setLayout($template);
+  }
+
   /**
    * @return string
    */
-  protected function getTemplateFromRequest()
+  protected function getLayoutFromRequest()
   {
     $request = $this->context->getRequest();
 
@@ -58,7 +78,7 @@ class freermsTemplateFilter extends sfFilter
   /**
    * @return bool
    */
-  protected function templateExists($template)
+  protected function layoutExists($template)
   {
     return (bool) ProjectConfiguration::getActive()
       ->getDecoratorDir($template.'.php');
@@ -69,23 +89,22 @@ class freermsTemplateFilter extends sfFilter
    */
   protected function isMobile()
   {
-    $browser_ptn = '/(android|blackberry|blazer|symbian|fennec|dorothy'
-                   . '|gobrowser|nokia|ipad|iphone|ipod|iemobile|mib|minimo'
-                   . '|opera mini|opera mobi|semc|skyfire|uzard)/i';
+    $request = $this->context->getRequest();
 
-    return (bool) preg_match($browser_ptn,
-      $this->context->getRequest()->getHTTPHeader('User-Agent'));
-  }
+    if ($request->hasParameter('force-no-mobile') && $request->isMobile()) {
+      $isMobile = !$request->getParameter('force-no-mobile');
+      $this->context->getUser()->setAttribute('is_mobile', $isMobile);
 
-  /**
-   * @param string $template
-   */
-  protected function setTemplate($template)
-  {
-    $this->context->getUser()->setAttribute('template', $template);
+      return $isMobile; 
+    }
 
-    $this->context->getActionStack()->getLastEntry()
-      ->getActionInstance()->setLayout($template);
+    if ($this->context->getUser()->getAttribute('is_mobile') === false) {
+      return false;
+    }
+
+    $this->context->getUser()->setAttribute('is_mobile', $request->isMobile());
+
+    return $request->isMobile();
   }
 }
 
