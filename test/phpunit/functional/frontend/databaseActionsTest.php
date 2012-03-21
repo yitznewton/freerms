@@ -92,7 +92,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.databases:nth-child(5) li', 10)->
+        checkElement('ul.databases:nth-child(6) li', 10)->
       end()
     ;
   }
@@ -449,7 +449,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
 
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('ul.databases:nth-child(5) .description', 2)->
+        checkElement('ul.databases:nth-child(6) .description', 2)->
       end()
     ;
   }
