@@ -563,7 +563,7 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     ;
   }
 
-  public function testAccess_Database_RecordsSingleUsage()
+  public function testAccess_NonMobile_RecordsSingleNonMobileUsage()
   {
     $this->assertEquals(0, Doctrine_Core::getTable('DatabaseUsage')
       ->findAll()->count());
@@ -572,20 +572,35 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     $database = Doctrine_Core::getTable('Database')
       ->findOneByTitle('Pubmed');
 
-    $library = Doctrine_Core::getTable('Library')
-      ->findOneByCode('TCNY');
-
-    $user = Doctrine_Core::getTable('sfGuardUser')
-      ->findOneByUsername('haslibrariestcstcny');
-
-    $tester = $this->getTester('192.1.1.1');
+    $tester = $this->getTester('192.168.100.1');
 
     $tester->get('/database/' . $database->getId());
 
-    $tester = $this->login($tester, 'haslibrariestcstcny', 'somesecret');
+    $usages = Doctrine_Core::getTable('DatabaseUsage')->findAll();
 
-    $this->assertEquals(1, Doctrine_Core::getTable('DatabaseUsage')
+    $this->assertEquals(1, $usages->count());
+    $this->assertFalse($usages->getFirst()->getIsMobile());
+  }
+
+  public function testAccess_Mobile_RecordsSingleMobileUsage()
+  {
+    $this->assertEquals(0, Doctrine_Core::getTable('DatabaseUsage')
       ->findAll()->count());
+
+    // unrestricted
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Pubmed');
+
+    $tester = $this->getTester('192.168.100.1');
+
+    $tester->setHttpHeader('User-Agent', 'iphone');
+
+    $tester->get('/database/' . $database->getId());
+
+    $usages = Doctrine_Core::getTable('DatabaseUsage')->findAll();
+
+    $this->assertEquals(1, $usages->count());
+    $this->assertTrue($usages->getFirst()->getIsMobile());
   }
 
   public function testAccess_AccessControlNotValidYaml_Redirects()

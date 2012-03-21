@@ -109,6 +109,8 @@ Usage:
     is_onsite:
       type: boolean
       notnull: true
+    is_mobile:
+      type: boolean
     additional_data:
       type: string(255)
 

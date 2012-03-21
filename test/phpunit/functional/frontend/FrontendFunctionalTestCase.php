@@ -10,19 +10,20 @@ class FrontendFunctionalTestCase extends FunctionalTestCase
     $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true);
 
     // frontend decorator templates for testing
-    touch(sfConfig::get('sf_apps_dir').'/frontend/templates/layout_mobile.php');
     touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
     touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test1_mobile.php');
     touch(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
+    copy(sfConfig::get('sf_apps_dir').'/frontend/templates/layout.php',
+      sfConfig::get('sf_apps_dir').'/frontend/templates/layout_mobile.php');
   }
 
   public static function tearDownAfterClass()
   {
     // frontend decorator templates for testing
-    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/layout_mobile.php');
     unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1.php');
     unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test1_mobile.php');
     unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/test2.php');
+    unlink(sfConfig::get('sf_apps_dir').'/frontend/templates/layout_mobile.php');
   }
 
   protected function getApplication()

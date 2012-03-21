@@ -39,6 +39,7 @@ class baseAccessAction extends sfAction
     $usage->setSessionid(substr(session_id(), 0, 8));
     $usage->setLibraryId($libraryIds[0]);
     $usage->setIsOnsite($affiliation->isOnsite());
+    $usage->setIsMobile($this->request->isMobile());
     $usage->setTimestamp(gmdate('Y-m-d\TH:i:s'));
     $usage->setAdditionalData($userDataService->get());
 
