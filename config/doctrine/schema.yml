@@ -113,6 +113,9 @@ Usage:
       type: boolean
     additional_data:
       type: string(255)
+  relations:
+    Library:
+      onDelete: CASCADE
 
 DatabaseUsage:
   inheritance:

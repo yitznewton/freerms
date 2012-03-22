@@ -12,7 +12,10 @@ default:
     #language:     en
     #robots:       index, follow
 
-  stylesheets:    [main.css]
+  stylesheets:
+    - /sfDoctrinePlugin/css/global.css
+    - /sfDoctrinePlugin/css/default.css
+    - reports.css
 
   javascripts:    []
 
