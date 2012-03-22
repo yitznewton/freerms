@@ -7,6 +7,7 @@
       <?php foreach ($reportMonths as $month): ?>
         <th><?php echo $month ?></th>
       <?php endforeach; ?>
+      <th>Total</th>
     </tr>
   </thead>
 
@@ -17,6 +18,7 @@
       <?php foreach ($reportMonths as $month): ?>
         <td><?php echo isset($libraryMonths[$month]) ? $libraryMonths[$month] : '0' ?></td>
       <?php endforeach; ?>
+      <td><?php echo array_sum($libraryMonths) ?></td>
     </tr>
   <?php endforeach; ?>
   </tbody>
