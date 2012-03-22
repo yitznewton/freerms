@@ -127,5 +127,29 @@ this is some:
     $this->assertEquals(array('this is some'),
       array_keys($database->getAdditionalFieldsArray()));
   }
+  
+  public function testGetAdditionalField_Exists_ReturnsField()
+  {
+    $database = new Database();
+
+    $database->setAdditionalFields('
+foo: bar
+biz: baz
+    ');
+
+    $this->assertEquals('bar', $database->getAdditionalField('foo'));
+  }
+
+  public function testGetAdditionalField_NotExists_ReturnsNull()
+  {
+    $database = new Database();
+
+    $database->setAdditionalFields('
+foo: bar
+biz: baz
+    ');
+
+    $this->assertNull($database->getAdditionalField('nope'));
+  }
 }
 

@@ -41,6 +41,21 @@ class Database extends BaseDatabase
   }
 
   /**
+   * @param string $name
+   * @return mixed
+   */
+  public function getAdditionalField($name)
+  {
+    if (!is_string($name)) {
+      throw new InvalidArgumentException('name must be a string');
+    }
+
+    $fields = $this->getAdditionalFieldsArray();
+
+    return isset($fields[$name]) ? $fields[$name] : null;
+  }
+
+  /**
    * @return array
    */
   public function getAccessControlArray()
