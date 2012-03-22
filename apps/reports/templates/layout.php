@@ -33,7 +33,7 @@
 
       <?php if ($sf_user->isAuthenticated()): ?>
       <div class="logout-link">
-        <?php //echo link_to('Logout', '@sf_guard_signout') ?>
+        <?php echo link_to('Logout', '@sf_guard_signout') ?>
       </div>
       <?php endif; ?>
     </header>

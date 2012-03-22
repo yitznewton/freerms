@@ -28,8 +28,18 @@ all:
     csrf_secret:            35d49eff4e5d5c1ea7d4a629b759915f85d3fde6
 
     # Output escaping settings
-    escaping_strategy:      true
-    escaping_method:        ESC_SPECIALCHARS
+    escaping_strategy:      false
 
     # Enable the database manager
     use_database:           true
+
+    login_module: sfGuardAuth
+    login_action: signin
+    
+    secure_module: sfGuardAuth
+    secure_action: secure
+
+    enabled_modules:
+      - default
+      - sfGuardAuth
+
