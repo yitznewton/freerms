@@ -13,6 +13,8 @@ class defaultActions extends sfActions
       '2011-01',
     );
 
+    $this->filter = new DatabaseUsageFormFilter();
+
     $this->startFilter = new sfWidgetFormDate(array(
       'format' => '%year% &ndash; %month%',
       'years' => range(2008, date('Y')),

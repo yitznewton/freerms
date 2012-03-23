@@ -4,12 +4,19 @@
   <form method="get">
     <ul>
       <li>
-        <span class="label">Start:</span>
-        <?php echo $startFilter->render('dates[from]') ?>
+        <?php echo $filter['timestamp']->render() ?>
       </li>
       <li>
-        <span class="label">End:</span>
-        <?php echo $endFilter->render('dates[to]') ?>
+        <label for="database_usage_filters_library_id">Library</label>
+        <?php echo $filter['library_id']->render() ?>
+      </li>
+      <li>
+        <label for="database_usage_filters_is_onsite">Onsite?</label>
+        <?php echo $filter['is_onsite']->render() ?>
+      </li>
+      <li>
+        <label for="database_usage_filters_is_mobile">Mobile?</label>
+        <?php echo $filter['is_mobile']->render() ?>
       </li>
     </ul>
     <input type="submit" value="Refresh" />
