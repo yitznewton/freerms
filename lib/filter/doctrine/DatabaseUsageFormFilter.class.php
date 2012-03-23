@@ -20,10 +20,10 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
 
     $this->widgetSchema['timestamp'] = new sfWidgetFormFilterDate(array(
       'from_date' => new sfWidgetFormDate(array(
-        'format' => '%year% &ndash; %month%',
+        'format' => '%year%%month%',
       )),
       'to_date' => new sfWidgetFormDate(array(
-        'format' => '%year% &ndash; %month%',
+        'format' => '%year%%month%',
       )),
       'with_empty' => false,
     ));

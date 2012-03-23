@@ -10,6 +10,15 @@ class freermsValidatorMonth extends sfValidatorDate
     $this->setOption('date_output', 'Y-m');
   }
 
+  protected function doClean($value)
+  {
+    if (!is_array($value)) {
+      throw new sfValidatorError($this, 'invalid', array('value' => $value));
+    }
+
+    return parent::doClean($value);
+  }
+
   protected function convertDateArrayToString($value)
   {
     // all elements must be empty or a number
