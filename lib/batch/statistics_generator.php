@@ -4,7 +4,6 @@ require_once(dirname(__FILE__).'/../../config/ProjectConfiguration.class.php');
 $configuration = ProjectConfiguration::getApplicationConfiguration('reports', 'batch', true);
 sfContext::createInstance($configuration);
 
-// Remove the following lines if you don't use the database layer
 $databaseManager = new sfDatabaseManager($configuration);
 $databaseManager->loadConfiguration();
 
@@ -29,20 +28,26 @@ $libraryIds = array_map(function($library) {
 $databaseIds = array_flip($databaseIds);
 $libraryIds = array_flip($libraryIds);
 
-for ($i = 0; $i < 20000; $i++) {
-  $du = new DatabaseUsage();
-  $du->setDatabaseId(array_rand($databaseIds));
-  $du->setLibraryId(array_rand($libraryIds));
-  $du->setIsOnsite(rand(0,100) % 4 !== 0);  // weighted
-  $du->setIsMobile(rand(0,100) % 5 === 0);  // weighted
-  $du->setTimestamp(date('Y-m-d', $startDateUnix + rand(0, $timeDifference)));
-  $du->setSessionid(md5($i));
+$pdo = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh();
+$st = $pdo->prepare('INSERT INTO database_usage (database_id, library_id, '
+  . 'is_onsite, is_mobile, timestamp, sessionid) VALUES '
+  . '(:database_id, :library_id, :is_onsite, :is_mobile, :timestamp, '
+  . ':sessionid)');
 
-  $du->save();
-  $du->free(true);
+for ($i = 0; $i < 20000; $i++) {
+  $st->execute(array(
+    ':database_id' => array_rand($databaseIds),
+    ':library_id' => array_rand($libraryIds),
+    ':is_onsite' => rand(0,100) % 4 === 0 ? 0 : 1,
+    ':is_mobile' => rand(0,100) % 5 === 0 ? 1 : 0,
+    ':timestamp' => date('Y-m-d', $startDateUnix + rand(0, $timeDifference)),
+    ':sessionid' => md5($i),
+  ));
 
   if ($i % 50 === 0) {
     echo '.';
   }
 }
+
+echo "\n";
 

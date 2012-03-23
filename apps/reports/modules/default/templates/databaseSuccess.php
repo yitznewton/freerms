@@ -1,5 +1,21 @@
 <?php if ($statistics): ?>
 
+<aside class="filters">
+  <form method="get">
+    <ul>
+      <li>
+        <span class="label">Start:</span>
+        <?php echo $startFilter->render('dates[from]') ?>
+      </li>
+      <li>
+        <span class="label">End:</span>
+        <?php echo $endFilter->render('dates[to]') ?>
+      </li>
+    </ul>
+    <input type="submit" value="Refresh" />
+  </form>
+</aside>
+
 <table>
   <thead>
     <tr>
