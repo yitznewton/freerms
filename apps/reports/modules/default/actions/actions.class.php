@@ -21,27 +21,30 @@ class defaultActions extends sfActions
       $values = array();
     }
 
-    $this->reportMonths = $this->getReportMonths($values);
+    // default: one-year period ending with last month
+    $values['timestamp']['from'] = isset($values['timestamp']['from'])
+      ? $values['timestamp']['from']
+      : date('Y-m', time() - 60*60*24*392);
+
+    $values['timestamp']['to'] = isset($values['timestamp']['to'])
+      ? $values['timestamp']['to']
+      : date('Y-m', time() - 60*60*24*27);
+
+    $this->reportMonths = $this->getReportMonths(
+      $values['timestamp']['from'],
+      $values['timestamp']['to']);
 
     $this->statistics = Doctrine_Core::getTable('DatabaseUsage')
       ->getStatisticsForDatabase($id, $values);
   }
 
   /**
-   * @param array $values
+   * @param string $from
+   * @param string $to
    * @return array string[]
    */
-  protected function getReportMonths(array $values)
+  protected function getReportMonths($from, $to)
   {
-    // default: one-year period ending with last month
-    $from = isset($values['timestamp']['from'])
-      ? $values['timestamp']['from']
-      : date('Y-m', time() - 60*60*24*392);
-
-    $to = isset($values['timestamp']['to'])
-      ? $values['timestamp']['to']
-      : date('Y-m', time() - 60*60*24*27);
-
     $months = array();
 
     for ($i = (int) substr($from, -2); $i < 13; $i++) {
