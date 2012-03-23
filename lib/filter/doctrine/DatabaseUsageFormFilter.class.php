@@ -12,14 +12,41 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
 {
   public function configure()
   {
-    unset(
-      $this['database_id'],
-      $this['additional_data']
-    );
+    $this->disableLocalCSRFProtection();
 
     $this->widgetSchema['library_id']->setOption('expanded', true);
     $this->widgetSchema['library_id']->setOption('multiple', true);
     $this->widgetSchema['library_id']->setOption('add_empty', false);
-    $this->widgetSchema['timestamp']->setLabel('Date');
+
+    $this->widgetSchema['timestamp'] = new sfWidgetFormFilterDate(array(
+      'from_date' => new sfWidgetFormDate(array(
+        'format' => '%year% &ndash; %month%',
+      )),
+      'to_date' => new sfWidgetFormDate(array(
+        'format' => '%year% &ndash; %month%',
+      )),
+      'with_empty' => false,
+    ));
+
+    $this->validatorSchema['timestamp'] = new sfValidatorDateRange(array(
+      'required' => false,
+      'from_date' => new freermsValidatorMonth(array(
+        'date_format' => '~(?P<year>\d{4})-(?P<month>\d{2})~',
+        'required' => false,
+        'datetime_output' => 'Y-m',
+        'with_time' => false,
+      )),
+      'to_date' => new freermsValidatorMonth(array(
+        'date_format' => '~(?P<year>\d{4})-(?P<month>\d{2})~',
+        'required' => false,
+        'datetime_output' => 'Y-m',
+        'with_time' => false,
+      )),
+    ));
+
+    unset(
+      $this['database_id'],
+      $this['additional_data']
+    );
   }
 }

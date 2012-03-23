@@ -19,6 +19,7 @@
         <?php echo $filter['is_mobile']->render() ?>
       </li>
     </ul>
+    <?php echo $filter->renderHiddenFields(false) ?>
     <input type="submit" value="Refresh" />
   </form>
 </aside>

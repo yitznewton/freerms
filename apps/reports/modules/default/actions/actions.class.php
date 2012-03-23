@@ -14,16 +14,9 @@ class defaultActions extends sfActions
     );
 
     $this->filter = new DatabaseUsageFormFilter();
+    $this->filter->getWidgetSchema()->setNameFormat('%s');
 
-    $this->startFilter = new sfWidgetFormDate(array(
-      'format' => '%year% &ndash; %month%',
-      'years' => range(2008, date('Y')),
-    ));
-
-    $this->endFilter = new sfWidgetFormDate(array(
-      'format' => '%year% &ndash; %month%',
-      'years' => range(2008, date('Y')),
-    ));
+    $this->filter->bind($request->getGetParameters());
 
     $this->statistics = Doctrine_Core::getTable('DatabaseUsage')
       ->getStatisticsForDatabase($id);
