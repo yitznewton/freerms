@@ -22,7 +22,7 @@ class DatabaseUsageTable extends UsageTable
     }
 
     $q = 'SELECT SUBSTR(du.timestamp, 1, 7) as month, '
-         . 'l.code, COUNT(*) '
+         . 'l.id, l.code, COUNT(*) '
          . 'FROM database_usage du '
          . 'JOIN library l ON du.library_id = l.id '
          ;
@@ -41,7 +41,8 @@ class DatabaseUsageTable extends UsageTable
     $st->execute($params);
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $data[$row['code']][$row['month']] = $row['COUNT(*)'];
+      $data[$row['id']]['code'] = $row['code'];
+      $data[$row['id']]['months'][$row['month']] = $row['COUNT(*)'];
     }
 
     return $data;

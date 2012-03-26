@@ -17,7 +17,12 @@ default:
     - /sfDoctrinePlugin/css/default.css
     - reports.css
 
-  javascripts:    []
+  javascripts:
+    - xui.js: { condition: !IE }
+    - xui-ie.js: { condition: IE }
+    - /js/lib/FR.js
+    - /js/lib/FR/Reports.js
+    - reports.js
 
   has_layout:     true
   layout:         layout
