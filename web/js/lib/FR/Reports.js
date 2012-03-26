@@ -34,7 +34,9 @@ FR.Reports = {
   librarySelectAllToggle: function(item, uList) {
     x$('li', uList).each(function(e) {
       if (e.className !== 'all') {
-        x$('input', e)[0].checked = item.checked;
+        var input = x$('input', e)[0];
+        input.checked = item.checked;
+        input.onchange();
       }
     });
   }

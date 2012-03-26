@@ -42,6 +42,24 @@
       'reportMonths' => $reportMonths)) ?>
   <?php endforeach; ?>
   </tbody>
+
+  <tfoot>
+    <tr>
+      <td />
+      <?php foreach ($reportMonths as $month): ?>
+        <td>
+          <?php echo array_sum(array_map(function($library) use ($month) {
+            return isset($library['months'][$month]) ? $library['months'][$month] : 0;
+          }, $statistics)) ?>
+        </td>
+      <?php endforeach; ?>
+      <td>
+        <?php echo array_sum(array_map(function($library) use ($month) {
+          return isset($library['months']) ? array_sum($library['months']) : 0;
+        }, $statistics)) ?>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 <?php else: ?>
