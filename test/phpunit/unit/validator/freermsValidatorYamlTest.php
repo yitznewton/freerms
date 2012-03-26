@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 
-class unit_freermsValidatorTest extends sfPHPUnitBaseTestCase
+class unit_freermsValidatorYamlTest extends sfPHPUnitBaseTestCase
 {
   /**
    * @expectedException sfValidatorError

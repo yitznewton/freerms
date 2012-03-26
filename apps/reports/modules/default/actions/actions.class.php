@@ -45,20 +45,49 @@ class defaultActions extends sfActions
    */
   protected function getReportMonths($from, $to)
   {
+    $from = array(
+      'year' => substr($from, 0, 4),
+      'month' => substr($from, -2),
+    );
+
+    $to = array(
+      'year' => substr($to, 0, 4),
+      'month' => substr($to, -2),
+    );
+
+    if ($from['year'] === $to['year']) {
+      return $this->getMonths($from['year'], $from['month'], $to['month']);
+    }
+
+    $monthsFirstYear = $this->getMonths(
+      $from['year'], $from['month'], 12
+    );
+
+    $monthsLastYear = $this->getMonths(
+      $to['year'], 1, $to['month']
+    );
+
+    $monthsMiddleYears = array();
+
+    for ($i = $from['year'] + 1; $i < $to['year']; $i++) {
+      $monthsMiddleYears = array_merge($monthsMiddleYears,
+        $this->getMonths($i, 1, 12));
+    }
+
+    return array_merge($monthsFirstYear, $monthsMiddleYears, $monthsLastYear);
+  }
+
+  /**
+   * @param int $year
+   * @param int $startMonth
+   * @param int $endMonth
+   */
+  protected function getMonths($year, $startMonth, $endMonth)
+  {
     $months = array();
 
-    for ($i = (int) substr($from, -2); $i < 13; $i++) {
-      $months[] = substr($from, 0, 4) . '-' . sprintf('%02d', $i);
-    }
-
-    for ($i = ((int) substr($from, 0, 4)) + 1; $i < (int) substr($to, 0, 4); $i++) {
-      for ($j = 1; $j < 13; $j++) {
-        $months[] = $i . '-' . sprintf('%02d', $j);
-      }
-    }
-
-    for ($i = 1; $i <= (int) substr($to, -2); $i++) {
-      $months[] = substr($to, 0, 4) . '-' . sprintf('%02d', $i);
+    for ($i = $startMonth; $i < $endMonth + 1; $i++) {
+      $months[] = $year . '-' . sprintf('%02d', $i);
     }
 
     return $months;

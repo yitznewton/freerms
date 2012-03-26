@@ -8,6 +8,22 @@ class ReportsFunctionalTestCase extends FunctionalTestCase
     parent::setUpBeforeClass();
 
     $configuration = ProjectConfiguration::getApplicationConfiguration('reports', 'test', true);
+
+    $doctrineLoad = new sfDoctrineDataLoadTask(
+      ProjectConfiguration::getActive()->getEventDispatcher(),
+      new sfAnsiColorFormatter());
+
+    $doctrineLoad->run(array('test/data/fixtures'), array("--env=test"));
+
+    $usageGenerator= new generateUsageDataTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
+    $usageGenerator->run(array(500), array());
+  }
+
+  public function setUp()
+  {
+    sfPHPUnitBaseFunctionalTestCase::setUp();
+
+    // omit loading for every test
   }
 
   protected function getApplication()
