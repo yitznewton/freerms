@@ -24,6 +24,10 @@
   </form>
 </aside>
 
+<section class="primary-graph">
+  <canvas id="primary-graph-canvas" width="500" height="400"></canvas>
+</section>
+
 <section class="mobile-share">
   <dl>
     <dt>Mobile</dt>
@@ -42,7 +46,7 @@
   </dl>
 </section>
 
-<table>
+<table id="primary-data">
   <thead>
     <tr>
       <th></th>
@@ -63,7 +67,7 @@
 
   <tfoot>
     <tr class="totals">
-      <td></td>
+      <th>Total</th>
       <?php foreach ($reportMonths as $month): ?>
         <td>
           <?php echo array_sum(array_map(function($library) use ($month) {
@@ -71,11 +75,11 @@
           }, $statistics)) ?>
         </td>
       <?php endforeach; ?>
-      <td>
+      <th>
         <?php echo array_sum(array_map(function($library) use ($month) {
           return isset($library['months']) ? array_sum($library['months']) : 0;
         }, $statistics)) ?>
-      </td>
+      </th>
     </tr>
   </tfoot>
 </table>

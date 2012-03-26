@@ -28,6 +28,8 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
       'with_empty' => false,
     ));
 
+    $this->validatorSchema['library_id'] = new sfValidatorPass();
+
     $this->validatorSchema['timestamp'] = new sfValidatorDateRange(array(
       'required' => false,
       'from_date' => new freermsValidatorMonth(array(

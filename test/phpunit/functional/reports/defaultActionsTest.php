@@ -103,12 +103,11 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
 
     $sum = 0;
 
-    foreach ($xpath->query('//tbody/tr/td[position()=4]') as $cell) {
+    foreach ($xpath->query('//tbody/tr/td[position()=2]') as $cell) {
       $sum += (int) $cell->nodeValue;
     }
 
-    // position + 1: skip blank corner cell
-    $this->assertEquals((int) $xpath->query('//tfoot/tr/td[position()=5]')
+    $this->assertEquals((int) $xpath->query('//tfoot/tr/td[position()=2]')
       ->item(0)->nodeValue, $sum);
   }
 
@@ -123,11 +122,11 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
 
     $sum = 0;
 
-    foreach ($xpath->query('//tbody/tr[position()=0]/td[@class!="total"]') as $cell) {
+    foreach ($xpath->query('//tbody/tr[position()=0]/td') as $cell) {
       $sum += (int) $cell->nodeValue;
     }
 
-    $totalCell = $xpath->query('//tbody/tr[position()=0]/td[@class="total"]');
+    $totalCell = $xpath->query('//tbody/tr[position()=0]/th[@class="total"]');
 
     // position + 1: skip blank corner cell
     $this->assertEquals((int) $totalCell->nodeValue, $sum);
@@ -148,7 +147,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
       $ddSum += (int) $dd->nodeValue;
     }
 
-    $this->assertEquals((int) $xpath->query('//tfoot/tr/td[position()=last()]')
+    $this->assertEquals((int) $xpath->query('//tfoot/tr/th[position()=last()]')
       ->item(0)->nodeValue, $ddSum);
   }
 
@@ -167,7 +166,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
       $ddSum += (int) $dd->nodeValue;
     }
 
-    $this->assertEquals((int) $xpath->query('//tfoot/tr/td[position()=last()]')
+    $this->assertEquals((int) $xpath->query('//tfoot/tr/th[position()=last()]')
       ->item(0)->nodeValue, $ddSum);
   }
 }

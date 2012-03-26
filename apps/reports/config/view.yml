@@ -19,6 +19,8 @@ default:
   javascripts:
     - xui.js: { condition: !IE }
     - xui-ie.js: { condition: IE }
+    - /js/bluff/js-class.js
+    - /js/bluff/bluff-min.js
     - /js/lib/FR.js
     - /js/lib/FR/Reports.js
     - reports.js
