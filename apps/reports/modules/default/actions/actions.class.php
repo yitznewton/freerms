@@ -24,7 +24,7 @@ class defaultActions extends sfActions
     // default: one-year period ending with last month
     $values['timestamp']['from'] = isset($values['timestamp']['from'])
       ? $values['timestamp']['from']
-      : date('Y-m', time() - 60*60*24*392);
+      : date('Y-m', time() - 60*60*24*365);
 
     $values['timestamp']['to'] = isset($values['timestamp']['to'])
       ? $values['timestamp']['to']
