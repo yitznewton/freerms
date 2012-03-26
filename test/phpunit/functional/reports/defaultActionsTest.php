@@ -151,5 +151,24 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
     $this->assertEquals((int) $xpath->query('//tfoot/tr/td[position()=last()]')
       ->item(0)->nodeValue, $ddSum);
   }
+
+  public function testDatabase_OnsiteTotals_EqualSum()
+  {
+    $b = $this->getBrowser();
+    $b->get('/database/1');
+
+    $dom = $b->getResponseDom();
+
+    $xpath = new DOMXpath($dom);
+
+    $ddSum = 0;
+
+    foreach ($xpath->query('//section[@class="onsite-share"]/dl/dd') as $dd) {
+      $ddSum += (int) $dd->nodeValue;
+    }
+
+    $this->assertEquals((int) $xpath->query('//tfoot/tr/td[position()=last()]')
+      ->item(0)->nodeValue, $ddSum);
+  }
 }
 

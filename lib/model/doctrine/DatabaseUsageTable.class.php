@@ -49,8 +49,12 @@ class DatabaseUsageTable extends UsageTable
     return $data;
   }
 
-  public function getMobileShareForDatabase($id, array $filters = array())
+  public function getShareForDatabase($id, $columnName, array $filters = array())
   {
+    if (!in_array($columnName, array('is_mobile', 'is_onsite'))) {
+      throw new InvalidArgumentException("Invalid column $columnName");
+    }
+
     $filterStrings = array();
     $params = array(':id' => $id);
 
@@ -64,7 +68,7 @@ class DatabaseUsageTable extends UsageTable
       $filterStrings[] = 'SUBSTR(du.timestamp, 1, 7) <= :to';
     }
 
-    $q = 'SELECT du.is_mobile, COUNT(*) as n '
+    $q = "SELECT du.$columnName, COUNT(*) as n "
          . 'FROM database_usage du '
          . 'WHERE du.database_id = :id '
          ;
@@ -73,7 +77,7 @@ class DatabaseUsageTable extends UsageTable
       $q .= 'AND ' . implode(' AND ', $filterStrings) . ' ';
     }
 
-    $q .= 'GROUP BY du.is_mobile '
+    $q .= "GROUP BY du.$columnName "
           ;
 
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
@@ -84,7 +88,7 @@ class DatabaseUsageTable extends UsageTable
     $ret = array();
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $ret[$row['is_mobile']] = $row['n'];
+      $ret[$row[$columnName]] = $row['n'];
     }
 
     return $ret;

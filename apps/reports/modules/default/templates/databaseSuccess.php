@@ -33,6 +33,15 @@
   </dl>
 </section>
 
+<section class="onsite-share">
+  <dl>
+    <dt>Onsite</dt>
+    <dd><?php echo $onsiteShare['1'] ?></dd>
+    <dt>Offsite</dt>
+    <dd><?php echo $onsiteShare['0'] ?></dd>
+  </dl>
+</section>
+
 <table>
   <thead>
     <tr>
