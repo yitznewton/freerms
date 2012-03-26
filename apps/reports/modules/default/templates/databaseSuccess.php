@@ -24,6 +24,15 @@
   </form>
 </aside>
 
+<section class="mobile-share">
+  <dl>
+    <dt>Mobile</dt>
+    <dd><?php echo $mobileShare['1'] ?></dd>
+    <dt>Non-mobile</dt>
+    <dd><?php echo $mobileShare['0'] ?></dd>
+  </dl>
+</section>
+
 <table>
   <thead>
     <tr>

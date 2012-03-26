@@ -34,8 +34,10 @@ class defaultActions extends sfActions
       $values['timestamp']['from'],
       $values['timestamp']['to']);
 
-    $this->statistics = Doctrine_Core::getTable('DatabaseUsage')
-      ->getStatisticsForDatabase($id, $values);
+    $table = Doctrine_Core::getTable('DatabaseUsage');
+
+    $this->statistics  = $table->getStatisticsForDatabase($id, $values);
+    $this->mobileShare = $table->getMobileShareForDatabase($id, $values);
   }
 
   /**
