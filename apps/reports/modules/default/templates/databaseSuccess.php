@@ -7,15 +7,15 @@
         <?php echo $filter['timestamp']->render() ?>
       </li>
       <li id="filter-is-onsite">
-        <label for="database_usage_filters_is_onsite">Onsite?</label>
+        <label for="is_onsite">Onsite?</label>
         <?php echo $filter['is_onsite']->render() ?>
       </li>
       <li id="filter-is-mobile">
-        <label for="database_usage_filters_is_mobile">Mobile?</label>
+        <label for="is_mobile">Mobile?</label>
         <?php echo $filter['is_mobile']->render() ?>
       </li>
       <li id="filter-library">
-        <label for="database_usage_filters_library_id">Library</label>
+        <div class="label">Library</div>
         <?php echo $filter['library_id']->render() ?>
       </li>
     </ul>
@@ -36,7 +36,7 @@
 <table>
   <thead>
     <tr>
-      <th />
+      <th></th>
       <?php foreach ($reportMonths as $month): ?>
         <th><?php echo $month ?></th>
       <?php endforeach; ?>
@@ -53,8 +53,8 @@
   </tbody>
 
   <tfoot>
-    <tr>
-      <td />
+    <tr class="totals">
+      <td></td>
       <?php foreach ($reportMonths as $month): ?>
         <td>
           <?php echo array_sum(array_map(function($library) use ($month) {

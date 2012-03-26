@@ -91,5 +91,46 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
       end()
     ;
   }
+
+  public function testDatabase_ColumnTotals_CorrectSum()
+  {
+    $b = $this->getBrowser();
+    $b->get('/database/1');
+
+    $dom = $b->getResponseDom();
+
+    $xpath = new DOMXpath($dom);
+
+    $sum = 0;
+
+    foreach ($xpath->query('//tbody/tr/td[position()=4]') as $cell) {
+      $sum += (int) $cell->nodeValue;
+    }
+
+    // position + 1: skip blank corner cell
+    $this->assertEquals((int) $xpath->query('//tfoot/tr/td[position()=5]')
+      ->item(0)->nodeValue, $sum);
+  }
+
+  public function testDatabase_RowTotals_CorrectSum()
+  {
+    $b = $this->getBrowser();
+    $b->get('/database/1');
+
+    $dom = $b->getResponseDom();
+
+    $xpath = new DOMXpath($dom);
+
+    $sum = 0;
+
+    foreach ($xpath->query('//tbody/tr[position()=0]/td[@class!="total"]') as $cell) {
+      $sum += (int) $cell->nodeValue;
+    }
+
+    $totalCell = $xpath->query('//tbody/tr[position()=0]/td[@class="total"]');
+
+    // position + 1: skip blank corner cell
+    $this->assertEquals((int) $totalCell->nodeValue, $sum);
+  }
 }
 

@@ -6,7 +6,6 @@ default:
     content-type: text/html
 
   metas:
-    title:        FreERMS Reports
     #description:  symfony project
     #keywords:     symfony, project
     #language:     en

@@ -16,7 +16,7 @@ class ReportsFunctionalTestCase extends FunctionalTestCase
     $doctrineLoad->run(array('test/data/fixtures'), array("--env=test"));
 
     $usageGenerator= new generateUsageDataTask($configuration->getEventDispatcher(), new sfAnsiColorFormatter());
-    $usageGenerator->run(array(500), array());
+    $usageGenerator->run(array(1000), array());
   }
 
   public function setUp()
