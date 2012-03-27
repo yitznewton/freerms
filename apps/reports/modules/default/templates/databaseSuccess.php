@@ -20,24 +20,6 @@
   </form>
 </aside>
 
-<section class="mobile-share">
-  <dl>
-    <dt>Mobile</dt>
-    <dd><?php echo $mobileShare['1'] ?></dd>
-    <dt>Non-mobile</dt>
-    <dd><?php echo $mobileShare['0'] ?></dd>
-  </dl>
-</section>
-
-<section class="onsite-share">
-  <dl>
-    <dt>Onsite</dt>
-    <dd><?php echo $onsiteShare['1'] ?></dd>
-    <dt>Offsite</dt>
-    <dd><?php echo $onsiteShare['0'] ?></dd>
-  </dl>
-</section>
-
 <section id="primary-graph">
   <div id="primary-graph-target"></div>
   <div id="filter-library">
@@ -46,47 +28,71 @@
   </div>
 </section>
 
-<div id="monthly-toggle">
-  <a href="#">Toggle montly columns</a>
-</div>
+<section id="primary-data">
+  <p>You can copy and paste data into Excel.</p>
 
-<table id="primary-data">
-  <thead>
-    <tr>
-      <th></th>
-      <?php foreach ($reportMonths as $month): ?>
-        <th><?php echo $month ?></th>
-      <?php endforeach; ?>
-      <th class="total">Total</th>
-    </tr>
-  </thead>
+  <div id="monthly-toggle">
+    <a href="#">Toggle montly columns</a>
+  </div>
 
-  <tbody>
-  <?php foreach ($statistics as $id => $data): ?>
-    <?php include_partial('libraryRow', array('id' => $id,
-      'code' => $data['code'], 'columns' => $data['months'],
-      'reportMonths' => $reportMonths)) ?>
-  <?php endforeach; ?>
-  </tbody>
+  <table id="primary-data-table">
+    <thead>
+      <tr>
+        <th></th>
+        <?php foreach ($reportMonths as $month): ?>
+          <th><?php echo $month ?></th>
+        <?php endforeach; ?>
+        <th class="total">Total</th>
+      </tr>
+    </thead>
 
-  <tfoot>
-    <tr class="totals">
-      <th>Total</th>
-      <?php foreach ($reportMonths as $month): ?>
-        <td>
+    <tbody>
+    <?php foreach ($statistics as $id => $data): ?>
+      <?php include_partial('libraryRow', array('id' => $id,
+        'code' => $data['code'], 'columns' => $data['months'],
+        'reportMonths' => $reportMonths)) ?>
+    <?php endforeach; ?>
+    </tbody>
+
+    <tfoot>
+      <tr class="totals">
+        <th>Total</th>
+        <?php foreach ($reportMonths as $month): ?>
+          <td>
+            <?php echo array_sum(array_map(function($library) use ($month) {
+              return isset($library['months'][$month]) ? $library['months'][$month] : 0;
+            }, $statistics)) ?>
+          </td>
+        <?php endforeach; ?>
+        <th>
           <?php echo array_sum(array_map(function($library) use ($month) {
-            return isset($library['months'][$month]) ? $library['months'][$month] : 0;
+            return isset($library['months']) ? array_sum($library['months']) : 0;
           }, $statistics)) ?>
-        </td>
-      <?php endforeach; ?>
-      <th>
-        <?php echo array_sum(array_map(function($library) use ($month) {
-          return isset($library['months']) ? array_sum($library['months']) : 0;
-        }, $statistics)) ?>
-      </th>
-    </tr>
-  </tfoot>
-</table>
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+</section>
+
+<section class="share-list">
+  <dl id="onsite-share-list">
+    <dt>Onsite</dt>
+    <dd><?php echo round($onsiteShare['1'] / array_sum($onsiteShare) * 100, 1) ?>%</dd>
+    <dt>Offsite</dt>
+    <dd><?php echo round($onsiteShare['0'] / array_sum($onsiteShare) * 100, 1) ?>%</dd>
+  </dl>
+  <canvas id="onsite-share-canvas"></canvas>
+</section>
+
+<section class="share-list">
+  <dl id="mobile-share-list">
+    <dt>Mobile</dt>
+    <dd><?php echo round($mobileShare['1'] / array_sum($mobileShare) * 100, 1) ?>%</dd>
+    <dt>Non-mobile</dt>
+    <dd><?php echo round($mobileShare['0'] / array_sum($mobileShare) * 100, 1) ?>%</dd>
+  </dl>
+  <canvas id="mobile-share-canvas"></canvas>
+</section>
 
 <?php else: ?>
   <p>No data.</p>

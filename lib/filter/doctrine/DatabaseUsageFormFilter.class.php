@@ -19,6 +19,7 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
     $this->widgetSchema['library_id']->setOption('add_empty', false);
 
     $this->widgetSchema['timestamp'] = new sfWidgetFormFilterDate(array(
+      'template' => 'from %from_date% to %to_date%',
       'from_date' => new sfWidgetFormDate(array(
         'format' => '%year%%month%',
       )),

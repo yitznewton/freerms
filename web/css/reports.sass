@@ -3,6 +3,9 @@ $border: 1px solid #aaa
 html
   background-color: #fff
 
+p
+  clear: both
+
 header
   margin: 0 0 0.6em
 
@@ -37,29 +40,17 @@ form[action$='guard/login']
   th, td
     border: 0
 
-#sf_admin_bar
-  margin-left: 0
-  margin-right: 20px
+.filters
+  padding: 1em 0 0
 
-#sf_admin_container
-  padding: 0.4em 0.8em
+  li
+    list-style: none
+    float: left
+    padding: 0 1em
+    border-right: 1px solid #000
 
-  fieldset
-    border-color: #aaa
-
-.sf_admin_form_row
-  border-bottom: $border
-
-  > div
-    height: 1%
-    overflow: hidden
-
-  #library_database_list
-    margin: 0 0 0 0
-
-    li
-      list-style: none
-      padding: 0.2em 0
+  li:last-child
+    border-right: none
 
 #filter-library
   display: none
@@ -84,7 +75,11 @@ form[action$='guard/login']
   clear: both
   margin: 0 0 1em
 
-#primary-data
+.share-list
+  float: left
+  margin: 0 1em 0 0
+
+#primary-data-table
   thead th:not(:first-child):not(:last-child)
     display: none
 
@@ -93,6 +88,8 @@ form[action$='guard/login']
 
 #primary-graph
   display: none
+  clear: both
+  padding: 1em 0 0
 
 #primary-graph-target
   margin: 0 0 2em
@@ -100,6 +97,11 @@ form[action$='guard/login']
   width: 800px
   height: 400px
 
-#primary-graph-target .tickLabel
-  font-size: 1.2em
+#primary-graph-target
+  .tickLabel
+    font-size: 1.2em
+
+  tr:last-child td.legendLabel
+    font-weight: bold
+    font-size: 1.2em
 

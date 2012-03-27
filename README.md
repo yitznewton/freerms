@@ -70,7 +70,11 @@ http://www.symfony-project.org/plugins/sfDoctrineGuardPlugin
 ### Reports
 
 In order to use the reports app, you must install the flot plotting library in
-`/web/js/vendor/flot`. It is available at http://code.google.com/p/flot/
+`/web/js/vendor/flot`, and the Bluff chart library in `/web/js/vendor/bluff`.
+They are available at the following addresses, respectively:
+
+* http://code.google.com/p/flot/
+* http://bluff.jcoglan.com/
 
 Basic setup
 -----------

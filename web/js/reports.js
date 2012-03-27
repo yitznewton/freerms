@@ -5,11 +5,10 @@ x$.ready(function() {
     libraryFilter.style.display = 'block';
   }
 
+  var primaryData = FR.$$('primary-data-table');
   var monthlyToggle = FR.$$('monthly-toggle');
 
   if (monthlyToggle) {
-    var primaryData = FR.$$('primary-data');
-
     var $toToggle = x$('thead th:not(:first-child):not(:last-child), td',
       primaryData);
 
@@ -24,10 +23,25 @@ x$.ready(function() {
     };
   }
 
-  var graphCanvas = FR.$$('primary-graph-canvas');
-  var graph = new FR.Reports.LineGraph.Flot(FR.$$('primary-data'));
+  var graph = new FR.Reports.LineGraph.Flot(primaryData);
   graph.setTarget(FR.$$('primary-graph-target'));
   graph.render();
+
+  var onsiteShareDl = FR.$$('onsite-share-list');
+
+  var onsiteGraph = new FR.Reports.PieChart(onsiteShareDl);
+  onsiteGraph.setTitle('Onsite Share');
+  onsiteGraph.setTarget(FR.$$('onsite-share-canvas'));
+  onsiteGraph.render();
+  onsiteShareDl.style.display = 'none';
+
+  var mobileShareDl = FR.$$('mobile-share-list');
+
+  var mobileGraph = new FR.Reports.PieChart(mobileShareDl);
+  mobileGraph.setTitle('Mobile Share');
+  mobileGraph.setTarget(FR.$$('mobile-share-canvas'));
+  mobileGraph.render();
+  mobileShareDl.style.display = 'none';
 
   var uLists = x$('ul', libraryFilter);
 
