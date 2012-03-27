@@ -16,7 +16,11 @@ FR.Reports.LineGraph.Bluff.prototype.constructor = FR.Reports.LineGraph.Bluff;
  * @param {HTMLElement} target
  */
 FR.Reports.LineGraph.Bluff.prototype.render = function(target) {
-  var bluff = new Bluff.Line(target.id);
+  var height = x$(target).getStyle('height')[0].replace(/\D/g, '');
+  var width = x$(target).getStyle('width')[0].replace(/\D/g, '');
+
+  var bluff = new Bluff.Line(target.id,
+    width.toString() + 'x' + height.toString());
 
   bluff.tooltips = true;
   bluff.sort = false;
