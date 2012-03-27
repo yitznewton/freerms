@@ -7,7 +7,9 @@ class defaultActions extends sfActions
   */
   public function executeDatabase(sfWebRequest $request)
   {
-    $this->forward404Unless($id = $request->getParameter('id'));
+    $id = $request->getParameter('id');
+
+    $this->forward404Unless(Doctrine_Core::getTable('Database')->find($id));
 
     $this->filter = new DatabaseUsageFormFilter();
     $this->filter->getWidgetSchema()->setNameFormat('%s');

@@ -46,7 +46,7 @@ FR.Reports.PieChart.prototype.render = function() {
   if (!this.bluff) {
     this.bluff = new Bluff.Pie(this.target.id, this.size);
 
-    this.bluff.theme_37signals();
+    this.bluff.theme_greyscale();
     this.bluff.tooltips = true;
 
     this.bluff.replace_colors([

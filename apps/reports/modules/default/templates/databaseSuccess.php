@@ -29,11 +29,8 @@
 </section>
 
 <section id="primary-data">
-  <p>You can copy and paste data into Excel.</p>
-
-  <div id="monthly-toggle">
-    <a href="#">Toggle montly columns</a>
-  </div>
+  <p>You can copy and paste data into Excel.
+  <a id="monthly-toggle" href="#">Toggle monthly columns</a></p>
 
   <table id="primary-data-table">
     <thead>
