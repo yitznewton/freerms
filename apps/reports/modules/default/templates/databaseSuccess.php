@@ -25,7 +25,7 @@
 </aside>
 
 <section class="primary-graph">
-  <canvas id="primary-graph-canvas" width="500" height="400"></canvas>
+  <canvas id="primary-graph-canvas"></canvas>
 </section>
 
 <section class="mobile-share">
