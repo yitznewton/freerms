@@ -63,17 +63,21 @@ class DatabaseUsageTable extends UsageTable
     $st->execute($params);
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $data[$row['id']]['code'] = $row['code'];
+      $data[$row['id']]['label'] = $row[$labelColumn];
       $data[$row['id']]['months'][$row['month']] = $row['COUNT(*)'];
     }
 
     return $data;
   }
 
-  public function getShareForDatabase($id, $columnName, array $filters = array())
+  public function getShare($id, $foreignKey, $shareColumn, array $filters = array())
   {
-    if (!in_array($columnName, array('is_mobile', 'is_onsite'))) {
-      throw new InvalidArgumentException("Invalid column $columnName");
+    if (!in_array($foreignKey, array('database_id', 'library_id'))) {
+      throw new InvalidArgumentException("Invalid column $foreignKey");
+    }
+
+    if (!in_array($shareColumn, array('is_mobile', 'is_onsite'))) {
+      throw new InvalidArgumentException("Invalid column $shareColumn");
     }
 
     $filterStrings = array();
@@ -89,16 +93,16 @@ class DatabaseUsageTable extends UsageTable
       $filterStrings[] = 'SUBSTR(du.timestamp, 1, 7) <= :to';
     }
 
-    $q = "SELECT du.$columnName, COUNT(*) as n "
+    $q = "SELECT du.$shareColumn, COUNT(*) as n "
          . 'FROM database_usage du '
-         . 'WHERE du.database_id = :id '
+         . "WHERE du.$foreignKey = :id "
          ;
 
     if ($filterStrings) {
       $q .= 'AND ' . implode(' AND ', $filterStrings) . ' ';
     }
 
-    $q .= "GROUP BY du.$columnName ";
+    $q .= "GROUP BY du.$shareColumn ";
 
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
       ->prepare($q);
@@ -112,7 +116,7 @@ class DatabaseUsageTable extends UsageTable
     );
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $ret[$row[$columnName]] = $row['n'];
+      $ret[$row[$shareColumn]] = $row['n'];
     }
 
     return $ret;

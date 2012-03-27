@@ -45,10 +45,10 @@ class defaultActions extends sfActions
     $this->statistics = $table->getStatistics($id, 'database', 'code',
       $this->filterValues);
 
-    $this->mobileShare = $table->getShareForDatabase($id, 'is_mobile',
+    $this->mobileShare = $table->getShare($id, 'database_id', 'is_mobile',
       $this->filterValues);
 
-    $this->onsiteShare = $table->getShareForDatabase($id, 'is_onsite',
+    $this->onsiteShare = $table->getShare($id, 'database_id', 'is_onsite',
       $this->filterValues);
   }
 
@@ -62,14 +62,16 @@ class defaultActions extends sfActions
 
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
-    $this->statistics = $table->getStatisticsForLibrary($id,
+    $this->statistics = $table->getStatistics($id, 'library', 'title',
       $this->filterValues);
 
-    $this->mobileShare = $table->getShareForLibrary($id, 'is_mobile',
+    $this->mobileShare = $table->getShare($id, 'library_id', 'is_mobile',
       $this->filterValues);
 
-    $this->onsiteShare = $table->getShareForLibrary($id, 'is_onsite',
+    $this->onsiteShare = $table->getShare($id, 'library_id', 'is_onsite',
       $this->filterValues);
+
+    $this->setTemplate('database');
   }
 
   /**

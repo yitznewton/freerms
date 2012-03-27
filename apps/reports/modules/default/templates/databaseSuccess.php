@@ -46,7 +46,7 @@
     <tbody>
     <?php foreach ($statistics as $id => $data): ?>
       <?php include_partial('libraryRow', array('id' => $id,
-        'code' => $data['code'], 'columns' => $data['months'],
+        'label' => $data['label'], 'columns' => $data['months'],
         'reportMonths' => $reportMonths)) ?>
     <?php endforeach; ?>
     </tbody>
