@@ -12,8 +12,8 @@ x$.ready(function() {
   }
 
   var graphCanvas = FR.$$('primary-graph-canvas');
-  var graph = new FR.Reports.LineGraph.Bluff(FR.$$('primary-data'));
-  graph.render(graphCanvas);
+  var graph = new FR.Reports.LineGraph.Flot(FR.$$('primary-data'));
+  graph.render(FR.$$('primary-graph-target'));
 
   FR.$$('primary-graph').style.display = 'block';
 });

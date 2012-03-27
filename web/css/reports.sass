@@ -61,12 +61,20 @@ form[action$='guard/login']
       list-style: none
       padding: 0.2em 0
 
-#sf_admin_container h1
-  margin: 0
-  padding: 0
-
 #filter-library
   display: none
+  float: left
+  margin: 0 0 0 2em
+
+  .label
+    font-size: 1.2em
+    font-weight: bold
+
+  ul
+    margin-left: 0em
+
+  li
+    list-style: none
 
   .all
     margin: 0.4em 0 0
@@ -75,17 +83,12 @@ form[action$='guard/login']
 #primary-graph
   display: none
 
-#primary-graph-canvas
-  width: 500px
+#primary-graph-target
+  margin: 0 0 2em
+  float: left
+  width: 800px
   height: 400px
 
-.user-url
-  margin: 0 0 1em
+#primary-graph-target .tickLabel
   font-size: 1.2em
-
-.featured-help
-  margin: 1em 0 1.6em
-
-.ui-icon
-  float: left
 

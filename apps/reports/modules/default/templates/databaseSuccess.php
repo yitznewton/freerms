@@ -39,11 +39,11 @@
 </section>
 
 <section id="primary-graph">
+  <div id="primary-graph-target"></div>
   <div id="filter-library">
     <div class="label">Library</div>
     <?php echo $filter['library_id']->render() ?>
   </div>
-  <canvas id="primary-graph-canvas"></canvas>
 </section>
 
 <table id="primary-data">
