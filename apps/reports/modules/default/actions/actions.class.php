@@ -2,45 +2,74 @@
 
 class defaultActions extends sfActions
 {
- /**
-  * @param sfRequest $request A request object
-  */
-  public function executeDatabase(sfWebRequest $request)
+  public function preExecute()
   {
-    $id = $request->getParameter('id');
-
-    $this->forward404Unless(Doctrine_Core::getTable('Database')->find($id));
-
     $this->filter = new DatabaseUsageFormFilter();
     $this->filter->getWidgetSchema()->setNameFormat('%s');
 
-    $this->filter->bind($request->getGetParameters());
+    $this->filter->bind($this->getRequest()->getGetParameters());
 
     if ($this->filter->isValid()) {
-      $values = $this->filter->getValues();
+      $this->filterValues = $this->filter->getValues();
     }
     else {
-      $values = array();
+      $this->filterValues = array();
     }
 
     // default: one-year period ending with last month
-    $values['timestamp']['from'] = isset($values['timestamp']['from'])
-      ? $values['timestamp']['from']
-      : date('Y-m', time() - 60*60*24*365);
+    $this->filterValues['timestamp']['from']
+      = isset($this->filterValues['timestamp']['from'])
+        ? $this->filterValues['timestamp']['from']
+        : date('Y-m', time() - 60*60*24*365);
 
-    $values['timestamp']['to'] = isset($values['timestamp']['to'])
-      ? $values['timestamp']['to']
-      : date('Y-m', time() - 60*60*24*27);
+    $this->filterValues['timestamp']['to']
+      = isset($this->filterValues['timestamp']['to'])
+        ? $this->filterValues['timestamp']['to']
+        : date('Y-m', time() - 60*60*24*27);
 
     $this->reportMonths = $this->getReportMonths(
-      $values['timestamp']['from'],
-      $values['timestamp']['to']);
+      $this->filterValues['timestamp']['from'],
+      $this->filterValues['timestamp']['to']);
+  }
+
+  /**
+   * @param sfRequest $request A request object
+   */
+  public function executeDatabase(sfWebRequest $request)
+  {
+    $id = $request->getParameter('id');
+    $this->forward404Unless(Doctrine_Core::getTable('Database')->find($id));
 
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
-    $this->statistics  = $table->getStatisticsForDatabase($id, $values);
-    $this->mobileShare = $table->getShareForDatabase($id, 'is_mobile', $values);
-    $this->onsiteShare = $table->getShareForDatabase($id, 'is_onsite', $values);
+    $this->statistics = $table->getStatisticsForDatabase($id,
+      $this->filterValues);
+
+    $this->mobileShare = $table->getShareForDatabase($id, 'is_mobile',
+      $this->filterValues);
+
+    $this->onsiteShare = $table->getShareForDatabase($id, 'is_onsite',
+      $this->filterValues);
+  }
+
+  /**
+   * @param sfRequest $request A request object
+   */
+  public function executeLibrary(sfWebRequest $request)
+  {
+    $id = $request->getParameter('id');
+    $this->forward404Unless(Doctrine_Core::getTable('Library')->find($id));
+
+    $table = Doctrine_Core::getTable('DatabaseUsage');
+
+    $this->statistics = $table->getStatisticsForLibrary($id,
+      $this->filterValues);
+
+    $this->mobileShare = $table->getShareForLibrary($id, 'is_mobile',
+      $this->filterValues);
+
+    $this->onsiteShare = $table->getShareForLibrary($id, 'is_onsite',
+      $this->filterValues);
   }
 
   /**

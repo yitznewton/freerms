@@ -5,6 +5,10 @@ database:
   url:   /database/:id/*
   param: { module: default, action: database }
 
+library:
+  url:   /library/:id/*
+  param: { module: default, action: library }
+
 # default rules
 homepage:
   url:   /
