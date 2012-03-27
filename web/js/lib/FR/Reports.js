@@ -1,14 +1,16 @@
 FR.Reports = {
-  prepareLibraryFilter: function(uList) {
+  prepareLibraryFilter: function(uList, graph) {
     x$('input', uList).each(function(e) {
       e.checked = true;
       e.onchange = function() {
         var matches = this.id.match(/\d+$/);
-        var row = FR.$$('library-' + matches[0]);
+        var $row    = x$('#library-' + matches[0]);
 
-        if (row) {
-          row.style.display = this.checked ? 'table-row' : 'none';
-        }
+        this.checked ? $row.removeClass('suppress')
+          : $row.addClass('suppress')
+
+        // refresh graph
+        graph.render();
       };
     });
 

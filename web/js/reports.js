@@ -5,10 +5,17 @@ x$.ready(function() {
     libraryFilter.style.display = 'block';
   }
 
-  var uList = x$('ul', libraryFilter)[0];
+  var graphCanvas = FR.$$('primary-graph-canvas');
+  var graph = new FR.Reports.LineGraph.Flot(FR.$$('primary-data'));
+  graph.setTarget(FR.$$('primary-graph-target'));
+  graph.render();
 
-  if (uList) {
-    FR.Reports.prepareLibraryFilter(uList);
+  var uLists = x$('ul', libraryFilter);
+
+  if (uLists.length > 0) {
+    FR.Reports.prepareLibraryFilter(uLists[0], graph);
   }
+
+  FR.$$('primary-graph').style.display = 'block';
 });
 

@@ -77,15 +77,18 @@ class DatabaseUsageTable extends UsageTable
       $q .= 'AND ' . implode(' AND ', $filterStrings) . ' ';
     }
 
-    $q .= "GROUP BY du.$columnName "
-          ;
+    $q .= "GROUP BY du.$columnName ";
 
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
       ->prepare($q);
 
     $st->execute($params);
 
-    $ret = array();
+    // start with false and true both at zero in case either has no usages
+    $ret = array(
+      0 => 0,
+      1 => 0,
+    );
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
       $ret[$row[$columnName]] = $row['n'];

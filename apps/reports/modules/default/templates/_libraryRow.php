@@ -3,6 +3,6 @@
   <?php foreach ($reportMonths as $month): ?>
     <td><?php echo isset($columns[$month]) ? $columns[$month] : '0' ?></td>
   <?php endforeach; ?>
-  <td class="total"><?php echo array_sum($columns) ?></td>
+  <th class="total"><?php echo array_sum($columns) ?></th>
 </tr>
 

@@ -14,10 +14,6 @@
         <label for="is_mobile">Mobile?</label>
         <?php echo $filter['is_mobile']->render() ?>
       </li>
-      <li id="filter-library">
-        <div class="label">Library</div>
-        <?php echo $filter['library_id']->render() ?>
-      </li>
     </ul>
     <?php echo $filter->renderHiddenFields(false) ?>
     <input type="submit" value="Refresh" />
@@ -42,7 +38,15 @@
   </dl>
 </section>
 
-<table>
+<section id="primary-graph">
+  <div id="primary-graph-target"></div>
+  <div id="filter-library">
+    <div class="label">Library</div>
+    <?php echo $filter['library_id']->render() ?>
+  </div>
+</section>
+
+<table id="primary-data">
   <thead>
     <tr>
       <th></th>
@@ -63,7 +67,7 @@
 
   <tfoot>
     <tr class="totals">
-      <td></td>
+      <th>Total</th>
       <?php foreach ($reportMonths as $month): ?>
         <td>
           <?php echo array_sum(array_map(function($library) use ($month) {
@@ -71,11 +75,11 @@
           }, $statistics)) ?>
         </td>
       <?php endforeach; ?>
-      <td>
+      <th>
         <?php echo array_sum(array_map(function($library) use ($month) {
           return isset($library['months']) ? array_sum($library['months']) : 0;
         }, $statistics)) ?>
-      </td>
+      </th>
     </tr>
   </tfoot>
 </table>
