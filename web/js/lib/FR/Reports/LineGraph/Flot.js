@@ -12,11 +12,8 @@ FR.Reports.LineGraph.Flot = function(table) {
 FR.Reports.LineGraph.Flot.prototype = new FR.Reports.LineGraph();
 FR.Reports.LineGraph.Flot.prototype.constructor = FR.Reports.LineGraph.Flot;
 
-/**
- * @param {HTMLElement} target
- */
-FR.Reports.LineGraph.Flot.prototype.render = function(target) {
-  $.plot(target, this._getRows(), {
+FR.Reports.LineGraph.Flot.prototype.render = function() {
+  $.plot(this.target, this._getRows(), {
     series: {
       lines: { show: true },
       points: { show: false },
@@ -28,7 +25,6 @@ FR.Reports.LineGraph.Flot.prototype.render = function(target) {
       labelWidth: 8
     }
   });
-  console.log(this._getRows());
 };
 
 /**
