@@ -46,6 +46,10 @@
   </div>
 </section>
 
+<div id="monthly-toggle">
+  <a href="#">Toggle montly columns</a>
+</div>
+
 <table id="primary-data">
   <thead>
     <tr>
@@ -53,7 +57,7 @@
       <?php foreach ($reportMonths as $month): ?>
         <th><?php echo $month ?></th>
       <?php endforeach; ?>
-      <th>Total</th>
+      <th class="total">Total</th>
     </tr>
   </thead>
 
