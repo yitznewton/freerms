@@ -132,7 +132,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
     $this->assertEquals((int) $totalCell->nodeValue, $sum);
   }
 
-  public function testDatabase_MobileTotals_EqualSum()
+  public function testDatabase_MobileTotals_Equal100()
   {
     $b = $this->getBrowser();
     $b->get('/database/1');
@@ -144,14 +144,13 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
     $ddSum = 0;
 
     foreach ($xpath->query('//section[@class="mobile-share"]/dl/dd') as $dd) {
-      $ddSum += (int) $dd->nodeValue;
+      $ddSum += (int) preg_replace('/[^\d\.]/', '', $dd->nodeValue);
     }
 
-    $this->assertEquals((int) $xpath->query('//tfoot/tr/th[position()=last()]')
-      ->item(0)->nodeValue, $ddSum);
+    $this->assertTrue($ddSum - 100 < 1);
   }
 
-  public function testDatabase_OnsiteTotals_EqualSum()
+  public function testDatabase_OnsiteTotals_Equal100()
   {
     $b = $this->getBrowser();
     $b->get('/database/1');
@@ -163,11 +162,10 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
     $ddSum = 0;
 
     foreach ($xpath->query('//section[@class="onsite-share"]/dl/dd') as $dd) {
-      $ddSum += (int) $dd->nodeValue;
+      $ddSum += (int) preg_replace('/[^\d\.]/', '', $dd->nodeValue);
     }
 
-    $this->assertEquals((int) $xpath->query('//tfoot/tr/th[position()=last()]')
-      ->item(0)->nodeValue, $ddSum);
+    $this->assertTrue($ddSum - 100 < 1);
   }
 }
 
