@@ -42,7 +42,7 @@ class defaultActions extends sfActions
 
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
-    $this->statistics = $table->getStatisticsForDatabase($id,
+    $this->statistics = $table->getStatistics($id, 'database', 'code',
       $this->filterValues);
 
     $this->mobileShare = $table->getShareForDatabase($id, 'is_mobile',

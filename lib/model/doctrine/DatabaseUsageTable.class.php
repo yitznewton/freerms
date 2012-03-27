@@ -3,11 +3,32 @@
 class DatabaseUsageTable extends UsageTable
 {
   /**
-   * @param int $id Database ID to get statistics for
+   * @param int $id ID to get statistics for
+   * @param string $table Table to get statistics for
+   * @param string $labelColumn Column to use as group label
    * @param array $filters
    */
-  public function getStatisticsForDatabase($id, array $filters = array())
+  public function getStatistics($id, $table, $labelColumn, array $filters = array())
   {
+    $foreignKey = $table . '_id';
+
+    if ($table === 'database') {
+      $table = 'freerms_database';
+      $groupTable = 'library';
+      $groupKey = 'library_id';
+    }
+    elseif ($table !== 'library') {
+      throw new InvalidArgumentException("Invalid table $table");
+    }
+    else {
+      $groupTable = 'freerms_database';
+      $groupKey = 'database_id';
+    }
+
+    if (!in_array($labelColumn, array('code', 'title'))) {
+      throw new InvalidArgumentException("Invalid column $labelColumn");
+    }
+
     $filterStrings = array();
     $params = array(':id' => $id);
 
@@ -22,17 +43,17 @@ class DatabaseUsageTable extends UsageTable
     }
 
     $q = 'SELECT SUBSTR(du.timestamp, 1, 7) as month, '
-         . 'l.id, l.code, COUNT(*) '
+         . "f.id, f.$labelColumn, COUNT(*) "
          . 'FROM database_usage du '
-         . 'JOIN library l ON du.library_id = l.id '
-         . 'WHERE du.database_id = :id '
+         . "JOIN $groupTable f ON du.$groupKey = f.id "
+         . "WHERE du.$foreignKey = :id "
          ;
 
     if ($filterStrings) {
       $q .= 'AND ' . implode(' AND ', $filterStrings) . ' ';
     }
 
-    $q .= 'GROUP BY l.id, month '
+    $q .= 'GROUP BY f.id, month '
           . 'ORDER BY month '
           ;
 
