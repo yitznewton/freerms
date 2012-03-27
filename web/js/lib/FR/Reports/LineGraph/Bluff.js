@@ -52,7 +52,7 @@ FR.Reports.LineGraph.Bluff.prototype._addRows = function(bluff) {
   var totalData = [];
 
   x$('tfoot td', this.table).each(function(td) {
-    totalData.push(td.innerHTML);
+    totalData.push(FR.trim(td.innerHTML));
   });
 
   bluff.data('Total', totalData);

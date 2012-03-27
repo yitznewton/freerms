@@ -23,6 +23,7 @@ default:
     - /js/bluff/bluff-min.js
     - /js/lib/FR.js
     - /js/lib/FR/Reports.js
+    - /js/lib/FR/Reports/LineGraph.js
     - reports.js
 
   has_layout:     true

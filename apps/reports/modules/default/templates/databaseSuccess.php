@@ -14,19 +14,11 @@
         <label for="is_mobile">Mobile?</label>
         <?php echo $filter['is_mobile']->render() ?>
       </li>
-      <li id="filter-library">
-        <div class="label">Library</div>
-        <?php echo $filter['library_id']->render() ?>
-      </li>
     </ul>
     <?php echo $filter->renderHiddenFields(false) ?>
     <input type="submit" value="Refresh" />
   </form>
 </aside>
-
-<section class="primary-graph">
-  <canvas id="primary-graph-canvas"></canvas>
-</section>
 
 <section class="mobile-share">
   <dl>
@@ -44,6 +36,14 @@
     <dt>Offsite</dt>
     <dd><?php echo $onsiteShare['0'] ?></dd>
   </dl>
+</section>
+
+<section id="primary-graph">
+  <div id="filter-library">
+    <div class="label">Library</div>
+    <?php echo $filter['library_id']->render() ?>
+  </div>
+  <canvas id="primary-graph-canvas"></canvas>
 </section>
 
 <table id="primary-data">

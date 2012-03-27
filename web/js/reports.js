@@ -11,7 +11,10 @@ x$.ready(function() {
     FR.Reports.prepareLibraryFilter(uList);
   }
 
+  var graphCanvas = FR.$$('primary-graph-canvas');
   var graph = new FR.Reports.LineGraph.Bluff(FR.$$('primary-data'));
-  graph.render(FR.$$('primary-graph-canvas'));
+  graph.render(graphCanvas);
+
+  FR.$$('primary-graph').style.display = 'block';
 });
 
