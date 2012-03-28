@@ -14,8 +14,8 @@ FR.Reports = {
       }
 
       e.onchange = function() {
-        var matches = this.id.match(/\d+$/);
-        var $row    = x$('#library-' + matches[0]);
+        var matches = this.id.match(/^graph_(.*)$/);
+        var $row    = x$('#library-' + matches[1]);
 
         this.checked ? $row.removeClass('suppress')
           : $row.addClass('suppress')

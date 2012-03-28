@@ -159,6 +159,20 @@ class UrlUsageTable extends Doctrine_Table
 
     return $ret;
   }
+
+  /**
+   * @return array string[]
+   */
+  public function getAllHosts()
+  {
+    $q = 'SELECT DISTINCT host FROM url_usage';
+
+    $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
+      ->query($q);
+
+    return $st->fetchAll(PDO::FETCH_COLUMN, 0);
+  }
+
   /**
    * Returns an instance of this class.
    *
