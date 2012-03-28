@@ -14,10 +14,6 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
   {
     $this->disableLocalCSRFProtection();
 
-    $this->widgetSchema['library_id']->setOption('expanded', true);
-    $this->widgetSchema['library_id']->setOption('multiple', true);
-    $this->widgetSchema['library_id']->setOption('add_empty', false);
-
     $this->widgetSchema['timestamp'] = new sfWidgetFormFilterDate(array(
       'template' => 'from %from_date% to %to_date%',
       'from_date' => new sfWidgetFormDate(array(
@@ -28,8 +24,6 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
       )),
       'with_empty' => false,
     ));
-
-    $this->validatorSchema['library_id'] = new sfValidatorPass();
 
     $this->validatorSchema['timestamp'] = new sfValidatorDateRange(array(
       'required' => false,
@@ -48,6 +42,7 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
     ));
 
     unset(
+      $this['library_id'],
       $this['database_id'],
       $this['additional_data']
     );

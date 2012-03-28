@@ -24,7 +24,7 @@
   <div id="primary-graph-target"></div>
   <div id="filter-library">
     <div class="label">Library</div>
-    <?php echo $filter['library_id']->render() ?>
+    <?php echo $graphFilter->render('graph') ?>
   </div>
 </section>
 

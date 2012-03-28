@@ -50,6 +50,8 @@ class defaultActions extends sfActions
 
     $this->onsiteShare = $table->getShare($id, 'database_id', 'is_onsite',
       $this->filterValues);
+
+    $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
   }
 
   /**
@@ -70,6 +72,8 @@ class defaultActions extends sfActions
 
     $this->onsiteShare = $table->getShare($id, 'library_id', 'is_onsite',
       $this->filterValues);
+
+    $this->graphFilter = new ReportGraphWidget(array('model' => 'Database'));
 
     $this->setTemplate('database');
   }
