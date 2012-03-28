@@ -9,6 +9,10 @@ library:
   url:   /library/:id/*
   param: { module: default, action: library }
 
+url:
+  url:   /url/*
+  param: { module: default, action: url }
+
 # default rules
 homepage:
   url:   /

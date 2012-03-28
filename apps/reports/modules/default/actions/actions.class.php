@@ -79,6 +79,26 @@ class defaultActions extends sfActions
   }
 
   /**
+   * @param sfRequest $request A request object
+   */
+  public function executeUrl(sfWebRequest $request)
+  {
+    $table = Doctrine_Core::getTable('UrlUsage');
+
+    $this->statistics = $table->getStatistics();
+
+    $this->mobileShare = $table->getShare('is_mobile',
+      $this->filterValues);
+
+    $this->onsiteShare = $table->getShare('is_onsite',
+      $this->filterValues);
+
+    $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
+
+    $this->setTemplate('database');
+  }
+
+  /**
    * @param string $from
    * @param string $to
    * @return array string[]

@@ -83,6 +83,13 @@ class DatabaseUsageTable extends UsageTable
     return $data;
   }
 
+  /**
+   * @param int $id
+   * @param string $foregnKey
+   * @param string $shareColumn
+   * @param array $filters
+   * @return array
+   */
   public function getShare($id, $foreignKey, $shareColumn, array $filters = array())
   {
     if (!in_array($foreignKey, array('database_id', 'library_id'))) {
