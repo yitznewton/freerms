@@ -9,20 +9,17 @@ library:
   url:   /library/:id/*
   param: { module: default, action: library }
 
-url:
-  url:   /url/*
-  param: { module: default, action: url }
+url_by_library:
+  url:   /url/by-library/:filter/*
+  param: { module: default, action: url, by: library }
+
+url_by_host:
+  url:   /url/by-host/:filter/*
+  param: { module: default, action: url, by: host }
+  requirements: { filter: '.*' }
 
 # default rules
 homepage:
   url:   /
   param: { module: default, action: index }
 
-# generic rules
-# please, remove them by adding more specific rules
-default_index:
-  url:   /:module
-  param: { action: index }
-
-default:
-  url:   /:module/:action/*

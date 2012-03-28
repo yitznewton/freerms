@@ -83,9 +83,28 @@ class defaultActions extends sfActions
    */
   public function executeUrl(sfWebRequest $request)
   {
+    $this->forward404Unless($by = $request->getParameter('by'));
+
+    switch (strtolower($by)) {
+      case 'host':
+        $groupBy = 'library_id';
+        $labelColumn = 'code';
+        $this->filterValues['host'] = $request->getParameter('filter');
+        break;
+
+      case 'library':
+        $groupBy = 'host';
+        $labelColumn = 'host';
+        $this->filterValues['library_id'] = $request->getParameter('filter');
+        break;
+
+      default:
+        $this->forward404();
+    }
+
     $table = Doctrine_Core::getTable('UrlUsage');
 
-    $this->statistics = $table->getStatistics();
+    $this->statistics = $table->getStatistics($groupBy, $labelColumn, $this->filterValues);
 
     $this->mobileShare = $table->getShare('is_mobile',
       $this->filterValues);

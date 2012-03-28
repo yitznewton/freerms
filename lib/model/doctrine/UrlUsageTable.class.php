@@ -8,11 +8,11 @@
 class UrlUsageTable extends Doctrine_Table
 {
   /**
-   * @param string $table Table to get statistics for
+   * @param string $groupBy Column to group on
    * @param string $labelColumn Column to use as group label
    * @param array $filters
    */
-  public function getStatistics()//$table, $labelColumn, array $filters = array())
+  public function getStatistics($groupBy, $labelColumn, array $filters = array())
   {
 //    $foreignKey = $table . '_id';
 //
@@ -28,6 +28,9 @@ class UrlUsageTable extends Doctrine_Table
 //      $groupTable = 'freerms_database';
 //      $groupKey = 'database_id';
 //    }
+    if (!in_array($groupBy, array('host', 'library_id'))) {
+      throw new InvalidArgumentException("Invalid column $groupBy");
+    }
 //
 //    if (!in_array($labelColumn, array('code', 'title'))) {
 //      throw new InvalidArgumentException("Invalid column $labelColumn");
@@ -38,53 +41,64 @@ class UrlUsageTable extends Doctrine_Table
 
     if (isset($filters['timestamp']['from'])) {
       $params[':from'] = $filters['timestamp']['from'];
-      $filterStrings[] = 'SUBSTR(du.timestamp, 1, 7) >= :from';
+      $filterStrings[] = 'SUBSTR(uu.timestamp, 1, 7) >= :from';
     }
 
     if (isset($filters['timestamp']['to'])) {
       $params[':to'] = $filters['timestamp']['to'];
-      $filterStrings[] = 'SUBSTR(du.timestamp, 1, 7) <= :to';
+      $filterStrings[] = 'SUBSTR(uu.timestamp, 1, 7) <= :to';
+    }
+
+    if (isset($filters['timestamp'])) {
+      unset($filters['timestamp']);
+    }
+
+    foreach ($filters as $key => $value) {
+      $filterStrings[] = "$key = :$key";
+      $params[":$key"] = $value;
     }
 
     $q = 'SELECT SUBSTR(uu.timestamp, 1, 7) as month, '
-         // . "f.id, f.$labelColumn, COUNT(*) "
-         . 'uu.host, COUNT(*) '
+         . 'l.id, l.code, COUNT(*), uu.host, uu.library_id '
          . 'FROM url_usage uu '
-         // . "JOIN $groupTable f ON du.$groupKey = f.id "
-         // . "WHERE du.$foreignKey = :id "
+         . 'JOIN library l ON uu.library_id = l.id '
+         . 'WHERE '
          ;
 
     if ($filterStrings) {
-      $q .= 'AND ' . implode(' AND ', $filterStrings) . ' ';
+      $q .= implode(' AND ', $filterStrings) . ' ';
     }
 
-    $q .= 'GROUP BY uu.host, month ';
+    $q .= "GROUP BY uu.$groupBy, month ";
 
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
       ->prepare($q);
 
-    // $st->execute($params);
-    $st->execute();
+    $st->execute($params);
+
+    $data = array();
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $data[$row['host']]['label'] = $row['host'];
-      $data[$row['host']]['months'][$row['month']] = $row['COUNT(*)'];
+      $data[$row[$groupBy]]['label'] = $row[$labelColumn];
+      $data[$row[$groupBy]]['months'][$row['month']] = $row['COUNT(*)'];
     }
 
-    // descending sort by sum of COUNT
-    uasort($data, function($a, $b) {
-      $sum = array_sum($b['months']) - array_sum($a['months']);
+    if ($data) {
+      // descending sort by sum of COUNT
+      uasort($data, function($a, $b) {
+        $sum = array_sum($b['months']) - array_sum($a['months']);
 
-      if ($sum === 0) {
-        return 0;
-      }
-      elseif ($sum > 0) {
-        return 1;
-      }
-      else {
-        return -1;
-      }
-    });
+        if ($sum === 0) {
+          return 0;
+        }
+        elseif ($sum > 0) {
+          return 1;
+        }
+        else {
+          return -1;
+        }
+      });
+    }
 
     return $data;
   }
@@ -131,7 +145,7 @@ class UrlUsageTable extends Doctrine_Table
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
       ->prepare($q);
 
-    $st->execute($params);
+    $st->execute();//$params);
 
     // start with false and true both at zero in case either has no usages
     $ret = array(
