@@ -53,9 +53,7 @@ class DatabaseUsageTable extends UsageTable
       $q .= 'AND ' . implode(' AND ', $filterStrings) . ' ';
     }
 
-    $q .= 'GROUP BY f.id, month '
-          . 'ORDER BY month '
-          ;
+    $q .= 'GROUP BY f.id, month ';
 
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
       ->prepare($q);
@@ -66,6 +64,21 @@ class DatabaseUsageTable extends UsageTable
       $data[$row['id']]['label'] = $row[$labelColumn];
       $data[$row['id']]['months'][$row['month']] = $row['COUNT(*)'];
     }
+
+    // descending sort by sum of COUNT
+    uasort($data, function($a, $b) {
+      $sum = array_sum($b['months']) - array_sum($a['months']);
+
+      if ($sum === 0) {
+        return 0;
+      }
+      elseif ($sum > 0) {
+        return 1;
+      }
+      else {
+        return -1;
+      }
+    });
 
     return $data;
   }
