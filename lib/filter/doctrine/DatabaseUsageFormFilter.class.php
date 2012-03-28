@@ -44,6 +44,8 @@ class DatabaseUsageFormFilter extends BaseDatabaseUsageFormFilter
     unset(
       $this['library_id'],
       $this['database_id'],
+      $this['is_mobile'],
+      $this['is_onsite'],
       $this['additional_data']
     );
   }

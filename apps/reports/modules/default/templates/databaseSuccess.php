@@ -6,7 +6,7 @@
       <li id="filter-timestamp">
         <?php echo $filter['timestamp']->render() ?>
       </li>
-      <li id="filter-is-onsite">
+<?php /*      <li id="filter-is-onsite">
         <label for="is_onsite">Onsite?</label>
         <?php echo $filter['is_onsite']->render() ?>
       </li>
@@ -14,6 +14,7 @@
         <label for="is_mobile">Mobile?</label>
         <?php echo $filter['is_mobile']->render() ?>
       </li>
+*/ ?>
     </ul>
     <?php echo $filter->renderHiddenFields(false) ?>
     <input type="submit" value="Refresh" />
