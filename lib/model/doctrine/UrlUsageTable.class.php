@@ -165,7 +165,7 @@ class UrlUsageTable extends Doctrine_Table
    */
   public function getAllHosts()
   {
-    $q = 'SELECT DISTINCT host FROM url_usage';
+    $q = 'SELECT DISTINCT host FROM url_usage ORDER BY host';
 
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
       ->query($q);

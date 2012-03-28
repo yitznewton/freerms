@@ -8,15 +8,14 @@ FR.Reports = {
     }
 
     x$('input', uList).each(function(e, i) {
-      if (i < 5) {
-        // only display the first five by default
+      var matches = this.id.match(/^graph_(.*)$/);
+      var $row    = x$('#library-' + matches[1]);
+
+      if (!$row.hasClass('suppress')) {
         e.checked = true;
       }
 
       e.onchange = function() {
-        var matches = this.id.match(/^graph_(.*)$/);
-        var $row    = x$('#library-' + matches[1]);
-
         this.checked ? $row.removeClass('suppress')
           : $row.addClass('suppress')
 
