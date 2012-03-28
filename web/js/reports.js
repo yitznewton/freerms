@@ -1,5 +1,5 @@
 x$.ready(function() {
-  var libraryFilter = FR.$$('filter-library');
+  var libraryFilter = FR.$$('graph-filter');
 
   if (libraryFilter) {
     libraryFilter.style.display = 'block';
@@ -24,6 +24,13 @@ x$.ready(function() {
   }
 
   var graph = new FR.Reports.LineGraph.Flot(primaryData);
+
+  var uLists = x$('ul', libraryFilter);
+
+  if (uLists.length > 0) {
+    FR.Reports.prepareGraphFilter(uLists[0], graph);
+  }
+
   graph.setTarget(FR.$$('primary-graph-target'));
   graph.render();
 
@@ -42,12 +49,6 @@ x$.ready(function() {
   mobileGraph.setTarget(FR.$$('mobile-share-canvas'));
   mobileGraph.render();
   mobileShareDl.style.display = 'none';
-
-  var uLists = x$('ul', libraryFilter);
-
-  if (uLists.length > 0) {
-    FR.Reports.prepareLibraryFilter(uLists[0], graph);
-  }
 
   FR.$$('primary-graph').style.display = 'block';
 });

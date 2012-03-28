@@ -1,7 +1,18 @@
 FR.Reports = {
-  prepareLibraryFilter: function(uList, graph) {
-    x$('input', uList).each(function(e) {
-      e.checked = true;
+  prepareGraphFilter: function(uList, graph) {
+    var trCollection = x$('tbody tr', graph.getTable());
+
+    for (i = 5; i < trCollection.length; i++) {
+      // only display the first five by default
+      trCollection[i].className += ' suppress';
+    }
+
+    x$('input', uList).each(function(e, i) {
+      if (i < 5) {
+        // only display the first five by default
+        e.checked = true;
+      }
+
       e.onchange = function() {
         var matches = this.id.match(/\d+$/);
         var $row    = x$('#library-' + matches[0]);
@@ -17,7 +28,7 @@ FR.Reports = {
     var selectAllInput = document.createElement('input');
     selectAllInput.id = 'library-select-all';
     selectAllInput.type = 'checkbox';
-    selectAllInput.checked = true;
+    selectAllInput.checked = false;
     selectAllInput.onchange = function() {
       FR.Reports.librarySelectAllToggle(this, uList);
     };

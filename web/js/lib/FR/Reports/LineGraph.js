@@ -17,6 +17,13 @@ FR.Reports.LineGraph = function(table) {
 };
 
 /**
+ * @returns {HTMLTableElement}
+ */
+FR.Reports.LineGraph.prototype.getTable = function() {
+  return this.table;
+};
+
+/**
  * @param {HTMLElement} target
  */
 FR.Reports.LineGraph.prototype.setTarget = function(target) {

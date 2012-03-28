@@ -22,8 +22,12 @@
 
 <section id="primary-graph">
   <div id="primary-graph-target"></div>
-  <div id="filter-library">
-    <div class="label">Library</div>
+  <div id="graph-filter">
+    <div class="label">
+      <?php echo $sf_context->getActionName() === 'database'
+        ? 'Library'
+        : 'Database' ?>
+      </div>
     <?php echo $graphFilter->render('graph') ?>
   </div>
 </section>
