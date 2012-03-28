@@ -19,6 +19,9 @@ FR.Reports.LineGraph.Flot.prototype.render = function() {
       points: { show: false },
       hoverable: true
     },
+    legend: {
+      noColumns: 2
+    },
     xaxis: { show: false },
     yaxis: {
       tickDecimals: 0,
