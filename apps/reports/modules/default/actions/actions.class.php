@@ -65,12 +65,14 @@ class defaultActions extends sfActions
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
     $statsQuery = new StatsQuery(Doctrine_Core::getTable('DatabaseUsage'));
+    $onsiteShareQuery = new ShareQuery($table, 'is_onsite');
+    $mobileShareQuery = new ShareQuery($table, 'is_mobile');
 
     $this->statistics = $statsQuery
       ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);
 
-//     $this->mobileShare = $table->getShare('is_mobile', $this->filterValues);
-//     $this->onsiteShare = $table->getShare('is_onsite', $this->filterValues);
+    $this->onsiteShare = $onsiteShareQuery->get($this->filterValues);
+    $this->mobileShare = $mobileShareQuery->get($this->filterValues);
   }
 
   /**
@@ -106,12 +108,14 @@ class defaultActions extends sfActions
     $table = Doctrine_Core::getTable('UrlUsage');
 
     $statsQuery = new StatsQuery(Doctrine_Core::getTable('UrlUsage'));
+    $onsiteShareQuery = new ShareQuery($table, 'is_onsite');
+    $mobileShareQuery = new ShareQuery($table, 'is_mobile');
 
     $this->statistics = $statsQuery
       ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);
 
-    $this->mobileShare = $table->getShare('is_mobile', $this->filterValues);
-    $this->onsiteShare = $table->getShare('is_onsite', $this->filterValues);
+    $this->onsiteShare = $onsiteShareQuery->get($this->filterValues);
+    $this->mobileShare = $mobileShareQuery->get($this->filterValues);
 
     $this->setTemplate('database');
   }

@@ -1,6 +1,6 @@
 <?php
 
-class StatsQuery
+class StatsQuery extends ReportSqlQuery
 {
   /**
    * @var Doctrine_Table
@@ -123,11 +123,6 @@ class StatsQuery
     }
 
     return $data;
-  }
-
-  protected function sanitize($string)
-  {
-    return preg_replace('/[^A-Za-z0-9_]/', '', $string);
   }
 }
 

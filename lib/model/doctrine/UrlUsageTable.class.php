@@ -8,66 +8,6 @@
 class UrlUsageTable extends Doctrine_Table
 {
   /**
-   * @param string $shareColumn
-   * @param array $filters
-   * @return array
-   */
-  public function getShare($shareColumn, array $filters = array())
-  {
-    if (!in_array($shareColumn, array('is_mobile', 'is_onsite'))) {
-      throw new InvalidArgumentException("Invalid column $shareColumn");
-    }
-
-    $filterStrings = array();
-
-    if (isset($filters['timestamp']['from'])) {
-      $params[':from'] = $filters['timestamp']['from'];
-      $filterStrings[] = 'SUBSTR(uu.timestamp, 1, 7) >= :from';
-    }
-
-    if (isset($filters['timestamp']['to'])) {
-      $params[':to'] = $filters['timestamp']['to'];
-      $filterStrings[] = 'SUBSTR(uu.timestamp, 1, 7) <= :to';
-    }
-
-    if (isset($filters['timestamp'])) {
-      unset($filters['timestamp']);
-    }
-
-    foreach ($filters as $key => $value) {
-      $filterStrings[] = "$key = :$key";
-      $params[":$key"] = $value;
-    }
-
-    $q = "SELECT uu.$shareColumn, COUNT(*) as n "
-         . 'FROM url_usage uu '
-         ;
-
-    if ($filterStrings) {
-      $q .= 'WHERE ' . implode(' AND ', $filterStrings) . ' ';
-    }
-
-    $q .= "GROUP BY uu.$shareColumn ";
-
-    $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
-      ->prepare($q);
-
-    $st->execute($params);
-
-    // start with false and true both at zero in case either has no usages
-    $ret = array(
-      0 => 0,
-      1 => 0,
-    );
-
-    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $ret[$row[$shareColumn]] = $row['n'];
-    }
-
-    return $ret;
-  }
-
-  /**
    * @return array string[]
    */
   public function getAllHosts()
