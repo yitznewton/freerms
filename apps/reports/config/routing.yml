@@ -1,13 +1,13 @@
 # You can find more information about this file on the symfony website:
 # http://www.symfony-project.org/reference/1_4/en/10-Routing
 
-database:
-  url:   /database/:id/*
-  param: { module: default, action: database }
+database_by_database:
+  url:   /database/by-database/:filter/*
+  param: { module: default, action: database, by: database }
 
-library:
-  url:   /library/:id/*
-  param: { module: default, action: library }
+database_by_library:
+  url:   /database/by-library/:filter/*
+  param: { module: default, action: database, by: library }
 
 url_by_library:
   url:   /url/by-library/:filter/*

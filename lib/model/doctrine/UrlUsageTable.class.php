@@ -8,36 +8,17 @@
 class UrlUsageTable extends Doctrine_Table
 {
   /**
-   * @param string $groupBy Column to group on
-   * @param string $labelColumn Column to use as group label
+   * @param string $shareColumn
    * @param array $filters
+   * @return array
    */
-  public function getStatistics($groupBy, $labelColumn, array $filters = array())
+  public function getShare($shareColumn, array $filters = array())
   {
-//    $foreignKey = $table . '_id';
-//
-//    if ($table === 'database') {
-//      $table = 'freerms_database';
-//      $groupTable = 'library';
-//      $groupKey = 'library_id';
-//    }
-//    elseif ($table !== 'library') {
-//      throw new InvalidArgumentException("Invalid table $table");
-//    }
-//    else {
-//      $groupTable = 'freerms_database';
-//      $groupKey = 'database_id';
-//    }
-    if (!in_array($groupBy, array('host', 'library_id'))) {
-      throw new InvalidArgumentException("Invalid column $groupBy");
+    if (!in_array($shareColumn, array('is_mobile', 'is_onsite'))) {
+      throw new InvalidArgumentException("Invalid column $shareColumn");
     }
-//
-//    if (!in_array($labelColumn, array('code', 'title'))) {
-//      throw new InvalidArgumentException("Invalid column $labelColumn");
-//    }
-//
+
     $filterStrings = array();
-//    $params = array(':id' => $id);
 
     if (isset($filters['timestamp']['from'])) {
       $params[':from'] = $filters['timestamp']['from'];
@@ -58,86 +39,12 @@ class UrlUsageTable extends Doctrine_Table
       $params[":$key"] = $value;
     }
 
-    $q = 'SELECT SUBSTR(uu.timestamp, 1, 7) as month, '
-         . 'l.id, l.code, COUNT(*), uu.host, uu.library_id '
-         . 'FROM url_usage uu '
-         . 'JOIN library l ON uu.library_id = l.id '
-         . 'WHERE '
-         ;
-
-    if ($filterStrings) {
-      $q .= implode(' AND ', $filterStrings) . ' ';
-    }
-
-    $q .= "GROUP BY uu.$groupBy, month ";
-
-    $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
-      ->prepare($q);
-
-    $st->execute($params);
-
-    $data = array();
-
-    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $data[$row[$groupBy]]['label'] = $row[$labelColumn];
-      $data[$row[$groupBy]]['months'][$row['month']] = $row['COUNT(*)'];
-    }
-
-    if ($data) {
-      // descending sort by sum of COUNT
-      uasort($data, function($a, $b) {
-        $sum = array_sum($b['months']) - array_sum($a['months']);
-
-        if ($sum === 0) {
-          return 0;
-        }
-        elseif ($sum > 0) {
-          return 1;
-        }
-        else {
-          return -1;
-        }
-      });
-    }
-
-    return $data;
-  }
-
-  /**
-   * @param string $shareColumn
-   * @param array $filters
-   * @return array
-   */
-  public function getShare($shareColumn, array $filters = array())
-  {
-//    if (!in_array($foreignKey, array('database_id', 'library_id'))) {
-//      throw new InvalidArgumentException("Invalid column $foreignKey");
-//    }
-
-    if (!in_array($shareColumn, array('is_mobile', 'is_onsite'))) {
-      throw new InvalidArgumentException("Invalid column $shareColumn");
-    }
-
-    $filterStrings = array();
-//    $params = array(':id' => $id);
-//
-//    if (isset($filters['timestamp']['from'])) {
-//      $params[':from'] = $filters['timestamp']['from'];
-//      $filterStrings[] = 'SUBSTR(du.timestamp, 1, 7) >= :from';
-//    }
-//
-//    if (isset($filters['timestamp']['to'])) {
-//      $params[':to'] = $filters['timestamp']['to'];
-//      $filterStrings[] = 'SUBSTR(du.timestamp, 1, 7) <= :to';
-//    }
-
     $q = "SELECT uu.$shareColumn, COUNT(*) as n "
          . 'FROM url_usage uu '
-         // . "WHERE du.$foreignKey = :id "
          ;
 
     if ($filterStrings) {
-      $q .= 'AND ' . implode(' AND ', $filterStrings) . ' ';
+      $q .= 'WHERE ' . implode(' AND ', $filterStrings) . ' ';
     }
 
     $q .= "GROUP BY uu.$shareColumn ";
@@ -145,7 +52,7 @@ class UrlUsageTable extends Doctrine_Table
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
       ->prepare($q);
 
-    $st->execute();//$params);
+    $st->execute($params);
 
     // start with false and true both at zero in case either has no usages
     $ret = array(

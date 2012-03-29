@@ -37,47 +37,40 @@ class defaultActions extends sfActions
    */
   public function executeDatabase(sfWebRequest $request)
   {
-    $id = $request->getParameter('id');
-    $this->forward404Unless(Doctrine_Core::getTable('Database')->find($id));
+    $this->forward404Unless($by = $request->getParameter('by'));
+
+    switch (strtolower($by)) {
+      case 'database':
+        $groupByColumn = 'library_id';
+        $groupByTable = 'Library';
+        $labelColumn = 'code';
+        $this->filterValues['database_id'] = $request->getParameter('filter');
+        $this->graphFilterTitle = 'Library';
+        $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
+        break;
+
+      case 'library':
+        $groupByColumn = 'database_id';
+        $groupByTable = 'Database';
+        $labelColumn = 'title';
+        $this->filterValues['library_id'] = $request->getParameter('filter');
+        $this->graphFilterTitle = 'Database';
+        $this->graphFilter = new ReportGraphWidget(array('model' => 'Database'));
+        break;
+
+      default:
+        $this->forward404();
+    }
 
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
-    $this->statistics = $table->getStatistics($id, 'database', 'code',
-      $this->filterValues);
+    $statsQuery = new StatsQuery(Doctrine_Core::getTable('DatabaseUsage'));
 
-    $this->mobileShare = $table->getShare($id, 'database_id', 'is_mobile',
-      $this->filterValues);
+    $this->statistics = $statsQuery
+      ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);
 
-    $this->onsiteShare = $table->getShare($id, 'database_id', 'is_onsite',
-      $this->filterValues);
-
-    $this->graphFilterTitle = 'Library';
-    $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
-  }
-
-  /**
-   * @param sfRequest $request A request object
-   */
-  public function executeLibrary(sfWebRequest $request)
-  {
-    $id = $request->getParameter('id');
-    $this->forward404Unless(Doctrine_Core::getTable('Library')->find($id));
-
-    $table = Doctrine_Core::getTable('DatabaseUsage');
-
-    $this->statistics = $table->getStatistics($id, 'library', 'title',
-      $this->filterValues);
-
-    $this->mobileShare = $table->getShare($id, 'library_id', 'is_mobile',
-      $this->filterValues);
-
-    $this->onsiteShare = $table->getShare($id, 'library_id', 'is_onsite',
-      $this->filterValues);
-
-    $this->graphFilterTitle = 'Database';
-    $this->graphFilter = new ReportGraphWidget(array('model' => 'Database'));
-
-    $this->setTemplate('database');
+//     $this->mobileShare = $table->getShare('is_mobile', $this->filterValues);
+//     $this->onsiteShare = $table->getShare('is_onsite', $this->filterValues);
   }
 
   /**
@@ -89,7 +82,8 @@ class defaultActions extends sfActions
 
     switch (strtolower($by)) {
       case 'host':
-        $groupBy = 'library_id';
+        $groupByColumn = 'library_id';
+        $groupByTable = 'Library';
         $labelColumn = 'code';
         $this->filterValues['host'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Library';
@@ -97,7 +91,8 @@ class defaultActions extends sfActions
         break;
 
       case 'library':
-        $groupBy = 'host';
+        $groupByColumn = 'host';
+        $groupByTable = null;
         $labelColumn = 'host';
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Host';
@@ -110,13 +105,13 @@ class defaultActions extends sfActions
 
     $table = Doctrine_Core::getTable('UrlUsage');
 
-    $this->statistics = $table->getStatistics($groupBy, $labelColumn, $this->filterValues);
+    $statsQuery = new StatsQuery(Doctrine_Core::getTable('UrlUsage'));
 
-    $this->mobileShare = $table->getShare('is_mobile',
-      $this->filterValues);
+    $this->statistics = $statsQuery
+      ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);
 
-    $this->onsiteShare = $table->getShare('is_onsite',
-      $this->filterValues);
+    $this->mobileShare = $table->getShare('is_mobile', $this->filterValues);
+    $this->onsiteShare = $table->getShare('is_onsite', $this->filterValues);
 
     $this->setTemplate('database');
   }

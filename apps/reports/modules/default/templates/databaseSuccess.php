@@ -1,5 +1,3 @@
-<?php if ($statistics): ?>
-
 <aside class="filters">
   <form method="get">
     <ul>
@@ -20,6 +18,8 @@
     <input type="submit" value="Refresh" />
   </form>
 </aside>
+
+<?php if ($statistics): ?>
 
 <section id="primary-graph">
   <div id="primary-graph-target"></div>
@@ -46,7 +46,7 @@
 
     <tbody>
     <?php foreach ($statistics as $id => $data): ?>
-      <?php include_partial('libraryRow', array('id' => $id,
+      <?php include_partial('row', array('id' => $id,
         'label' => $data['label'], 'columns' => $data['months'],
         'reportMonths' => $reportMonths)) ?>
     <?php endforeach; ?>
