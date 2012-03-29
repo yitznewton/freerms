@@ -15,6 +15,13 @@ class StatsQuery extends ReportSqlQuery
     $this->table = $table;
   }
 
+  /**
+   * @param string $groupByColumn
+   * @param string $groupByTable Relation grouped by; may be null
+   * @param string $labelColumn To use as table header
+   * @param array $filters
+   * @return array Sorted array of results
+   */
   public function get($groupByColumn, $groupByTable, $labelColumn, array $filters)
   {
     $selects = array();

@@ -21,6 +21,10 @@ class ShareQuery extends ReportSqlQuery
     $this->shareColumn = $this->sanitize($shareColumn);
   }
 
+  /**
+   * @param array $filters
+   * @return array Sorted array of results
+   */
   public function get(array $filters)
   {
     $selects = array();
