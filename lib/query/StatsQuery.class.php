@@ -46,16 +46,7 @@ class StatsQuery extends ReportSqlQuery
 
     $this->joins[] = "$libraryTableName l ON t.library_id = l.id";
 
-    if (isset($filters['timestamp'])) {
-      $this->applyTimeFilters($filters['timestamp']);
-      unset($filters['timestamp']);
-    }
-
-    foreach ($filters as $key => $value) {
-      $key = $this->sanitize($key);
-      $this->wheres[] = "$key = :$key";
-      $this->params[":$key"] = $value;
-    }
+    $this->applyFilters($filters);
 
     if (isset($filters['database_id'])) {
       $databaseTableName = Doctrine_Core::getTable('Database')

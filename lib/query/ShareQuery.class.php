@@ -27,9 +27,7 @@ class ShareQuery extends ReportSqlQuery
     $this->selects[] = 'COUNT(*)';
     $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
 
-    if (isset($filters['timestamp'])) {
-      $this->applyTimeFilters($filters['timestamp']);
-    }
+    $this->applyFilters($filters);
 
     $this->groupByColumn = $this->shareColumn;
 

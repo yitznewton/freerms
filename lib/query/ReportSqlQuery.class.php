@@ -42,19 +42,34 @@ abstract class ReportSqlQuery
   /**
    * @param array $filters
    */
-  protected function applyTimeFilters(array $filters)
+  protected function applyFilters(array $filters)
   {
-    if (isset($filters['from'])) {
-      $this->params[':from'] = $filters['from'];
-      $this->wheres[] = 'month >= :from';
-    }
+    foreach ($filters as $key => $value) {
+      $key = $this->sanitize($key);
 
-    if (isset($filters['to'])) {
-      $this->params[':to'] = $filters['to'];
-      $this->wheres[] = 'month <= :to';
+      switch ($key) {
+        case 'timestamp':
+          $this->applyFilters($value);
+          break;
+
+        case 'from':
+          $this->params[":$key"] = $value;
+          $this->wheres[] = "month >= :$key";
+          break;
+
+        case 'to':
+          $this->params[":$key"] = $value;
+          $this->wheres[] = "month <= :$key";
+          break;
+
+        default:
+          $this->wheres[] = "$key = :$key";
+          $this->params[":$key"] = $value;
+          break;
+      }
     }
   }
-  
+
   /**
    * @return string
    */
