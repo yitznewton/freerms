@@ -3,10 +3,6 @@
 class ShareQuery extends ReportSqlQuery
 {
   /**
-   * @var Doctrine_Table
-   */
-  protected $table;
-  /**
    * @var string
    */
   protected $shareColumn;
@@ -27,33 +23,26 @@ class ShareQuery extends ReportSqlQuery
    */
   public function get(array $filters)
   {
-    $selects = array();
-    $wheres = array();
     $params = array();
 
     if (isset($filters['timestamp']['from'])) {
       $params[':from'] = $filters['timestamp']['from'];
-      $wheres[] = 'SUBSTR(t.timestamp, 1, 7) >= :from';
+      $this->wheres[] = 'month >= :from';
     }
 
     if (isset($filters['timestamp']['to'])) {
       $params[':to'] = $filters['timestamp']['to'];
-      $wheres[] = 'SUBSTR(t.timestamp, 1, 7) <= :to';
+      $this->wheres[] = 'month <= :to';
     }
 
-    $selects[] = "t.$this->shareColumn";
-    $selects[] = 'COUNT(*)';
+    $this->selects[] = "t.$this->shareColumn";
+    $this->selects[] = 'COUNT(*)';
+    $this->selects[] = 'SUBSTR(t.timestamp, 1,7) as month';
 
-    $q = 'SELECT '
-         . implode(', ', $selects) . ' '
-         . 'FROM ' . $this->table->getTableName() . ' t '
-         . 'WHERE '
-         . implode(' AND ', $wheres) . ' '
-         . "GROUP BY t.$this->shareColumn "
-         ;
+    $this->groupByColumn = $this->shareColumn;
 
     $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
-      ->prepare($q);
+      ->prepare($this->getSql());
 
     $st->execute($params);
 
