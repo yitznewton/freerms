@@ -8,7 +8,7 @@ class ReportGraphHostWidget extends sfWidgetFormChoice
 
     $hosts = Doctrine_Core::getTable('UrlUsage')->getAllHosts();
 
-    // replace . with ~ in @id so XUI does not confuse with class selector
+    // replace . with - in @id so jQuery/xui does not confuse with class selector
     $hosts = array_combine(
       array_map(function($a) {
         return str_replace('.', '-', $a);
@@ -26,5 +26,4 @@ class ReportGraphHostWidget extends sfWidgetFormChoice
     $this->setOptions($options);
   }
 }
-
 

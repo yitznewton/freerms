@@ -30,7 +30,7 @@ class freermsValidatorMonth extends sfValidatorDate
       }
     }
 
-    // if one date value is empty, all others must be empty too
+    // if one date value is empty, other must be empty too
     $empties =
       (!isset($value['year']) || !$value['year'] ? 1 : 0) +
       (!isset($value['month']) || !$value['month'] ? 1 : 0)
