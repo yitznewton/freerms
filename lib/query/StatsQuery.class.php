@@ -19,8 +19,6 @@ class StatsQuery extends ReportSqlQuery
    */
   public function get($groupByColumn, $groupByTable, $labelColumn, array $filters)
   {
-    $params = array();
-
     $libraryTableName = Doctrine_Core::getTable('Library')->getTableName();
 
     $labelColumn = $this->sanitize($labelColumn);
@@ -48,24 +46,15 @@ class StatsQuery extends ReportSqlQuery
 
     $this->joins[] = "$libraryTableName l ON t.library_id = l.id";
 
-    if (isset($filters['timestamp']['from'])) {
-      $this->wheres[] = 'SUBSTR(t.timestamp, 1, 7) >= :from';
-      $params[':from'] = $filters['timestamp']['from'];
-    }
-
-    if (isset($filters['timestamp']['to'])) {
-      $this->wheres[] = 'SUBSTR(t.timestamp, 1, 7) <= :to';
-      $params[':to'] = $filters['timestamp']['to'];
-    }
-
     if (isset($filters['timestamp'])) {
+      $this->applyTimeFilters($filters['timestamp']);
       unset($filters['timestamp']);
     }
 
     foreach ($filters as $key => $value) {
       $key = $this->sanitize($key);
       $this->wheres[] = "$key = :$key";
-      $params[":$key"] = $value;
+      $this->params[":$key"] = $value;
     }
 
     if (isset($filters['database_id'])) {
@@ -76,7 +65,7 @@ class StatsQuery extends ReportSqlQuery
       $this->joins[] = "$databaseTableName d ON t.database_id = d.id";
     }
 
-    $this->execute($params);
+    $this->execute();
 
     $data = array();
 

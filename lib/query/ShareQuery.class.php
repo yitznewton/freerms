@@ -23,25 +23,17 @@ class ShareQuery extends ReportSqlQuery
    */
   public function get(array $filters)
   {
-    $params = array();
-
     $this->selects[] = "t.$this->shareColumn";
     $this->selects[] = 'COUNT(*)';
     $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
 
-    if (isset($filters['timestamp']['from'])) {
-      $params[':from'] = $filters['timestamp']['from'];
-      $this->wheres[] = 'month >= :from';
-    }
-
-    if (isset($filters['timestamp']['to'])) {
-      $params[':to'] = $filters['timestamp']['to'];
-      $this->wheres[] = 'month <= :to';
+    if (isset($filters['timestamp'])) {
+      $this->applyTimeFilters($filters['timestamp']);
     }
 
     $this->groupByColumn = $this->shareColumn;
 
-    $this->execute($params);
+    $this->execute();
 
     // start with false and true both at zero in case either has no usages
     $ret = array(
