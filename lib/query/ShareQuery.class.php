@@ -41,10 +41,7 @@ class ShareQuery extends ReportSqlQuery
 
     $this->groupByColumn = $this->shareColumn;
 
-    $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
-      ->prepare($this->getSql());
-
-    $st->execute($params);
+    $this->execute($params);
 
     // start with false and true both at zero in case either has no usages
     $ret = array(
@@ -52,7 +49,7 @@ class ShareQuery extends ReportSqlQuery
       1 => 0,
     );
 
-    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $this->fetchRow()) {
       $ret[$row[$this->shareColumn]] = $row['COUNT(*)'];
     }
 

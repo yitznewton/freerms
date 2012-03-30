@@ -72,18 +72,15 @@ class StatsQuery extends ReportSqlQuery
       $databaseTableName = Doctrine_Core::getTable('Database')
         ->getTableName();
 
-      $selectColumns[] = 'd.title';
+      $this->selects[] = 'd.title';
       $this->joins[] = "$databaseTableName d ON t.database_id = d.id";
     }
 
-    $st = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh()
-      ->prepare($this->getSql());
-
-    $st->execute($params);
+    $this->execute($params);
 
     $data = array();
 
-    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $this->fetchRow()) {
       $data[$row[$this->groupByColumn]]['label'] = $row[$labelColumn];
       $data[$row[$this->groupByColumn]]['months'][$row['month']] = $row['COUNT(*)'];
     }

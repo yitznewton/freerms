@@ -22,6 +22,10 @@ abstract class ReportSqlQuery
    * @var string
    */
   protected $groupByColumn;
+  /**
+   * @var PDOStatement
+   */
+  protected $pdoStatement;
 
   /**
    * @param string $string
@@ -55,6 +59,29 @@ abstract class ReportSqlQuery
     }
 
     return $sql;
+  }
+
+  /**
+   * @param array $params
+   */
+  protected function execute(array $params)
+  {
+    if ($this->pdoStatement) {
+      throw new RuntimeException('Already executed');
+    }
+
+    $this->pdoStatement = Doctrine_Manager::getInstance()
+      ->getCurrentConnection()->getDbh()->prepare($this->getSql());
+
+    $this->pdoStatement->execute($params);
+  }
+
+  /**
+   * @return array
+   */
+  protected function fetchRow()
+  {
+    return $this->pdoStatement->fetch(PDO::FETCH_ASSOC);
   }
 }
 
