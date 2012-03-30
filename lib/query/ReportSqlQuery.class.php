@@ -81,6 +81,10 @@ abstract class ReportSqlQuery
    */
   protected function fetchRow()
   {
+    if (!$this->pdoStatement) {
+      throw new RuntimeException('Not yet executed');
+    }
+
     return $this->pdoStatement->fetch(PDO::FETCH_ASSOC);
   }
 }

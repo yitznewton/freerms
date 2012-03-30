@@ -37,6 +37,15 @@ class StatsQuery extends ReportSqlQuery
       $this->selects[] = $labelColumn;
     }
 
+    $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
+    $this->selects[] = 'COUNT(*)';
+    $this->selects[] = 'library_id';
+    $this->selects[] = $this->groupByColumn;
+
+    if ($this->table->hasColumn('host')) {
+      $this->selects[] = 't.host';
+    }
+
     $this->joins[] = "$libraryTableName l ON t.library_id = l.id";
 
     if (isset($filters['timestamp']['from'])) {
@@ -59,15 +68,6 @@ class StatsQuery extends ReportSqlQuery
       $params[":$key"] = $value;
     }
 
-    $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) as month';
-    $this->selects[] = 'COUNT(*)';
-    $this->selects[] = 'library_id';
-    $this->selects[] = $this->groupByColumn;
-
-    if ($this->table->hasColumn('host')) {
-      $this->selects[] = 't.host';
-    }
-
     if (isset($filters['database_id'])) {
       $databaseTableName = Doctrine_Core::getTable('Database')
         ->getTableName();
@@ -86,23 +86,30 @@ class StatsQuery extends ReportSqlQuery
     }
 
     if ($data) {
-      // descending sort by sum of COUNT
-      uasort($data, function($a, $b) {
-        $sum = array_sum($b['months']) - array_sum($a['months']);
-
-        if ($sum === 0) {
-          return 0;
-        }
-        elseif ($sum > 0) {
-          return 1;
-        }
-        else {
-          return -1;
-        }
-      });
+      uasort($data, array($this, 'sort'));
     }
 
     return $data;
+  }
+
+  /**
+   * Descending sort by sum of COUNT
+   *
+   * @param array $data
+   */
+  protected function sort($a, $b)
+  {
+    $sum = array_sum($b['months']) - array_sum($a['months']);
+
+    if ($sum === 0) {
+      return 0;
+    }
+    elseif ($sum > 0) {
+      return 1;
+    }
+    else {
+      return -1;
+    }
   }
 }
 

@@ -25,6 +25,10 @@ class ShareQuery extends ReportSqlQuery
   {
     $params = array();
 
+    $this->selects[] = "t.$this->shareColumn";
+    $this->selects[] = 'COUNT(*)';
+    $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
+
     if (isset($filters['timestamp']['from'])) {
       $params[':from'] = $filters['timestamp']['from'];
       $this->wheres[] = 'month >= :from';
@@ -34,10 +38,6 @@ class ShareQuery extends ReportSqlQuery
       $params[':to'] = $filters['timestamp']['to'];
       $this->wheres[] = 'month <= :to';
     }
-
-    $this->selects[] = "t.$this->shareColumn";
-    $this->selects[] = 'COUNT(*)';
-    $this->selects[] = 'SUBSTR(t.timestamp, 1,7) as month';
 
     $this->groupByColumn = $this->shareColumn;
 
