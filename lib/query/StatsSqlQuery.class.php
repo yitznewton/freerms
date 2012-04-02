@@ -35,16 +35,18 @@ class StatsSqlQuery extends ReportSqlQuery
     }
 
     $libraryTableName = $this->getTableName('Library');
+    $databaseTableName = $this->getTableName('Database');
 
     $this->joins[] = "$libraryTableName ON "
-      . "{$this->table->getTableName()}.library_id = $libraryTableName.id";
+      . "$this->tableName.library_id = $libraryTableName.id";
+
+    $this->joins[] = "$databaseTableName ON "
+      . "$this->tableName.database_id = $databaseTableName.id";
 
     if (isset($this->params[':database_id'])) {
       $databaseTableName = $this->getTableName('Database');
 
       $this->selects[] = "$databaseTableName.title";
-      $this->joins[] = "$databaseTableName ON "
-        . "{$this->table->getTableName()}.database_id = $databaseTableName.id";
     }
   }
 

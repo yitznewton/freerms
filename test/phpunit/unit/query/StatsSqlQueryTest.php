@@ -17,7 +17,7 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
   /**
    * @expectedException RuntimeException
    */
-  public function testGet_UnsafeLabelColumn_Throws()
+  public function testGetSql_UnsafeLabelColumn_Throws()
   {
     $this->query->setLabelColumn('column; DELETE FROM user;');
   }
@@ -25,12 +25,12 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
   /**
    * @expectedException RuntimeException
    */
-  public function testGet_UnsafeFilterKey_Throws()
+  public function testGetSql_UnsafeFilterKey_Throws()
   {
     $this->query->addFilters(array('column; DELETE FROM user;' => 1));
   }
 
-  public function testGet_DatabaseUsage_ExpectedSql()
+  public function testGetSql_DatabaseUsage_ExpectedSql()
   {
     $this->query->setGroupBy('library_id', 'Library');
     $this->query->setLabelColumn('code', 'Library');
@@ -51,7 +51,7 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
     );
   }
 
-  public function testGet_UrlUsage_ExpectedSql()
+  public function testGetSql_UrlUsage_ExpectedSql()
   {
     $this->query->setGroupBy('library_id', 'Library');
     $this->query->setLabelColumn('host');
@@ -64,11 +64,27 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
       'SELECT table_name.host, SUBSTR(table_name.timestamp, 1, 7) AS month, '
       . 'COUNT(*), library_id '
       . 'FROM table_name '
-      . 'JOIN library ON table_name.library_id = library.id '
+      . 'JOIN library ON table_name.library_id = library.id, '
+      . 'freerms_database ON table_name.database_id = freerms_database.id '
       . 'WHERE library_id = :library_id '
       . 'GROUP BY table_name.library_id, month ', 
       $method->invoke($this->query)
     );
+  }
+
+  public function testGetSql_DatabaseUsageByLibrary_SelectsDatabaseTitle()
+  {
+    $this->query->setGroupBy('library_id', 'Library');
+    $this->query->setLabelColumn('code', 'Library');
+    $this->query->addFilters(array('library_id' => 1));
+
+    $method = new ReflectionMethod($this->query, 'getSql');
+    $method->setAccessible(true);
+
+    $pattern = '/freerms_database ON table_name.database_id '
+               . '= freerms_database.id/';
+
+    $this->assertRegExp($pattern, $method->invoke($this->query));
   }
 }
 

@@ -44,6 +44,7 @@ class defaultActions extends sfActions
         $groupByColumn = 'library_id';
         $groupByModel = 'Library';
         $labelColumn = 'code';
+        $labelModel = 'Library';
         $this->filterValues['database_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Library';
         $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
@@ -53,6 +54,7 @@ class defaultActions extends sfActions
         $groupByColumn = 'database_id';
         $groupByModel = 'Database';
         $labelColumn = 'title';
+        $labelModel = 'Database';
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Database';
         $this->graphFilter = new ReportGraphWidget(array('model' => 'Database'));
@@ -65,7 +67,7 @@ class defaultActions extends sfActions
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
     $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('DatabaseUsage'));
-    $statsQuery->setLabelColumn($labelColumn);
+    $statsQuery->setLabelColumn($labelColumn, $labelModel);
 
     $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
     $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');

@@ -22,6 +22,10 @@ abstract class ReportSqlQuery
    */
   protected $pdoStatement;
   /**
+   * @var sfDoctrineConnectionProfiler
+   */
+  protected $profiler;
+  /**
    * @var array
    */
   protected $params = array();
@@ -184,6 +188,11 @@ abstract class ReportSqlQuery
 
       $this->tableNames[$model] = $name;
     }
+  }
+
+  protected function setSfDatabase(sfDoctrineDatabase $database)
+  {
+    $this->profiler = $database->getProfiler();
   }
 
   /**
