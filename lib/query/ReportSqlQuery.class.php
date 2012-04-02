@@ -87,10 +87,15 @@ abstract class ReportSqlQuery
 
   /**
    * @param string $string
+   * @return string
    */
   protected function sanitize($string)
   {
-    return preg_replace('/[^A-Za-z0-9_]/', '', $string);
+    if (preg_match('/[^A-Za-z0-9_]/', $string)) {
+      throw new RuntimeException("Unsafe characters in string '$string'");
+    }
+
+    return $string;
   }
 
   protected function applyFilter($key, $value)

@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 
-class ReportSqlQueryTest extends sfPHPUnitBaseTestCase
+class ReportSqlQueryTestCase extends sfPHPUnitBaseTestCase
 {
   public function setUp()
   {

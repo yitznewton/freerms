@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__).'/ReportSqlQueryTest.php';
+require_once dirname(__FILE__).'/ReportSqlQueryTestCase.php';
 
-class unit_ShareSqlQueryTest extends ReportSqlQueryTest
+class unit_ShareSqlQueryTest extends ReportSqlQueryTestCase
 {
   /**
-   * @expectedException
+   * @expectedException RuntimeException
    */
   public function testConstruct_UnsafeShareColumn_Throws()
   {
@@ -13,7 +13,7 @@ class unit_ShareSqlQueryTest extends ReportSqlQueryTest
   }
 
   /**
-   * @expectedException
+   * @expectedException RuntimeException
    */
   public function testGet_UnsafeFilterKey_Throws()
   {
