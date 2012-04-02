@@ -3,39 +3,30 @@
 class StatsSqlQuery extends ReportSqlQuery
 {
   /**
-   * @param string $groupByColumn
-   * @param string $groupByTable Relation grouped by; may be null
-   * @param string $labelColumn To use as table header
-   * @return array Sorted array of results
+   * @param Doctrine_Table $table
+   * @param PDO $pdo
    */
-  public function get($groupByColumn, $groupByTable, $labelColumn)
+  public function __construct(Doctrine_Table $table, PDO $pdo = null)
   {
-    $libraryTableName = $this->getTableName('Library');
-
-    $labelColumn = $this->sanitize($labelColumn);
-    $this->groupByColumn = $this->sanitize($groupByColumn);
-
-    if ($groupByTable) {
-      $foreignTableName = $this->getTableName($groupByTable);
-
-      $this->selects[] = "f.$labelColumn";
-      $this->joins[] = "$foreignTableName f ON t.$this->groupByColumn = f.id";
-    }
-    else {
-      $this->selects[] = $labelColumn;
-    }
+    parent::__construct($table, $pdo);
 
     $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
     $this->selects[] = 'COUNT(*)';
     $this->selects[] = 'library_id';
-    $this->selects[] = $this->groupByColumn;
 
     if ($this->table->hasColumn('host')) {
       $this->selects[] = 't.host';
     }
 
+    $libraryTableName = $this->getTableName('Library');
     $this->joins[] = "$libraryTableName l ON t.library_id = l.id";
+  }
 
+  /**
+   * @return array Sorted array of results
+   */
+  public function get()
+  {
     if (isset($this->params[':database_id'])) {
       $databaseTableName = $this->getTableName('Database');
 
@@ -48,7 +39,7 @@ class StatsSqlQuery extends ReportSqlQuery
     $data = array();
 
     while ($row = $this->fetchRow()) {
-      $data[$row[$this->groupByColumn]]['label'] = $row[$labelColumn];
+      $data[$row[$this->groupByColumn]]['label'] = $row[$this->labelColumn];
       $data[$row[$this->groupByColumn]]['months'][$row['month']] = $row['COUNT(*)'];
     }
 

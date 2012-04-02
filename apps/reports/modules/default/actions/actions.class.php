@@ -42,7 +42,7 @@ class defaultActions extends sfActions
     switch (strtolower($by)) {
       case 'database':
         $groupByColumn = 'library_id';
-        $groupByTable = 'Library';
+        $groupByModel = 'Library';
         $labelColumn = 'code';
         $this->filterValues['database_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Library';
@@ -51,7 +51,7 @@ class defaultActions extends sfActions
 
       case 'library':
         $groupByColumn = 'database_id';
-        $groupByTable = 'Database';
+        $groupByModel = 'Database';
         $labelColumn = 'title';
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Database';
@@ -65,11 +65,12 @@ class defaultActions extends sfActions
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
     $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('DatabaseUsage'));
+    $statsQuery->setLabelColumn($labelColumn);
+
     $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
     $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');
 
-    $this->statistics = $statsQuery
-      ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);
+    $this->statistics = $statsQuery->get();
 
     $this->onsiteShare = $onsiteShareQuery->get($this->filterValues);
     $this->mobileShare = $mobileShareQuery->get($this->filterValues);
@@ -85,7 +86,7 @@ class defaultActions extends sfActions
     switch (strtolower($by)) {
       case 'host':
         $groupByColumn = 'library_id';
-        $groupByTable = 'Library';
+        $groupByModel = 'Library';
         $labelColumn = 'code';
         $this->filterValues['host'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Library';
@@ -94,7 +95,7 @@ class defaultActions extends sfActions
 
       case 'library':
         $groupByColumn = 'host';
-        $groupByTable = null;
+        $groupByModel = null;
         $labelColumn = 'host';
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Host';
@@ -109,6 +110,8 @@ class defaultActions extends sfActions
 
     $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('UrlUsage'));
     $statsQuery->addFilters($this->filterValues);
+    $statsQuery->setGroupBy($groupByColumn, $groupByModel);
+    $statsQuery->setLabelColumn($labelColumn);
 
     $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
     $onsiteShareQuery->addFilters($this->filterValues);
@@ -116,8 +119,7 @@ class defaultActions extends sfActions
     $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');
     $mobileShareQuery->addFilters($this->filterValues);
 
-    $this->statistics = $statsQuery
-      ->get($groupByColumn, $groupByTable, $labelColumn);
+    $this->statistics = $statsQuery->get();
 
     $this->onsiteShare = $onsiteShareQuery->get();
     $this->mobileShare = $mobileShareQuery->get();

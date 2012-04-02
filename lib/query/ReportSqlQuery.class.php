@@ -36,7 +36,15 @@ abstract class ReportSqlQuery
   /**
    * @var string
    */
+  protected $labelColumn;
+  /**
+   * @var string
+   */
   protected $groupByColumn;
+  /**
+   * @var string
+   */
+  protected $groupByModel;
   /**
    * @var array
    */
@@ -59,6 +67,21 @@ abstract class ReportSqlQuery
   {
     foreach ($filters as $key => $value) {
       $this->applyFilter($key, $value);
+    }
+  }
+
+  public function setLabelColumn($column)
+  {
+    $this->labelColumn = $this->sanitize($column);
+  }
+
+  public function setGroupBy($column, $model = null)
+  {
+    $this->groupByColumn = $this->sanitize($column);
+    $this->selects[] = 't.' . $this->groupByColumn;
+
+    if ($model) {
+      $this->groupByModel = $model;
     }
   }
 
@@ -98,6 +121,21 @@ abstract class ReportSqlQuery
     }
   }
 
+  protected function addGroupBySelectAndJoin()
+  {
+    if ($this->groupByModel) {
+      $foreignTableName = $this->getTableName($this->groupByModel);
+      $this->joins[] = "$foreignTableName f ON t.$this->groupByColumn = f.id";
+    }
+
+    if ($this->groupByModel && $this->labelColumn) {
+      $this->selects[] = "f.$labelColumn";
+    }
+    elseif ($this->labelColumn) {
+      $this->selects[] = $this->labelColumn;
+    }
+  }
+
   /**
    * @param string $model
    * @return string
@@ -130,6 +168,10 @@ abstract class ReportSqlQuery
    */
   protected function getSql()
   {
+    $this->selects = array_unique($this->selects);
+    $this->joins   = array_unique($this->joins);
+    $this->wheres  = array_unique($this->wheres);
+
     $sql = 'SELECT '
            . implode(', ', $this->selects) . ' '
            . "FROM {$this->table->getTableName()} t "
@@ -138,7 +180,6 @@ abstract class ReportSqlQuery
     if ($this->joins) {
       $sql .= 'JOIN ' . implode(', ', $this->joins) . ' ';
     }
-
 
     if ($this->wheres) {
       $sql .= 'WHERE ' . implode(' AND ', $this->wheres) . ' ';
@@ -157,8 +198,9 @@ abstract class ReportSqlQuery
       throw new RuntimeException('Already executed');
     }
 
-    $this->pdoStatement = $this->pdo->prepare($this->getSql());
+    $this->addGroupBySelectAndJoin();
 
+    $this->pdoStatement = $this->pdo->prepare($this->getSql());
     $this->pdoStatement->execute($this->params);
   }
 
