@@ -76,6 +76,10 @@ abstract class ReportSqlQuery
     }
   }
 
+  /**
+   * @param string $column
+   * @param string $model
+   */
   public function setLabelColumn($column, $model = null)
   {
     $this->labelColumn = $this->sanitize($column);
@@ -87,6 +91,10 @@ abstract class ReportSqlQuery
     $this->selects[] = "$tableName.$this->labelColumn";
   }
 
+  /**
+   * @param string $column
+   * @param string $model
+   */
   public function setGroupBy($column, $model = null)
   {
     $this->groupByColumn = $this->sanitize($column);
@@ -109,6 +117,10 @@ abstract class ReportSqlQuery
     return $string;
   }
 
+  /**
+   * @param string $key
+   * @param string $value
+   */
   protected function applyFilter($key, $value)
   {
     $key = $this->sanitize($key);
@@ -137,7 +149,7 @@ abstract class ReportSqlQuery
     }
   }
 
-  protected function addGroupBySelectAndJoin()
+  protected function addSelectsAndJoinsForGroupBy()
   {
     if ($this->groupByModel) {
       $foreignTableName = $this->getTableName($this->groupByModel);
@@ -179,6 +191,9 @@ abstract class ReportSqlQuery
    */
   protected function getSql()
   {
+    $this->addDefaultSelectsAndJoins();
+    $this->addSelectsAndJoinsForGroupBy();
+
     $this->selects = array_unique($this->selects);
     $this->joins   = array_unique($this->joins);
     $this->wheres  = array_unique($this->wheres);
@@ -209,8 +224,6 @@ abstract class ReportSqlQuery
       throw new RuntimeException('Already executed');
     }
 
-    $this->addGroupBySelectAndJoin();
-
     $this->pdoStatement = $this->pdo->prepare($this->getSql());
     $this->pdoStatement->execute($this->params);
   }
@@ -226,5 +239,7 @@ abstract class ReportSqlQuery
 
     return $this->pdoStatement->fetch(PDO::FETCH_ASSOC);
   }
+
+  abstract protected function addDefaultSelectsAndJoins();
 }
 

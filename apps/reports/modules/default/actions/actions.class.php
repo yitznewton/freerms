@@ -98,7 +98,7 @@ class defaultActions extends sfActions
         $groupByColumn = 'host';
         $groupByModel = null;
         $labelColumn = 'host';
-        $labelModel = 'null';
+        $labelModel = null;
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Host';
         $this->graphFilter = new ReportGraphHostWidget();

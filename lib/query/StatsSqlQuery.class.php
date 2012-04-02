@@ -3,40 +3,10 @@
 class StatsSqlQuery extends ReportSqlQuery
 {
   /**
-   * @param Doctrine_Table $table
-   * @param PDO $pdo
-   */
-  public function __construct(Doctrine_Table $table, PDO $pdo = null)
-  {
-    parent::__construct($table, $pdo);
-
-    $this->selects[] = "SUBSTR($this->tableName.timestamp, 1, 7) AS month";
-    $this->selects[] = 'COUNT(*)';
-    $this->selects[] = 'library_id';
-
-    if ($this->table->hasColumn('host')) {
-      $this->selects[] = "$this->tableName.host";
-    }
-
-    $libraryTableName = $this->getTableName('Library');
-
-    $this->joins[] = "$libraryTableName ON "
-      . "{$this->table->getTableName()}.library_id = $libraryTableName.id";
-  }
-
-  /**
    * @return array Sorted array of results
    */
   public function get()
   {
-    if (isset($this->params[':database_id'])) {
-      $databaseTableName = $this->getTableName('Database');
-
-      $this->selects[] = "$databaseTableName.title";
-      $this->joins[] = "$databaseTableName ON "
-        . "{$this->table->getTableName()}.database_id = $databaseTableName.id";
-    }
-
     $this->execute();
 
     $data = array();
@@ -52,6 +22,30 @@ class StatsSqlQuery extends ReportSqlQuery
     }
 
     return $data;
+  }
+
+  protected function addDefaultSelectsAndJoins()
+  {
+    $this->selects[] = "SUBSTR($this->tableName.timestamp, 1, 7) AS month";
+    $this->selects[] = 'COUNT(*)';
+    $this->selects[] = 'library_id';
+
+    if ($this->table->hasColumn('host')) {
+      $this->selects[] = "$this->tableName.host";
+    }
+
+    $libraryTableName = $this->getTableName('Library');
+
+    $this->joins[] = "$libraryTableName ON "
+      . "{$this->table->getTableName()}.library_id = $libraryTableName.id";
+
+    if (isset($this->params[':database_id'])) {
+      $databaseTableName = $this->getTableName('Database');
+
+      $this->selects[] = "$databaseTableName.title";
+      $this->joins[] = "$databaseTableName ON "
+        . "{$this->table->getTableName()}.database_id = $databaseTableName.id";
+    }
   }
 
   /**
