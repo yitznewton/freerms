@@ -6,10 +6,9 @@ class StatsSqlQuery extends ReportSqlQuery
    * @param string $groupByColumn
    * @param string $groupByTable Relation grouped by; may be null
    * @param string $labelColumn To use as table header
-   * @param array $filters
    * @return array Sorted array of results
    */
-  public function get($groupByColumn, $groupByTable, $labelColumn, array $filters)
+  public function get($groupByColumn, $groupByTable, $labelColumn)
   {
     $libraryTableName = $this->getTableName('Library');
 
@@ -37,9 +36,7 @@ class StatsSqlQuery extends ReportSqlQuery
 
     $this->joins[] = "$libraryTableName l ON t.library_id = l.id";
 
-    $this->applyFilters($filters);
-
-    if (isset($filters['database_id'])) {
+    if (isset($this->params[':database_id'])) {
       $databaseTableName = $this->getTableName('Database');
 
       $this->selects[] = 'd.title';

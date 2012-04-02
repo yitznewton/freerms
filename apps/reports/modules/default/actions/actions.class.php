@@ -108,14 +108,19 @@ class defaultActions extends sfActions
     $table = Doctrine_Core::getTable('UrlUsage');
 
     $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('UrlUsage'));
+    $statsQuery->addFilters($this->filterValues);
+
     $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
+    $onsiteShareQuery->addFilters($this->filterValues);
+
     $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');
+    $mobileShareQuery->addFilters($this->filterValues);
 
     $this->statistics = $statsQuery
-      ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);
+      ->get($groupByColumn, $groupByTable, $labelColumn);
 
-    $this->onsiteShare = $onsiteShareQuery->get($this->filterValues);
-    $this->mobileShare = $mobileShareQuery->get($this->filterValues);
+    $this->onsiteShare = $onsiteShareQuery->get();
+    $this->mobileShare = $mobileShareQuery->get();
 
     $this->setTemplate('database');
   }

@@ -21,16 +21,13 @@ class ShareSqlQuery extends ReportSqlQuery
   }
 
   /**
-   * @param array $filters
    * @return array Sorted array of results
    */
-  public function get(array $filters)
+  public function get()
   {
     $this->selects[] = "t.$this->shareColumn";
     $this->selects[] = 'COUNT(*)';
     $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
-
-    $this->applyFilters($filters);
 
     $this->groupByColumn = $this->shareColumn;
 
