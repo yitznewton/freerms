@@ -104,8 +104,11 @@ abstract class ReportSqlQuery
     $this->groupByColumn = $this->sanitize($column);
 
     if ($model) {
-      $this->groupByModel = $model;
+      $this->groupByModel = $this->sanitize($model);
+      $foreignTable = $this->getTableName($model);
     }
+
+    $this->selects[] = $this->groupByColumn;
   }
 
   /**

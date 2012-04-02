@@ -68,6 +68,7 @@ class defaultActions extends sfActions
 
     $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('DatabaseUsage'));
     $statsQuery->setLabelColumn($labelColumn, $labelModel);
+    $statsQuery->setGroupBy($groupByColumn, $groupByModel);
 
     $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
     $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');

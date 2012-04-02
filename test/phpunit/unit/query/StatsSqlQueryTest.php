@@ -52,8 +52,8 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
     $method->setAccessible(true);
 
     $this->assertEquals(
-      'SELECT library.code, SUBSTR(table_name.timestamp, 1, 7) AS month, '
-      . 'COUNT(*), library_id, freerms_database.title '
+      'SELECT library_id, library.code, SUBSTR(table_name.timestamp, 1, 7) '
+      . 'AS month, COUNT(*), freerms_database.title '
       . 'FROM table_name '
       . 'JOIN library ON table_name.library_id = library.id, '
       . 'freerms_database ON table_name.database_id = freerms_database.id '
@@ -85,8 +85,8 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
     $method->setAccessible(true);
 
     $this->assertEquals(
-      'SELECT table_name.host, SUBSTR(table_name.timestamp, 1, 7) AS month, '
-      . 'COUNT(*), library_id '
+      'SELECT library_id, table_name.host, SUBSTR(table_name.timestamp, 1, 7) '
+      . 'AS month, COUNT(*) '
       . 'FROM table_name '
       . 'JOIN library ON table_name.library_id = library.id '
       . 'WHERE library_id = :library_id '
