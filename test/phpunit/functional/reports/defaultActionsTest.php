@@ -6,7 +6,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_DisplaysFilters()
   {
     $this->getBrowser()->
-      get('/database/2')->
+      get('/database/by-database/2')->
 
       with('request')->begin()->
         isParameter('module', 'default')->
@@ -23,7 +23,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_DateFiltersOneYear_CorrectNumberOfColumns()
   {
     $this->getBrowser()->
-      get('/database/2?timestamp[from][year]=2012&timestamp[from][month]=1'
+      get('/database/by-database/2?timestamp[from][year]=2012&timestamp[from][month]=1'
           . '&timestamp[to][year]=2012&timestamp[to][month]=12')->
 
       with('request')->begin()->
@@ -41,7 +41,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_DateFiltersTwoYears_CorrectNumberOfColumns()
   {
     $this->getBrowser()->
-      get('/database/2?timestamp[from][year]=2011&timestamp[from][month]=1'
+      get('/database/by-database/2?timestamp[from][year]=2011&timestamp[from][month]=1'
           . '&timestamp[to][year]=2012&timestamp[to][month]=12')->
 
       with('request')->begin()->
@@ -59,7 +59,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_DateFiltersPartialYears_CorrectNumberOfColumns()
   {
     $this->getBrowser()->
-      get('/database/2?timestamp[from][year]=2009&timestamp[from][month]=7'
+      get('/database/by-database/2?timestamp[from][year]=2009&timestamp[from][month]=7'
           . '&timestamp[to][year]=2012&timestamp[to][month]=6')->
 
       with('request')->begin()->
@@ -77,7 +77,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_DateFiltersOneMonth_CorrectNumberOfColumns()
   {
     $this->getBrowser()->
-      get('/database/2?timestamp[from][year]=2012&timestamp[from][month]=1'
+      get('/database/by-database/2?timestamp[from][year]=2012&timestamp[from][month]=1'
           . '&timestamp[to][year]=2012&timestamp[to][month]=1')->
 
       with('request')->begin()->
@@ -95,7 +95,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_ColumnTotals_CorrectSum()
   {
     $b = $this->getBrowser();
-    $b->get('/database/1');
+    $b->get('/database/by-database/1');
 
     $dom = $b->getResponseDom();
 
@@ -114,7 +114,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_RowTotals_CorrectSum()
   {
     $b = $this->getBrowser();
-    $b->get('/database/1');
+    $b->get('/database/by-database/1');
 
     $dom = $b->getResponseDom();
 
@@ -135,7 +135,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_MobileTotals_Equal100()
   {
     $b = $this->getBrowser();
-    $b->get('/database/1');
+    $b->get('/database/by-database/1');
 
     $dom = $b->getResponseDom();
 
@@ -153,7 +153,7 @@ class functional_reports_defaultActionsTest extends ReportsFunctionalTestCase
   public function testDatabase_OnsiteTotals_Equal100()
   {
     $b = $this->getBrowser();
-    $b->get('/database/1');
+    $b->get('/database/by-database/1');
 
     $dom = $b->getResponseDom();
 
