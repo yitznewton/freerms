@@ -33,7 +33,7 @@ class unit_ShareSqlQueryTest extends ReportSqlQueryTestCase
     $this->assertEquals(
       'SELECT table_name.is_mobile, COUNT(*), SUBSTR(table_name.timestamp, 1, 7) AS month '
       . 'FROM table_name WHERE library_id = :library_id '
-      . 'GROUP BY table_name.is_mobile, month ',
+      . 'GROUP BY table_name.is_mobile ',
       $method->invoke($query)
     );
   }

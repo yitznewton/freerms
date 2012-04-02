@@ -42,6 +42,10 @@ abstract class ReportSqlQuery
    */
   protected $wheres = array();
   /**
+   * @var array groupBys[]
+   */
+  protected $groupBys;
+  /**
    * @var string
    */
   protected $labelColumn;
@@ -223,8 +227,8 @@ abstract class ReportSqlQuery
       $sql .= 'WHERE ' . implode(' AND ', $this->wheres) . ' ';
     }
 
-    if ($this->groupByColumn) {
-      $sql .= "GROUP BY $this->tableName.$this->groupByColumn, month ";
+    if ($this->groupBys) {
+      $sql .= 'GROUP BY ' . implode(', ', $this->groupBys) . ' ';
     }
 
     return $sql;

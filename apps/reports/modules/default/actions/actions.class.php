@@ -71,12 +71,15 @@ class defaultActions extends sfActions
     $statsQuery->setGroupBy($groupByColumn, $groupByModel);
 
     $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
+    $onsiteShareQuery->addFilters($this->filterValues);
+
     $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');
+    $mobileShareQuery->addFilters($this->filterValues);
 
     $this->statistics = $statsQuery->get();
 
-    $this->onsiteShare = $onsiteShareQuery->get($this->filterValues);
-    $this->mobileShare = $mobileShareQuery->get($this->filterValues);
+    $this->onsiteShare = $onsiteShareQuery->get();
+    $this->mobileShare = $mobileShareQuery->get();
   }
 
   /**

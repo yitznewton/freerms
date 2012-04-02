@@ -50,6 +50,12 @@ class StatsSqlQuery extends ReportSqlQuery
 
       $this->selects[] = "$databaseTableName.title";
     }
+
+    if ($this->groupByColumn) {
+      $this->groupBys[] = "$this->tableName.$this->groupByColumn";
+    }
+
+    $this->groupBys[] = 'month';
   }
 
   /**
