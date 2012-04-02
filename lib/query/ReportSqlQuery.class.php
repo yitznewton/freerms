@@ -70,15 +70,22 @@ abstract class ReportSqlQuery
     }
   }
 
-  public function setLabelColumn($column)
+  public function setLabelColumn($column, $model = null)
   {
     $this->labelColumn = $this->sanitize($column);
+
+    if ($model) {
+      $this->selects[] = $this->getTableName($model)
+                         . '.' . $this->labelColumn;
+    }
+    else {
+      $this->selects[] = $this->labelColumn;
+    }
   }
 
   public function setGroupBy($column, $model = null)
   {
     $this->groupByColumn = $this->sanitize($column);
-    $this->selects[] = 't.' . $this->groupByColumn;
 
     if ($model) {
       $this->groupByModel = $model;
@@ -131,13 +138,6 @@ abstract class ReportSqlQuery
     if ($this->groupByModel) {
       $foreignTableName = $this->getTableName($this->groupByModel);
       $this->joins[] = "$foreignTableName f ON t.$this->groupByColumn = f.id";
-    }
-
-    if ($this->groupByModel && $this->labelColumn) {
-      $this->selects[] = "f.$labelColumn";
-    }
-    elseif ($this->labelColumn) {
-      $this->selects[] = $this->labelColumn;
     }
   }
 
