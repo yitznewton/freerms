@@ -1,6 +1,6 @@
 <?php
 
-class ShareQuery extends ReportSqlQuery
+class ShareSqlQuery extends ReportSqlQuery
 {
   /**
    * @var string
@@ -10,10 +10,13 @@ class ShareQuery extends ReportSqlQuery
   /**
    * @param Doctrine_Table $table
    * @param string $shareColumn
+   * @param PDO $pdo
    */
-  public function __construct(Doctrine_Table $table, $shareColumn)
+  public function __construct(
+    Doctrine_Table $table, $shareColumn, PDO $pdo = null)
   {
-    $this->table = $table;
+    parent::__construct($table, $pdo);
+
     $this->shareColumn = $this->sanitize($shareColumn);
   }
 

@@ -7,6 +7,10 @@ abstract class ReportSqlQuery
    */
   protected $table;
   /**
+   * @var PDO
+   */
+  protected $pdo;
+  /**
    * @var array
    */
   protected $params = array();
@@ -30,6 +34,16 @@ abstract class ReportSqlQuery
    * @var PDOStatement
    */
   protected $pdoStatement;
+
+  /**
+   * @param Doctrine_Table $table
+   * @param PDO $pdo
+   */
+  public function __construct(Doctrine_Table $table, PDO $pdo = null)
+  {
+    $this->table = $table;
+    $this->pdo = $pdo ? $pdo : $this->table->getConnection()->getDbh();
+  }
 
   /**
    * @param string $string
@@ -102,8 +116,7 @@ abstract class ReportSqlQuery
       throw new RuntimeException('Already executed');
     }
 
-    $this->pdoStatement = Doctrine_Manager::getInstance()
-      ->getCurrentConnection()->getDbh()->prepare($this->getSql());
+    $this->pdoStatement = $this->pdo->prepare($this->getSql());
 
     $this->pdoStatement->execute($this->params);
   }

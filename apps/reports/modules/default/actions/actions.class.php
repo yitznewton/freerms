@@ -64,9 +64,9 @@ class defaultActions extends sfActions
 
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
-    $statsQuery = new StatsQuery(Doctrine_Core::getTable('DatabaseUsage'));
-    $onsiteShareQuery = new ShareQuery($table, 'is_onsite');
-    $mobileShareQuery = new ShareQuery($table, 'is_mobile');
+    $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('DatabaseUsage'));
+    $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
+    $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');
 
     $this->statistics = $statsQuery
       ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);
@@ -107,9 +107,9 @@ class defaultActions extends sfActions
 
     $table = Doctrine_Core::getTable('UrlUsage');
 
-    $statsQuery = new StatsQuery(Doctrine_Core::getTable('UrlUsage'));
-    $onsiteShareQuery = new ShareQuery($table, 'is_onsite');
-    $mobileShareQuery = new ShareQuery($table, 'is_mobile');
+    $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('UrlUsage'));
+    $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
+    $mobileShareQuery = new ShareSqlQuery($table, 'is_mobile');
 
     $this->statistics = $statsQuery
       ->get($groupByColumn, $groupByTable, $labelColumn, $this->filterValues);

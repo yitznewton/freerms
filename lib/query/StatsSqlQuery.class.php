@@ -1,15 +1,7 @@
 <?php
 
-class StatsQuery extends ReportSqlQuery
+class StatsSqlQuery extends ReportSqlQuery
 {
-  /**
-   * @param Doctrine_Table $table
-   */
-  public function __construct(Doctrine_Table $table)
-  {
-    $this->table = $table;
-  }
-
   /**
    * @param string $groupByColumn
    * @param string $groupByTable Relation grouped by; may be null
