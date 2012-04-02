@@ -11,6 +11,10 @@ abstract class ReportSqlQuery
    */
   protected $pdo;
   /**
+   * @var PDOStatement
+   */
+  protected $pdoStatement;
+  /**
    * @var array
    */
   protected $params = array();
@@ -31,9 +35,9 @@ abstract class ReportSqlQuery
    */
   protected $groupByColumn;
   /**
-   * @var PDOStatement
+   * @var array
    */
-  protected $pdoStatement;
+  protected $tableNames = array();
 
   /**
    * @param Doctrine_Table $table
@@ -81,6 +85,33 @@ abstract class ReportSqlQuery
           $this->params[":$key"] = $value;
           break;
       }
+    }
+  }
+
+  /**
+   * @param string $model
+   * @return string
+   */
+  protected function getTableName($model)
+  {
+    return isset($this->tableNames[$model])
+      ? $this->tableNames[$model]
+      : Doctrine_Core::getTable($model)->getTableName();
+  }
+
+  /**
+   * Set table names manually for dependency injection
+   *
+   * @param array $names
+   */
+  public function setTableNames(array $names)
+  {
+    foreach ($names as $model => $name) {
+      if (!is_string($name)) {
+        throw new InvalidArgumentException('Table names must be strings');
+      }
+
+      $this->tableNames[$model] = $name;
     }
   }
 

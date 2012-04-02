@@ -11,14 +11,13 @@ class StatsSqlQuery extends ReportSqlQuery
    */
   public function get($groupByColumn, $groupByTable, $labelColumn, array $filters)
   {
-    $libraryTableName = Doctrine_Core::getTable('Library')->getTableName();
+    $libraryTableName = $this->getTableName('Library');
 
     $labelColumn = $this->sanitize($labelColumn);
     $this->groupByColumn = $this->sanitize($groupByColumn);
 
     if ($groupByTable) {
-      $foreignTableName = Doctrine_Core::getTable($groupByTable)
-        ->getTableName();
+      $foreignTableName = $this->getTableName($groupByTable);
 
       $this->selects[] = "f.$labelColumn";
       $this->joins[] = "$foreignTableName f ON t.$this->groupByColumn = f.id";
@@ -41,8 +40,7 @@ class StatsSqlQuery extends ReportSqlQuery
     $this->applyFilters($filters);
 
     if (isset($filters['database_id'])) {
-      $databaseTableName = Doctrine_Core::getTable('Database')
-        ->getTableName();
+      $databaseTableName = $this->getTableName('Database');
 
       $this->selects[] = 'd.title';
       $this->joins[] = "$databaseTableName d ON t.database_id = d.id";
