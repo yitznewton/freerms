@@ -31,9 +31,9 @@ class unit_ShareSqlQueryTest extends ReportSqlQueryTestCase
     $method->setAccessible(true);
 
     $this->assertEquals(
-      'SELECT t.is_mobile, COUNT(*), SUBSTR(t.timestamp, 1, 7) AS month '
-      . 'FROM table_name t WHERE library_id = :library_id '
-      . 'GROUP BY t.is_mobile, month ',
+      'SELECT table_name.is_mobile, COUNT(*), SUBSTR(table_name.timestamp, 1, 7) AS month '
+      . 'FROM table_name WHERE library_id = :library_id '
+      . 'GROUP BY table_name.is_mobile, month ',
       $method->invoke($query)
     );
   }

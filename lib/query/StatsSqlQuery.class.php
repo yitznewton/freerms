@@ -10,16 +10,18 @@ class StatsSqlQuery extends ReportSqlQuery
   {
     parent::__construct($table, $pdo);
 
-    $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
+    $this->selects[] = "SUBSTR($this->tableName.timestamp, 1, 7) AS month";
     $this->selects[] = 'COUNT(*)';
     $this->selects[] = 'library_id';
 
     if ($this->table->hasColumn('host')) {
-      $this->selects[] = 't.host';
+      $this->selects[] = "$this->tableName.host";
     }
 
     $libraryTableName = $this->getTableName('Library');
-    $this->joins[] = "$libraryTableName l ON t.library_id = l.id";
+
+    $this->joins[] = "$libraryTableName ON "
+      . "{$this->table->getTableName()}.library_id = $libraryTableName.id";
   }
 
   /**
@@ -30,8 +32,9 @@ class StatsSqlQuery extends ReportSqlQuery
     if (isset($this->params[':database_id'])) {
       $databaseTableName = $this->getTableName('Database');
 
-      $this->selects[] = 'd.title';
-      $this->joins[] = "$databaseTableName d ON t.database_id = d.id";
+      $this->selects[] = "$databaseTableName.title";
+      $this->joins[] = "$databaseTableName ON "
+        . "{$this->table->getTableName()}.database_id = $databaseTableName.id";
     }
 
     $this->execute();
@@ -40,7 +43,8 @@ class StatsSqlQuery extends ReportSqlQuery
 
     while ($row = $this->fetchRow()) {
       $data[$row[$this->groupByColumn]]['label'] = $row[$this->labelColumn];
-      $data[$row[$this->groupByColumn]]['months'][$row['month']] = $row['COUNT(*)'];
+      $data[$row[$this->groupByColumn]]['months'][$row['month']]
+        = $row['COUNT(*)'];
     }
 
     if ($data) {

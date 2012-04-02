@@ -10,6 +10,10 @@ abstract class ReportSqlQuery
    */
   protected $table;
   /**
+   * @var string
+   */
+  protected $tableName;
+  /**
    * @var PDO
    */
   protected $pdo;
@@ -57,6 +61,8 @@ abstract class ReportSqlQuery
   public function __construct(Doctrine_Table $table, PDO $pdo = null)
   {
     $this->table = $table;
+    $this->tableName = $table->getTableName();
+
     $this->pdo = $pdo ? $pdo : $this->table->getConnection()->getDbh();
   }
 
@@ -74,13 +80,11 @@ abstract class ReportSqlQuery
   {
     $this->labelColumn = $this->sanitize($column);
 
-    if ($model) {
-      $this->selects[] = $this->getTableName($model)
-                         . '.' . $this->labelColumn;
-    }
-    else {
-      $this->selects[] = $this->labelColumn;
-    }
+    $tableName = $model
+      ? $this->getTableName($model)
+      : $this->table->getTableName();
+
+    $this->selects[] = "$tableName.$this->labelColumn";
   }
 
   public function setGroupBy($column, $model = null)
@@ -137,7 +141,9 @@ abstract class ReportSqlQuery
   {
     if ($this->groupByModel) {
       $foreignTableName = $this->getTableName($this->groupByModel);
-      $this->joins[] = "$foreignTableName f ON t.$this->groupByColumn = f.id";
+
+      $this->joins[] = "$foreignTableName ON "
+        . "$this->tableName.$this->groupByColumn = $foreignTableName.id";
     }
   }
 
@@ -179,7 +185,7 @@ abstract class ReportSqlQuery
 
     $sql = 'SELECT '
            . implode(', ', $this->selects) . ' '
-           . "FROM {$this->table->getTableName()} t "
+           . "FROM $this->tableName "
            ;
 
     if ($this->joins) {
@@ -191,7 +197,7 @@ abstract class ReportSqlQuery
     }
 
     if ($this->groupByColumn) {
-      $sql .= "GROUP BY t.$this->groupByColumn, month ";
+      $sql .= "GROUP BY $this->tableName.$this->groupByColumn, month ";
     }
 
     return $sql;

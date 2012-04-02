@@ -19,9 +19,9 @@ class ShareSqlQuery extends ReportSqlQuery
 
     $this->shareColumn = $this->sanitize($shareColumn);
 
-    $this->selects[] = "t.$this->shareColumn";
+    $this->selects[] = "{$this->table->getTableName()}.$this->shareColumn";
     $this->selects[] = 'COUNT(*)';
-    $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
+    $this->selects[] = "SUBSTR($this->tableName.timestamp, 1, 7) AS month";
 
     $this->groupByColumn = $this->shareColumn;
   }

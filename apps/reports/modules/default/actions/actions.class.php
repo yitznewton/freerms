@@ -88,6 +88,7 @@ class defaultActions extends sfActions
         $groupByColumn = 'library_id';
         $groupByModel = 'Library';
         $labelColumn = 'code';
+        $labelModel = 'Library';
         $this->filterValues['host'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Library';
         $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
@@ -97,6 +98,7 @@ class defaultActions extends sfActions
         $groupByColumn = 'host';
         $groupByModel = null;
         $labelColumn = 'host';
+        $labelModel = 'null';
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Host';
         $this->graphFilter = new ReportGraphHostWidget();
@@ -111,7 +113,7 @@ class defaultActions extends sfActions
     $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('UrlUsage'));
     $statsQuery->addFilters($this->filterValues);
     $statsQuery->setGroupBy($groupByColumn, $groupByModel);
-    $statsQuery->setLabelColumn($labelColumn);
+    $statsQuery->setLabelColumn($labelColumn, $labelModel);
 
     $onsiteShareQuery = new ShareSqlQuery($table, 'is_onsite');
     $onsiteShareQuery->addFilters($this->filterValues);
