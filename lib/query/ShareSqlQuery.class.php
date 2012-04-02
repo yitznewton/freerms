@@ -18,6 +18,12 @@ class ShareSqlQuery extends ReportSqlQuery
     parent::__construct($table, $pdo);
 
     $this->shareColumn = $this->sanitize($shareColumn);
+
+    $this->selects[] = "t.$this->shareColumn";
+    $this->selects[] = 'COUNT(*)';
+    $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
+
+    $this->groupByColumn = $this->shareColumn;
   }
 
   /**
@@ -25,12 +31,6 @@ class ShareSqlQuery extends ReportSqlQuery
    */
   public function get()
   {
-    $this->selects[] = "t.$this->shareColumn";
-    $this->selects[] = 'COUNT(*)';
-    $this->selects[] = 'SUBSTR(t.timestamp, 1, 7) AS month';
-
-    $this->groupByColumn = $this->shareColumn;
-
     $this->execute();
 
     // start with false and true both at zero in case either has no usages

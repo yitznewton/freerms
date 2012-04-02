@@ -18,17 +18,23 @@ class unit_ShareSqlQueryTest extends ReportSqlQueryTest
   public function testGet_UnsafeFilterKey_Throws()
   {
     $query = new ShareSqlQuery($this->table, 'is_mobile', $this->pdo);
-    $query->get(array('unsafe; DELETE FROM user;' => 'foobar'));
+    $query->addFilters(array('unsafe; DELETE FROM user;' => 'foobar'));
   }
 
   public function testGet_ExpectedSql()
   {
     $query = new ShareSqlQuery($this->table, 'is_mobile', $this->pdo);
 
+    $query->addFilters(array('library_id' => 1));
+
+    $method = new ReflectionMethod($query, 'getSql');
+    $method->setAccessible(true);
+
     $this->assertEquals(
       'SELECT t.is_mobile, COUNT(*), SUBSTR(t.timestamp, 1, 7) AS month '
-      . 'FROM table_name t WHERE library_id = :library_id',
-      $query->get(array('library_id' => 1,))
+      . 'FROM table_name t WHERE library_id = :library_id '
+      . 'GROUP BY t.is_mobile, month ',
+      $method->invoke($query)
     );
   }
 }

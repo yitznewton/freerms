@@ -15,10 +15,7 @@ class ReportSqlQueryTest extends sfPHPUnitBaseTestCase
       ->method('getTableName')
       ->will($this->returnValue('table_name'));
 
-    $this->pdo = $this->getMockBuilder('StubPDO')
-      ->disableOriginalConstructor()
-      ->getMock();
-
+    $this->pdo = $this->getMock('StubPDO');
   }
 }
 
