@@ -87,6 +87,7 @@ class defaultActions extends sfActions
     $table = Doctrine_Core::getTable('DatabaseUsage');
 
     $statsQuery = new StatsSqlQuery(Doctrine_Core::getTable('DatabaseUsage'));
+    $statsQuery->addFilters($this->filterValues);
     $statsQuery->setLabelColumn($labelColumn, $labelModel);
     $statsQuery->setGroupBy($groupByColumn, $groupByModel);
 
