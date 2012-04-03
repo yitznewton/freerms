@@ -55,7 +55,7 @@ class StatsSqlQuery extends ReportSqlQuery
       $this->groupBys[] = "$this->tableName.$this->groupByColumn";
     }
 
-    $this->groupBys[] = 'month';
+    $this->groupBys[] = 'SUBSTR(timestamp, 1, 7)';
   }
 
   /**

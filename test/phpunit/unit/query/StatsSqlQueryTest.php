@@ -55,10 +55,10 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
       'SELECT library_id, library.code, SUBSTR(table_name.timestamp, 1, 7) '
       . 'AS month, COUNT(*), freerms_database.title '
       . 'FROM table_name '
-      . 'JOIN library ON table_name.library_id = library.id, '
-      . 'freerms_database ON table_name.database_id = freerms_database.id '
+      . 'JOIN library ON table_name.library_id = library.id '
+      . 'JOIN freerms_database ON table_name.database_id = freerms_database.id '
       . 'WHERE database_id = :database_id '
-      . 'GROUP BY table_name.library_id, month ', 
+      . 'GROUP BY table_name.library_id, SUBSTR(timestamp, 1, 7) ', 
       $method->invoke($this->query)
     );
   }
@@ -90,7 +90,7 @@ class unit_StatsSqlQueryTest extends ReportSqlQueryTestCase
       . 'FROM table_name '
       . 'JOIN library ON table_name.library_id = library.id '
       . 'WHERE library_id = :library_id '
-      . 'GROUP BY table_name.library_id, month ', 
+      . 'GROUP BY table_name.library_id, SUBSTR(timestamp, 1, 7) ', 
       $method->invoke($this->query)
     );
   }

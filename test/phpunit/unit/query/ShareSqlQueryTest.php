@@ -53,7 +53,7 @@ class unit_ShareSqlQueryTest extends ReportSqlQueryTestCase
     $method = new ReflectionMethod($query, 'getSql');
     $method->setAccessible(true);
 
-    $this->assertRegExp('/month <=/', $method->invoke($query));
+    $this->assertRegExp('/SUBSTR\(timestamp, 1, 7\) <=/', $method->invoke($query));
   }
 }
 

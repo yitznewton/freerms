@@ -145,12 +145,12 @@ abstract class ReportSqlQuery
 
       case 'from':
         $this->params[":$key"] = $value;
-        $this->wheres[] = "month >= :$key";
+        $this->wheres[] = "SUBSTR(timestamp, 1, 7) >= :$key";
         break;
 
       case 'to':
         $this->params[":$key"] = $value;
-        $this->wheres[] = "month <= :$key";
+        $this->wheres[] = "SUBSTR(timestamp, 1, 7) <= :$key";
         break;
 
       default:
