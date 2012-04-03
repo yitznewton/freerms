@@ -17,15 +17,17 @@ class defaultActions extends sfActions
     }
 
     // default: one-year period ending with last month
-    $this->filterValues['timestamp']['from']
-      = isset($this->filterValues['timestamp']['from'])
-        ? $this->filterValues['timestamp']['from']
-        : date('Y-m', time() - 60*60*24*365);
 
-    $this->filterValues['timestamp']['to']
-      = isset($this->filterValues['timestamp']['to'])
-        ? $this->filterValues['timestamp']['to']
-        : date('Y-m', time() - 60*60*24*27);
+
+    if (!isset($this->filterValues['timestamp']['from'])) {
+      $this->filterValues['timestamp']['from']
+        = date('Y-m', time() - 60*60*24*365);
+    }
+
+    if (!isset($this->filterValues['timestamp']['to'])) {
+      $this->filterValues['timestamp']['to']
+        = date('Y-m', time() - 60*60*24*27);
+    }
 
     $this->reportMonths = $this->getReportMonths(
       $this->filterValues['timestamp']['from'],
