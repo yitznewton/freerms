@@ -220,7 +220,7 @@ abstract class ReportSqlQuery
            ;
 
     if ($this->joins) {
-      $sql .= 'JOIN ' . implode(', ', $this->joins) . ' ';
+      $sql .= 'JOIN ' . implode(' JOIN ', $this->joins) . ' ';
     }
 
     if ($this->wheres) {
