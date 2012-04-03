@@ -15,13 +15,13 @@ class unit_ShareSqlQueryTest extends ReportSqlQueryTestCase
   /**
    * @expectedException RuntimeException
    */
-  public function testGet_UnsafeFilterKey_Throws()
+  public function testGetSql_UnsafeFilterKey_Throws()
   {
     $query = new ShareSqlQuery($this->table, 'is_mobile', $this->pdo);
     $query->addFilters(array('unsafe; DELETE FROM user;' => 'foobar'));
   }
 
-  public function testGet_ExpectedSql()
+  public function testGetSql_ExpectedSql()
   {
     $query = new ShareSqlQuery($this->table, 'is_mobile', $this->pdo);
 
@@ -36,6 +36,24 @@ class unit_ShareSqlQueryTest extends ReportSqlQueryTestCase
       . 'GROUP BY table_name.is_mobile ',
       $method->invoke($query)
     );
+  }
+
+  public function testGetSql_TimestampFilter_ExpectedSql()
+  {
+    $query = new ShareSqlQuery($this->table, 'is_mobile', $this->pdo);
+
+    $query->addFilters(array(
+      'library_id' => 1,
+      'timestamp' => array(
+        'from' => '2011-01',
+        'to'   => '2011-12',
+      ),
+    ));
+
+    $method = new ReflectionMethod($query, 'getSql');
+    $method->setAccessible(true);
+
+    $this->assertRegExp('/month <=/', $method->invoke($query));
   }
 }
 
