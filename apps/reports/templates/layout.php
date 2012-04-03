@@ -3,7 +3,13 @@
   <head>
     <?php include_http_metas() ?>
     <?php include_metas() ?>
+
+    <?php if (has_slot('title')): ?>
+    <title><?php include_slot('title') ?> | FreERMS Reports</title>
+    <?php else: ?>
     <title>FreERMS Reports</title>
+    <?php endif; ?>
+
     <link rel="shortcut icon" href="/favicon.ico" />
     <!--[if IE]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>

@@ -1,3 +1,5 @@
+<?php slot('title', $pageTitle) ?>
+
 <h1><?php echo $pageTitle ?></h1>
 
 <aside class="filters">
