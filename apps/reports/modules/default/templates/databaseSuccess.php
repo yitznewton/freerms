@@ -1,3 +1,5 @@
+<h1><?php echo $pageTitle ?></h1>
+
 <aside class="filters">
   <form method="get">
     <ul>

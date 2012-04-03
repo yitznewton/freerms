@@ -51,6 +51,11 @@ class defaultActions extends sfActions
 
     switch (strtolower($by)) {
       case 'database':
+        $this->forward404Unless(
+          $database = Doctrine_Core::getTable('Database')
+          ->find($request->getParameter('filter')));
+        $this->pageTitle = 'Usage for ' . $database->getTitle();
+
         $groupByColumn = 'library_id';
         $groupByModel = 'Library';
         $labelColumn = 'code';
@@ -61,6 +66,11 @@ class defaultActions extends sfActions
         break;
 
       case 'library':
+        $this->forward404Unless(
+          $library = Doctrine_Core::getTable('Library')
+          ->find($request->getParameter('filter')));
+        $this->pageTitle = 'Usage for ' . $library->getName();
+
         $groupByColumn = 'database_id';
         $groupByModel = 'Database';
         $labelColumn = 'title';
@@ -101,6 +111,7 @@ class defaultActions extends sfActions
 
     switch (strtolower($by)) {
       case 'host':
+        $this->pageTitle = 'Usage for ' . $request->getParameter('filter');
         $groupByColumn = 'library_id';
         $groupByModel = 'Library';
         $labelColumn = 'code';
@@ -111,6 +122,11 @@ class defaultActions extends sfActions
         break;
 
       case 'library':
+        $this->forward404Unless(
+          $library = Doctrine_Core::getTable('Library')
+          ->find($request->getParameter('filter')));
+        $this->pageTitle = 'Usage for ' . $library->getName();
+
         $groupByColumn = 'host';
         $groupByModel = null;
         $labelColumn = 'host';
