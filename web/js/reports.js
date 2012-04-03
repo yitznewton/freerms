@@ -8,6 +8,11 @@ x$.ready(function() {
   var primaryData = FR.$$('primary-data-table');
   var monthlyToggle = FR.$$('monthly-toggle');
 
+  if (!primaryData) {
+    // this is the index page
+    return;
+  }
+
   if (monthlyToggle) {
     var $toToggle = x$('thead th:not(:first-child):not(:last-child), td',
       primaryData);

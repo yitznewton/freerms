@@ -35,6 +35,16 @@ class defaultActions extends sfActions
   /**
    * @param sfRequest $request A request object
    */
+  public function executeIndex(sfWebRequest $request)
+  {
+    $this->databases = Doctrine_Core::getTable('Database')->findAll();
+    $this->libraries = Doctrine_Core::getTable('Library')->findAll();
+    $this->hosts = Doctrine_Core::getTable('UrlUsage')->getAllHosts();
+  }
+
+  /**
+   * @param sfRequest $request A request object
+   */
   public function executeDatabase(sfWebRequest $request)
   {
     $this->forward404Unless($by = $request->getParameter('by'));
