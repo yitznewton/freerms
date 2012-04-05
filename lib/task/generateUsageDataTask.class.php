@@ -1,6 +1,6 @@
 <?php
 
-class generateUsageDataTask extends sfBaseTask
+class generateUsageDataTask extends sfDoctrineBaseTask
 {
   protected function configure()
   {
@@ -9,9 +9,8 @@ class generateUsageDataTask extends sfBaseTask
     ));
 
     $this->addOptions(array(
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The connection name', true),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-      new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
-      // add your own options here
     ));
 
     $this->namespace        = 'doctrine';
@@ -31,7 +30,6 @@ EOF;
 
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
-    $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     $this->generateDatabaseData($arguments['number_of_entries']);
     $this->generateUrlData($arguments['number_of_entries']);
