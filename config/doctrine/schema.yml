@@ -1,6 +1,6 @@
 Database:
   # `database` is reserved in MySQL and Doctrine does not escape with ``
-  tableName: freerms_database 
+  tableName: freerms_database  # database is a reserved word in MySQL
   actAs:
     - Timestampable
     - SoftDelete  # the foo_usage tables reference this table
@@ -96,6 +96,7 @@ DatabaseSubject:
 Usage:
   # this will generate an empty table, deemed worth it for the elegance
   # of inheritance
+  tableName: freerms_usage  # usage is a reserved word in MySQL
   columns:
     sessionid:
       type: string(8)
