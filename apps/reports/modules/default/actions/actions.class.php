@@ -39,8 +39,16 @@ class defaultActions extends sfActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->databases = Doctrine_Core::getTable('Database')->findAll();
-    $this->libraries = Doctrine_Core::getTable('Library')->findAll();
+    $this->databases = Doctrine_Core::getTable('Database')->createQuery('d')
+      ->orderBy('d.sort_title')
+      ->execute()
+      ;
+
+    $this->libraries = Doctrine_Core::getTable('Library')->createQuery('l')
+      ->orderBy('l.name')
+      ->execute()
+      ;
+
     $this->hosts = Doctrine_Core::getTable('UrlUsage')->getAllHosts();
   }
 
