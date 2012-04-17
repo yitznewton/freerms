@@ -151,5 +151,30 @@ biz: baz
 
     $this->assertNull($database->getAdditionalField('nope'));
   }
+
+  public function testToStringForWidget_UnderLength_NotTruncates()
+  {
+    $database = new Database();
+    $database->setTitle(str_repeat('a', 20));
+
+    $this->assertEquals(str_repeat('a', 20), $database->toStringForWidget());
+  }
+
+  public function testToStringForWidget_AtLength_NotTruncates()
+  {
+    $database = new Database();
+    $database->setTitle(str_repeat('a', 25));
+
+    $this->assertEquals(str_repeat('a', 25), $database->toStringForWidget());
+  }
+
+  public function testToStringForWidget_OverLength_Truncates()
+  {
+    $database = new Database();
+    $database->setTitle(str_repeat('a', 40));
+
+    $this->assertEquals(str_repeat('a', 22) . '...',
+      $database->toStringForWidget());
+  }
 }
 

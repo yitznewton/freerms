@@ -13,6 +13,21 @@
 class Database extends BaseDatabase
 {
   /**
+   * Returns truncated string for use in Choice widget
+   *
+   * @return string
+   */
+  public function toStringForWidget()
+  {
+    if (strlen($this->__toString()) < 26) {
+      return $this->__toString();
+    }
+    else {
+      return substr($this->__toString(), 0, 22) . '...';
+    }
+  }
+
+  /**
    * @return array int[]
    */
   public function getLibraryIds()

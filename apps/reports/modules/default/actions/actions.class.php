@@ -87,7 +87,10 @@ class defaultActions extends sfActions
         $labelModel = 'Database';
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Database';
-        $this->graphFilter = new ReportGraphWidget(array('model' => 'Database'));
+        $this->graphFilter = new ReportGraphWidget(array(
+          'model' => 'Database',
+          'order_by' => array('sort_title', 'asc'),
+        ));
         break;
 
       default:
