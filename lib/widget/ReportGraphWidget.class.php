@@ -10,7 +10,6 @@ class ReportGraphWidget extends sfWidgetFormDoctrineChoice
       'add_empty' => false,
       'expanded' => true,
       'multiple' => true,
-      'method' => 'toStringForWidget',
     ), $options);
 
     $this->setOptions($options);

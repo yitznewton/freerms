@@ -73,6 +73,7 @@ class defaultActions extends sfActions
         $this->filterValues['database_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Library';
         $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
+        $this->tableLinkRoute = '@database_by_library?filter=%';
         break;
 
       case 'library':
@@ -90,7 +91,9 @@ class defaultActions extends sfActions
         $this->graphFilter = new ReportGraphWidget(array(
           'model' => 'Database',
           'order_by' => array('sort_title', 'asc'),
+          'method' => 'toStringForWidget',
         ));
+        $this->tableLinkRoute = '@database_by_database?filter=%';
         break;
 
       default:

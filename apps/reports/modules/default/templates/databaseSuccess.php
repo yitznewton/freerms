@@ -50,9 +50,12 @@
 
     <tbody>
     <?php foreach ($statistics as $id => $data): ?>
-      <?php include_partial('row', array('id' => $id,
+      <?php include_partial('row', array(
+        'id' => $id,
         'label' => $data['label'], 'columns' => $data['months'],
-        'reportMonths' => $reportMonths)) ?>
+        'reportMonths' => $reportMonths,
+        'tableLinkRoute' => $tableLinkRoute,
+      )) ?>
     <?php endforeach; ?>
     </tbody>
 
