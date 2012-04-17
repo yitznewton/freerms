@@ -23,13 +23,13 @@
         <ul>
           <li><?php echo link_to('Backend Home', '@homepage') ?></li>
           <li><a href="<?php echo strtr( url_for('@homepage'), array(
-            'backend.php/' => '',
-            'backend_dev.php/' => 'frontend_dev.php/'
-          )) ?>">Frontend Home</a></li>
-          <li><a href="<?php echo strtr( url_for('@homepage'), array(
             'backend.php/' => 'reports.php',
             'backend_dev.php/' => 'reports_dev.php/'
           )) ?>">Reports Home</a></li>
+          <li><a href="<?php echo strtr( url_for('@homepage'), array(
+            'backend.php/' => '',
+            'backend_dev.php/' => 'frontend_dev.php/'
+          )) ?>">Frontend Home</a></li>
         </ul>
       </nav>
 

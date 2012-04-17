@@ -25,11 +25,11 @@
 
       <nav class="links">
         <ul>
-          <li><?php echo link_to('Reports Home', '@homepage') ?></li>
           <li><a href="<?php echo strtr( url_for('@homepage'), array(
             'reports.php/' => 'backend.php',
             'reports_dev.php/' => 'backend_dev.php/'
           )) ?>">Backend Home</a></li>
+          <li><?php echo link_to('Reports Home', '@homepage') ?></li>
           <li><a href="<?php echo strtr( url_for('@homepage'), array(
             'reports.php/' => '',
             'reports_dev.php/' => 'frontend_dev.php/'
