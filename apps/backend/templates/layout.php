@@ -15,23 +15,25 @@
   </head>
   <body>
     <header>
-      <?php echo link_to(
-        image_tag('freerms.png', array('alt' => 'FreERMS logo')),
-        '@homepage') ?>
+      <div class="interapp-links">
+        <?php echo link_to(
+          image_tag('freerms.png', array('alt' => 'FreERMS logo')),
+          '@homepage') ?>
 
-      <nav class="links">
-        <ul>
-          <li><?php echo link_to('Backend Home', '@homepage') ?></li>
-          <li><a href="<?php echo strtr( url_for('@homepage'), array(
-            'backend.php/' => 'reports.php',
-            'backend_dev.php/' => 'reports_dev.php/'
-          )) ?>">Reports Home</a></li>
-          <li><a href="<?php echo strtr( url_for('@homepage'), array(
-            'backend.php/' => '',
-            'backend_dev.php/' => 'frontend_dev.php/'
-          )) ?>">Frontend Home</a></li>
-        </ul>
-      </nav>
+        <nav class="links">
+          <ul>
+            <li><?php echo link_to('Backend Home', '@homepage') ?></li>
+            <li><a href="<?php echo strtr( url_for('@homepage'), array(
+              'backend.php/' => 'reports.php',
+              'backend_dev.php/' => 'reports_dev.php/'
+            )) ?>">Reports Home</a></li>
+            <li><a href="<?php echo strtr( url_for('@homepage'), array(
+              'backend.php/' => '',
+              'backend_dev.php/' => 'frontend_dev.php/'
+            )) ?>">Frontend Home</a></li>
+          </ul>
+        </nav>
+      </div>
 
       <?php if ($sf_user->isAuthenticated()): ?>
       <div class="logout-link">
@@ -58,7 +60,9 @@
       </nav>
     </header>
     
+    <article>
     <?php echo $sf_content ?>
+    </article>
   </body>
 </html>
 
