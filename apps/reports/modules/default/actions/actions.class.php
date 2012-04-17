@@ -136,6 +136,7 @@ class defaultActions extends sfActions
         $this->filterValues['host'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Library';
         $this->graphFilter = new ReportGraphWidget(array('model' => 'Library'));
+        $this->tableLinkRoute = '@url_by_library?filter=%';
         break;
 
       case 'library':
@@ -151,6 +152,7 @@ class defaultActions extends sfActions
         $this->filterValues['library_id'] = $request->getParameter('filter');
         $this->graphFilterTitle = 'Host';
         $this->graphFilter = new ReportGraphHostWidget();
+        $this->tableLinkRoute = '@url_by_host?filter=%';
         break;
 
       default:
