@@ -79,6 +79,10 @@ class baseAccessAction extends sfAction
       return true;
     }
 
+    if ($this->context->getAffiliation()->isOnsite()) {
+      $this->getUser()->addCredential('onsite');
+    }
+
     return $this->getUser()->hasCredential($databaseAccessControl);
   }
 
@@ -90,9 +94,11 @@ class baseAccessAction extends sfAction
    */
   protected function getUserDatabaseLibraryIds()
   {
+    // FIXME the onsite access control test bug passes through here;
+    // flash attribute missing one of two IDs
     return array_values(array_intersect(
       $this->getContext()->getAffiliation()->getLibraryIds(),
-      $this->getUser()->getFlash('database_library_ids')
+      $this->getUser()->getFlash('database_library_ids', array())
     ));
   }
 }

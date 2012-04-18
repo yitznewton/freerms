@@ -94,7 +94,7 @@ Database:
     access_url: http://accesscontrolledor.example.org/
     Libraries: [TCS, TCNY]
     access_control: |
-      [[P_TCPA, P_TCSCAS]]
+      [[P_TCPA, P_TCSCAS, onsite]]
   with_access_control_and:
     title: Anded
     sort_title: Anded

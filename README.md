@@ -117,6 +117,8 @@ field. If you need to require multiple groups in AND or OR logic, use
 symfony's credential syntax, as described at
 http://www.symfony-project.org/gentle-introduction/1_4/en/06-Inside-the-Controller-Layer#chapter_06_sub_complex_credentials
 
+To allow all onsite users, add `onsite` as a value.
+
 Access actions
 ---------------
 

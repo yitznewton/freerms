@@ -659,6 +659,24 @@ class functional_frontend_databaseActionsTest extends FrontendFunctionalTestCase
     $this->assertEquals(302, $tester->getResponse()->getStatusCode());
   }
 
+  /**
+   * @see baseAccessAction::getUserDatabaseLibraryIds()
+   * @todo fix bug: this test works on its own but not in suite
+   */
+  public function testAccess_AccessControlOnsiteApproved_Redirects()
+  {
+    $this->markTestSkipped();
+
+    $database = Doctrine_Core::getTable('Database')
+      ->findOneByTitle('Orred');
+
+    $tester = $this->getTester('192.168.100.1');
+
+    $tester->get('/database/' . $database->getId());
+
+    $this->assertEquals(302, $tester->getResponse()->getStatusCode());
+  }
+
   public function testAccess_Database_UserDataServiceRecordsGroupsWithoutLibraries()
   {
     // unrestricted

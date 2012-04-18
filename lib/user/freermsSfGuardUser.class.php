@@ -66,6 +66,32 @@ class freermsSfGuardUser extends sfGuardSecurityUser implements freermsSecurityU
     }, $result);
   }
 
+  /**
+   * Returns whether or not the user has the given credential.
+   * Need to override sfGuardUser implementation to allow matching of
+   * `onsite` without a GuardUser object
+   *
+   * @param string $credential The credential name
+   * @param boolean $useAnd Whether or not to use an AND condition
+   * @return boolean
+   */
+  public function hasCredential($credential, $useAnd = true)
+  {
+    if (empty($credential))
+    {
+      return true;
+    }
+
+    $guardUser = $this->getGuardUser();
+
+    if ($guardUser && $this->getGuardUser()->getIsSuperAdmin())
+    {
+      return true;
+    }
+
+    return sfBasicSecurityUser::hasCredential($credential, $useAnd);
+  }
+
   public function getReferer($default = null)
   {
     // sfDoctrineGuardPlugin method is buggy; bypass. See
